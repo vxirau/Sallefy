@@ -13,10 +13,8 @@ public class CloudinaryCallback implements UploadCallback {
     }
     @Override
     public void onProgress(String requestId, long bytes, long totalBytes) {
-        // example code starts here
         Double progress = (double) bytes/totalBytes;
-        // post progress to app UI (e.g. progress bar, notification)
-        // example code ends here
+
     }
     @Override
     public void onSuccess(String requestId, Map resultData) {

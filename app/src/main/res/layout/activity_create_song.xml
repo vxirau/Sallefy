@@ -94,7 +94,7 @@
             <TextView
                 android:id="@+id/create_song_file_name"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:textColor="#000000"/>
 
         </LinearLayout>
@@ -102,7 +102,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="80dp"
             android:gravity="center"
             android:orientation="vertical">
 

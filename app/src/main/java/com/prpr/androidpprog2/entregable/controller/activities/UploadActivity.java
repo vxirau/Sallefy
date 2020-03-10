@@ -146,10 +146,6 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         super.onDestroy();
     }
 
-    /**********************************************************************************************
-     *   *   *   *   *   *   *   *   GenreCallback   *   *   *   *   *   *   *   *   *
-     **********************************************************************************************/
-
     @Override
     public void onGenresReceive(ArrayList<Genre> genres) {
         mGenresObjs = genres;
@@ -174,9 +170,6 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     }
 
-    /**********************************************************************************************
-     *   *   *   *   *   *   *   *   TrackCallback   *   *   *   *   *   *   *   *   *
-     **********************************************************************************************/
 
     @Override
     public void onNoTracks(Throwable throwable) {

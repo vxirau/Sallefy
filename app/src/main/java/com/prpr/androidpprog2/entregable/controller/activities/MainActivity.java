@@ -27,6 +27,7 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private ArrayList<Playlist> teves;
     private PlaylistManager pManager;
     private Context mContext;
+    private TextView favNom;
+    private TextView favTotal;
+    private ImageButton favCover;
 
 
     private Handler mHandler;
@@ -103,6 +107,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
+
+        favNom  = findViewById(R.id.favoritosTitol);
+        favTotal  = findViewById(R.id.favoritosTotalSongs);
+        favCover  = findViewById(R.id.favoritosImg);
 
         pujarCanco= findViewById(R.id.pujarCanco);
         pujarCanco.setEnabled(false);
@@ -276,6 +284,15 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         PlaylistAdapter p = new PlaylistAdapter(this, (ArrayList) playlists);
         p.setPlaylistCallback(this);
         playlists_descobrir.setAdapter(p);
+        favNom.setText(playlists.get(0).getName());
+        int size = playlists.get(0).getTracks() != null ? playlists.get(0).getTracks().size() : 0 ;
+        favTotal.setText( size + " cançons");
+        if (playlists.get(0).getThumbnail() != null) {
+            Picasso.get().load(playlists.get(0).getThumbnail()).into(favCover);
+        }else{
+            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(favCover);
+        }
+
     }
 
     @Override
