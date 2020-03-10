@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -32,7 +34,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements PlaylistCallback {
 
     private ImageButton btnTrackImg;
+    private FloatingActionButton mes;
     private FloatingActionButton btnNewPlaylist;
+    private FloatingActionButton pujarCanco;
+    Animation fabOpen, fabClose, rotateForward, rotateBackward;
+    boolean isOpen = false;
+
     private Button samplePlaylist;
     private RecyclerView playlists_descobrir;
     private ArrayList<Playlist> discover;
@@ -76,12 +83,48 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         playlists_descobrir.setLayoutManager(manager);
         playlists_descobrir.setAdapter(adapter);
 
+        mes= findViewById(R.id.mesButton);
+        mes.setEnabled(true);
+        mes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateFab();
+            }
+        });
 
-        les_teves_playlists = (RecyclerView) findViewById(R.id.les_teves_playlists);
-        LinearLayoutManager manager2 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        PlaylistAdapter adapter2 = new PlaylistAdapter(this, null);
-        les_teves_playlists.setLayoutManager(manager2);
-        les_teves_playlists.setAdapter(adapter2);
+
+        btnNewPlaylist = findViewById(R.id.novaPlaylst);
+        btnNewPlaylist.setEnabled(false);
+        btnNewPlaylist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateFab();
+                Intent intent = new Intent(getApplicationContext(), NewPlaylistActivity.class);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+            }
+        });
+
+        pujarCanco= findViewById(R.id.pujarCanco);
+        pujarCanco.setEnabled(false);
+        pujarCanco.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateFab();
+                Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+            }
+        });
+
+
+        fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(this, R.anim.fab_close);
+        rotateForward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
+        rotateBackward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
+
+
+
+
+
 
         btnTrackImg = findViewById(R.id.track_img);
         btnTrackImg.setEnabled(false);
@@ -93,15 +136,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             }
         });
 
-        btnNewPlaylist = findViewById(R.id.crearNovaPlaylist);
-        btnNewPlaylist.setEnabled(false);
-        btnNewPlaylist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), NewPlaylistActivity.class);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-            }
-        });
+
 
         samplePlaylist = findViewById(R.id.samplePlaylist);
         samplePlaylist.setEnabled(false);
@@ -166,6 +201,27 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         //---------*/
 
     }
+
+    private void animateFab(){
+        if(isOpen){
+            btnNewPlaylist.startAnimation(fabClose);
+            pujarCanco.startAnimation(fabClose);
+            btnNewPlaylist.setClickable(false);
+            pujarCanco.setClickable(false);
+            btnNewPlaylist.setEnabled(false);
+            pujarCanco.setEnabled(false);
+            isOpen=false;
+        }else{
+            btnNewPlaylist.startAnimation(fabOpen);
+            pujarCanco.startAnimation(fabOpen);
+            btnNewPlaylist.setClickable(true);
+            pujarCanco.setClickable(true);
+            btnNewPlaylist.setEnabled(true);
+            pujarCanco.setEnabled(true);
+            isOpen=true;
+        }
+    }
+
 
     private void enableInitialButtons() {
         btnNewPlaylist.setEnabled(true);
