@@ -28,6 +28,7 @@
         <activity android:name=".controller.activities.RegisterActivity"/>
         <activity android:name=".controller.activities.NewPlaylistActivity"/>
         <activity android:name=".controller.activities.Add2PlaylistActivity"/>
+        <activity android:name=".controller.activities.UploadActivity"/>
 
 
 

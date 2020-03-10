@@ -6,9 +6,9 @@ public class CloudinaryConfigs {
 
     public static HashMap getConfigurations() {
         HashMap  config = new HashMap();
-        config.put("cloud_name", "username" );
-        config.put("api_key", "your_api_key");
-        config.put("api_secret", "your_api_secret");
+        config.put("cloud_name", "vxgamez" );
+        config.put("api_key", "314615125811832");
+        config.put("api_secret", "nCPRo_lVZ1HDJujutvHdPtqRC0E");
         return config;
     }
 }

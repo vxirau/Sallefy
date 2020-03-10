@@ -13,7 +13,7 @@
     <string name="action_accept">Acceptar</string>
     <string name="action_decline">Cancelar</string>
 
-    <string name="state_wait">Siusplay esperi..</string>
+    <string name="state_wait">Siusplau esperi..</string>
     <string name="state_task_in_progress">Tasca en procés</string>
     <string name="state_error_connexion">Error de connexió!</string>
     <string name="state_success_title">Èxit</string>
@@ -48,5 +48,5 @@
     <string name="penja_la_teva_can">Penja la teva cançó!</string>
     <string name="titol_de_la_can">Titol de la cançó</string>
     <string name="g_nere_de_la_can">Gènere de la cançó</string>
-    <string name="crear">Crear</string>
+    <string name="crear">Triar fitxer</string>
 </resources>
