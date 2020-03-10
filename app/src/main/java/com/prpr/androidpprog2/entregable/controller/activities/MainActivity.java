@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private ImageButton favCover;
 
 
-    private Handler mHandler;
+    /*private Handler mHandler;
     private Runnable mRunnable;
     private BarVisualizer mVisualizer;
     private int mDuration;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private TextView tvAuthor;
     private ImageButton ivPhoto;
     private static final String PLAY_VIEW = "PlayIcon";
-    private static final String STOP_VIEW = "StopIcon";
+    private static final String STOP_VIEW = "StopIcon";*/
 
 
 
@@ -112,6 +112,14 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         favNom  = findViewById(R.id.favoritosTitol);
         favTotal  = findViewById(R.id.favoritosTotalSongs);
         favCover  = findViewById(R.id.favoritosImg);
+
+        favCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPlaylistSelected(fav);
+            }
+        });
+
 
         pujarCanco= findViewById(R.id.pujarCanco);
         pujarCanco.setEnabled(false);
@@ -279,30 +287,39 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     }
 
-    private void setFavorite(){
+    private void setMyUploads(){
         int index=0;
+        boolean found=false;
         for (int i=0 ; i<discover.size() ;i++){
-            if(discover.get(i).getName().equals("Preferides")){
+            if(discover.get(i).getName().equals("My Uploads")){
                 index=i;
+                found=true;
             }
         }
-        favNom.setText(discover.get(index).getName());
-        int size = discover.get(index).getTracks() != null ? discover.get(index).getTracks().size() : 0 ;
-        favTotal.setText( size + " cançons");
-        if (discover.get(index).getThumbnail() != null) {
-            Picasso.get().load(discover.get(index).getThumbnail()).into(favCover);
+        if(found){
+            favNom.setText(discover.get(index).getName());
+            int size = discover.get(index).getTracks() != null ? discover.get(index).getTracks().size() : 0 ;
+            favTotal.setText( size + " cançons");
+            if (discover.get(index).getThumbnail() != null) {
+                Picasso.get().load(discover.get(index).getThumbnail()).into(favCover);
+            }else{
+                Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(favCover);
+            }
+            fav = discover.get(index);
+            discover.remove(index);
         }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(favCover);
+            favCover.setVisibility(View.INVISIBLE);
+            favNom.setVisibility(View.INVISIBLE);
+            favTotal.setVisibility(View.INVISIBLE);
         }
-        fav = discover.get(index);
-        discover.remove(index);
+
     }
 
 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
         this.discover = (ArrayList) playlists;
-        setFavorite();
+        setMyUploads();
         PlaylistAdapter p = new PlaylistAdapter(this, (ArrayList) playlists);
         p.setPlaylistCallback(this);
         playlists_descobrir.setAdapter(p);

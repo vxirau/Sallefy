@@ -87,7 +87,12 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
         trackTitle.setText(trck.getName());
         trackAuthor.setText(trck.getUserLogin());
-        Picasso.get().load(trck.getThumbnail()).into(trackImg);
+        if(trck.getThumbnail()!=null){
+            Picasso.get().load(trck.getThumbnail()).into(trackImg);
+        }else{
+            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(trackImg);
+        }
+
 
         cancel = findViewById(R.id.cancelButton);
         cancel.setEnabled(true);

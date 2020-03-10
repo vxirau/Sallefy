@@ -9,16 +9,6 @@
     android:background="@drawable/fons">
 
 
-    <LinearLayout
-        android:id="@+id/separator"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="1dp"
-        android:gravity="center">
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/track_info"
@@ -76,7 +66,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/llistatDplaylists"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="456dp"
         android:maxHeight="570dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/cancelButton"
