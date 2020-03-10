@@ -11,11 +11,26 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
+                        <option name="children">
+                          <map>
+                            <entry key="clipartAsset">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_library_music_black_24dp.xml" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_choose_button" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../../../../../choose_button.svg" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_library" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../../../../../ply_icon.svg" />
                           </map>
                         </option>
                       </PersistentState>
