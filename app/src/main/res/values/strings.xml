@@ -45,4 +45,8 @@
     <string name="autor_de_la_playlist">Autor de la playlist</string>
     <string name="seguir">Seguir</string>
     <string name="nom_de_la_playlist">Nom de la playlist</string>
+    <string name="penja_la_teva_can">Penja la teva cançó!</string>
+    <string name="titol_de_la_can">Titol de la cançó</string>
+    <string name="g_nere_de_la_can">Gènere de la cançó</string>
+    <string name="crear">Crear</string>
 </resources>

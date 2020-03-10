@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fons">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorWhite"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="34sp"
+        android:text="@string/penja_la_teva_can"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical"
+        android:background="@drawable/ic_fons_upload">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:textSize="20dp"
+                android:text="@string/titol_de_la_can"/>
+
+            <EditText
+                android:id="@+id/create_song_title"
+                android:layout_width="300dp"
+                android:layout_gravity="center"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/textbox_btn"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/g_nere_de_la_can"/>
+
+            <Spinner
+                android:id="@+id/create_song_genre"
+                android:layout_width="300dp"
+                android:layout_gravity="center"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/textbox_btn"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/create_song_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_choose_button"
+                android:text="@string/crear"/>
+
+            <TextView
+                android:id="@+id/create_song_file_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorWhite"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/create_song_accept"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/phone_btn"
+                android:text="@string/action_accept"/>
+
+            <Button
+                android:id="@+id/create_song_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#CA0000"
+                android:textSize="20sp"
+                android:textAllCaps="false"
+                android:background="@android:color/transparent"
+                android:text="@string/action_decline"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
