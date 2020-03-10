@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Sallefy</string>
+
+    <string name="default_track_title">Títol cançó</string>
+    <string name="default_track_author">Autor/a</string>
+    <string name="default_duration">03:20</string>
+    <string name="default_playlist_name">Titol Playlist</string>
+    <string name="default_playlist_song_amount">20 cançons</string>
+
+    <string name="action_login">Iniciar sessió</string>
+    <string name="action_logout">Tancar sessió</string>
+    <string name="action_register">Registrarse</string>
+    <string name="action_accept">Acceptar</string>
+    <string name="action_decline">Cancelar</string>
+
+    <string name="state_wait">Siusplay esperi..</string>
+    <string name="state_task_in_progress">Tasca en procés</string>
+    <string name="state_error_connexion">Error de connexió!</string>
+    <string name="state_success_title">Èxit</string>
+    <string name="state_task_completed">Tasca completada éxitosament!</string>
+    <string name="state_error_title">Error</string>
+    <string name="state_connected">Conectat</string>
+    <string name="state_error_default">Ha sortit alguna cosa malament!</string>
+    <string name="state_with_connection">Connexió amb Backend</string>
+    <string name="staitc_without_connection"> Sense connexió</string>
+
+    <string name="login_username">Nom d\'usuari</string>
+    <string name="login_password">Contrasenya</string>
+    <string name="login_email">Correu electrònic</string>
+    <string name="contrasenya">Contrasenya</string>
+    <string name="nom_d_usuari">nom d\'usuari</string>
+    <string name="iniciar_sessi">Iniciar Sessió</string>
+    <string name="no_estas_registrat">No estas registrat?</string>
+    <string name="registra_t_aqui">Registra\'t aqui</string>
+    <string name="registrar_se">Registrar-se</string>
+    <string name="reproduint_se">Reproduint-se</string>
+    <string name="crear_nova_playlist">Crear nova Playlist</string>
+    <string name="nom_per_la_playlist">nom per la playlist</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="a_quina">A quina playlist vols afegir aquesta cançó?</string>
+    <string name="biblioteca">Biblioteca</string>
+    <string name="descobrir_can_ons">Descobrir cançons</string>
+    <string name="les_meves_playlists">Les meves Playlists</string>
+    <string name="sampleplaylist">Sample Playlist</string>
+    <string name="autor_de_la_playlist">Autor de la playlist</string>
+    <string name="seguir">Seguir</string>
+    <string name="nom_de_la_playlist">Nom de la playlist</string>
+</resources>

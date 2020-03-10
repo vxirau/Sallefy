@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/fons_add2playlist">
+
+
+    <LinearLayout
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="1dp"
+        android:gravity="center">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/track_info"
+        android:layout_width="258dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="1dp"
+        android:gravity="center">
+
+
+        <ImageView
+            android:id="@+id/track_img"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            />
+
+        <TextView
+            android:id="@+id/track_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_track_title"
+            tools:layout_editor_absoluteX="92dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/track_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_track_author"
+            tools:layout_editor_absoluteX="92dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorGrey"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/info_afegir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="@string/a_quina"
+        tools:layout_editor_absoluteX="92dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/llistatDplaylists"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:maxHeight="570dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/cancelButton"
+        app:layout_constraintTop_toBottomOf="@+id/track_info"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="-1dp" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancelar"
+        tools:layout_editor_absoluteX="168dp"
+        android:textColor="#CA0000"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:background="@android:color/transparent"
+        tools:layout_editor_absoluteY="485dp" />
+
+
+
+</LinearLayout>

@@ -1,0 +1,168 @@
+package com.prpr.androidpprog2.entregable.controller.activities;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.adapters.Add2PlaylistListAdapter;
+import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
+import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.Add2PlaylistListCallback;
+import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
+import com.squareup.picasso.Picasso;
+
+public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistCallback, Add2PlaylistListCallback {
+
+    private static final String TAG = "Add2PlaylistActivity";
+    private static final String PLAY_VIEW = "PlayIcon";
+    private static final String STOP_VIEW = "StopIcon";
+
+
+    private TextView trackTitle;
+    private TextView trackAuthor;
+    private ImageView trackImg;
+
+    private Button cancel;
+    private Track trck;
+    private Handler mHandler;
+    private Runnable mRunnable;
+
+    private RecyclerView mRecyclerView;
+
+
+
+    private ArrayList<Playlist> playlists;
+    private int currentPlaylist = 0;
+    private PlaylistManager pManager;
+    private Add2PlaylistListAdapter adapter;
+    private Playlist currentList;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_song_2_playlist);
+        trck = (Track) getIntent().getSerializableExtra("Trck");
+        currentList = (Playlist) getIntent().getSerializableExtra("Playlst");
+        initViews();
+        UserToken userToken = Session.getInstance(this).getUserToken();
+        String usertkn = userToken.getIdToken();
+        pManager = new PlaylistManager(this);
+        pManager.getAllPlaylists(this);
+    }
+
+
+    private void initViews() {
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.llistatDplaylists);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        adapter = new Add2PlaylistListAdapter(this,  null, null);
+        mRecyclerView.setLayoutManager(manager);
+        adapter.setPlaylistCallback(this);
+        mRecyclerView.setAdapter(adapter);
+
+        mHandler = new Handler();
+
+        trackTitle = findViewById(R.id.track_title);
+        trackAuthor = findViewById(R.id.track_author);
+        trackImg = findViewById(R.id.track_img);
+
+        trackTitle.setText(trck.getName());
+        trackAuthor.setText(trck.getUserLogin());
+        Picasso.get().load(trck.getThumbnail()).into(trackImg);
+
+        cancel = findViewById(R.id.cancelButton);
+        cancel.setEnabled(true);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PlaylistActivity.class);
+                intent.putExtra("Playlst", currentList);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onPlaylistCreated(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistRecieved(List<Playlist> playlists) {
+        this.playlists = (ArrayList) playlists;
+        Add2PlaylistListAdapter p = new Add2PlaylistListAdapter(this, (ArrayList) playlists, trck);
+        mRecyclerView.setAdapter(p);
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
+        Toast.makeText(this, "No tens playlists", Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onPlaylistSelected(Playlist P) {
+
+    }
+
+    @Override
+    public void onTrackAdded(Playlist body) {
+
+    }
+
+    @Override
+    public void onTrackAddFailure(Throwable throwable) {
+
+    }
+
+
+    @Override
+    public void onPlaylistAddSelected(int position, ArrayList<Playlist> playlist, Track track) {
+        playlist.get(position).getTracks().add(track);
+        pManager.add2Playlist(playlist.get(position), this);
+    }
+}

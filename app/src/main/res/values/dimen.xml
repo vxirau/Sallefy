@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="nav_icon_dimen">30dp</dimen>
+    <dimen name="nav_text_dimen">12sp</dimen>
+    <dimen name="item_max_height">60dp</dimen>
+    <dimen name="item_max_height2">70dp</dimen>
+    <dimen name="item_max_height3">90dp</dimen>
+    <dimen name="item_max_height4">200dp</dimen>
+
+
+</resources>

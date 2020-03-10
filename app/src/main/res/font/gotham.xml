@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        android:font="@font/gotham_light"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/gotham_bold" />
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        android:font="@font/gotham_medium"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/gotham_book" />
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        android:font="@font/gotham_narrow_black"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/gotham_narrow_book" />
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        android:font="@font/gotham_narrow_thin"/>
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/gotham_narrow_ultra" />
+    <font
+        android:fontStyle="italic"
+        android:fontWeight="400"
+        android:font="@font/gotham_ultra"/>
+
+</font-family>

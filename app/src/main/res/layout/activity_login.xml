@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".controller.activities.LoginActivity"
+    android:background="@drawable/fons">
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="203dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/logo_blanc" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/c1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:gravity="center"
+                android:text="@string/iniciar_sessi"
+                android:textColor="#353535"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/login_user"
+                android:layout_width="322dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/textbox_btn"
+                android:gravity="center"
+                android:hint="@string/nom_d_usuari"
+                android:textColorHint="#70353535" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/login_password"
+                android:layout_width="322dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/textbox_btn"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/contrasenya"
+                android:inputType="textPassword"
+                android:textColorHint="#70353535" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/login_btn_action"
+                android:layout_width="280dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/phone_btn"
+                android:fontFamily="@font/gotham_bold"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="@string/action_login"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:text="@string/no_estas_registrat" />
+
+            <Button
+                android:id="@+id/register_btn_action"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/gotham_bold"
+                android:textAllCaps="false"
+                android:text="@string/registra_t_aqui"
+                android:textColor="#21D760"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
