@@ -1,4 +1,4 @@
 # Sallefy-Entregable1
 
 
-![App Design](https://ibb.co/ZdSgPLC)
+![App Design](https://imgur.com/a/XFZrLKm)
