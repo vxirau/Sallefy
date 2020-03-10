@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private ArrayList<Playlist> teves;
     private PlaylistManager pManager;
     private Context mContext;
+    private Playlist fav;
     private TextView favNom;
     private TextView favTotal;
     private ImageButton favCover;
@@ -278,20 +279,34 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     }
 
-    @Override
-    public void onPlaylistRecieved(List<Playlist> playlists) {
-        this.discover = (ArrayList) playlists;
-        PlaylistAdapter p = new PlaylistAdapter(this, (ArrayList) playlists);
-        p.setPlaylistCallback(this);
-        playlists_descobrir.setAdapter(p);
-        favNom.setText(playlists.get(0).getName());
-        int size = playlists.get(0).getTracks() != null ? playlists.get(0).getTracks().size() : 0 ;
+    private void setFavorite(){
+        int index=0;
+        for (int i=0 ; i<discover.size() ;i++){
+            if(discover.get(i).getName().equals("Preferides")){
+                index=i;
+            }
+        }
+        favNom.setText(discover.get(index).getName());
+        int size = discover.get(index).getTracks() != null ? discover.get(index).getTracks().size() : 0 ;
         favTotal.setText( size + " cançons");
-        if (playlists.get(0).getThumbnail() != null) {
-            Picasso.get().load(playlists.get(0).getThumbnail()).into(favCover);
+        if (discover.get(index).getThumbnail() != null) {
+            Picasso.get().load(discover.get(index).getThumbnail()).into(favCover);
         }else{
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(favCover);
         }
+        fav = discover.get(index);
+        discover.remove(index);
+    }
+
+
+    @Override
+    public void onPlaylistRecieved(List<Playlist> playlists) {
+        this.discover = (ArrayList) playlists;
+        setFavorite();
+        PlaylistAdapter p = new PlaylistAdapter(this, (ArrayList) playlists);
+        p.setPlaylistCallback(this);
+        playlists_descobrir.setAdapter(p);
+
 
     }
 
