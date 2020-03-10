@@ -10,12 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cloudinary.android.MediaManager;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
@@ -29,11 +27,8 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -199,7 +194,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     @Override
     public void onCreateTrack(Track t) {
         uploadPlylst.getTracks().add(t);
-        pManager.add2Playlist(uploadPlylst, this);
+        pManager.updatePlaylist(uploadPlylst, this);
     }
 
     @Override

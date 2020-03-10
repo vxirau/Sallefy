@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private Playlist fav;
     private TextView favNom;
     private TextView favTotal;
+    private TextView misCanciones;
     private ImageButton favCover;
 
 
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         favNom  = findViewById(R.id.favoritosTitol);
         favTotal  = findViewById(R.id.favoritosTotalSongs);
         favCover  = findViewById(R.id.favoritosImg);
+        misCanciones = findViewById(R.id.misCanciones);
 
         favCover.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,6 +314,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             fav = discover.get(index);
             discover.remove(index);
         }else{
+            misCanciones.setVisibility(View.INVISIBLE);
             favCover.setVisibility(View.INVISIBLE);
             favNom.setVisibility(View.INVISIBLE);
             favTotal.setVisibility(View.INVISIBLE);

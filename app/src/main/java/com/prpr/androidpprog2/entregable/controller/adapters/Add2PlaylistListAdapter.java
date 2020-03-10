@@ -62,7 +62,7 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
 
     private void onPlaylistAdd(Playlist ply, Track trck){
         ply.getTracks().add(trck);
-        pManager.add2Playlist(ply, this);
+        pManager.updatePlaylist(ply, this);
     }
 
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {

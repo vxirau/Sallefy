@@ -94,7 +94,7 @@ public class PlaylistManager {
         });
     }
 
-    public void add2Playlist(Playlist playlist, final PlaylistCallback playlistCallback) {
+    public void updatePlaylist(Playlist playlist, final PlaylistCallback playlistCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
         Call<Playlist> call = mPlaylistService.addTrackPlaylist(playlist, "Bearer " + userToken.getIdToken());

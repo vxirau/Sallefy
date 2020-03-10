@@ -149,6 +149,6 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
     @Override
     public void onPlaylistAddSelected(int position, ArrayList<Playlist> playlist, Track track) {
         playlist.get(position).getTracks().add(track);
-        pManager.add2Playlist(playlist.get(position), this);
+        pManager.updatePlaylist(playlist.get(position), this);
     }
 }
