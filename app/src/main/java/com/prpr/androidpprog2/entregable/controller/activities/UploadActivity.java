@@ -19,10 +19,13 @@ import com.cloudinary.android.MediaManager;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.model.Genre;
+import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
@@ -34,12 +37,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-public class UploadActivity extends AppCompatActivity implements GenreCallback, TrackCallback {
+public class UploadActivity extends AppCompatActivity implements GenreCallback, TrackCallback, PlaylistCallback {
 
     private EditText etTitle;
     private Spinner mSpinner;
     private TextView mFilename;
     private Button btnFind, btnCancel, btnAccept;
+    private PlaylistManager pManager;
+
+    private Playlist uploadPlylst;
 
     private ArrayList<String> mGenres;
     private ArrayList<Genre> mGenresObjs;
@@ -52,12 +58,15 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_song);
+        uploadPlylst = (Playlist) getIntent().getSerializableExtra("Upload");
         mContext = getApplicationContext();
         initViews();
         getData();
     }
 
     private void initViews() {
+        pManager = new PlaylistManager(mContext);
+
         etTitle = (EditText) findViewById(R.id.create_song_title);
         mFilename = (TextView) findViewById(R.id.create_song_file_name);
 
@@ -188,18 +197,44 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
 
     @Override
-    public void onCreateTrack() {
-        StateDialog.getInstance(this).showStateDialog(true);
-        Thread watchDialog = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (StateDialog.getInstance(mContext).isDialogShown()){}
-                    finish();
-                } catch (Exception e) {
-                }
-            }
-        });
-        watchDialog.start();
+    public void onCreateTrack(Track t) {
+        uploadPlylst.getTracks().add(t);
+        pManager.add2Playlist(uploadPlylst, this);
+    }
+
+    @Override
+    public void onPlaylistCreated(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistRecieved(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistSelected(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onTrackAdded(Playlist body) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+    }
+
+    @Override
+    public void onTrackAddFailure(Throwable throwable) {
+
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.TrackService;
+import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -56,7 +57,7 @@ public class TrackManager {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 int code = response.code();
                 if (response.isSuccessful()) {
-                    trackCallback.onCreateTrack();
+                    trackCallback.onCreateTrack(track);
                 } else {
                     Log.d(TAG, "Error Not Successful: " + code);
                     trackCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));

@@ -288,9 +288,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
-    public void onCreateTrack() {
+    public void onCreateTrack(Track t) {
 
     }
+
 
     @Override
     public void onFailure(Throwable throwable) {

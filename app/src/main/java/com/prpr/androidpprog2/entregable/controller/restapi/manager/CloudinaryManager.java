@@ -10,7 +10,9 @@ import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.model.Genre;
+import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.CloudinaryConfigs;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
@@ -25,6 +27,7 @@ public class CloudinaryManager extends AppCompatActivity {
     private String mFileName;
     private Genre mGenre;
     private TrackCallback mCallback;
+
 
     public static CloudinaryManager getInstance(Context context, TrackCallback callback) {
         if (sManager == null) {
@@ -68,13 +71,12 @@ public class CloudinaryManager extends AppCompatActivity {
             Track track = new Track();
             track.setId(null);
             track.setName(mFileName);
-            track.setUser(Session.getInstance(mContext).getUser());
-            track.setUserLogin(Session.getInstance(mContext).getUser().getLogin());
             track.setUrl((String) resultData.get("url"));
             ArrayList<Genre> genres = new ArrayList<>();
             genres.add(mGenre);
             track.setGenres(genres);
             TrackManager.getInstance(mContext).createTrack(track, mCallback);
+
         }
         @Override
         public void onError(String requestId, ErrorInfo error) {

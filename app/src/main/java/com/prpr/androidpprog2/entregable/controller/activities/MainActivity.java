@@ -123,11 +123,15 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
         pujarCanco= findViewById(R.id.pujarCanco);
         pujarCanco.setEnabled(false);
+        Context c = this;
         pujarCanco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 animateFab();
                 Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
+                intent.putExtra("Upload", fav);
+                intent.putExtra("User", Session.getInstance(c).getUser());
+
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
