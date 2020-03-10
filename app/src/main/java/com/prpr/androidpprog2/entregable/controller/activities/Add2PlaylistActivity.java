@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.Add2PlaylistListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.Add2PlaylistListCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.model.Playlist;
@@ -148,7 +150,8 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
     @Override
     public void onPlaylistAddSelected(int position, ArrayList<Playlist> playlist, Track track) {
-        playlist.get(position).getTracks().add(track);
-        pManager.updatePlaylist(playlist.get(position), this);
+
     }
+
+
 }

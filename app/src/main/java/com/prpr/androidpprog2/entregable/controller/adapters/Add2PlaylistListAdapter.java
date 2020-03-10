@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,10 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.callbacks.Add2PlaylistListCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -60,9 +64,23 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
         return new Add2PlaylistListAdapter.ViewHolder(itemView);
     }
 
+    private boolean existsInPlaylist(List<Track> t, Track track){
+        boolean exists = false;
+        for(Track tk : t){
+            if(tk.getName().equals(track.getName())){
+                exists=true;
+            }
+        }
+        return exists;
+    }
+
     private void onPlaylistAdd(Playlist ply, Track trck){
-        ply.getTracks().add(trck);
-        pManager.updatePlaylist(ply, this);
+        if(existsInPlaylist(ply.getTracks(), trck)){
+            ErrorDialog.getInstance(mContext).showErrorDialog("Aquesta canço ja està en aquesta playlist!");
+        }else{
+            ply.getTracks().add(trck);
+            pManager.updatePlaylist(ply, this);
+        }
     }
 
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
@@ -115,8 +133,8 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
 
     @Override
     public void onTrackAdded(Playlist body) {
-        Intent intent = new Intent(mContext, PlaylistActivity.class);
-        intent.putExtra("Playlst", actual);
+        Intent intent = new Intent(mContext.getApplicationContext(), PlaylistActivity.class);
+        intent.putExtra("Playlst", body);
         mContext.startActivity(intent);
     }
 

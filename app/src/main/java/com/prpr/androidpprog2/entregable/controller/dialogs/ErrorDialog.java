@@ -12,7 +12,7 @@ import com.prpr.androidpprog2.entregable.R;
 public class ErrorDialog {
 
     private static ErrorDialog sManager;
-    private static Object mutex = new Object();
+    private Object mutex = new Object();
 
     private Context mContext;
     private Dialog mDialog;
@@ -36,13 +36,13 @@ public class ErrorDialog {
         mDialog = new Dialog(mContext);
     }
 
-    public void showErrorDialog() {
+    public void showErrorDialog(String message) {
         mDialog.setContentView(R.layout.dialog_error);
         mDialog.setCanceledOnTouchOutside(false);
 
         tvTitle = (TextView) mDialog.findViewById(R.id.dialog_error_title);
         tvSubtitle = (TextView) mDialog.findViewById(R.id.dialog_error_subtitle);
-
+        tvSubtitle.setText(message);
         ivIcon = (ImageView) mDialog.findViewById(R.id.dialog_error_icon);
 
         btnAccept = (Button) mDialog.findViewById(R.id.dialog_error_button);
