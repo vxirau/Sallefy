@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.prpr.androidpprog2.entregable.R;
+
 public class StateDialog {
 
     private static StateDialog sManager;

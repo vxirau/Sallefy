@@ -8,16 +8,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.CloudinaryConfigs;
 import com.prpr.androidpprog2.entregable.utils.Session;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CloudinaryManager extends AppCompatActivity {
 

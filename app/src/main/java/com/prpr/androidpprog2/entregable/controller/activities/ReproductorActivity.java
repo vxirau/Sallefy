@@ -13,10 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
+import com.prpr.androidpprog2.entregable.R;
 
 import java.io.IOException;
-
-import com.prpr.androidpprog2.entregable.R;
 
 public class ReproductorActivity extends Activity {
 

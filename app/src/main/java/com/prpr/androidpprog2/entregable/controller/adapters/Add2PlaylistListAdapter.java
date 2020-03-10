@@ -8,35 +8,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.activities.Add2PlaylistActivity;
-import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.callbacks.Add2PlaylistListCallback;
-import com.prpr.androidpprog2.entregable.controller.callbacks.PlaylistListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
-import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistListAdapter.ViewHolder>  implements PlaylistCallback{
+
+public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistListAdapter.ViewHolder>  implements PlaylistCallback {
 
     private static final String TAG = "PlaylistListAdapter";
     private ArrayList<Playlist> playlist;
@@ -44,12 +36,14 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
     private Add2PlaylistListCallback mCallback;
     private Track trck;
     private PlaylistManager pManager;
+    private Playlist actual;
 
 
-    public Add2PlaylistListAdapter(Context context, ArrayList<Playlist> playlists, Track t) {
+    public Add2PlaylistListAdapter(Context context, ArrayList<Playlist> playlists, Track t, Playlist actual) {
         this.playlist = playlists;
         this.mContext = context;
         this.trck = t;
+        this.actual = actual;
 
     }
 
@@ -122,6 +116,7 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
     @Override
     public void onTrackAdded(Playlist body) {
         Intent intent = new Intent(mContext, PlaylistActivity.class);
+        intent.putExtra("Playlst", actual);
         mContext.startActivity(intent);
     }
 

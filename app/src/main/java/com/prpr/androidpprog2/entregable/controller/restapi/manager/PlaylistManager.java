@@ -3,8 +3,14 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.service.PlaylistService;
+import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -12,16 +18,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import com.prpr.androidpprog2.entregable.controller.activities.Add2PlaylistActivity;
-import com.prpr.androidpprog2.entregable.controller.adapters.Add2PlaylistListAdapter;
-import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.PlaylistService;
-import com.prpr.androidpprog2.entregable.model.Playlist;
-import com.prpr.androidpprog2.entregable.model.Track;
-import com.prpr.androidpprog2.entregable.model.UserToken;
-import com.prpr.androidpprog2.entregable.utils.Constants;
-import com.prpr.androidpprog2.entregable.utils.Session;
 
 public class PlaylistManager {
 

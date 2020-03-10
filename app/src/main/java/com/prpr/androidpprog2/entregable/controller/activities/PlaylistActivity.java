@@ -1,8 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -20,16 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
@@ -39,6 +28,10 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback {
 

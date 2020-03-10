@@ -9,19 +9,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class NewPlaylistActivity extends Activity implements PlaylistCallback{
+public class NewPlaylistActivity extends Activity implements PlaylistCallback {
 
     private FloatingActionButton tornarEnrere;
     private Button newPlaylist;

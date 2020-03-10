@@ -3,6 +3,14 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.service.GenreService;
+import com.prpr.androidpprog2.entregable.model.Genre;
+import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +19,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.GenreService;
-import com.prpr.androidpprog2.entregable.model.Genre;
-import com.prpr.androidpprog2.entregable.model.Track;
-import com.prpr.androidpprog2.entregable.model.UserToken;
-import com.prpr.androidpprog2.entregable.utils.Constants;
-import com.prpr.androidpprog2.entregable.utils.Session;
 
 public class GenreManager {
 

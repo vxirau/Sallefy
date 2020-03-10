@@ -1,9 +1,9 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.callback;
 
-import java.util.ArrayList;
-
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Track;
+
+import java.util.ArrayList;
 
 public interface GenreCallback extends FailureCallback {
 

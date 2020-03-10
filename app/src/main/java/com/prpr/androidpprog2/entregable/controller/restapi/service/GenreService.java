@@ -1,13 +1,14 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
+import com.prpr.androidpprog2.entregable.model.Genre;
+import com.prpr.androidpprog2.entregable.model.Track;
+
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
-import com.prpr.androidpprog2.entregable.model.Genre;
-import com.prpr.androidpprog2.entregable.model.Track;
 
 public interface GenreService {
 

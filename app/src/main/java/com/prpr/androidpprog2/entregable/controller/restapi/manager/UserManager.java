@@ -3,12 +3,6 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
@@ -18,6 +12,13 @@ import com.prpr.androidpprog2.entregable.model.UserRegister;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserManager {
 

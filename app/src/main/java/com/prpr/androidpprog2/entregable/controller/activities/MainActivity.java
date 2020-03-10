@@ -1,22 +1,19 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,7 +29,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PlaylistCallback{
+public class MainActivity extends AppCompatActivity implements PlaylistCallback {
 
     private ImageButton btnTrackImg;
     private FloatingActionButton btnNewPlaylist;
