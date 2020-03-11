@@ -9,7 +9,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
 
 public class MusicService extends Service {
 

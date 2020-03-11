@@ -6,31 +6,61 @@
     android:layout_height="match_parent"
     android:background="@drawable/fons"
     android:orientation="vertical"
+    android:weightSum="1.0"
     tools:context=".controller.activities.MainActivity">
 
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/topLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/titolActivitat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/biblioteca"
             android:gravity="center"
+            android:text="@string/biblioteca"
             android:textColor="@color/colorWhite"
-            android:textSize="25sp"/>
+            android:textSize="25sp" />
+    </RelativeLayout>
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="420dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/totesPlaylists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/totes_les_playlists"
+            android:textColor="@color/colorWhite"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/allplaylists"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:maxHeight="570dp"
+            android:orientation="horizontal" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:text="@string/les_meves_playlists"
             android:textColor="@color/colorWhite"
@@ -49,63 +79,64 @@
             android:id="@+id/misCanciones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/descobrir_can_ons"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
+            android:text="@string/descobrir_can_ons"
             android:textColor="@color/colorWhite"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="165dp"
-            android:layout_margin="10dp"
-            android:layout_gravity="start"
-            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/favoritosImg"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginLeft="10dp"
-                android:scaleType="centerCrop"
-                android:background="@android:color/transparent"
-                />
-
-            <LinearLayout
-                android:layout_width="211dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-
-                android:paddingBottom="5dp">
-
-                <TextView
-                    android:id="@+id/favoritosTitol"
-                    style="@style/SongTitleTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:textAlignment="textStart"
-                    android:text="@string/default_playlist_name"
-                    />
-
-                <TextView
-                    android:id="@+id/favoritosTotalSongs"
-                    style="@style/SongArtistTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:textAlignment="textStart"
-                    android:text="@string/default_playlist_song_amount" />
-
-            </LinearLayout>
+        <ImageButton
+            android:id="@+id/favoritosImg"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="10dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerCrop" />
 
 
 
+        <TextView
+            android:id="@+id/favoritosTitol"
+            style="@style/SongTitleTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="@string/default_playlist_name"
+            android:textAlignment="textStart" />
 
+        <TextView
+            android:id="@+id/favoritosTotalSongs"
+            style="@style/SongArtistTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="@string/default_playlist_song_amount"
+            android:textAlignment="textStart" />
 
         </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scroll_for_more"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textStyle="italic"
+        />
+
+    <RelativeLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true" >
 
         <LinearLayout
             android:id="@+id/spacer"
@@ -115,16 +146,16 @@
             android:layout_gravity="center"
             android:orientation="horizontal">
 
-             <Button
-            android:id="@+id/samplePlaylist"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginStart="140dp"
-            android:layout_marginEnd="80dp"
-            android:text="@string/sampleplaylist"
-            android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/samplePlaylist"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginStart="140dp"
+                android:layout_marginEnd="80dp"
+                android:text="@string/sampleplaylist"
+                android:textAllCaps="false"/>
 
             <LinearLayout
                 android:id="@+id/actionbuttons"
@@ -166,7 +197,7 @@
             </LinearLayout>
 
 
-            </LinearLayout>
+        </LinearLayout>
 
 
 
@@ -281,12 +312,13 @@
         </RelativeLayout>
 
 
+    </RelativeLayout>
 
 
 
 
 
-    </LinearLayout>
+
 
 
 </LinearLayout>

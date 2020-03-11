@@ -41,6 +41,7 @@
     <string name="biblioteca">Biblioteca</string>
     <string name="descobrir_can_ons">Les meves cançons</string>
     <string name="les_meves_playlists">Les meves Playlists</string>
+    <string name="totes_les_playlists">Totes les playlists</string>
     <string name="sampleplaylist">Totes les cançons</string>
     <string name="autor_de_la_playlist">Autor de la playlist</string>
     <string name="seguir">Seguir</string>
@@ -49,4 +50,5 @@
     <string name="titol_de_la_can">Titol de la cançó</string>
     <string name="g_nere_de_la_can">Gènere de la cançó</string>
     <string name="crear">Triar fitxer</string>
+    <string name="scroll_for_more">scroll for more</string>
 </resources>

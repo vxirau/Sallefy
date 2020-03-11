@@ -68,7 +68,7 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
         UserToken userToken = Session.getInstance(this).getUserToken();
         String usertkn = userToken.getIdToken();
         pManager = new PlaylistManager(this);
-        pManager.getAllPlaylists(this);
+        pManager.getAllMyPlaylists(this);
     }
 
 
@@ -144,6 +144,21 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
     @Override
     public void onTrackAddFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onAllNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistFailure(Throwable throwable) {
 
     }
 

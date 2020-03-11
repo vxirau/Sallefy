@@ -103,4 +103,19 @@ public class NewPlaylistActivity extends Activity implements PlaylistCallback {
 
     }
 
+    @Override
+    public void onAllPlaylistRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onAllNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistFailure(Throwable throwable) {
+
+    }
+
 }

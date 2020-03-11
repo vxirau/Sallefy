@@ -44,9 +44,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private Button samplePlaylist;
     private RecyclerView playlists_descobrir;
     private ArrayList<Playlist> discover;
-    private RecyclerView les_teves_playlists;
-    private ArrayList<Playlist> teves;
+    private RecyclerView allPlaylistRecycle;
+    private ArrayList<Playlist> allPlaylists;
     private PlaylistManager pManager;
+    private PlaylistManager pManager2;
     private Context mContext;
     private Playlist fav;
     private TextView favNom;
@@ -76,11 +77,20 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         UserToken userToken = Session.getInstance(this).getUserToken();
         String usertkn = userToken.getIdToken();
         pManager = new PlaylistManager(this);
-        pManager.getAllPlaylists(this);
+        pManager.getAllMyPlaylists(this);
+        pManager2 = new PlaylistManager(this);
+        pManager2.getAllPlaylists(this);
 
     }
 
     private void initViews() {
+
+        allPlaylistRecycle = (RecyclerView) findViewById(R.id.allplaylists);
+        LinearLayoutManager manager2 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        PlaylistAdapter adapter2 = new PlaylistAdapter(this, null);
+        adapter2.setPlaylistCallback(this);
+        allPlaylistRecycle.setLayoutManager(manager2);
+        allPlaylistRecycle.setAdapter(adapter2);
 
         playlists_descobrir = (RecyclerView) findViewById(R.id.playlists_descobrir);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
@@ -327,11 +337,19 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     public void onPlaylistRecieved(List<Playlist> playlists) {
         this.discover = (ArrayList) playlists;
         setMyUploads();
-        PlaylistAdapter p = new PlaylistAdapter(this, (ArrayList) playlists);
+        PlaylistAdapter p = new PlaylistAdapter(this, this.discover);
         p.setPlaylistCallback(this);
         playlists_descobrir.setAdapter(p);
 
 
+    }
+
+    @Override
+    public void onAllPlaylistRecieved(List<Playlist> body) {
+        this.allPlaylists = (ArrayList) body;
+        PlaylistAdapter p2 = new PlaylistAdapter(this, this.allPlaylists);
+        p2.setPlaylistCallback(this);
+        allPlaylistRecycle.setAdapter(p2);
     }
 
     @Override
@@ -353,6 +371,18 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     @Override
     public void onTrackAddFailure(Throwable throwable) {
+
+    }
+
+
+
+    @Override
+    public void onAllNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistFailure(Throwable throwable) {
 
     }
 
