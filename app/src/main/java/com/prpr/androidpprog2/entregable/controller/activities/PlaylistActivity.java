@@ -128,8 +128,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 playAudio();
 
                 int audioSessionId = mPlayer.getAudioSessionId();
-                if (audioSessionId != -1)
-                    mVisualizer.setAudioSessionId(audioSessionId);
+                if (audioSessionId != -1);
+                //mVisualizer.setAudioSessionId(audioSessionId);
             }
         });
 

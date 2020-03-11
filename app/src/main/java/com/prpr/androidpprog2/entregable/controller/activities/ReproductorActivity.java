@@ -1,11 +1,13 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 
 import java.io.IOException;
 
@@ -30,6 +33,7 @@ public class ReproductorActivity extends Activity {
     private ImageButton btnBackward;
     private ImageButton btnPlayStop;
     private ImageButton btnForward;
+    private Button atras;
     private SeekBar mSeekBar;
     private Handler mHandler;
     private Runnable mRunnable;
@@ -71,19 +75,28 @@ public class ReproductorActivity extends Activity {
         Thread connection = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    mPlayer.setDataSource(url);
-                    mPlayer.prepare(); // might take long! (for buffering, etc)
-                } catch (IOException e) {
-                    Toast.makeText(ReproductorActivity.this,"Error, couldn't play the music\n" + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
+                //try {
+                    //mPlayer.setDataSource(url);
+                    //mPlayer.prepare(); // might take long! (for buffering, etc)
+                //} catch (IOException e) {
+                  //  Toast.makeText(ReproductorActivity.this,"Error, couldn't play the music\n" + e.getMessage(), Toast.LENGTH_LONG).show();
+                //}
             }
         });
 
         tvAuthor = findViewById(R.id.music_artist);
         tvTitle = findViewById(R.id.music_title);
 
-
+        atras = findViewById(R.id.buttonAtras);
+        atras.setEnabled(true);
+        atras.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+              /* Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+               startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);*/
+               finish();
+           }
+        });
         btnBackward = (ImageButton)findViewById(R.id.music_backward_btn);
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
 

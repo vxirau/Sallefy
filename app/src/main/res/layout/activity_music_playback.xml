@@ -18,12 +18,13 @@
             android:layout_height="50dp"
             android:gravity="center"
             android:orientation="horizontal"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonAtras"
                 android:layout_width="50dp"
                 android:layout_height="20dp"
                 android:paddingLeft="20dp"
