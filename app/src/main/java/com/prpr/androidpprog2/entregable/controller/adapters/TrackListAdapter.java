@@ -59,6 +59,19 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         });
         holder.tvTitle.setText(mTracks.get(position).getName());
         holder.tvAuthor.setText(mTracks.get(position).getUserLogin());
+        String segons ="";
+        if(mTracks.get(position).getDuration()!=null){
+            if(mTracks.get(position).getDuration()%60<10){
+                segons = "0" + mTracks.get(position).getDuration()%60;
+            }else{
+                segons = String.valueOf(mTracks.get(position).getDuration()%60);
+            }
+            holder.trackLength.setText(mTracks.get(position).getDuration()/60 + ":" + segons);
+        }else{
+            holder.trackLength.setText("00:00");
+        }
+
+
         if (mTracks.get(position).getThumbnail() != null) {
             Glide.with(mContext)
                     .asBitmap()
@@ -84,11 +97,13 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         TextView tvTitle;
         Button addSong;
         TextView tvAuthor;
+        TextView trackLength;
         ImageView ivPicture;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             addSong = itemView.findViewById(R.id.addSong);
+            trackLength = itemView.findViewById(R.id.track_duratio);
             mLayout = itemView.findViewById(R.id.track_item_layout);
             tvTitle = (TextView) itemView.findViewById(R.id.track_title);
             tvAuthor = (TextView) itemView.findViewById(R.id.track_author);
