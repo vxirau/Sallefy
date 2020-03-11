@@ -44,7 +44,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private TextView plyAuthor;
     private ImageView plyImg;
 
-
     private TextView tvTitle;
     private TextView tvAuthor;
     private ImageButton ivPhoto;
@@ -154,6 +153,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         tvTitle.setSingleLine(true);
 
         ivPhoto = findViewById(R.id.track_img);
+        ivPhoto.setEnabled(true);
+        ivPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btnPlayStop = (ImageButton)findViewById(R.id.dynamic_play_btn);
         btnPlayStop.setTag(PLAY_VIEW);

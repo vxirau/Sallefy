@@ -2,13 +2,16 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,17 +57,20 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private TextView favTotal;
     private TextView misCanciones;
     private ImageButton favCover;
+    private MediaPlayer mPlayer;
 
 
-    /*private Handler mHandler;
+    private Handler mHandler;
     private Runnable mRunnable;
     private BarVisualizer mVisualizer;
     private int mDuration;
     private TextView tvTitle;
     private TextView tvAuthor;
     private ImageButton ivPhoto;
+    private ImageButton btnPlayStop;
+    private SeekBar mSeekBar;
     private static final String PLAY_VIEW = "PlayIcon";
-    private static final String STOP_VIEW = "StopIcon";*/
+    private static final String STOP_VIEW = "StopIcon";
 
 
 
@@ -182,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             }
         });
 
-       /* //----------
         mHandler = new Handler();
 
         tvAuthor = findViewById(R.id.dynamic_artist);
@@ -231,7 +236,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             }
         });
 
-        //---------*/
 
     }
 
@@ -330,6 +334,32 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             favTotal.setVisibility(View.INVISIBLE);
         }
 
+    }
+    public void updateSeekBar() {
+        mSeekBar.setProgress(mPlayer.getCurrentPosition());
+
+        if(mPlayer.isPlaying()) {
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    updateSeekBar();
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        }
+    }
+
+    private void playAudio() {
+        mPlayer.start();
+        updateSeekBar();
+        btnPlayStop.setImageResource(R.drawable.ic_pause);
+        btnPlayStop.setTag(STOP_VIEW);
+    }
+
+    private void pauseAudio() {
+        mPlayer.pause();
+        btnPlayStop.setImageResource(R.drawable.ic_play);
+        btnPlayStop.setTag(PLAY_VIEW);
     }
 
 
