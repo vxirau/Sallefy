@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,12 +16,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
@@ -90,6 +93,26 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     }
 
     private void initViews() {
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.buscar:
+                        Toast.makeText(getApplicationContext(),"Buscar",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.perfil:
+                        Toast.makeText(getApplicationContext(),"Perfil",Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return false;
+            }
+        });
+
 
         allPlaylistRecycle = (RecyclerView) findViewById(R.id.allplaylists);
         LinearLayoutManager manager2 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
@@ -163,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
 
 
-        btnTrackImg = findViewById(R.id.track_img);
+        /*//btnTrackImg = findViewById(R.id.track_img);
         btnTrackImg.setEnabled(false);
         btnTrackImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
                 Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
 
@@ -188,14 +211,14 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
         mHandler = new Handler();
 
-        tvAuthor = findViewById(R.id.dynamic_artist);
+       /* tvAuthor = findViewById(R.id.dynamic_artist);
         tvTitle = findViewById(R.id.dynamic_title);
         tvTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvTitle.setSelected(true);
         tvTitle.setSingleLine(true);
 
-        ivPhoto = findViewById(R.id.track_img);
-
+        ivPhoto = findViewById(R.id.track_img);*/
+/*
         btnPlayStop = (ImageButton)findViewById(R.id.dynamic_play_btn);
         btnPlayStop.setTag(PLAY_VIEW);
         btnPlayStop.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
             }
         });
-
+*/
 
     }
 
@@ -260,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     private void enableInitialButtons() {
         btnNewPlaylist.setEnabled(true);
-        btnTrackImg.setEnabled(true);
+        //btnTrackImg.setEnabled(true);
         samplePlaylist.setEnabled(true);
     }
 
@@ -270,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     private void enableAllButtons() {
         btnNewPlaylist.setEnabled(true);
-        btnTrackImg.setEnabled(true);
+        //btnTrackImg.setEnabled(true);
         samplePlaylist.setEnabled(true);
     }
 

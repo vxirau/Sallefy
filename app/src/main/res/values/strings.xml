@@ -51,4 +51,7 @@
     <string name="g_nere_de_la_can">Gènere de la cançó</string>
     <string name="crear">Triar fitxer</string>
     <string name="scroll_for_more">Fes scroll per veure més</string>
+    <string name="home">Home</string>
+    <string name="Search">Search</string>
+    <string name="profile">My Profile</string>
 </resources>

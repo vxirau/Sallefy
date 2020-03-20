@@ -20,7 +20,7 @@ import java.util.List;
 
 public class NewPlaylistActivity extends Activity implements PlaylistCallback {
 
-    private FloatingActionButton tornarEnrere;
+    private Button tornarEnrere;
     private Button newPlaylist;
     private EditText nomPlaylist;
     private PlaylistCallback pCallback;

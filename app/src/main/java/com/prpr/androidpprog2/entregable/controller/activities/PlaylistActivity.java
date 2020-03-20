@@ -115,7 +115,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
 
 
-        mVisualizer = findViewById(R.id.dynamic_barVisualizer);
+        //mVisualizer = findViewById(R.id.dynamic_barVisualizer);
 
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);

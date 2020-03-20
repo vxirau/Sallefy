@@ -14,4 +14,7 @@
     <color name="colorWhite">#FFF</color>
     <color name="colorConnected">#00c853</color>
     <color name="colorGrey">#D1D1D1</color>
+    <color name="menuColor">#2A2D31</color>
+    <color name="selected">#21D760</color>
+
 </resources>
