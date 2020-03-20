@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     public void onCreate(Bundle savedInstanceSate) {
         super.onCreate(savedInstanceSate);
         setContentView(R.layout.activity_login);
+
         initViews();
     }
 
@@ -63,15 +64,13 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
     private void doLogin(String username, String userpassword) {
-        UserManager.getInstance(getApplicationContext())
-                .loginAttempt(username, userpassword, LoginActivity.this);
+        UserManager.getInstance(getApplicationContext()).loginAttempt(username, userpassword, LoginActivity.this);
     }
 
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
-        Session.getInstance(getApplicationContext())
-                .setUserToken(userToken);
+        Session.getInstance(getApplicationContext()).setUserToken(userToken);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }

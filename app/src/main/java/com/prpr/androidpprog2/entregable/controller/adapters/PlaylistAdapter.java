@@ -52,12 +52,12 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
                 if(mCallback!=null){
                     mCallback.onPlaylistSelected(playlist.get(position));
                 }
-
             }
         });
         holder.nomPlaylist.setText(playlist.get(position).getName());
         int size = playlist.get(position).getTracks() != null ? playlist.get(position).getTracks().size() : 0 ;
         holder.totalCancons.setText( size + " cançons");
+
         if (playlist.get(position).getThumbnail() != null) {
            Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);
         }else{

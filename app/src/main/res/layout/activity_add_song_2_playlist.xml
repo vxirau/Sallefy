@@ -76,14 +76,14 @@
 
     <Button
         android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
         android:text="@string/cancelar"
         tools:layout_editor_absoluteX="168dp"
-        android:textColor="#CA0000"
-        android:textSize="20sp"
+        android:textColor="#21D760"
+        android:textSize="24sp"
         android:textAllCaps="false"
-        android:background="@android:color/transparent"
+        android:background="@drawable/cancel"
         tools:layout_editor_absoluteY="485dp" />
 
 

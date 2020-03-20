@@ -163,8 +163,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
 
 
-
-
         btnTrackImg = findViewById(R.id.track_img);
         btnTrackImg.setEnabled(false);
         btnTrackImg.setOnClickListener(new View.OnClickListener() {

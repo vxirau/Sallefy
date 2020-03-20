@@ -28,9 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_library" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../../../../../ply_icon.svg" />
+                            <entry key="outputName" value="ic_mes" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../Dissenys/Add 2 Playlist/Recursos/SVG/add.svg" />
                           </map>
                         </option>
                       </PersistentState>

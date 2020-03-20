@@ -185,7 +185,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 }
                 if (mDuration > 0) {
                     int newProgress = ((progress*100)/mDuration);
-                    System.out.println("New progress: " + newProgress);
                 }
             }
 
@@ -256,6 +255,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             //mediaPlayer.pause();
             mPlayer.prepare();
         } catch(Exception e) {
+
         }
     }
 
@@ -266,7 +266,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             mTracks = new ArrayList<>();
         }else{
             mTracks = (ArrayList) playlst.getTracks();
-            TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks,playlst);
+            TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
             mRecyclerView.setAdapter(adapter);
         }
 
