@@ -6,6 +6,4 @@ Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacio
 
 -------------
 
-## El diseño a continuación no refleja en su totalidad a la aplicación actualmente ya que esta se ha mejorado para añadir mas funcionalidades
-
 ![App Design](https://user-images.githubusercontent.com/48185184/77230548-47f8ac80-6b95-11ea-995f-fb809f6d74b1.png)
