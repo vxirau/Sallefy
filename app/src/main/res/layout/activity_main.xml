@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentTop="true">
-
         <TextView
             android:id="@+id/titolActivitat"
             android:layout_width="match_parent"
@@ -30,117 +29,109 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="420dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
         android:fillViewport="true">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-        <TextView
-            android:id="@+id/topPlayed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/top_played"
-            android:textColor="@color/colorWhite"
-            android:textSize="17sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/topPlayed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/top_played"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/topPlayedPlaylists"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:maxHeight="570dp"
-            android:orientation="horizontal" />
-
-
-        <TextView
-            android:id="@+id/totesPlaylists"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/totes_les_playlists"
-            android:textColor="@color/colorWhite"
-            android:textSize="17sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/allplaylists"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:maxHeight="570dp"
-            android:orientation="horizontal" />
-
-        <TextView
-            android:id="@+id/discoverArtistsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="@string/discover_artists"
-            android:textColor="@color/colorWhite"
-            android:textSize="17sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/artists_descobrir"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:maxHeight="570dp"
-            android:orientation="horizontal" />
-
-        <TextView
-            android:id="@+id/topGenresText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/top_genres"
-            android:textColor="@color/colorWhite"
-            android:textSize="17sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/topGenres"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:maxHeight="570dp"
-            android:orientation="horizontal" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/topPlayedPlaylists"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:maxHeight="570dp"
+                android:orientation="horizontal" />
 
 
+            <TextView
+                android:id="@+id/totesPlaylists"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/totes_les_playlists"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/allplaylists"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:maxHeight="570dp"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/discoverArtistsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="@string/discover_artists"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/artists_descobrir"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:maxHeight="570dp"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/topGenresText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/top_genres"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/topGenres"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:maxHeight="570dp"
+                android:orientation="horizontal" />
 
         </LinearLayout>
 
     </ScrollView>
 
 
-    <RelativeLayout
-        android:id="@+id/bottomLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true" >
 
-        <LinearLayout
-            android:id="@+id/spacer"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="190dp"
-            android:gravity="end"
-            android:layout_gravity="end"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:gravity="bottom">
 
             <LinearLayout
                 android:id="@+id/actionbuttons"
-                android:layout_width="90dp"
-                android:layout_height="match_parent"
+                android:layout_width="70dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="100dp"
                 android:orientation="vertical">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -177,15 +168,6 @@
 
             </LinearLayout>
 
-
-        </LinearLayout>
-
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom">
 
             <SeekBar
                 android:id="@+id/dynamic_seekBar"
@@ -243,13 +225,6 @@
         </RelativeLayout>
 
 
-    </RelativeLayout>
 
 
-
-
-
-
-
-
-</LinearLayout>
+</FrameLayout>
