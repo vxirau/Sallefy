@@ -30,8 +30,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_rectangleblanc" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../Dissenys/Afegir Cançons a gas/Recursos/SVG/RectanglBlanc.svg" />
+                            <entry key="outputName" value="song_upload_background" />
+                            <entry key="sourceFile" value="$PROJECT_DIR$/../Dissenys/Upload Song/Recursos/Rectangle@1x.svg" />
                           </map>
                         </option>
                       </PersistentState>
