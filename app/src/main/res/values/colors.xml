@@ -17,4 +17,8 @@
     <color name="menuColor">#2A2D31</color>
     <color name="selected">#21D760</color>
 
+
+
+    <color name="radioSelected">#18AB4B</color>
+
 </resources>

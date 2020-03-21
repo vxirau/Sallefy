@@ -59,4 +59,9 @@
     <string name="top_genres">Top Genres</string>
     <string name="random">Shuffle</string>
     <string name="addsongs_title">Add Songs</string>
+    <string name="backText">Back</string>
+    <string name="top_songs">Top Songs</string>
+    <string name="top_playists">Playlist by the artist</string>
+    <string name="all_songs_by_artist">Checkout all songs by artist!</string>
+    <string name="default_reproductions">100.000</string>
 </resources>
