@@ -146,7 +146,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         //----------
         mHandler = new Handler();
 
-        tvAuthor = findViewById(R.id.dynamic_artist);
+       /* tvAuthor = findViewById(R.id.dynamic_artist);
         tvTitle = findViewById(R.id.dynamic_title);
         tvTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvTitle.setSelected(true);
@@ -174,7 +174,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     pauseAudio();
                 }
             }
-        });
+        });*/
 
         mSeekBar = (SeekBar) findViewById(R.id.dynamic_seekBar);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

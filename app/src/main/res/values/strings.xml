@@ -41,7 +41,7 @@
     <string name="biblioteca">Biblioteca</string>
     <string name="descobrir_can_ons">Les meves cançons</string>
     <string name="les_meves_playlists">Les meves Playlists</string>
-    <string name="totes_les_playlists">Totes les playlists</string>
+    <string name="totes_les_playlists">All playlists</string>
     <string name="sampleplaylist">Totes les cançons</string>
     <string name="autor_de_la_playlist">Autor de la playlist</string>
     <string name="seguir">Seguir</string>
@@ -54,4 +54,7 @@
     <string name="home">Home</string>
     <string name="Search">Search</string>
     <string name="profile">My Profile</string>
+    <string name="top_played">Top Played Playlists</string>
+    <string name="discover_artists">Discover artists</string>
+    <string name="top_genres">Top Genres</string>
 </resources>

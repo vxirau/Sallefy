@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     Animation fabOpen, fabClose, rotateForward, rotateBackward;
     boolean isOpen = false;
 
-    private Button samplePlaylist;
+    //private Button samplePlaylist;
     private RecyclerView playlists_descobrir;
     private ArrayList<Playlist> discover;
     private RecyclerView allPlaylistRecycle;
@@ -121,12 +121,12 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         allPlaylistRecycle.setLayoutManager(manager2);
         allPlaylistRecycle.setAdapter(adapter2);
 
-        playlists_descobrir = (RecyclerView) findViewById(R.id.playlists_descobrir);
+        /*playlists_descobrir = (RecyclerView) findViewById(R.id.playlists_descobrir);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         PlaylistAdapter adapter = new PlaylistAdapter(this, null);
         adapter.setPlaylistCallback(this);
         playlists_descobrir.setLayoutManager(manager);
-        playlists_descobrir.setAdapter(adapter);
+        playlists_descobrir.setAdapter(adapter);*/
 
         mes= findViewById(R.id.mesButton);
         mes.setEnabled(true);
@@ -149,17 +149,17 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             }
         });
 
-        favNom  = findViewById(R.id.favoritosTitol);
+        /*favNom  = findViewById(R.id.favoritosTitol);
         favTotal  = findViewById(R.id.favoritosTotalSongs);
         favCover  = findViewById(R.id.favoritosImg);
-        misCanciones = findViewById(R.id.misCanciones);
+        misCanciones = findViewById(R.id.misCanciones);*/
 
-        favCover.setOnClickListener(new View.OnClickListener() {
+/*        favCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onPlaylistSelected(fav);
             }
-        });
+        });*/
 
 
         pujarCanco= findViewById(R.id.pujarCanco);
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
 
 
-        samplePlaylist = findViewById(R.id.samplePlaylist);
+       /* samplePlaylist = findViewById(R.id.samplePlaylist);
         samplePlaylist.setEnabled(false);
         samplePlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             }
         });
 
-        mHandler = new Handler();
+        mHandler = new Handler();*/
 
        /* tvAuthor = findViewById(R.id.dynamic_artist);
         tvTitle = findViewById(R.id.dynamic_title);
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private void enableInitialButtons() {
         btnNewPlaylist.setEnabled(true);
         //btnTrackImg.setEnabled(true);
-        samplePlaylist.setEnabled(true);
+        //samplePlaylist.setEnabled(true);
     }
 
     private void enableNetworkButtons() {
@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private void enableAllButtons() {
         btnNewPlaylist.setEnabled(true);
         //btnTrackImg.setEnabled(true);
-        samplePlaylist.setEnabled(true);
+        //samplePlaylist.setEnabled(true);
     }
 
     @Override
@@ -387,10 +387,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
         this.discover = (ArrayList) playlists;
-        setMyUploads();
+        //setMyUploads();
         PlaylistAdapter p = new PlaylistAdapter(this, this.discover);
         p.setPlaylistCallback(this);
-        playlists_descobrir.setAdapter(p);
+        //playlists_descobrir.setAdapter(p);
 
 
     }

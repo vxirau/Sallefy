@@ -35,8 +35,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+        <TextView
+            android:id="@+id/topPlayed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/top_played"
+            android:textColor="@color/colorWhite"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/topPlayedPlaylists"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:maxHeight="570dp"
+            android:orientation="horizontal" />
+
 
         <TextView
             android:id="@+id/totesPlaylists"
@@ -58,79 +77,48 @@
             android:orientation="horizontal" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/discoverArtistsText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="@string/les_meves_playlists"
+            android:text="@string/discover_artists"
             android:textColor="@color/colorWhite"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/playlists_descobrir"
+            android:id="@+id/artists_descobrir"
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:maxHeight="570dp"
             android:orientation="horizontal" />
 
         <TextView
-            android:id="@+id/misCanciones"
+            android:id="@+id/topGenresText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:text="@string/descobrir_can_ons"
+            android:text="@string/top_genres"
             android:textColor="@color/colorWhite"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
-
-        <ImageButton
-            android:id="@+id/favoritosImg"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginLeft="10dp"
-            android:background="@android:color/transparent"
-            android:scaleType="centerCrop" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/topGenres"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:maxHeight="570dp"
+            android:orientation="horizontal" />
 
 
-
-        <TextView
-            android:id="@+id/favoritosTitol"
-            style="@style/SongTitleTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="@string/default_playlist_name"
-            android:textAlignment="textStart" />
-
-        <TextView
-            android:id="@+id/favoritosTotalSongs"
-            style="@style/SongArtistTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="@string/default_playlist_song_amount"
-            android:textAlignment="textStart" />
 
         </LinearLayout>
 
     </ScrollView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/scroll_for_more"
-        android:gravity="center"
-        android:textColor="@color/colorWhite"
-        android:textSize="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:textStyle="italic"
-        />
 
     <RelativeLayout
         android:id="@+id/bottomLayout"
@@ -142,20 +130,9 @@
             android:id="@+id/spacer"
             android:layout_width="match_parent"
             android:layout_height="190dp"
-            android:gravity="center"
-            android:layout_gravity="center"
+            android:gravity="end"
+            android:layout_gravity="end"
             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/samplePlaylist"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginStart="140dp"
-                android:layout_marginEnd="60dp"
-                android:text="@string/sampleplaylist"
-                android:textAllCaps="false"/>
 
             <LinearLayout
                 android:id="@+id/actionbuttons"
@@ -209,6 +186,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom">
+
+            <SeekBar
+                android:id="@+id/dynamic_seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="#21D760"
+                android:progressTint="@color/colorWhite"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="85dp"
+                android:colorControlActivated="@drawable/ic_seekbar_scrubber"
+                android:progressBackgroundTint="#21D760" />
 
             <LinearLayout
                 android:layout_width="match_parent"
