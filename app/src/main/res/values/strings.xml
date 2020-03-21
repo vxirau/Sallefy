@@ -44,7 +44,7 @@
     <string name="totes_les_playlists">All playlists</string>
     <string name="sampleplaylist">Totes les cançons</string>
     <string name="autor_de_la_playlist">Autor de la playlist</string>
-    <string name="seguir">Seguir</string>
+    <string name="seguir">Follow</string>
     <string name="nom_de_la_playlist">Nom de la playlist</string>
     <string name="penja_la_teva_can">Penja la teva cançó!</string>
     <string name="titol_de_la_can">Titol de la cançó</string>
@@ -57,4 +57,6 @@
     <string name="top_played">Top Played Playlists</string>
     <string name="discover_artists">Discover artists</string>
     <string name="top_genres">Top Genres</string>
+    <string name="random">Shuffle</string>
+    <string name="addsongs_title">Add Songs</string>
 </resources>

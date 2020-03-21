@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/fons">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/addsongs_title"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="35sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#21D760"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentTop="true"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/llistaCancons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="110dp"/>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:background="@drawable/fons"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_height="2dp"
+                android:background="#21D760" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:id="@+id/UploadButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textColor="#000"
+                    android:textAllCaps="false"
+                    android:textSize="15sp"
+                    android:background="@drawable/ic_rectangleblanc"
+                    android:text="Upload" />
+
+                <Button
+                    android:id="@+id/AcceptarButton"
+                    android:layout_width="170dp"
+                    android:layout_height="50dp"
+                    android:textSize="25sp"
+                    android:textAllCaps="false"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/ic_rectangle_acceptar"
+                    android:text="Accept" />
+
+                <Button
+                    android:id="@+id/CancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textColor="#D80505"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"
+                    android:background="@drawable/ic_rectangleblanc"
+                    android:text="Cancel" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</FrameLayout>

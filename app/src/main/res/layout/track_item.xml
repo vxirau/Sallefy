@@ -55,18 +55,18 @@
             android:text="@string/default_duration"
             android:textAlignment="viewEnd"
             android:textSize="14dp"
+            android:layout_marginRight="10dp"
             android:textStyle="bold"
             android:textColor="@color/colorWhite"
             android:fontFamily="@font/gotham_book"/>
 
         <Button
             android:id="@+id/addSong"
-            android:layout_width="0dp"
+            android:layout_width="7dp"
             android:layout_height="23dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/addtrack" />
+            android:background="@drawable/ic_mes_info" />
 
 
 

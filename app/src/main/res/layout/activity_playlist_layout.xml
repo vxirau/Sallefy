@@ -9,87 +9,121 @@
     tools:context=".controller.activities.PlaylistActivity"
     android:background="@drawable/fons">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
-
-            <Button
-                android:id="@+id/back2Main"
-                android:layout_width="20dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/ic_back"
-                android:rotation="90" />
-
-            <TextView
-                android:id="@+id/playlistName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:text="@string/nom_de_la_playlist"
-                android:textColor="@color/colorWhite"
-                android:textSize="20dp" />
-
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/playlistCover"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:layout_marginTop="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/default_playlist_cover"
-            tools:layout_editor_absoluteX="136dp"
-            tools:layout_editor_absoluteY="32dp" />
-
-        <TextView
-            android:id="@+id/playlistAuthor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/autor_de_la_playlist"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/colorGrey"
-            android:textSize="10dp" />
-
-        <Button
-            android:id="@+id/playlistSeguirBoto"
-            android:layout_width="170dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/colorWhite"
-            android:background="@drawable/textbox_btn"
-            android:text="@string/seguir" />
-
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dynamic_recyclerView"
-        android:layout_marginTop="270dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"/>
-
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="290dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:id="@+id/back2Main"
+                    android:layout_width="20dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/ic_back"
+                    android:rotation="90" />
+
+                <TextView
+                    android:id="@+id/playlistName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:text="@string/nom_de_la_playlist"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/playlistCover"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/default_playlist_cover"
+                tools:layout_editor_absoluteX="136dp"
+                tools:layout_editor_absoluteY="32dp" />
+
+            <TextView
+                android:id="@+id/playlistAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/autor_de_la_playlist"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/colorGrey"
+                android:textSize="10dp" />
+
+            <Button
+                android:id="@+id/playlistSeguirBoto"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="10dp"
+                android:background="@drawable/ic_follow"
+                android:text="@string/seguir" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/playlistRandom"
+                    android:layout_width="170dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginLeft="55dp"
+                    android:textSize="17sp"
+                    android:textAllCaps="false"
+                    android:background="@drawable/random"
+                    android:text="@string/random" />
+
+                <Button
+                    android:id="@+id/PlaylistAddSongs"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="17sp"
+                    android:elevation="10dp"
+                    app:borderWidth="0dp"
+                    android:background="@drawable/ic_add_button"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dynamic_recyclerView"
+            android:layout_marginTop="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"/>
+
 
         <SeekBar
             android:id="@+id/dynamic_seekBar"
