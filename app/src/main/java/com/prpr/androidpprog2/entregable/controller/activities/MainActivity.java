@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private FloatingActionButton pujarCanco;
     Animation fabOpen, fabClose, rotateForward, rotateBackward;
     boolean isOpen = false;
-
     //private Button samplePlaylist;
     private RecyclerView playlists_descobrir;
     private ArrayList<Playlist> discover;
@@ -74,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private SeekBar mSeekBar;
     private static final String PLAY_VIEW = "PlayIcon";
     private static final String STOP_VIEW = "StopIcon";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
