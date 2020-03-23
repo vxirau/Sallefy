@@ -66,4 +66,11 @@
     <string name="default_reproductions">100.000</string>
     <string name="track_thumbnail">Track Thumbnail</string>
     <string name="nom_de_la_canco">Song Name</string>
+    <string name="nom_de_la_canco">nom_canco</string>
+    <string name="nom_artista">nom_artista</string>
+    <string name="favoritos">Añadir a favoritos</string>
+    <string name="edit">"Edit song"</string>
+    <string name="user">Ver artista</string>
+    <string name="playlist">Añadir a playlist</string>
+    <string name="cancel">Cancel</string>
 </resources>
