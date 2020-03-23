@@ -1,2 +1,5 @@
-/.idea/
-/.idea/caches/
+../.idea/
+../.idea/caches/
+/.idea/workspace.xml
+/local.properties
+
