@@ -93,4 +93,9 @@
     <string name="user">Ver artista</string>
     <string name="playlist">Añadir a playlist</string>
     <string name="cancel">Cancel</string>
+    <string name="statistics">Statistics</string>
+    <string name="my_songs">My Songs</string>
+    <string name="playlists">Playlists</string>
+    <string name="filters">Filters</string>
+    <string name="create_new_playlist">Create new playlist</string>
 </resources>
