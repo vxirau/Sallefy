@@ -41,13 +41,13 @@
                 android:id="@+id/login_user"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="@drawable/rectangle"
+                android:background="@drawable/rectangleblancborde"
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
                 android:hint="@string/search_bar"
                 android:inputType="text"
-                android:drawableEnd="@drawable/search_icon"
+                android:drawableEnd="@drawable/search_green"
                 android:textColorHint="#70353535"
                 android:layout_marginHorizontal="40dp"/>
 
@@ -61,7 +61,7 @@
             android:layout_rowWeight="1"
             android:layout_marginTop="25dp"
             android:layout_marginHorizontal="40dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <!-- FILA 1 -->
             <Button
@@ -299,7 +299,8 @@
         </com.google.android.material.circularreveal.CircularRevealGridLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/genere_rhythmandblues"
@@ -324,7 +325,7 @@
             android:layout_marginTop="25dp"
             android:layout_marginLeft="10dp"
             app:layout_constraintTop_toBottomOf="@id/topZone"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <!-- PLAYLIST -->
             <LinearLayout
@@ -337,7 +338,7 @@
                     android:id="@+id/view_songs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Playlist"
+                    android:text="@string/playlist_"
                     android:paddingLeft="10dp"
                     android:textSize="25sp"/>
 
@@ -361,7 +362,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Songs"
+                    android:text="@string/songs_"
                     android:paddingLeft="10dp"
                     android:textSize="25sp"/>
 

@@ -93,4 +93,6 @@
     <string name="user">Ver artista</string>
     <string name="playlist">Añadir a playlist</string>
     <string name="cancel">Cancel</string>
+    <string name="playlist_">Playlists</string>
+    <string name="songs_">Songs</string>
 </resources>
