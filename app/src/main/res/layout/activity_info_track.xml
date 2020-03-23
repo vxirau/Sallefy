@@ -178,14 +178,14 @@
 
     <Button
         android:id="@+id/cancel"
-        android:layout_width="140dp"
+        android:layout_width="170dp"
         android:layout_height="60dp"
         android:layout_marginTop="170dp"
         android:textColor="#18AB4B"
         android:textSize="24sp"
         android:textAllCaps="false"
         android:paddingBottom="10dp"
-        android:background="@drawable/cancel"
+        android:background="@drawable/Rectangle"
         android:gravity="center"
         android:text="@string/cancel" />
 

@@ -95,4 +95,9 @@
     <string name="cancel">Cancel</string>
     <string name="playlist_">Playlists</string>
     <string name="songs_">Songs</string>
+    <string name="statistics">Statistics</string>
+    <string name="my_songs">My Songs</string>
+    <string name="playlists">Playlists</string>
+    <string name="filters">Filters</string>
+    <string name="create_new_playlist">Create new playlist</string>
 </resources>
