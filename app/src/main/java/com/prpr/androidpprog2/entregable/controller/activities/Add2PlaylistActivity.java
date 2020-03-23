@@ -48,8 +48,6 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
     private RecyclerView mRecyclerView;
 
-
-
     private ArrayList<Playlist> playlists;
     private int currentPlaylist = 0;
     private PlaylistManager pManager;
