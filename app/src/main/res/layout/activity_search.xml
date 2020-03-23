@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/fons">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/topZone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:text="Search"
+                android:textColor="#FFFFFF"
+                android:textSize="40sp" />
+
+            <EditText
+                android:id="@+id/login_user"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/rectangle"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:hint="Search here..."
+                android:inputType="text"
+                android:drawableEnd="@drawable/search_icon"
+                android:textColorHint="#70353535"
+                android:layout_marginHorizontal="40dp"/>
+
+        </LinearLayout>
+        <com.google.android.material.circularreveal.CircularRevealGridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginTop="25dp"
+            android:layout_marginHorizontal="40dp"
+            android:visibility="visible">
+
+            <!-- FILA 1 -->
+            <Button
+                android:id="@+id/genere_rock"
+                android:text="ROCK"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginRight="10dp"/>
+            <Button
+                android:id="@+id/genere_pop"
+                android:text="POP"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"/>
+
+            <!-- FILA 2 -->
+            <Button
+                android:id="@+id/genere_dance"
+                android:text="DANCE"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"/>
+            <Button
+                android:id="@+id/genere_country"
+                android:text="COUNTRY"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"/>
+
+            <!-- FILA 3 -->
+            <Button
+                android:id="@+id/genere_hiphop"
+                android:text="HIP HOP"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"/>
+            <Button
+                android:id="@+id/genere_rap"
+                android:text="RAP"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"/>
+
+            <!-- FILA 4 -->
+            <Button
+                android:id="@+id/genere_jazz"
+                android:text="JAZZ"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"/>
+            <Button
+                android:id="@+id/genere_blues"
+                android:text="BLUES"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"/>
+
+            <!-- FILA 5 -->
+            <Button
+                android:id="@+id/genere_classical"
+                android:text="CLASSICAL"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"/>
+            <Button
+                android:id="@+id/genere_folk"
+                android:text="FOLK"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"/>
+
+            <!-- FILA 6 -->
+            <Button
+                android:id="@+id/genere_techno"
+                android:text="TECHNO"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"/>
+            <Button
+                android:id="@+id/genere_disco"
+                android:text="DISCO"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"/>
+
+        </com.google.android.material.circularreveal.CircularRevealGridLayout>
+
+        <LinearLayout
+            android:id="@+id/home_recyclerView_both"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintTop_toBottomOf="@id/topZone"
+            android:visibility="gone">
+
+            <!-- PLAYLIST -->
+            <LinearLayout
+                android:id="@+id/search_playlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/view_songs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Playlist"
+                    android:paddingLeft="10dp"
+                    android:textSize="25sp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:scrollbars="horizontal"
+                    android:id="@+id/home_dynamic_recyclerView_songs"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="5dp"/>
+
+            </LinearLayout>
+
+            <!-- SONGS -->
+            <LinearLayout
+                android:id="@+id/search_songs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Songs"
+                    android:paddingLeft="10dp"
+                    android:textSize="25sp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:scrollbars="horizontal"
+                    android:id="@+id/home_dynamic_recyclerView_playlists"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="5dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
