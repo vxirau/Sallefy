@@ -65,4 +65,5 @@
     <string name="all_songs_by_artist">Checkout all songs by artist!</string>
     <string name="default_reproductions">100.000</string>
     <string name="track_thumbnail">Track Thumbnail</string>
+    <string name="nom_de_la_canco">Song Name</string>
 </resources>

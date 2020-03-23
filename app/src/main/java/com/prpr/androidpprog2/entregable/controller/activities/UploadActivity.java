@@ -39,13 +39,10 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private TextView mFilename;
     private Button btnFind, btnCancel, btnAccept;
     private PlaylistManager pManager;
-
     private Playlist uploadPlylst;
-
     private ArrayList<String> mGenres;
     private ArrayList<Genre> mGenresObjs;
     private Uri mFileUri;
-
     private Context mContext;
 
 
