@@ -13,8 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
@@ -39,10 +42,14 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private TextView mFilename;
     private Button btnFind, btnCancel, btnAccept;
     private PlaylistManager pManager;
+    private RecyclerView uRecyclerView;
+
     private Playlist uploadPlylst;
+
     private ArrayList<String> mGenres;
     private ArrayList<Genre> mGenresObjs;
     private Uri mFileUri;
+
     private Context mContext;
 
 
@@ -57,7 +64,12 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     }
 
     private void initViews() {
+
+        uRecyclerView = (RecyclerView) findViewById(R.id.llistatDplaylists);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         pManager = new PlaylistManager(mContext);
+        uRecyclerView.setLayoutManager(manager);
+        //uRecyclerView.setAdapter(adapter);
 
         etTitle = (EditText) findViewById(R.id.create_song_title);
         mFilename = (TextView) findViewById(R.id.create_song_file_name);
