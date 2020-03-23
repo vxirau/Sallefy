@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="center"
-                android:text="Search"
+                android:text="@string/search_title"
                 android:textColor="#FFFFFF"
                 android:textSize="40sp" />
 
@@ -45,7 +45,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:hint="Search here..."
+                android:hint="@string/search_bar"
                 android:inputType="text"
                 android:drawableEnd="@drawable/search_icon"
                 android:textColorHint="#70353535"
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:rowCount="2"
+            android:rowCount="10"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_marginTop="25dp"
@@ -66,7 +66,7 @@
             <!-- FILA 1 -->
             <Button
                 android:id="@+id/genere_rock"
-                android:text="ROCK"
+                android:text="@string/genere_rock"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -77,7 +77,7 @@
                 android:layout_marginRight="10dp"/>
             <Button
                 android:id="@+id/genere_pop"
-                android:text="POP"
+                android:text="@string/genere_pop"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -90,7 +90,7 @@
             <!-- FILA 2 -->
             <Button
                 android:id="@+id/genere_dance"
-                android:text="DANCE"
+                android:text="@string/genere_dance"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -102,7 +102,7 @@
                 android:layout_marginTop="15dp"/>
             <Button
                 android:id="@+id/genere_country"
-                android:text="COUNTRY"
+                android:text="@string/genere_country"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -116,7 +116,7 @@
             <!-- FILA 3 -->
             <Button
                 android:id="@+id/genere_hiphop"
-                android:text="HIP HOP"
+                android:text="@string/genere_hiphop"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -128,7 +128,7 @@
                 android:layout_marginTop="15dp"/>
             <Button
                 android:id="@+id/genere_rap"
-                android:text="RAP"
+                android:text="@string/genere_rap"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -142,7 +142,7 @@
             <!-- FILA 4 -->
             <Button
                 android:id="@+id/genere_jazz"
-                android:text="JAZZ"
+                android:text="@string/genere_jazz"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -154,7 +154,7 @@
                 android:layout_marginTop="15dp"/>
             <Button
                 android:id="@+id/genere_blues"
-                android:text="BLUES"
+                android:text="@string/genere_blues"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -168,7 +168,7 @@
             <!-- FILA 5 -->
             <Button
                 android:id="@+id/genere_classical"
-                android:text="CLASSICAL"
+                android:text="@string/genere_classical"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -180,7 +180,7 @@
                 android:layout_marginTop="15dp"/>
             <Button
                 android:id="@+id/genere_folk"
-                android:text="FOLK"
+                android:text="@string/genere_folk"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -194,7 +194,7 @@
             <!-- FILA 6 -->
             <Button
                 android:id="@+id/genere_techno"
-                android:text="TECHNO"
+                android:text="@string/genere_techno"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -206,7 +206,7 @@
                 android:layout_marginTop="15dp"/>
             <Button
                 android:id="@+id/genere_disco"
-                android:text="DISCO"
+                android:text="@string/genere_disco"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
@@ -217,7 +217,103 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"/>
 
+            <!-- FILA 7 -->
+            <Button
+                android:id="@+id/genere_soul"
+                android:text="@string/genere_soul"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"/>
+            <Button
+                android:id="@+id/genere_electronica"
+                android:text="@string/genere_disco"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"/>
+
+            <!-- FILA 8 -->
+            <Button
+                android:id="@+id/genere_celtic"
+                android:text="@string/genere_celtic"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"/>
+            <Button
+                android:id="@+id/genere_heavymetal"
+                android:text="@string/genere_heavymetal"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"/>
+
+            <!-- FILA 9 -->
+            <Button
+                android:id="@+id/genere_reggae"
+                android:text="@string/genere_reggae"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"/>
+            <Button
+                android:id="@+id/genere_alternativerock"
+                android:text="@string/genere_alternativerock"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"/>
+
+
         </com.google.android.material.circularreveal.CircularRevealGridLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/genere_rhythmandblues"
+                android:text="@string/genere_rhythmandblues"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/home_recyclerView_both"
