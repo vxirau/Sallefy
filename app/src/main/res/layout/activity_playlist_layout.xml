@@ -55,7 +55,6 @@
                 android:layout_height="140dp"
                 android:layout_marginTop="10dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/default_playlist_cover"
                 tools:layout_editor_absoluteX="136dp"
                 tools:layout_editor_absoluteY="32dp" />
 

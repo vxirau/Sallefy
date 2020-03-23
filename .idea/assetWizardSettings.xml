@@ -11,27 +11,12 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
-                        <option name="children">
-                          <map>
-                            <entry key="clipartAsset">
-                              <value>
-                                <PersistentState>
-                                  <option name="values">
-                                    <map>
-                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_library_music_black_24dp.xml" />
-                                    </map>
-                                  </option>
-                                </PersistentState>
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="song_upload_background" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/../Dissenys/Upload Song/Recursos/Rectangle@1x.svg" />
+                            <entry key="outputName" value="ic_plus_button" />
+                            <entry key="sourceFile" value="C:\Users\apaja\Desktop\La Salle\Disseny i Programació Orientat a Objectes\La Salle\Víctor Xirau Guardans - Projecte S2 PrPr\Dissenys\Pagina D'usuari\Recursos\SVG\Group@1x.svg" />
                           </map>
                         </option>
                       </PersistentState>
