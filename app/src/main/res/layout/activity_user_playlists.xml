@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".controller.activities.PlaylistActivity"
+    android:background="@drawable/fons">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/user_playlists_title"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:paddingLeft="25dp"
+                    android:clickable="true"
+                    android:textSize="20dp"
+                    android:text="@string/playlists">
+
+                </TextView>
+                <TextView
+                    android:id="@+id/user_my_songs_title"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="25dp"
+                    android:clickable="true"
+                    android:textSize="20dp"
+                    android:layout_toRightOf="@+id/user_playlists_title"
+                    android:text="@string/my_songs">
+
+                </TextView>
+                <TextView
+                    android:id="@+id/user_statistics_title"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:paddingLeft="25dp"
+                    android:clickable="true"
+                    android:layout_toRightOf="@+id/user_my_songs_title"
+                    android:textSize="20dp"
+                    android:text="@string/statistics">
+
+                </TextView>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#21D760"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_alignParentTop="true"
+                />
+
+            
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/search_user_playlists"
+                android:layout_width="280dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_rectangle_buit"
+                android:gravity="left"
+                android:hint="@string/Search"
+                android:textColorHint="#70353535"
+                android:elevation="10dp"
+                />
+            <Button
+                android:gravity="center"
+                android:layout_width="70dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/search_user_playlists"
+                android:text="@string/filters"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/ic_rectangle"
+                >
+                
+            </Button>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <Button
+                android:background="@drawable/ic_plus_btn"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="left"
+
+                >
+
+            </Button>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_new_playlist"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                >
+
+            </TextView>
+
+        </LinearLayout>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userPlaylistsRecyclerview"
+            android:layout_width="match_parent"
+            android:layout_marginTop="220dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/ic_settings_button"
+            android:layout_marginTop="700dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+
+            >
+
+
+        </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+
+    </RelativeLayout>
+
+</FrameLayout>
