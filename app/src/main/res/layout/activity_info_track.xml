@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@drawable/Fons"
+    tools:context=".MainActivity">
+
+
+
+
+    <ImageView
+        android:id="@+id/SongCover"
+        android:layout_width="155dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="32dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/default_playlist_cover" />
+
+    <TextView
+        android:id="@+id/SongName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/nom_de_la_canco"
+        android:textColor="@color/colorWhite"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/ArtistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/nom_artista"
+        android:textColor="@color/colorWhite"
+        android:textSize="17dp" />
+
+
+    <View
+        android:id="@+id/Line"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitCenter"
+        android:background="@drawable/line" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/favoritos"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cor" />
+
+
+        <TextView
+            android:id="@+id/text_favoritos"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="20dp"
+            android:textSize="15dp"
+            android:text="@string/favoritos"
+            android:textAlignment="textStart"
+            android:gravity="start"
+            android:padding="@android:dimen/dialog_min_width_major"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp">
+
+
+        <ImageButton
+            android:id="@+id/edit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@android:color/transparent"
+
+            android:scaleType="fitCenter"
+            android:src="@drawable/pencil" />
+
+        <TextView
+            android:id="@+id/text_edit"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="@string/edit"
+            android:textColor="@color/colorWhite"
+            android:textSize="15dp"
+            android:textAlignment="textStart"
+            android:gravity="start"
+            android:padding="@android:dimen/dialog_min_width_major"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp">
+
+
+        <ImageButton
+            android:id="@+id/user"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/user1" />
+
+        <TextView
+            android:id="@+id/text_user"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="20dp"
+            android:textSize="15dp"
+            android:text="@string/user"
+            android:textAlignment="textStart"
+            android:gravity="start"
+            android:padding="@android:dimen/dialog_min_width_major"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp">
+
+
+        <ImageButton
+            android:id="@+id/playlist"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/add" />
+
+
+        <TextView
+            android:id="@+id/text_playlist"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="20dp"
+            android:textSize="15dp"
+            android:text="@string/playlist"
+            android:textAlignment="textStart"
+            android:gravity="start"
+            android:padding="@android:dimen/dialog_min_width_major"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="170dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="170dp"
+        android:textColor="#18AB4B"
+        android:textSize="24sp"
+        android:textAllCaps="false"
+        android:paddingBottom="10dp"
+        android:background="@drawable/Rectangle"
+        android:gravity="center"
+        android:text="@string/cancel" />
+
+</LinearLayout>
