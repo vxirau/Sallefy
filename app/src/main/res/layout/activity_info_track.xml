@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@drawable/Fons"
-    tools:context=".ac">
+    android:background="@drawable/fons">
 
 
 
@@ -17,8 +16,7 @@
         android:layout_width="155dp"
         android:layout_height="148dp"
         android:layout_marginTop="32dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/default_playlist_cover" />
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/SongName"
