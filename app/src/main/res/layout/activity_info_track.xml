@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@drawable/fons">
+    android:background="@drawable/Fons"
+    tools:context=".ac">
 
 
 
@@ -16,7 +17,8 @@
         android:layout_width="155dp"
         android:layout_height="148dp"
         android:layout_marginTop="32dp"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/default_playlist_cover" />
 
     <TextView
         android:id="@+id/SongName"
@@ -176,14 +178,14 @@
 
     <Button
         android:id="@+id/cancel"
-        android:layout_width="140dp"
+        android:layout_width="170dp"
         android:layout_height="60dp"
         android:layout_marginTop="170dp"
         android:textColor="#18AB4B"
         android:textSize="24sp"
         android:textAllCaps="false"
         android:paddingBottom="10dp"
-        android:background="@drawable/cancel"
+        android:background="@drawable/Rectangle"
         android:gravity="center"
         android:text="@string/cancel" />
 
