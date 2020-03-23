@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private FloatingActionButton pujarCanco;
     Animation fabOpen, fabClose, rotateForward, rotateBackward;
     boolean isOpen = false;
+    private Integer HolaXIRau;
+    private boolean esUnPibon;
     kasdjfnakljsdnf
 
 
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private TextView misCanciones;
     private ImageButton favCover;
     private MediaPlayer mPlayer;
+
 
     private Handler mHandler;
     private Runnable mRunnable;
