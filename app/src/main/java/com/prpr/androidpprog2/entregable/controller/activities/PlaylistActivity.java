@@ -114,8 +114,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         //Check is service is active
         if (!serviceBound) {
             //Store Serializable audioList to SharedPreferences
-            StorageUtil storage = new StorageUtil(getApplicationContext());
-            storage.storeAudio(audioList);
+            PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
             PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
 
 

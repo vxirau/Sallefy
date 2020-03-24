@@ -248,15 +248,19 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 R.drawable.ic_plus_button); //replace with your own image
 
         // Create a new Notification
-        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setShowWhen(false).setStyle(new NotificationCompat.MediaStyle().setMediaSession(mediaSession.getSessionToken()).setShowActionsInCompactView(0, 1, 2))
+        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this, "M_CH_ID")
+                // Hide the timestamp
+                .setShowWhen(false)
+                // Set the Notification style
+                /*.setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle().setMediaSession(mediaSession.getSessionToken()).setShowActionsInCompactView(0, 1, 2))
                 // Set the Notification color
-                .setColor(getResources().getColor(R.color.colorPrimary))
+                .setColor(getResources().getColor(R.color.colorAccent))*/
                 // Set the large and small icons
                 .setLargeIcon(largeIcon)
                 .setSmallIcon(android.R.drawable.stat_sys_headset)
                 // Set Notification content information
-                .setContentText(activeAudio.getUserLogin())
+                .setContentText(activeAudio.getId().toString())
+                .setContentTitle(activeAudio.getUserLogin())
                 .setContentInfo(activeAudio.getName())
                 // Add playback actions
                 .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
@@ -315,21 +319,14 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
 
     private void skipToNext() {
-
         if (audioIndex == audioList.size() - 1) {
-            //if last in playlist
             audioIndex = 0;
             activeAudio = audioList.get(audioIndex);
         } else {
-            //get next in playlist
             activeAudio = audioList.get(++audioIndex);
         }
-
-        //Update stored index
         PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
-
         stopMedia();
-        //reset mediaPlayer
         mediaPlayer.reset();
         initMediaPlayer();
     }
@@ -337,20 +334,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private void skipToPrevious() {
 
         if (audioIndex == 0) {
-            //if first in playlist
-            //set index to the last of audioList
             audioIndex = audioList.size() - 1;
             activeAudio = audioList.get(audioIndex);
         } else {
-            //get previous in playlist
             activeAudio = audioList.get(--audioIndex);
         }
-
-        //Update stored index
         PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
-
         stopMedia();
-        //reset mediaPlayer
         mediaPlayer.reset();
         initMediaPlayer();
     }
@@ -360,8 +350,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
             //Load data from SharedPreferences
-            StorageUtil storage = new StorageUtil(getApplicationContext());
-            audioList = storage.loadAudio();
+            audioList = PreferenceUtils.getAllTracks(getApplicationContext());
             audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
 
             if (audioIndex != -1 && audioIndex < audioList.size()) {
@@ -415,8 +404,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         unregisterReceiver(becomingNoisyReceiver);
         unregisterReceiver(playNewAudio);
 
-        //clear cached playlist
-        new StorageUtil(getApplicationContext()).clearCachedAudioPlaylist();
     }
 
 
