@@ -55,10 +55,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private PlaylistManager pManager2;
     private Context mContext;
     private Playlist fav;
-    private TextView favNom;
-    private TextView favTotal;
-    private TextView misCanciones;
-    private ImageButton favCover;
     private MediaPlayer mPlayer;
 
 
@@ -149,19 +145,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
-
-        /*favNom  = findViewById(R.id.favoritosTitol);
-        favTotal  = findViewById(R.id.favoritosTotalSongs);
-        favCover  = findViewById(R.id.favoritosImg);
-        misCanciones = findViewById(R.id.misCanciones);*/
-
-/*        favCover.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPlaylistSelected(fav);
-            }
-        });*/
-
 
         pujarCanco= findViewById(R.id.pujarCanco);
         pujarCanco.setEnabled(false);
@@ -329,34 +312,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     }
 
-    private void setMyUploads(){
-        int index=0;
-        boolean found=false;
-        for (int i=0 ; i<discover.size() ;i++){
-            if(discover.get(i).getName().equals("My Uploads")){
-                index=i;
-                found=true;
-            }
-        }
-        if(found){
-            favNom.setText(discover.get(index).getName());
-            int size = discover.get(index).getTracks() != null ? discover.get(index).getTracks().size() : 0 ;
-            favTotal.setText( size + " cançons");
-            if (discover.get(index).getThumbnail() != null) {
-                Picasso.get().load(discover.get(index).getThumbnail()).into(favCover);
-            }else{
-                Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(favCover);
-            }
-            fav = discover.get(index);
-            discover.remove(index);
-        }else{
-            misCanciones.setVisibility(View.INVISIBLE);
-            favCover.setVisibility(View.INVISIBLE);
-            favNom.setVisibility(View.INVISIBLE);
-            favTotal.setVisibility(View.INVISIBLE);
-        }
-
-    }
     public void updateSeekBar() {
         mSeekBar.setProgress(mPlayer.getCurrentPosition());
 

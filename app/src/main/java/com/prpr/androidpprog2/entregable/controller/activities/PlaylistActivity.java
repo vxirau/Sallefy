@@ -50,9 +50,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     private TextView tvTitle;
     private TextView tvAuthor;
-    private ImageButton ivPhoto;
 
-    private ImageButton btnPlayStop;
     private SeekBar mSeekBar;
     private Button back2Main;
     private Button shuffle;
@@ -69,9 +67,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private ArrayList<Track> mTracks;
     private int currentTrack = 0;
 
-    MediaSessionCompat mediaSession;
-    PlaybackStateCompat.Builder stateBuilder;
-    MediaSessionCompat.Callback mediaCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -113,9 +108,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         plyName.setText(playlst.getName());
         if(playlst.getOwner()!=null){
-            plyAuthor.setText("Creada per " + playlst.getUserLogin());
+            plyAuthor.setText("Created by " + playlst.getUserLogin());
         }else{
-            plyAuthor.setText("Creada per admin");
+            plyAuthor.setText("Created by admin");
         }
 
         if (playlst.getThumbnail() != null) {
@@ -131,7 +126,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             public void onPrepared(MediaPlayer mp) {
                 mSeekBar.setMax(mPlayer.getDuration());
                 mDuration =  mPlayer.getDuration();
-                playAudio();
+                mPlayer.start();
+                updateSeekBar();
             }
         });
 
@@ -200,19 +196,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         //---------
     }
 
-    private void playAudio() {
-        mPlayer.start();
-        updateSeekBar();/*
-        btnPlayStop.setImageResource(R.drawable.ic_pause);
-        btnPlayStop.setTag(STOP_VIEW);*/
-    }
-
-    private void pauseAudio() {
-        mPlayer.pause();/*
-        btnPlayStop.setImageResource(R.drawable.ic_play);
-        btnPlayStop.setTag(PLAY_VIEW);*/
-    }
-
     private void prepareMediaPlayer(final String url) {
         Thread connection = new Thread(new Runnable() {
             @Override
@@ -249,7 +232,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         try {
             mPlayer.reset();
             mPlayer.setDataSource(track.getUrl());
-            //mediaPlayer.pause();
             mPlayer.prepare();
         } catch(Exception e) {
 
@@ -294,11 +276,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     @Override
     public void onFailure(Throwable throwable) {
 
-    }
-
-    @Override
-    public void onTrackSelected(Track track) {
-        updateTrack(track);
     }
 
     @Override
