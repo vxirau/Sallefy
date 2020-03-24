@@ -111,7 +111,7 @@
                 android:text="@string/filters"
                 android:layout_gravity="center"
                 android:textColor="@color/colorPrimaryDark"
-                android:background="@drawable/ic_rectangle"
+                android:background="@drawable/cancel_button"
                 >
 
             </Button>
@@ -127,7 +127,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:background="@drawable/ic_plus_btn"
+                android:background="@drawable/create_new"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_gravity="left"

@@ -100,4 +100,5 @@
     <string name="playlists">Playlists</string>
     <string name="filters">Filters</string>
     <string name="create_new_playlist">Create new playlist</string>
+    <string name="create_new_song">Create new song</string>
 </resources>
