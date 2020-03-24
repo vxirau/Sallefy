@@ -3,18 +3,18 @@
 
     <item
         android:id="@+id/home"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic_home_menu_white"
         android:title="@string/home"/>
 
     <item
         android:id="@+id/buscar"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_search_white"
         android:title="@string/Search" />
 
 
     <item
         android:id="@+id/perfil"
-        android:icon="@drawable/ic_portrait"
+        android:icon="@drawable/ic_user_menu_white"
         android:title="@string/profile" />
 
 </menu>

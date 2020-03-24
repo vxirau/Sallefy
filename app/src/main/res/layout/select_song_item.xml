@@ -54,7 +54,7 @@
             android:layout_marginLeft="90dp"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:theme="@drawable/radio_button_selection"/>
+            android:theme="@drawable/radiobutton_selector"/>
 
 
     </LinearLayout>

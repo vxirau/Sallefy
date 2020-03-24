@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@drawable/fons">
+    android:background="@drawable/fons_app">
 
 
 
@@ -83,7 +83,7 @@
         android:textColor="#21D760"
         android:textSize="24sp"
         android:textAllCaps="false"
-        android:background="@drawable/cancel"
+        android:background="@drawable/rectangle_blanc_small_sombra"
         tools:layout_editor_absoluteY="485dp" />
 
 

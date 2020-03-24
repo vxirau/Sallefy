@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".controller.activities.PlaylistActivity"
-    android:background="@drawable/fons">
+    android:background="@drawable/fons_app">
 
 
     <RelativeLayout
@@ -95,9 +95,11 @@
                 android:layout_width="280dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/ic_rectangle_buit"
+                android:paddingLeft="15dp"
+                android:background="@drawable/rectangle_white_border_transparent"
                 android:gravity="left"
                 android:hint="@string/Search"
+                android:textColor="@color/colorWhite"
                 android:textColorHint="#70353535"
                 android:elevation="10dp"
                 />
@@ -111,7 +113,7 @@
                 android:text="@string/filters"
                 android:layout_gravity="center"
                 android:textColor="@color/colorPrimaryDark"
-                android:background="@drawable/cancel_button"
+                android:background="@drawable/rectangle_blanc_small"
                 >
                 
             </Button>
@@ -127,7 +129,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:background="@drawable/create_new"
+                android:background="@drawable/ic_plus_button"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_gravity="left"
@@ -156,19 +158,19 @@
             android:layout_height="match_parent"
             android:orientation="horizontal" />
 
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/ic_settings_button"
-            android:layout_marginTop="700dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-
-            >
-
-
-        </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/configButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#21D760"
+                android:elevation="10dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_settings" />
+        </RelativeLayout>
 
     </RelativeLayout>
 

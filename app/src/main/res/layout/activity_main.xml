@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fons"
+    android:background="@drawable/fons_app"
     android:orientation="vertical"
     android:weightSum="1.0"
     tools:context=".controller.activities.MainActivity">
@@ -185,7 +185,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
-                android:background="@drawable/player_background"
+                android:background="@drawable/fons_reproductor"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="30dp"
                 android:orientation="vertical"
@@ -218,7 +218,7 @@
                 android:background="#2A2D31"
                 app:menu="@menu/navigation"
                 app:itemBackground="@color/menuColor"
-                app:itemIconTint="@drawable/tab_color"
+                app:itemIconTint="@drawable/menu_selector"
                 app:itemIconSize= "30dp"
                 app:labelVisibilityMode="unlabeled" />
 

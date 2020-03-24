@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".controller.activities.ReproductorActivity"
-    android:background="@drawable/fons">
+    android:background="@drawable/fons_app">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:layout_height="20dp"
                 android:paddingLeft="20dp"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/ic_back"
+                android:background="@drawable/ic_back_down"
                 android:paddingEnd="70dp" />
 
             <LinearLayout
@@ -85,7 +85,7 @@
                     android:layout_height="50dp"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="219dp"
-                    android:background="@drawable/ic_like" />
+                    android:background="@drawable/ic_favorite_track" />
 
 
             </RelativeLayout>

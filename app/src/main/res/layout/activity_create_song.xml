@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fons"
+    android:background="@drawable/fons_app"
     android:orientation="vertical">
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="60dp"
-        android:background="@drawable/ic_fons_upload"
+        android:background="@drawable/rectangle_input_3"
         android:orientation="vertical">
 
         <LinearLayout
@@ -46,7 +46,7 @@
                 android:layout_height="100dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/song_upload_background"
+                android:background="@drawable/track_cover_selector_background"
                 android:maxHeight="570dp"
                 android:orientation="horizontal"/>
 
@@ -73,7 +73,7 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/textbox_btn"
+                android:background="@drawable/rectangle_gran_greenborder_transparent"
                 android:textAlignment="center" />
 
         </LinearLayout>
@@ -98,7 +98,7 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/textbox_btn"
+                android:background="@drawable/rectangle_gran_greenBorder_transparent"
                 android:textAlignment="center" />
 
         </LinearLayout>
@@ -115,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/ic_choose_button"
+                android:background="@drawable/rectangle_small_greenBorder_white"
                 android:text="@string/crear"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimaryDark" />
@@ -142,7 +142,7 @@
                 android:textSize="22sp"
                 android:textAllCaps="false"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/fons_accept"
+                android:background="@drawable/rectangle_green_sombra"
                 android:text="@string/action_accept"
                 android:textColor="@color/colorWhite" />
 
@@ -154,7 +154,7 @@
                 android:textColor="#21D760"
                 android:textSize="20sp"
                 android:textAllCaps="false"
-                android:background="@drawable/cancel"/>
+                android:background="@drawable/rectangle_blanc_small_sombra"/>
 
 
         </LinearLayout>

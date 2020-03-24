@@ -7,20 +7,20 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".controller.activities.LoginActivity"
-    android:background="@drawable/fons">
+    android:background="@drawable/fons_app">
 
     <ImageView
         android:layout_width="250dp"
         android:layout_height="203dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/logo_blanc" />
+        android:src="@drawable/logo_sallefy_blanc_1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
         android:layout_marginTop="50dp"
-        android:background="@drawable/c1"
+        android:background="@drawable/fondo_input_1"
         android:orientation="vertical">
 
         <LinearLayout
@@ -45,7 +45,7 @@
                 android:layout_width="322dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/textbox_btn"
+                android:background="@drawable/rectangle_gran_greenborder_transparent"
                 android:gravity="center"
                 android:hint="@string/nom_d_usuari"
                 android:textColorHint="#70353535" />
@@ -65,7 +65,7 @@
                 android:layout_width="322dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/textbox_btn"
+                android:background="@drawable/rectangle_gran_greenborder_transparent"
                 android:ems="10"
                 android:gravity="center"
                 android:hint="@string/contrasenya"
@@ -87,7 +87,7 @@
                 android:layout_width="280dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/phone_btn"
+                android:background="@drawable/rectangle_green_nosombra"
                 android:fontFamily="@font/gotham_bold"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
