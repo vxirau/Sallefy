@@ -97,13 +97,17 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Ya estás aqui!",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.buscar:
                         Toast.makeText(getApplicationContext(),"Buscar",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
                         Toast.makeText(getApplicationContext(),"Perfil",Toast.LENGTH_SHORT).show();
+                        Intent intent2 = new Intent(getApplicationContext(), UserActivity.class);
+                        startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                 }
                 return false;

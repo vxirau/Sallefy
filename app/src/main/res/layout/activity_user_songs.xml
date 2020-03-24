@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".controller.activities.PlaylistActivity"
+    tools:context=".controller.activities.UserActivity"
     android:background="@drawable/fons_app">
 
 
@@ -167,7 +167,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#21D760"
+                android:layout_marginBottom="100dp"
                 android:elevation="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_settings" />
         </RelativeLayout>

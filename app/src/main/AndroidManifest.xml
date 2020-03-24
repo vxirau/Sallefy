@@ -29,6 +29,10 @@
         <activity android:name=".controller.activities.NewPlaylistActivity"/>
         <activity android:name=".controller.activities.Add2PlaylistActivity"/>
         <activity android:name=".controller.activities.UploadActivity"/>
+        <activity android:name=".controller.activities.AddSongsBunchActivity"/>
+        <activity android:name=".controller.activities.InfoTrackActivity"/>
+        <activity android:name=".controller.activities.SearchActivity"/>
+        <activity android:name=".controller.activities.UserActivity"/>
 
 
 
