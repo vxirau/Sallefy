@@ -25,6 +25,8 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -49,10 +51,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private MediaPlayer mediaPlayer;
     private int resumePosition;
     private AudioManager audioManager;
-
+    private TextView title;
+    private TextView artist;
+    private SeekBar seekBar;
     private ArrayList<Track> audioList;
     private int audioIndex = -1;
     private Track activeAudio;
+    private SeekBar mSeekBar;
 
     public static final String ACTION_PLAY = "com.prpr.androidpprog2.entregable.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.prpr.androidpprog2.entregable.ACTION_PAUSE";
@@ -81,6 +86,19 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         register_playNewAudio();
     }
 
+    private Runnable mProgressRunner = new Runnable() {
+        @Override
+        public void run() {
+            if (mSeekBar != null) {
+                mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
+
+                if(mediaPlayer.isPlaying()) {
+                    mSeekBar.postDelayed(mProgressRunner, 1000);
+                }
+            }
+        }
+    };
+
     private void initMediaPlayer() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(this);
@@ -101,10 +119,37 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mediaPlayer.prepareAsync();
     }
 
+    public void setUIControls(SeekBar seekBar, TextView titol, TextView autor) {
+        mSeekBar = seekBar;
+        title = titol;
+        artist = autor;
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mediaPlayer.seekTo(progress);
+                }
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+    }
+
     private void playMedia() {
         if (!mediaPlayer.isPlaying()) {
+            mProgressRunner.run();
             mediaPlayer.start();
+            int duration = mediaPlayer.getDuration();
+            mSeekBar.setMax(duration);
+            mSeekBar.postDelayed(mProgressRunner, 1000);
+
         }
+
     }
 
     private void stopMedia() {
@@ -146,7 +191,16 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     };
 
+    private void updateUI(){
+        if(mediaPlayer != null && title!=null && artist!=null){
+            title.setText(activeAudio.getName());
+            artist.setText(activeAudio.getUserLogin());
+        }
+
+    }
+
     private void register_playNewAudio() {
+        updateUI();
         IntentFilter filter = new IntentFilter(PlaylistActivity.Broadcast_PLAY_NEW_AUDIO);
         registerReceiver(playNewAudio, filter);
     }
@@ -297,6 +351,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         switch (actionNumber) {
             case 0:
                 playbackAction.setAction(ACTION_PLAY);
+
                 return PendingIntent.getService(this, actionNumber, playbackAction, 0);
             case 1:
                 playbackAction.setAction(ACTION_PAUSE);
@@ -310,6 +365,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             default:
                 break;
         }
+        updateUI();
         return null;
     }
 
@@ -328,6 +384,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         } else if (actionString.equalsIgnoreCase(ACTION_STOP)) {
             transportControls.stop();
         }
+        updateUI();
     }
 
 
@@ -342,6 +399,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
+        updateUI();
     }
 
     private void skipToPrevious() {
@@ -356,6 +414,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
+        updateUI();
     }
 
 
@@ -463,6 +522,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @Override
     public void onPrepared(MediaPlayer mp) {
+
         playMedia();
     }
 

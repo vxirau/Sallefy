@@ -133,17 +133,17 @@
             android:backgroundTint="#21D760"
             android:progressTint="@color/colorWhite"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="85dp"
+            android:layout_marginBottom="87dp"
             android:colorControlActivated="@drawable/ic_seekbar_scrubber"
             android:progressBackgroundTint="#21D760" />
 
         <LinearLayout
             android:id="@+id/reproductor"
             android:layout_width="match_parent"
-            android:layout_height="66dp"
+            android:layout_height="56dp"
             android:background="@drawable/fons_reproductor"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="35dp"
             android:orientation="vertical"
             android:clickable="true"
             android:textAlignment="center"

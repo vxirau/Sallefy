@@ -56,23 +56,16 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private TextView tvTitle;
     private TextView tvAuthor;
     private LinearLayout playing;
-    private SeekBar mSeekBar;
     private Button back2Main;
     private Button shuffle;
     private Button addBunch;
+    private SeekBar mseek;
 
-    private Handler mHandler;
-    private Runnable mRunnable;
-
-    private int mDuration;
 
     private RecyclerView mRecyclerView;
 
-    private MediaPlayer mPlayer;
     private ArrayList<Track> mTracks;
-    private Track nowPlaying;
     private int currentTrack = 0;
-
 
     private ReproductorService player;
     boolean serviceBound = false;
@@ -102,7 +95,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
-                mPlayer.stop();
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 overridePendingTransition( R.anim.slide_up, R.anim.slide_down );
             }
@@ -130,6 +122,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }else{
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(plyImg);
         }
+
+        mseek = findViewById(R.id.dynamic_seekBar);
 
         shuffle = findViewById(R.id.playlistRandom);
         shuffle.setEnabled(true);
@@ -161,35 +155,12 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             }
         });
 
-        mHandler = new Handler();
         tvAuthor = findViewById(R.id.dynamic_artist);
         tvTitle = findViewById(R.id.dynamic_title);
         tvTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvTitle.setSelected(true);
         tvTitle.setSingleLine(true);
 
-        mSeekBar = (SeekBar) findViewById(R.id.dynamic_seekBar);
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    mPlayer.seekTo(progress);
-                }
-                if (mDuration > 0) {
-                    int newProgress = ((progress*100)/mDuration);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 
     private void playAudio(int audioIndex) {
@@ -204,21 +175,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
             sendBroadcast(broadcastIntent);
         }
+        tvTitle.setText(mTracks.get(audioIndex).getName());
+        tvAuthor.setText(mTracks.get(audioIndex).getUserLogin());
     }
 
-    public void updateSeekBar() {
-        mSeekBar.setProgress(mPlayer.getCurrentPosition());
-
-        if(mPlayer.isPlaying()) {
-            mRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    updateSeekBar();
-                }
-            };
-            mHandler.postDelayed(mRunnable, 1000);
-        }
-    }
 
     private void getData() {
         mTracks = (ArrayList) playlst.getTracks();
@@ -233,6 +193,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             player = binder.getService();
             serviceBound = true;
+            player.setUIControls(mseek, tvTitle, tvAuthor);
         }
 
         @Override

@@ -64,6 +64,8 @@ public class ReproductorActivity extends Activity {
         overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
 
+
+
     private void initViews() {
 
         mVisualizer = findViewById(R.id.circleVisualizer);
