@@ -22,11 +22,11 @@ import java.util.ArrayList;
 public class CoverAdapter extends RecyclerView.Adapter<CoverAdapter.ViewHolder>{
 
         private static final String TAG = "CoverAdapter";
-        private ImageButton thumbnail;
+        private ArrayList<ImageButton> thumbnail;
         private Context mContext;
         private PlaylistCallback mCallback;
 
-        public CoverAdapter(Context context, ImageButton thumbnail ) {
+        public CoverAdapter(Context context, ArrayList<ImageButton> thumbnail ) {
             this.thumbnail = thumbnail;
             this.mContext = context;
         }
@@ -44,14 +44,18 @@ public class CoverAdapter extends RecyclerView.Adapter<CoverAdapter.ViewHolder>{
         holder.coPicture.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(position == //)
+              if(position == getItemCount()){
+                  //add thumbnail and set as thumbnail
+              } else {
+                  //ens guardem
+              }
             }
-        }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return thumbnail.size();
     }
 
 
