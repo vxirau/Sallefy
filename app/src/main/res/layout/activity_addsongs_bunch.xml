@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@drawable/fons">
+    android:background="@drawable/fons_app">
 
     <TextView
         android:id="@+id/textView"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:orientation="vertical"
-            android:background="@drawable/fons"
+            android:background="@drawable/fons_app"
             android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true">
 
@@ -64,12 +64,13 @@
 
                 <Button
                     android:id="@+id/UploadButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="90dp"
                     android:layout_height="40dp"
                     android:textColor="#000"
                     android:textAllCaps="false"
+                    android:layout_marginLeft="10dp"
                     android:textSize="15sp"
-                    android:background="@drawable/ic_rectangleblanc"
+                    android:background="@drawable/rectangle_blanc_small"
                     android:text="Upload" />
 
                 <Button
@@ -80,17 +81,18 @@
                     android:textAllCaps="false"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/ic_rectangle_acceptar"
+                    android:background="@drawable/rectangle_green_small"
                     android:text="Accept" />
 
                 <Button
                     android:id="@+id/CancelButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="90dp"
                     android:layout_height="40dp"
                     android:textColor="#D80505"
                     android:textSize="15sp"
+                    android:layout_marginRight="10dp"
                     android:textAllCaps="false"
-                    android:background="@drawable/ic_rectangleblanc"
+                    android:background="@drawable/rectangle_blanc_small"
                     android:text="Cancel" />
             </LinearLayout>
         </LinearLayout>

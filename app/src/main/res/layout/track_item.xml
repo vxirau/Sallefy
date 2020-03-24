@@ -66,7 +66,7 @@
             android:layout_height="23dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/ic_mes_info" />
+            android:background="@drawable/ic_track_info" />
 
 
 

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".controller.activities.PlaylistActivity"
-    android:background="@drawable/fons">
+    android:background="@drawable/fons_app">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                     android:layout_width="20dp"
                     android:layout_height="15dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@drawable/ic_back"
+                    android:background="@drawable/ic_back_down"
                     android:rotation="90" />
 
                 <TextView
@@ -75,7 +75,7 @@
                 android:layout_height="20dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="10dp"
-                android:background="@drawable/ic_follow"
+                android:background="@drawable/rectangle_small_gborder_black"
                 android:text="@string/seguir" />
 
             <LinearLayout
@@ -94,7 +94,7 @@
                     android:layout_marginLeft="55dp"
                     android:textSize="17sp"
                     android:textAllCaps="false"
-                    android:background="@drawable/random"
+                    android:background="@drawable/random_button_highlight"
                     android:text="@string/random" />
 
                 <Button
@@ -106,7 +106,7 @@
                     android:textSize="17sp"
                     android:elevation="10dp"
                     app:borderWidth="0dp"
-                    android:background="@drawable/ic_add_button"/>
+                    android:background="@drawable/add_green_button"/>
 
             </LinearLayout>
 
@@ -138,15 +138,18 @@
             android:progressBackgroundTint="#21D760" />
 
         <LinearLayout
+            android:id="@+id/reproductor"
             android:layout_width="match_parent"
             android:layout_height="66dp"
-            android:background="@drawable/player_background"
+            android:background="@drawable/fons_reproductor"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="30dp"
             android:orientation="vertical"
+            android:clickable="true"
             android:textAlignment="center"
             android:gravity="center">
             <TextView
+                android:id="@+id/dynamic_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -154,6 +157,7 @@
                 android:textColor="@color/colorWhite"
                 android:text="Probandoo"/>
             <TextView
+                android:id="@+id/dynamic_artist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -173,7 +177,7 @@
             android:background="#2A2D31"
             app:menu="@menu/navigation"
             app:itemBackground="@color/menuColor"
-            app:itemIconTint="@drawable/tab_color"
+            app:itemIconTint="@drawable/menu_selector"
             app:itemIconSize= "30dp"
             app:labelVisibilityMode="unlabeled" />
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@drawable/fons">
+    android:background="@drawable/fons_app">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,13 +41,13 @@
                 android:id="@+id/login_user"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="@drawable/rectangleblancborde"
+                android:background="@drawable/rectangle_gran_gborder_white"
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
                 android:hint="@string/search_bar"
                 android:inputType="text"
-                android:drawableEnd="@drawable/search_green"
+                android:drawableEnd="@drawable/ic_search_green"
                 android:textColorHint="#70353535"
                 android:layout_marginHorizontal="40dp"/>
 
@@ -56,12 +56,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:rowCount="10"
+            android:rowCount="11"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_marginTop="25dp"
             android:layout_marginHorizontal="40dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <!-- FILA 1 -->
             <Button
@@ -70,7 +70,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -81,7 +81,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -94,7 +94,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -106,7 +106,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -120,7 +120,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -132,7 +132,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -146,7 +146,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -158,7 +158,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -172,7 +172,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -184,7 +184,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -198,7 +198,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -210,7 +210,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -224,7 +224,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -236,7 +236,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -250,7 +250,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -262,7 +262,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -276,7 +276,7 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -288,12 +288,26 @@
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"/>
+
+            <Button
+                android:id="@+id/genere_"
+                android:text="@string/genere_alternativerock"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"/>
+
 
 
         </com.google.android.material.circularreveal.CircularRevealGridLayout>
@@ -307,7 +321,7 @@
                 android:text="@string/genere_rhythmandblues"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:textColor="#000000"
@@ -338,6 +352,7 @@
                     android:id="@+id/view_songs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="@string/playlist_"
                     android:paddingLeft="10dp"
                     android:textSize="25sp"/>
@@ -362,6 +377,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:text="@string/songs_"
                     android:paddingLeft="10dp"
                     android:textSize="25sp"/>
@@ -379,4 +395,62 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+        <SeekBar
+            android:id="@+id/dynamic_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#21D760"
+            android:progressTint="@color/colorWhite"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="85dp"
+            android:colorControlActivated="@drawable/ic_seekbar_scrubber"
+            android:progressBackgroundTint="#21D760" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:background="@drawable/fons_reproductor"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:gravity="center">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:text="Probandoo"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp"
+                android:alpha = ".56"
+                android:paddingBottom="7dp"
+                android:text="Probandoo Artista"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/menu"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:background="#2A2D31"
+            app:menu="@menu/navigation"
+            app:itemBackground="@color/menuColor"
+            app:itemIconTint="@drawable/menu_selector"
+            app:itemIconSize= "30dp"
+            app:labelVisibilityMode="unlabeled" />
+
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

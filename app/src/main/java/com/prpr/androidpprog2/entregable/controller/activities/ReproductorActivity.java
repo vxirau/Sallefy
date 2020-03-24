@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -14,9 +15,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
+import com.chibde.visualizer.CircleBarVisualizer;
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -26,9 +32,9 @@ public class ReproductorActivity extends Activity {
     private static final String PLAY_VIEW = "PlayIcon";
     private static final String STOP_VIEW = "StopIcon";
 
-    private TextView tvTitle;
-    private TextView tvAuthor;
-    private ImageView ivPhoto;
+    private TextView trackTitle;
+    private TextView trackAuthor;
+    private ImageView trackImage;
 
     private ImageButton btnBackward;
     private ImageButton btnPlayStop;
@@ -37,13 +43,9 @@ public class ReproductorActivity extends Activity {
     private SeekBar mSeekBar;
     private Handler mHandler;
     private Runnable mRunnable;
-
+    private Track trck;
     private CircleLineVisualizer mVisualizer;
-
     private MediaPlayer mPlayer;
-    private final static String url = "https://res.cloudinary.com/jcarri/video/upload/v1568737044/simon-garfunkel-the-boxer-audio_whwaox.mp3";
-    //private final static String url = "https://soundcloud.com/lionelrichieofficial/all-night-long-all-night-album";
-
 
 
     @Override
@@ -51,13 +53,22 @@ public class ReproductorActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
+        trck = (Track) getIntent().getSerializableExtra("Trck");
         initViews();
+        mPlayer.start();
+    }
 
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
 
     private void initViews() {
 
+        mVisualizer = findViewById(R.id.circleVisualizer);
+        mVisualizer.setDrawLine(true);
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -75,26 +86,34 @@ public class ReproductorActivity extends Activity {
         Thread connection = new Thread(new Runnable() {
             @Override
             public void run() {
-                //try {
-                    //mPlayer.setDataSource(url);
-                    //mPlayer.prepare(); // might take long! (for buffering, etc)
-                //} catch (IOException e) {
-                  //  Toast.makeText(ReproductorActivity.this,"Error, couldn't play the music\n" + e.getMessage(), Toast.LENGTH_LONG).show();
-                //}
+                try {
+                    mPlayer.setDataSource(trck.getUrl());
+                    mPlayer.prepare();
+                } catch (IOException e) {
+                  Toast.makeText(ReproductorActivity.this,"Error, couldn't play the music\n" + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         });
 
-        tvAuthor = findViewById(R.id.music_artist);
-        tvTitle = findViewById(R.id.music_title);
+        trackAuthor = findViewById(R.id.music_artist);
+        trackTitle = findViewById(R.id.music_title);
+        trackAuthor.setText(trck.getUserLogin());
+        trackTitle.setText(trck.getName());
+        trackImage = findViewById(R.id.track_img);
+        if (trck.getThumbnail() != null) {
+            Picasso.get().load(trck.getThumbnail()).into(trackImage);
+        }else{
+            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(trackImage);
+        }
 
         atras = findViewById(R.id.buttonAtras);
         atras.setEnabled(true);
         atras.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-              /* Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-               startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);*/
-               finish();
+              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                  finishAfterTransition();
+              }else finish();
            }
         });
         btnBackward = (ImageButton)findViewById(R.id.music_backward_btn);

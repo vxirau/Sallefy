@@ -5,11 +5,16 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import java.util.*;
+import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,22 +51,22 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     private TextView tvTitle;
     private TextView tvAuthor;
-    private ImageButton ivPhoto;
-
-    private ImageButton btnPlayStop;
+    private LinearLayout playing;
     private SeekBar mSeekBar;
     private Button back2Main;
+    private Button shuffle;
+    private Button addBunch;
 
     private Handler mHandler;
     private Runnable mRunnable;
 
-    private BarVisualizer mVisualizer;
     private int mDuration;
 
     private RecyclerView mRecyclerView;
 
     private MediaPlayer mPlayer;
     private ArrayList<Track> mTracks;
+    private Track nowPlaying;
     private int currentTrack = 0;
 
 
@@ -75,6 +80,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
         initViews();
         getData();
+
     }
 
     @Override
@@ -85,11 +91,20 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mVisualizer != null)
-            mVisualizer.release();
     }
 
     private void initViews() {
+        playing = findViewById(R.id.reproductor);
+        playing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                intent.putExtra("Trck", nowPlaying);
+                mPlayer.stop();
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                overridePendingTransition( R.anim.slide_up, R.anim.slide_down );
+            }
+        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.dynamic_recyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -103,9 +118,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         plyName.setText(playlst.getName());
         if(playlst.getOwner()!=null){
-            plyAuthor.setText("Creada per " + playlst.getUserLogin());
+            plyAuthor.setText("Created by " + playlst.getUserLogin());
         }else{
-            plyAuthor.setText("Creada per admin");
+            plyAuthor.setText("Created by admin");
         }
 
         if (playlst.getThumbnail() != null) {
@@ -114,9 +129,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(plyImg);
         }
 
-
-        //mVisualizer = findViewById(R.id.dynamic_barVisualizer);
-
         mPlayer = new MediaPlayer();
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -124,11 +136,30 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             public void onPrepared(MediaPlayer mp) {
                 mSeekBar.setMax(mPlayer.getDuration());
                 mDuration =  mPlayer.getDuration();
-                playAudio();
+                mPlayer.start();
+                updateSeekBar();
+            }
+        });
 
-                int audioSessionId = mPlayer.getAudioSessionId();
-                if (audioSessionId != -1);
-                //mVisualizer.setAudioSessionId(audioSessionId);
+        shuffle = findViewById(R.id.playlistRandom);
+        shuffle.setEnabled(true);
+        shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateTrack(mTracks.get(new Random().nextInt(mTracks.size())));
+            }
+        });
+
+
+
+        addBunch = findViewById(R.id.PlaylistAddSongs);
+        addBunch.setEnabled(true);
+        addBunch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddSongsBunchActivity.class);
+                intent.putExtra("Playlst", playlst);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
 
@@ -142,39 +173,12 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             }
         });
 
-
-        //----------
         mHandler = new Handler();
-
-       /* tvAuthor = findViewById(R.id.dynamic_artist);
+        tvAuthor = findViewById(R.id.dynamic_artist);
         tvTitle = findViewById(R.id.dynamic_title);
         tvTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvTitle.setSelected(true);
         tvTitle.setSingleLine(true);
-
-        ivPhoto = findViewById(R.id.track_img);
-        ivPhoto.setEnabled(true);
-        ivPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnPlayStop = (ImageButton)findViewById(R.id.dynamic_play_btn);
-        btnPlayStop.setTag(PLAY_VIEW);
-        btnPlayStop.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (btnPlayStop.getTag().equals(PLAY_VIEW)) {
-                    playAudio();
-                } else {
-                    pauseAudio();
-                }
-            }
-        });*/
 
         mSeekBar = (SeekBar) findViewById(R.id.dynamic_seekBar);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -200,19 +204,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         });
 
         //---------
-    }
-
-    private void playAudio() {
-        mPlayer.start();
-        updateSeekBar();
-        btnPlayStop.setImageResource(R.drawable.ic_pause);
-        btnPlayStop.setTag(STOP_VIEW);
-    }
-
-    private void pauseAudio() {
-        mPlayer.pause();
-        btnPlayStop.setImageResource(R.drawable.ic_play);
-        btnPlayStop.setTag(PLAY_VIEW);
     }
 
     private void prepareMediaPlayer(final String url) {
@@ -245,14 +236,13 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     public void updateTrack(Track track) {
+        nowPlaying = track;
         tvAuthor.setText(track.getUserLogin());
         tvTitle.setText(track.getName());
-        Picasso.get().load(track.getThumbnail()).into(ivPhoto);
 
         try {
             mPlayer.reset();
             mPlayer.setDataSource(track.getUrl());
-            //mediaPlayer.pause();
             mPlayer.prepare();
         } catch(Exception e) {
 
@@ -261,15 +251,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
 
     private void getData() {
-        if(playlst.getName().equals("Sample")){
-            TrackManager.getInstance(this).getAllTracks(this);
-            mTracks = new ArrayList<>();
-        }else{
-            mTracks = (ArrayList) playlst.getTracks();
-            TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
-            mRecyclerView.setAdapter(adapter);
-        }
-
+        mTracks = (ArrayList) playlst.getTracks();
+        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -306,11 +290,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
-    public void onTrackSelected(Track track) {
-        updateTrack(track);
-    }
-
-    @Override
     public void onTrackSelected(int index) {
         currentTrack = index;
         updateTrack(mTracks.get(currentTrack));
@@ -318,7 +297,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist p) {
-        Intent intent = new Intent(getApplicationContext(), Add2PlaylistActivity.class);
+        Intent intent = new Intent(getApplicationContext(), InfoTrackActivity.class);
         intent.putExtra("Trck", tracks.get(position));
         intent.putExtra("Playlst", p);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
