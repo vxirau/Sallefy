@@ -19,7 +19,7 @@
             android:id="@+id/nomNovaPlaylist"
             android:layout_width="300dp"
             android:layout_height="60dp"
-            android:background="@drawable/create_new_playlist_txtbx"
+            android:background="@drawable/rectangle_new_playlist"
             android:gravity="center"
             android:textColorHint="#70353535"
             android:layout_marginTop="150dp"
