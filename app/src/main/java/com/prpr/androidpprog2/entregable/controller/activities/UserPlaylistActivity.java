@@ -15,7 +15,7 @@ import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
-public class UserActivity extends AppCompatActivity {
+public class UserPlaylistActivity extends AppCompatActivity {
 
 
     protected void onCreate(Bundle savedInstanceState) {
