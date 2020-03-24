@@ -41,7 +41,7 @@
                 android:id="@+id/login_user"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="@drawable/rectangle_gran_greenborder_white"
+                android:background="@drawable/rectangle_gran_gborder_white"
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
