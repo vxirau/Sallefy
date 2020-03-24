@@ -38,13 +38,6 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         etLogin = (EditText) findViewById(R.id.login_user);
         etPassword = (EditText) findViewById(R.id.login_password);
 
-        /*
-        * POR AHORA AÑADO MI INFORMACION DE LOGIN AQUI PARA NO TENER QUE INTRODUCIRLA MANUALMENTE CADA VEZ
-        * */
-        etLogin.setText("victorxirau");
-        etPassword.setText("1234");
-
-
         tvToRegister = (TextView) findViewById(R.id.register_btn_action);
         tvToRegister.setOnClickListener(new View.OnClickListener() {
             @Override

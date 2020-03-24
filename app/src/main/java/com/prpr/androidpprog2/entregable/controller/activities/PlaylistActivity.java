@@ -11,6 +11,7 @@ import android.os.Handler;
 import java.util.*;
 
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -93,12 +94,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     private void initViews() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         playing = findViewById(R.id.reproductor);
         playing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
-                intent.putExtra("Trck", nowPlaying);
                 mPlayer.stop();
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 overridePendingTransition( R.anim.slide_up, R.anim.slide_down );
@@ -224,16 +227,12 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
 
-    //Binding this Client to the AudioPlayer Service
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             player = binder.getService();
             serviceBound = true;
-
-            Toast.makeText(PlaylistActivity.this, "Service Bound", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -246,14 +245,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean("ServiceState", serviceBound);
+        savedInstanceState.putBoolean("Sallefy", serviceBound);
         super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        serviceBound = savedInstanceState.getBoolean("ServiceState");
+        serviceBound = savedInstanceState.getBoolean("Sallefy");
     }
 
     @Override
@@ -261,7 +260,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         super.onDestroy();
         if (serviceBound) {
             unbindService(serviceConnection);
-            //service is active
             player.stopSelf();
         }
     }
