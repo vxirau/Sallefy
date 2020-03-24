@@ -34,9 +34,6 @@
         <activity android:name=".controller.activities.SearchActivity"/>
         <activity android:name=".controller.activities.UserActivity"/>
 
-
-
-
     </application>
 
 </manifest>

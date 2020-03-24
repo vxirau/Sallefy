@@ -147,6 +147,7 @@
             android:textAlignment="center"
             android:gravity="center">
             <TextView
+                android:id="@+id/dynamic_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -154,6 +155,7 @@
                 android:textColor="@color/colorWhite"
                 android:text="Probandoo"/>
             <TextView
+                android:id="@+id/dynamic_artist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

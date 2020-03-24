@@ -27,22 +27,22 @@ public class UserActivity extends AppCompatActivity {
     void initInfo(){
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
+        navigation.setSelectedItemId(R.id.perfil);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.buscar:
-                        Toast.makeText(getApplicationContext(),"Buscar",Toast.LENGTH_SHORT).show();
                         Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
+                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
-                        Toast.makeText(getApplicationContext(),"Ya estas Aqui",Toast.LENGTH_SHORT).show();
                         return true;
                 }
                 return false;
