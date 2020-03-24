@@ -24,5 +24,8 @@ public interface UserService {
     @POST("register")
     Call<ResponseBody> registerUser(@Body UserRegister user);
 
+    @POST("users")
+    Call<ResponseBody> updateUser(@Body User user);
+
 
 }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".controller.activities.UserActivity"
+    tools:context=".controller.activities.UserPlaylistActivity"
     android:background="@drawable/fons_app">
 
 
@@ -129,20 +129,24 @@
             android:orientation="horizontal">
 
             <Button
-                android:background="@drawable/ic_plus_button"
+                android:id="@+id/create_new_playlist"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_gravity="left"
+                android:background="@drawable/ic_plus_button"
 
                 >
 
             </Button>
+
             <TextView
+                android:id="@+id/tv_create_new_playlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/create_new_playlist"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
+                android:clickable="true"
                 >
 
             </TextView>
@@ -169,6 +173,9 @@
                 android:backgroundTint="#21D760"
                 android:elevation="10dp"
                 app:borderWidth="0dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="100dp"
                 android:src="@drawable/ic_settings" />
         </RelativeLayout>
 

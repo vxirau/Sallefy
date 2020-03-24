@@ -2,12 +2,15 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 
 import android.content.Context;
 import android.net.Uri;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cloudinary.ArchiveParams;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.cloudinary.utils.ObjectUtils;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
@@ -16,7 +19,10 @@ import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.CloudinaryConfigs;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +61,31 @@ public class CloudinaryManager extends AppCompatActivity {
                 .options(options)
                 .callback(new CloudinaryCallback())
                 .dispatch();
+    }
+
+    public synchronized void uploadCoverFile(Uri imageUri){
+
+        Map<String, Object> options = new HashMap<>();
+        options.put("public_id", "cover");
+        //falta posar el user
+        options.put("folder", "sallefy/covers/victorxirau");
+
+        MediaManager.get().upload(imageUri)
+                .options(options)
+                .unsigned("New")
+                .dispatch();
+    }
+
+    public synchronized String getThumbnails() throws IOException {
+
+        Map<String, Object> options = new HashMap<>();
+        options.put("public_id", "cover");
+        options.put("folder", "sallefy/covers/victorxirau");
+
+        String url = MediaManager.get().getCloudinary().downloadArchive(options,"zip");
+
+        return url;
+
     }
 
     private class CloudinaryCallback implements UploadCallback {

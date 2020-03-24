@@ -3,7 +3,6 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +36,7 @@ public class SearchActivity extends AppCompatActivity {
                     case R.id.buscar:
                         return true;
                     case R.id.perfil:
-                        Intent intent2 = new Intent(getApplicationContext(), UserActivity.class);
+                        Intent intent2 = new Intent(getApplicationContext(), UserPlaylistActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;

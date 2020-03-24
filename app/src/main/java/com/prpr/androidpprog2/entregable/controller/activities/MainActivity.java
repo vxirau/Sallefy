@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -33,7 +31,6 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
-                        Intent intent2 = new Intent(getApplicationContext(), UserActivity.class);
+                        Intent intent2 = new Intent(getApplicationContext(), UserPlaylistActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
