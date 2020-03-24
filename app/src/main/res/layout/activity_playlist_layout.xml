@@ -138,12 +138,14 @@
             android:progressBackgroundTint="#21D760" />
 
         <LinearLayout
+            android:id="@+id/reproductor"
             android:layout_width="match_parent"
             android:layout_height="66dp"
             android:background="@drawable/fons_reproductor"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="30dp"
             android:orientation="vertical"
+            android:clickable="true"
             android:textAlignment="center"
             android:gravity="center">
             <TextView

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +51,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     private TextView tvTitle;
     private TextView tvAuthor;
-
+    private LinearLayout playing;
     private SeekBar mSeekBar;
     private Button back2Main;
     private Button shuffle;
@@ -65,6 +66,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     private MediaPlayer mPlayer;
     private ArrayList<Track> mTracks;
+    private Track nowPlaying;
     private int currentTrack = 0;
 
 
@@ -79,9 +81,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         initViews();
         getData();
 
-
-
-
     }
 
     @Override
@@ -95,6 +94,17 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     private void initViews() {
+        playing = findViewById(R.id.reproductor);
+        playing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                intent.putExtra("Trck", nowPlaying);
+                mPlayer.stop();
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                overridePendingTransition( R.anim.slide_up, R.anim.slide_down );
+            }
+        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.dynamic_recyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -226,6 +236,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     public void updateTrack(Track track) {
+        nowPlaying = track;
         tvAuthor.setText(track.getUserLogin());
         tvTitle.setText(track.getName());
 
