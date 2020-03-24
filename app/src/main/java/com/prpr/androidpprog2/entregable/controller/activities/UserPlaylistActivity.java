@@ -40,6 +40,7 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
 
     private Button btnCreateNewPlaylist;
     private Button btnFilterPlaylists;
+    private Button btnSettings;
 
     private TextView tvGoToMySongs;
     private TextView tvGoToStatistics;
@@ -101,6 +102,7 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), UserTracksActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -109,13 +111,19 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), StatisticsActivity.class);
+                startActivity(intent);
             }
         });
 
-        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        PlaylistAdapter adapter = new PlaylistAdapter(this, playlists);
-        mRecyclerView.setLayoutManager(manager);
-        mRecyclerView.setAdapter(adapter);
+        btnSettings = findViewById(R.id.configButton);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
 
 
