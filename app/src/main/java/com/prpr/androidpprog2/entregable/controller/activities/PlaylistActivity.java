@@ -88,69 +88,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
         initViews();
         getData();
+
         playAudio(new Random().nextInt(mTracks.size()));
-    }
-
-    //Binding this Client to the AudioPlayer Service
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
-            player = binder.getService();
-            serviceBound = true;
-
-            Toast.makeText(PlaylistActivity.this, "Service Bound", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            serviceBound = false;
-        }
-    };
-
-
-    private void playAudio(int audioIndex) {
-        //Check is service is active
-        if (!serviceBound) {
-            //Store Serializable audioList to SharedPreferences
-            PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
-            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
-
-
-            Intent playerIntent = new Intent(this, ReproductorService.class);
-            startService(playerIntent);
-            bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-        } else {
-            //Store the new audioIndex to SharedPreferences
-            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
-            //Service is active
-            //Send a broadcast to the service -> PLAY_NEW_AUDIO
-            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
-            sendBroadcast(broadcastIntent);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean("ServiceState", serviceBound);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        serviceBound = savedInstanceState.getBoolean("ServiceState");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (serviceBound) {
-            unbindService(serviceConnection);
-            //service is active
-            player.stopSelf();
-        }
     }
 
     private void initViews() {
@@ -189,36 +128,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(plyImg);
         }
 
-        mPlayer = new MediaPlayer();
-
-
-
-
-
-
-
-
-        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mSeekBar.setMax(mPlayer.getDuration());
-                mDuration =  mPlayer.getDuration();
-                mPlayer.start();
-                updateSeekBar();
-            }
-        });
-
         shuffle = findViewById(R.id.playlistRandom);
         shuffle.setEnabled(true);
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateTrack(mTracks.get(new Random().nextInt(mTracks.size())));
+                playAudio(new Random().nextInt(mTracks.size()));
             }
         });
-
-
 
         addBunch = findViewById(R.id.PlaylistAddSongs);
         addBunch.setEnabled(true);
@@ -270,23 +187,20 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
             }
         });
-
-        //---------
     }
 
-    private void prepareMediaPlayer(final String url) {
-        Thread connection = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mPlayer.setDataSource(url);
-                    mPlayer.prepare();
-                } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(),"Error, couldn't play the music\n" + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        connection.start();
+    private void playAudio(int audioIndex) {
+        if (!serviceBound) {
+            PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
+            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+            Intent playerIntent = new Intent(this, ReproductorService.class);
+            startService(playerIntent);
+            bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        } else {
+            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            sendBroadcast(broadcastIntent);
+        }
     }
 
     public void updateSeekBar() {
@@ -303,30 +217,60 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
     }
 
-    public void updateTrack(Track track) {
-        nowPlaying = track;
-        tvAuthor.setText(track.getUserLogin());
-        tvTitle.setText(track.getName());
-
-        try {
-            mPlayer.reset();
-            mPlayer.setDataSource(track.getUrl());
-            mPlayer.prepare();
-        } catch(Exception e) {
-
-        }
-    }
-
-
     private void getData() {
         mTracks = (ArrayList) playlst.getTracks();
         TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
     }
 
+
+    //Binding this Client to the AudioPlayer Service
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
+            player = binder.getService();
+            serviceBound = true;
+
+            Toast.makeText(PlaylistActivity.this, "Service Bound", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            serviceBound = false;
+        }
+    };
+
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("ServiceState", serviceBound);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        serviceBound = savedInstanceState.getBoolean("ServiceState");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (serviceBound) {
+            unbindService(serviceConnection);
+            //service is active
+            player.stopSelf();
+        }
+    }
+
+
     @Override
     public void onTracksReceived(List<Track> tracks) {
         mTracks = (ArrayList) tracks;
+        PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
         TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
     }
@@ -343,7 +287,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onUserTracksReceived(List<Track> tracks) {
-        updateTrack(tracks.get(0));
+        playAudio(0);
     }
 
     @Override
@@ -360,7 +304,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     @Override
     public void onTrackSelected(int index) {
         currentTrack = index;
-        updateTrack(mTracks.get(currentTrack));
+        playAudio(index);
     }
 
     @Override

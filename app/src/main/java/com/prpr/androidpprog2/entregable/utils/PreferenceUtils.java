@@ -2,6 +2,7 @@ package com.prpr.androidpprog2.entregable.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,22 +40,21 @@ public class PreferenceUtils {
     }
 
 
-    public static boolean saveAllTracks(Context context, ArrayList<Track> all){
-        SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = prefs.edit();
+    public static boolean saveAllTracks(Context context,ArrayList<Track> list){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(all);
-        prefsEditor.putString(KEY_ALL_TRACK, String.valueOf(json));
-        prefsEditor.apply();
+        String json = gson.toJson(list);
+        editor.putString(KEY_ALL_TRACK, json);
+        editor.apply();
         return true;
     }
 
-
     public static ArrayList<Track> getAllTracks(Context context){
-        SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);
-        String json = prefs.getString(KEY_ALL_TRACK, null);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Track>>(){}.getType();
+        String json = prefs.getString(KEY_ALL_TRACK, null);
+        Type type = new TypeToken<ArrayList<Track>>() {}.getType();
         return gson.fromJson(json, type);
     }
 
