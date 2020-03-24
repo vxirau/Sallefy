@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/fons_app">
+
+    <LinearLayout
+        android:id="@+id/topZone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/settings_title"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:text="@string/settings"
+            android:textColor="#FFFFFF"
+            android:textSize="40sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#21D760"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_alignParentTop="true"
+            />
+        <TextView
+            android:id="@+id/settings_change_username"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
+            android:text="@string/settings_change_username"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/textview_settings_change_username"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/rectangle_gran_gborder_white"
+            android:hint="@string/settings_add_new_username"
+            android:textColorHint="#70353535"
+            >
+        </EditText>
+
+        <TextView
+            android:id="@+id/settings_change_email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="left"
+            android:text="@string/settings_change_email"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/textview_settings_change_email"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/rectangle_gran_gborder_white"
+            android:hint="@string/settings_add_new_email"
+            android:textColorHint="#70353535"
+            >
+        </EditText>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
