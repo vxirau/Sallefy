@@ -1,11 +1,16 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import java.util.*;
+
+import android.os.IBinder;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -29,9 +34,11 @@ import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -39,10 +46,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback {
-
-    private static final String TAG = "PlaylistActivity";
-    private static final String PLAY_VIEW = "PlayIcon";
-    private static final String STOP_VIEW = "StopIcon";
 
     private Playlist playlst;
     private TextView plyName;
@@ -70,6 +73,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private int currentTrack = 0;
 
 
+    private ReproductorService player;
+    boolean serviceBound = false;
+    public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
+
+
     @Override
     public void onCreate(Bundle savedInstanceState){
 
@@ -80,17 +88,70 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
         initViews();
         getData();
+        playAudio(new Random().nextInt(mTracks.size()));
+    }
 
+    //Binding this Client to the AudioPlayer Service
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
+            player = binder.getService();
+            serviceBound = true;
+
+            Toast.makeText(PlaylistActivity.this, "Service Bound", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            serviceBound = false;
+        }
+    };
+
+
+    private void playAudio(int audioIndex) {
+        //Check is service is active
+        if (!serviceBound) {
+            //Store Serializable audioList to SharedPreferences
+            StorageUtil storage = new StorageUtil(getApplicationContext());
+            storage.storeAudio(audioList);
+            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+
+
+            Intent playerIntent = new Intent(this, ReproductorService.class);
+            startService(playerIntent);
+            bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        } else {
+            //Store the new audioIndex to SharedPreferences
+            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+            //Service is active
+            //Send a broadcast to the service -> PLAY_NEW_AUDIO
+            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            sendBroadcast(broadcastIntent);
+        }
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("ServiceState", serviceBound);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        serviceBound = savedInstanceState.getBoolean("ServiceState");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (serviceBound) {
+            unbindService(serviceConnection);
+            //service is active
+            player.stopSelf();
+        }
     }
 
     private void initViews() {
@@ -130,6 +191,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
 
         mPlayer = new MediaPlayer();
+
+
+
+
+
+
+
+
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
