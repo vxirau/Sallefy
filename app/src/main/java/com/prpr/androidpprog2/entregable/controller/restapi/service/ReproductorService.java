@@ -205,6 +205,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         registerReceiver(playNewAudio, filter);
     }
 
+    private boolean isPlaying(){
+        return mediaPlayer.isPlaying();
+    }
 
     private void initMediaSession() throws RemoteException {
         if (mediaSessionManager != null) return;

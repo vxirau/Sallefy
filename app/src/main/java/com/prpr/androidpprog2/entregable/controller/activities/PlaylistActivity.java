@@ -82,7 +82,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
         initViews();
         getData();
-
         playAudio(new Random().nextInt(mTracks.size()));
     }
 
