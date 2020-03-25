@@ -90,10 +90,15 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     }
 
-    @Override
+    /*@Override
     public void onUsernameUpdated(User user) {
 
     }
+
+    @Override
+    public void onEmailUpdated(User user) {
+
+    }*/
 
     @Override
     public void onFailure(Throwable throwable) {

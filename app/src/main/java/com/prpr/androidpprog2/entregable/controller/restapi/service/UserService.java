@@ -25,9 +25,11 @@ public interface UserService {
     @POST("register")
     Call<ResponseBody> registerUser(@Body UserRegister user);
 
-    @PUT("users")
+    /*@PUT("users")
     Call<User> updateUsername(@Body User user, @Header("Authorization") String token);
 
     @PUT("users")
-    Call<User> updateEmail(@Body User user, @Header("Authorization") String token);
+    Call<User> updateEmail(@Body User user, @Header("Authorization") String token);*/
+
 }
+

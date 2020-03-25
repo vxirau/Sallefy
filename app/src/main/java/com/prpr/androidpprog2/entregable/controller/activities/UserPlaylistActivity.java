@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
@@ -40,7 +41,7 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
 
     private Button btnCreateNewPlaylist;
     private Button btnFilterPlaylists;
-    private Button btnSettings;
+    private FloatingActionButton btnSettings;
 
     private TextView tvGoToMySongs;
     private TextView tvGoToStatistics;

@@ -81,7 +81,7 @@ public class UserManager {
     }
 
 
-    public synchronized void updateUsername(User user, final UserCallback userCallback){
+    /*public synchronized void updateUsername(User user, final UserCallback userCallback){
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
         Call<User> call = mService.updateUsername(user, "Bearer " + userToken.getIdToken());
@@ -136,7 +136,7 @@ public class UserManager {
             }
         });
 
-    }
+    }*/
 
 
     public synchronized void getUserData (String login, final UserCallback userCallback) {

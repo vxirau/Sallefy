@@ -1,105 +1,46 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
-import com.prpr.androidpprog2.entregable.model.User;
-import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 
-public class SettingsActivity extends AppCompatActivity implements UserCallback {
 
-    private EditText etNewUsername;
-    private EditText etNewEmail;
-    private User user;
-    private Button btnUpdateUsername;
-    private Button btnUpdateEmail;
+public class SettingsActivity extends AppCompatActivity {
 
+    private EditText etUsername;
+    private EditText etEmail;
+    private Button btnUsername;
+    private Button btnEmail;
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playlist_layout);
-        getData();
-        initInfo();
-
-    }
-    void initInfo(){
-
-        etNewUsername = findViewById(R.id.textview_settings_change_username);
-        etNewEmail = findViewById(R.id.textview_settings_change_email);
-
-        btnUpdateUsername.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doUpdateUsername(user);
-            }
-        });
-
-        btnUpdateEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doUpdateEmail(user);
-            }
-        });
-
+        setContentView(R.layout.activity_settings);
+        initViews();
     }
 
-    private void doUpdateUsername(User user){
-        //TODO -> IMPLEMENT AND CALL updateusername() [UserManager + UserService]
-        UserManager.getInstance(getApplicationContext()).updateUsername(user, this);
-    }
+    void initViews(){
 
-    private void doUpdateEmail(User user){
+        etUsername = (EditText) findViewById(R.id.textview_settings_change_username);
+        etEmail = (EditText) findViewById(R.id.textview_settings_change_email);
 
-        UserManager.getInstance(getApplicationContext()).updateEmail(user, this);
-    }
+        btnUsername =  (Button) findViewById(R.id.update_username_button);
+        btnEmail =  (Button) findViewById(R.id.update_email_button);
 
-    private void getData(){ //UserManager.getInstance(this).
-         }
-
-    @Override
-    public void onLoginSuccess(UserToken userToken) {
-
-    }
-
-    @Override
-    public void onLoginFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onRegisterSuccess() {
-
-    }
-
-    @Override
-    public void onRegisterFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserInfoReceived(User userData) {
-
-    }
-
-    @Override
-    public void onUsernameUpdated(User user) {
-
-    }
-
-    @Override
-    public void onEmailUpdated(User user) {
-
-    }
-
-
-    @Override
-    public void onFailure(Throwable throwable) {
 
     }
 }
+
