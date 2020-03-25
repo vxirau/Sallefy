@@ -174,7 +174,11 @@ public class UserManager {
 
                 int code = response.code();
                 if (response.isSuccessful()) {
-                    userCallback.onRegisterSuccess();
+                    try {
+                        userCallback.onRegisterSuccess();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     userCallback.onRegisterFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
                 }
