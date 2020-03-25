@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
 
+
     @Override
     public void onLoginSuccess(UserToken userToken) {
         Session.getInstance(getApplicationContext()).setUserToken(userToken);
@@ -86,6 +87,11 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onUserInfoReceived(User userData) {
+
+    }
+
+    @Override
+    public void onUsernameUpdated(User user) {
 
     }
 

@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface UserService {
@@ -24,8 +25,9 @@ public interface UserService {
     @POST("register")
     Call<ResponseBody> registerUser(@Body UserRegister user);
 
-    @POST("users")
-    Call<ResponseBody> updateUser(@Body User user);
+    @PUT("users")
+    Call<User> updateUsername(@Body User user, @Header("Authorization") String token);
 
-
+    @PUT("users")
+    Call<User> updateEmail(@Body User user, @Header("Authorization") String token);
 }
