@@ -39,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback 
 
     private void updateUsername(String username){
         //TODO -> IMPLEMENT AND CALL updateusername() [UserManager + UserService]
-        UserManager.getInstance(getApplicationContext()).
+        UserManager.getInstance(getApplicationContext());
     }
 
 

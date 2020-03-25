@@ -78,7 +78,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
         uRecyclerView = (RecyclerView) findViewById(R.id.llistatDplaylists);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        URL = CloudinaryManager.getInstance(this, this).getThumbnails();
+        CloudinaryManager.getInstance(this, this).getThumbnails();
         //adapter = CoverAdapter(this, thumbnails);
         pManager = new PlaylistManager(mContext);
         uRecyclerView.setLayoutManager(manager);

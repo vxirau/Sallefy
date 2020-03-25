@@ -42,6 +42,7 @@ public class CloudinaryManager extends AppCompatActivity {
         return sManager;
     }
 
+
     public CloudinaryManager(Context context, TrackCallback callback) {
         mContext = context;
         mCallback = callback;
@@ -76,15 +77,19 @@ public class CloudinaryManager extends AppCompatActivity {
                 .dispatch();
     }
 
-    public synchronized String getThumbnails() throws IOException {
+    public synchronized void getThumbnails() throws IOException {
 
         Map<String, Object> options = new HashMap<>();
         options.put("public_id", "cover");
         options.put("folder", "sallefy/covers/victorxirau");
 
-        String url = MediaManager.get().getCloudinary().downloadArchive(options,"zip");
+       MediaManager.get().getCloudinary().uploader().generateSprite("cover", options);
 
-        return url;
+    }
+
+    public synchronized void createFolder(String userName) throws IOException {
+        MediaManager.get().getCloudinary().uploader().upload("/Usuarios/martiejarquegalindo/Descargas/elfornet-logo.jpg",
+                ObjectUtils.asMap("public_id", "sallefy/covers/" + userName));
 
     }
 
