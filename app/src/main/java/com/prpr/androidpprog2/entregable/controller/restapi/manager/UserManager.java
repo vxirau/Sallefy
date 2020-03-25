@@ -13,6 +13,8 @@ import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
+import java.io.IOException;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,12 +81,63 @@ public class UserManager {
     }
 
 
-    public synchronized void updateUsername(String username, final UserCallback userCallback){
+    /*public synchronized void updateUsername(User user, final UserCallback userCallback){
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        UserToken usertoken =  Session.getInstance(mContext).getUserToken();
+        Call<User> call = mService.updateUsername(user, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onUsernameUpdated(response.body());
+                } else {
+                    try{
+                        userCallback.onFailure(new Throwable(response.errorBody().string()));
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
 
     }
+
+    public synchronized void updateEmail(User user, final UserCallback userCallback){
+
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+
+        Call<User> call = mService.updateEmail(user, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onEmailUpdated(response.body());
+                } else {
+                    try{
+                        userCallback.onFailure(new Throwable(response.errorBody().string()));
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+
+    }*/
+
 
     public synchronized void getUserData (String login, final UserCallback userCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();

@@ -53,7 +53,6 @@ public class ReproductorActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
-        trck = (Track) getIntent().getSerializableExtra("Trck");
         initViews();
         mPlayer.start();
     }
@@ -64,6 +63,8 @@ public class ReproductorActivity extends Activity {
         super.finish();
         overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
+
+
 
     private void initViews() {
 
@@ -87,7 +88,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void run() {
                 try {
-                    mPlayer.setDataSource(trck.getUrl());
+                    //mPlayer.setDataSource(trck.getUrl());
                     mPlayer.prepare();
                 } catch (IOException e) {
                   Toast.makeText(ReproductorActivity.this,"Error, couldn't play the music\n" + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -97,14 +98,13 @@ public class ReproductorActivity extends Activity {
 
         trackAuthor = findViewById(R.id.music_artist);
         trackTitle = findViewById(R.id.music_title);
-        trackAuthor.setText(trck.getUserLogin());
-        trackTitle.setText(trck.getName());
+        /*
         trackImage = findViewById(R.id.track_img);
         if (trck.getThumbnail() != null) {
             Picasso.get().load(trck.getThumbnail()).into(trackImage);
         }else{
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(trackImage);
-        }
+        }*/
 
         atras = findViewById(R.id.buttonAtras);
         atras.setEnabled(true);
