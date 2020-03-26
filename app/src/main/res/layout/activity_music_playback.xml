@@ -171,15 +171,24 @@
                     custom:avType="outline"
                     android:layout_centerInParent="true"/>
 
-                <ImageButton
-                    android:id="@+id/music_play_btn"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
+                <Button
+                    android:id="@+id/pause"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:scaleType="center"
                     android:adjustViewBounds="true"
                     android:layout_centerInParent="true"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_play" />
+                    android:background="@drawable/ic_pause"/>
+
+                <Button
+                    android:id="@+id/play"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:scaleType="center"
+                    android:adjustViewBounds="true"
+                    android:layout_centerInParent="true"
+                    android:visibility="invisible"
+                    android:background="@drawable/ic_play" />
                 </RelativeLayout>
 
                 <ImageButton

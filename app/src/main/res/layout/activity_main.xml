@@ -31,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
+        android:layout_marginBottom="100dp"
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
@@ -182,6 +183,27 @@
                 android:colorControlActivated="@drawable/ic_seekbar_scrubber"
                 android:progressBackgroundTint="#21D760" />
 
+            <Button
+                android:id="@+id/playButton"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="55dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/ic_play_white"
+                android:layout_alignParentRight="true"
+                android:visibility="visible"/>
+            <Button
+                android:id="@+id/playPause"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="55dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/ic_pause_white"
+                android:layout_alignParentRight="true"
+                android:visibility="invisible"/>
+
             <LinearLayout
                 android:id="@+id/reproductor"
                 android:layout_width="match_parent"
@@ -225,6 +247,7 @@
                 app:itemIconTint="@drawable/menu_selector"
                 app:itemIconSize= "30dp"
                 app:labelVisibilityMode="unlabeled" />
+
 
         </RelativeLayout>
 
