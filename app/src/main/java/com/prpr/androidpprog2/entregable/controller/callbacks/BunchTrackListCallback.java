@@ -7,4 +7,7 @@ import java.util.ArrayList;
 
 public interface BunchTrackListCallback {
     void onTrackSelected(int index);
+    void onRadioSelected(Track t);
+    void onRadioRemove(Track t);
+
 }

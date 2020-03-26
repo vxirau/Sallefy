@@ -95,13 +95,13 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        enableInitialButtons();
+        btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();
         String usertkn = userToken.getIdToken();
         pManager = new PlaylistManager(this);
         pManager.getAllMyPlaylists(this);
         //pManager2 = new PlaylistManager(this);
-        pManager.getAllPlaylists(this);
+        //pManager.getAllPlaylists(this);
 
 
     }
@@ -260,21 +260,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     }
 
 
-    private void enableInitialButtons() {
-        btnNewPlaylist.setEnabled(true);
-        //btnTrackImg.setEnabled(true);
-        //samplePlaylist.setEnabled(true);
-    }
-
     private void enableNetworkButtons() {
         btnNewPlaylist.setEnabled(true);
     }
 
-    private void enableAllButtons() {
-        btnNewPlaylist.setEnabled(true);
-        //btnTrackImg.setEnabled(true);
-        //samplePlaylist.setEnabled(true);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -306,9 +295,13 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
-        this.discover = (ArrayList) playlists;
+        /*this.discover = (ArrayList) playlists;
         PlaylistAdapter p = new PlaylistAdapter(this, this.discover);
-        p.setPlaylistCallback(this);
+        p.setPlaylistCallback(this);*/
+        this.allPlaylists = (ArrayList) playlists;
+        PlaylistAdapter p2 = new PlaylistAdapter(this, this.allPlaylists);
+        p2.setPlaylistCallback(this);
+        allPlaylistRecycle.setAdapter(p2);
     }
 
     @Override

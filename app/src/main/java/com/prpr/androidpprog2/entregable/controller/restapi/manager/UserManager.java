@@ -139,8 +139,8 @@ public class UserManager {
     }*/
 
 
-    public synchronized void getUserData (String login, final UserCallback userCallback) {
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
+    public synchronized void getUserData (String login, final UserCallback userCallback, UserToken userToken) {
+        //UserToken userToken = Session.getInstance(mContext).getUserToken();
         Call<User> call = mService.getUserById(login, "Bearer " + userToken.getIdToken());
         call.enqueue(new Callback<User>() {
             @Override

@@ -14,6 +14,8 @@ import com.prpr.androidpprog2.entregable.controller.adapters.BunchTrackListAdapt
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.BunchTrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
@@ -24,27 +26,40 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddSongsBunchActivity extends AppCompatActivity implements TrackCallback, BunchTrackListCallback {
+public class AddSongsBunchActivity extends AppCompatActivity implements TrackCallback, BunchTrackListCallback, PlaylistCallback {
 
     private Button upload;
     private Button accept;
     private Button cancel;
     private ArrayList<Track> myTracks;
+    private ArrayList<Track> bunch = new ArrayList<>();
     private RecyclerView llistaCancons;
     private TrackManager tManager;
     private Playlist ply;
+    private PlaylistManager pManager;
+    private PlaylistCallback pCall;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addsongs_bunch);
         initComponents();
         getData();
+        pCall = this;
+        pManager = new PlaylistManager(this);
         tManager = new TrackManager(this);
         tManager.getOwnTracks(this);
         ply = (Playlist) getIntent().getSerializableExtra("Playlst");
     }
 
-
+    private boolean existsInPlaylist(List<Track> t, Track track){
+        boolean exists = false;
+        for(Track tk : t){
+            if(tk.getName().equals(track.getName())){
+                exists=true;
+            }
+        }
+        return exists;
+    }
 
     private void initComponents() {
 
@@ -70,6 +85,8 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ply.getTracks().addAll(bunch);
+                pManager.updatePlaylist(ply, pCall);
 
             }
         });
@@ -129,6 +146,72 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
 
     }
 
+    @Override
+    public void onRadioSelected(Track t) {
+        if(existsInPlaylist(ply.getTracks(), t)){
+            ErrorDialog.getInstance(getApplicationContext()).showErrorDialog("Aquesta canço ja està en aquesta playlist!");
+        }else{
+            bunch.add(t);
+        }
+
+    }
+
+    @Override
+    public void onRadioRemove(Track t) {
+        bunch.remove(t);
+    }
 
 
+    @Override
+    public void onPlaylistCreated(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistRecieved(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistSelected(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onTrackAdded(Playlist body) {
+        Intent intent = new Intent(getApplicationContext(), PlaylistActivity.class);
+        intent.putExtra("Playlst", ply);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+    }
+
+    @Override
+    public void onTrackAddFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onAllNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistFailure(Throwable throwable) {
+
+    }
 }

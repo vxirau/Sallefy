@@ -198,12 +198,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             }
         });
 
-        Session.getInstance(this);
-        /*if(Session.getUser().getId() == playlst.getOwner().getId()){
+        if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playlst.getOwner().getLogin())){
             addBunch.setVisibility(View.VISIBLE);
         }else{
             addBunch.setVisibility(View.INVISIBLE);
-        }*/
+        }
 
 
         back2Main = findViewById(R.id.back2Main);

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -53,12 +54,18 @@ public class BunchTrackListAdapter extends RecyclerView.Adapter<BunchTrackListAd
                 mCallback.onTrackSelected(position);
             }
         });
-        holder.radio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
+        holder.radio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                    if(isChecked){
+                        mCallback.onRadioRemove(mTracks.get(position));
+                    }else{
+                        mCallback.onRadioSelected(mTracks.get(position));
+                    }
+                }
             }
-        });
+        );
         holder.tvTitle.setText(mTracks.get(position).getName());
         holder.tvAuthor.setText(mTracks.get(position).getUserLogin());
 

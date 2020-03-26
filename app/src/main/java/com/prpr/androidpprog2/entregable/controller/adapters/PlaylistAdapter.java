@@ -59,7 +59,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         holder.totalCancons.setText( size + " cançons");
 
         if (playlist.get(position).getThumbnail() != null) {
-           Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);
+            Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);
         }else{
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(holder.ivPicture);
         }
