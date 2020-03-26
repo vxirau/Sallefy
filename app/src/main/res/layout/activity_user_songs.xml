@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".controller.activities.UserPlaylistActivity"
+    tools:context=".controller.activities.UserTracksActivity"
     android:background="@drawable/fons_app">
 
 
@@ -91,7 +91,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/search_user_playlists"
+                android:id="@+id/search_user_songs"
                 android:layout_width="280dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
@@ -109,7 +109,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="20dp"
                 android:layout_height="30dp"
-                android:layout_toRightOf="@+id/search_user_playlists"
+                android:layout_toRightOf="@+id/search_user_songs"
                 android:text="@string/filters"
                 android:layout_gravity="center"
                 android:textColor="@color/colorPrimaryDark"
@@ -129,21 +129,25 @@
             android:orientation="horizontal">
 
             <Button
-                android:background="@drawable/ic_plus_button"
+                android:id="@+id/add_new_song"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 android:layout_gravity="left"
+                android:background="@drawable/ic_plus_button"
 
                 >
 
             </Button>
 
             <TextView
+                android:id="@+id/tv_add_new_song"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/create_new_song"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
-                android:text="@string/create_new_song">
+                android:clickable="true"
+                >
 
             </TextView>
 
@@ -167,15 +171,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#21D760"
-                android:layout_marginBottom="100dp"
                 android:elevation="10dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
                 app:borderWidth="0dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="100dp"
                 android:src="@drawable/ic_settings" />
         </RelativeLayout>
-
 
     </RelativeLayout>
 

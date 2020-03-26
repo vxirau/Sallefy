@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.PlaylistListCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -48,11 +49,16 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
     private TextView tvCreateNewPlaylist;
 
     private RecyclerView mRecyclerView;
+    private ArrayList<Playlist> myPlaylists;
+
+    private PlaylistManager playlistManager;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_playlists);
         initInfo();
+        playlistManager = new PlaylistManager(this);
+        playlistManager.getAllMyPlaylists(this);
     }
 
     void initInfo(){
@@ -126,10 +132,16 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
             }
         });
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.userPlaylistsRecyclerview);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        PlaylistAdapter adapter = new PlaylistAdapter(this, null);
+        //adapter.setPlaylistCallback((PlaylistCallback) this);
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setAdapter(adapter);
+
 
 
     }
-
 
 
     @Override
@@ -144,6 +156,12 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
+        for(int i = 0; i < playlists.size(); i++){
+            this.myPlaylists.add(playlists.get(i));
+            PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, this.myPlaylists);
+            playlistAdapter.setPlaylistCallback(this);
+            mRecyclerView.setAdapter(playlistAdapter);
+        }
 
     }
 
