@@ -78,14 +78,11 @@ public class CloudinaryManager extends AppCompatActivity {
                 .dispatch();
     }
 
-    public synchronized void getThumbnails() throws IOException {
+    public synchronized Map getThumbnails(String username) throws Exception {
 
-        Map<String, Object> options = new HashMap<>();
-        options.put("public_id", "cover");
-        options.put("folder", "sallefy/covers/victorxirau");
-
-       MediaManager.get().getCloudinary().uploader().generateSprite("cover",options);
-
+        Map m = MediaManager.get().getCloudinary().search().expression(("folder=sallefy/covers/"+username)).execute();
+        System.out.println("he entrat a thumbnails");
+        return m;
     }
 
     public synchronized void createFolder(String username) {
