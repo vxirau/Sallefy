@@ -31,6 +31,7 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.CloudinaryConfigs;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -68,17 +69,19 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         mContext = getApplicationContext();
         try {
             initViews();
-        } catch (IOException e) {
+            getData();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        getData();
+
     }
 
-    private void initViews() throws IOException {
+    private void initViews() throws Exception {
 
         uRecyclerView = (RecyclerView) findViewById(R.id.llistatDplaylists);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        CloudinaryManager.getInstance(this, this).getThumbnails();
+        //String username = Session.getInstance(mContext).getUser().getLogin();
+        Map m = CloudinaryManager.getInstance(this, null).getThumbnails(/*username*/"victorxirau");
         //adapter = CoverAdapter(this, thumbnails);
         pManager = new PlaylistManager(mContext);
         uRecyclerView.setLayoutManager(manager);

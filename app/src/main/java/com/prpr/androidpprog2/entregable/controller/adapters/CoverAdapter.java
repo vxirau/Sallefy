@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cloudinary.android.MediaManager;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.model.Playlist;
@@ -47,7 +49,7 @@ public class CoverAdapter extends RecyclerView.Adapter<CoverAdapter.ViewHolder>{
               if(position == getItemCount()){
                   //add thumbnail and set as thumbnail
               } else {
-                  //ens guardem
+
               }
             }
         });
