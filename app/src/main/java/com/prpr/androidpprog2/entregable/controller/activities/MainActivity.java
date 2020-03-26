@@ -221,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             public void onClick(View v) {
                 animateFab();
                 Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
+                intent.putExtra("agas", false);
                 intent.putExtra("User", Session.getInstance(c).getUser());
 
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
