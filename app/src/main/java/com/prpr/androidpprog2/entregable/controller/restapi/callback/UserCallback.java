@@ -8,7 +8,7 @@ import java.io.IOException;
 public interface UserCallback extends FailureCallback {
     void onLoginSuccess(UserToken userToken);
     void onLoginFailure(Throwable throwable);
-    void onRegisterSuccess() throws IOException;
+    void onRegisterSuccess() ;
     void onRegisterFailure(Throwable throwable);
     void onUserInfoReceived(User userData);
     //void onUsernameUpdated(User user);
