@@ -28,6 +28,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +60,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private AudioManager audioManager;
     private TextView title;
     private TextView artist;
+    private ImageView imahen;
     private Button playB;
     private Button pauseB;
     private SeekBar seekBar;
@@ -129,12 +132,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mediaPlayer.prepareAsync();
     }
 
-    public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause) {
+    public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg) {
         mSeekBar = seekBar;
         title = titol;
         artist = autor;
         playB = play;
         pauseB = pause;
+        imahen = trackImg;
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -155,6 +159,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         if(mediaPlayer != null && title!=null && artist!=null){
             title.setText(activeAudio.getName());
             artist.setText(activeAudio.getUserLogin());
+            mProgressRunner.run();
             mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
             if(mediaPlayer.isPlaying() || mediaPlayer.getCurrentPosition()==0){
                 pauseB.setVisibility(View.VISIBLE);
@@ -162,6 +167,10 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             }else{
                 pauseB.setVisibility(View.INVISIBLE);
                 playB.setVisibility(View.VISIBLE);
+            }
+            if(imahen!=null){
+                Picasso.get().load(activeAudio.getThumbnail()).into(imahen);
+
             }
         }
 
@@ -412,7 +421,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-    private void skipToNext() {
+    public void skipToNext() {
         if (audioIndex == audioList.size() - 1) {
             audioIndex = 0;
             activeAudio = audioList.get(audioIndex);
@@ -426,7 +435,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         updateUI();
     }
 
-    private void skipToPrevious() {
+    public void skipToPrevious() {
 
         if (audioIndex == 0) {
             audioIndex = audioList.size() - 1;

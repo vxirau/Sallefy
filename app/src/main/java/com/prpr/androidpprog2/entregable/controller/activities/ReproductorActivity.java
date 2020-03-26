@@ -1,12 +1,16 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -20,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import com.chibde.visualizer.CircleBarVisualizer;
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.squareup.picasso.Picasso;
@@ -37,7 +42,9 @@ public class ReproductorActivity extends Activity {
     private ImageView trackImage;
 
     private ImageButton btnBackward;
-    private ImageButton btnPlayStop;
+    private Button btnPlay;
+    private Button btnPause;
+
     private ImageButton btnForward;
     private Button atras;
     private SeekBar mSeekBar;
@@ -47,6 +54,20 @@ public class ReproductorActivity extends Activity {
     private CircleLineVisualizer mVisualizer;
     private MediaPlayer mPlayer;
 
+    private ReproductorService serv;
+    private boolean servidorVinculat=false;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!servidorVinculat){
+            Intent intent = new Intent(this, ReproductorService.class);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }else{
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.updateUI();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +75,36 @@ public class ReproductorActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
         initViews();
-        mPlayer.start();
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
+            serv = binder.getService();
+            servidorVinculat = true;
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.updateUI();
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            servidorVinculat = false;
+        }
+    };
+
+    void doUnbindService() {
+        if (servidorVinculat) {
+            unbindService(serviceConnection);
+            servidorVinculat = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        doUnbindService();
     }
 
 
@@ -67,6 +117,10 @@ public class ReproductorActivity extends Activity {
 
 
     private void initViews() {
+
+        trackTitle= findViewById(R.id.music_title);
+        trackAuthor = findViewById(R.id.music_artist);
+        trackImage = findViewById(R.id.track_img);
 
         mVisualizer = findViewById(R.id.circleVisualizer);
         mVisualizer.setDrawLine(true);
@@ -83,28 +137,6 @@ public class ReproductorActivity extends Activity {
             }
         });
 
-        mHandler = new Handler();
-        Thread connection = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //mPlayer.setDataSource(trck.getUrl());
-                    mPlayer.prepare();
-                } catch (IOException e) {
-                  Toast.makeText(ReproductorActivity.this,"Error, couldn't play the music\n" + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        trackAuthor = findViewById(R.id.music_artist);
-        trackTitle = findViewById(R.id.music_title);
-        /*
-        trackImage = findViewById(R.id.track_img);
-        if (trck.getThumbnail() != null) {
-            Picasso.get().load(trck.getThumbnail()).into(trackImage);
-        }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(trackImage);
-        }*/
 
         atras = findViewById(R.id.buttonAtras);
         atras.setEnabled(true);
@@ -117,78 +149,48 @@ public class ReproductorActivity extends Activity {
            }
         });
         btnBackward = (ImageButton)findViewById(R.id.music_backward_btn);
-        btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
-
-        btnPlayStop = (ImageButton)findViewById(R.id.music_play_btn);
-        btnPlayStop.setTag(PLAY_VIEW);
-        btnPlayStop.setOnClickListener(new View.OnClickListener() {
-
+        btnBackward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (btnPlayStop.getTag().equals(PLAY_VIEW)) {
-                    mPlayer.start();
-                    updateSeekBar();
-                    btnPlayStop.setImageResource(R.drawable.ic_pause);
-                    btnPlayStop.setTag(STOP_VIEW);
-                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    mPlayer.pause();
-                    btnPlayStop.setImageResource(R.drawable.ic_play);
-                    btnPlayStop.setTag(PLAY_VIEW);
-                    Toast.makeText(getApplicationContext(), "Pausing Audio", Toast.LENGTH_SHORT).show();
-                }
-
+                serv.skipToPrevious();
+            }
+        });
+        btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
+        btnForward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serv.skipToNext();
+            }
+        });
+        btnPlay = findViewById(R.id.play);
+        btnPlay.setEnabled(true);
+        btnPlay.bringToFront();
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serv.resumeMedia();
+            }
+        });
+        btnPause = findViewById(R.id.pause);
+        btnPause.setEnabled(true);
+        btnPause.bringToFront();
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serv.pauseMedia();
             }
         });
 
         mSeekBar = (SeekBar) findViewById(R.id.seekBar);
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    mPlayer.seekTo(progress);
-                }
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
 
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        connection.start();
     }
 
-    public void updateSeekBar() {
-        mSeekBar.setProgress(mPlayer.getCurrentPosition());
 
-        if(mPlayer.isPlaying()) {
-            mRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    updateSeekBar();
-                }
-            };
-            mHandler.postDelayed(mRunnable, 1000);
-        }
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mVisualizer != null)
-            mVisualizer.release();
-    }
 }

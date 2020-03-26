@@ -57,6 +57,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private TextView plyName;
     private TextView plyAuthor;
     private ImageView plyImg;
+    private ImageView im;
+
 
     private TextView tvTitle;
     private TextView tvAuthor;
@@ -85,7 +87,16 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     public void onStart() {
         super.onStart();
         if(serviceBound){
-            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause);
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
+            player.updateUI();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(serviceBound){
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
             player.updateUI();
         }
     }
@@ -234,7 +245,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             player = binder.getService();
             serviceBound = true;
-            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause);
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
         }
 
         @Override

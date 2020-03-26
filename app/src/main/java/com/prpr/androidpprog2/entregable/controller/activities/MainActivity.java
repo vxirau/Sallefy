@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private SeekBar mSeekBar;
     private Button play;
     private Button pause;
+    private ImageView im;
 
 
     private RecyclerView playlists_descobrir;
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
-            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause);
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
         }
     }
@@ -100,8 +102,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         pManager.getAllMyPlaylists(this);
         //pManager2 = new PlaylistManager(this);
         pManager.getAllPlaylists(this);
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(mMessageReceiver,
-                new IntentFilter("com.prpr.androidpprog2.entregable.REQUEST_PROCESSED"));
+
 
     }
 
@@ -111,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
             servidorVinculat = true;
-            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause);
-            System.out.println("S'ha vinculat la UI");
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
         }
 
         @Override
@@ -120,24 +120,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             servidorVinculat = false;
         }
     };
-
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            try {
-                handleMessage(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-    private void handleMessage(Intent msg) throws Exception {
-        Bundle data = msg.getExtras();
-        String valueReceived = data.getString("DATA");
-        Log.e("recv2", valueReceived);
-
-    }
 
     void doUnbindService() {
         if (servidorVinculat) {
