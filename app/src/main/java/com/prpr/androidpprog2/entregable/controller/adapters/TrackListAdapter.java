@@ -19,6 +19,7 @@ import com.prpr.androidpprog2.entregable.controller.activities.AddSongsBunchActi
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -74,11 +75,9 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
 
 
         if (mTracks.get(position).getThumbnail() != null) {
-            Glide.with(mContext)
-                    .asBitmap()
-                    .placeholder(R.drawable.ic_audiotrack)
-                    .load(mTracks.get(position).getThumbnail())
-                    .into(holder.ivPicture);
+            Picasso.get().load(mTracks.get(position).getThumbnail()).into(holder.ivPicture);
+        }else{
+            Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(holder.ivPicture);
         }
     }
 

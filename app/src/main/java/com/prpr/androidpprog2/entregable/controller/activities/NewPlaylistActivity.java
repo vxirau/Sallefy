@@ -43,8 +43,8 @@ public class NewPlaylistActivity extends Activity implements PlaylistCallback {
         tornarEnrere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                finish();
+                overridePendingTransition(R.anim.nothing,R.anim.nothing);
             }
         });
         newPlaylist = findViewById(R.id.AfegirAPlaylist);

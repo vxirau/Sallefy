@@ -17,4 +17,10 @@
         android:icon="@drawable/ic_user_menu_white"
         android:title="@string/profile" />
 
+    <item
+        android:id="@+id/none"
+        android:icon="@drawable/ic_user_menu_white"
+        android:visible="false"
+        android:title="@string/profile" />
+
 </menu>
