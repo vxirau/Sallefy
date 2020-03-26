@@ -45,6 +45,7 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
+import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -196,6 +197,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
+
+        Session.getInstance(this);
+        /*if(Session.getUser().getId() == playlst.getOwner().getId()){
+            addBunch.setVisibility(View.VISIBLE);
+        }else{
+            addBunch.setVisibility(View.INVISIBLE);
+        }*/
+
 
         back2Main = findViewById(R.id.back2Main);
         back2Main.setEnabled(true);
