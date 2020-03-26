@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     }
 
     @Override
-    public void onRegisterSuccess() throws IOException {
+    public void onRegisterSuccess() {
         UserRegister userData = Session.getInstance(getApplicationContext()).getUserRegister();
 
         CloudinaryManager.getInstance(this, null).createFolder(userData.getLogin());
