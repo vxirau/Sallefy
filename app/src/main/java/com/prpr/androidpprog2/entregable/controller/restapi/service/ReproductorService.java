@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
 import android.os.Binder;
 import android.os.Build;
@@ -24,9 +26,12 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -53,6 +58,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private AudioManager audioManager;
     private TextView title;
     private TextView artist;
+    private Button playB;
+    private Button pauseB;
     private SeekBar seekBar;
     private ArrayList<Track> audioList;
     private int audioIndex = -1;
@@ -67,6 +74,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     private MediaSessionManager mediaSessionManager;
     private MediaSessionCompat mediaSession;
+    private MediaSession mSession;
     private MediaControllerCompat.TransportControls transportControls;
 
     private final IBinder iBinder = new LocalBinder();
@@ -95,6 +103,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 if(mediaPlayer.isPlaying()) {
                     mSeekBar.postDelayed(mProgressRunner, 1000);
                 }
+            }else{
+                Toast.makeText(getApplicationContext(),"Error seekbar", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -119,17 +129,18 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mediaPlayer.prepareAsync();
     }
 
-    public void setUIControls(SeekBar seekBar, TextView titol, TextView autor) {
+    public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause) {
         mSeekBar = seekBar;
         title = titol;
         artist = autor;
+        playB = play;
+        pauseB = pause;
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     mediaPlayer.seekTo(progress);
                 }
-
             }
 
             @Override
@@ -140,6 +151,22 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         });
     }
 
+    public void updateUI(){
+        if(mediaPlayer != null && title!=null && artist!=null){
+            title.setText(activeAudio.getName());
+            artist.setText(activeAudio.getUserLogin());
+            mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
+            if(mediaPlayer.isPlaying() || mediaPlayer.getCurrentPosition()==0){
+                pauseB.setVisibility(View.VISIBLE);
+                playB.setVisibility(View.INVISIBLE);
+            }else{
+                pauseB.setVisibility(View.INVISIBLE);
+                playB.setVisibility(View.VISIBLE);
+            }
+        }
+
+    }
+
     private void playMedia() {
         if (!mediaPlayer.isPlaying()) {
             mProgressRunner.run();
@@ -147,9 +174,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             int duration = mediaPlayer.getDuration();
             mSeekBar.setMax(duration);
             mSeekBar.postDelayed(mProgressRunner, 1000);
-
         }
-
+        updateUI();
     }
 
     private void stopMedia() {
@@ -159,18 +185,21 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     }
 
-    private void pauseMedia() {
+    public void pauseMedia() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             resumePosition = mediaPlayer.getCurrentPosition();
         }
+        updateUI();
     }
 
-    private void resumeMedia() {
+    public void resumeMedia() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.seekTo(resumePosition);
+            mProgressRunner.run();
             mediaPlayer.start();
         }
+        updateUI();
     }
 
     private BroadcastReceiver playNewAudio = new BroadcastReceiver() {
@@ -191,13 +220,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     };
 
-    private void updateUI(){
-        if(mediaPlayer != null && title!=null && artist!=null){
-            title.setText(activeAudio.getName());
-            artist.setText(activeAudio.getUserLogin());
-        }
 
-    }
 
     private void register_playNewAudio() {
         updateUI();
@@ -212,6 +235,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private void initMediaSession() throws RemoteException {
         if (mediaSessionManager != null) return;
         mediaSessionManager = (MediaSessionManager) getSystemService(Context.MEDIA_SESSION_SERVICE);
+        mSession = new MediaSession(getApplicationContext(), "Sallefy");
         mediaSession = new MediaSessionCompat(getApplicationContext(), "Sallefy");
         transportControls = mediaSession.getController().getTransportControls();
         mediaSession.setActive(true);
@@ -330,9 +354,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
         NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this, "SALLEFY")
                 .setShowWhen(false)
-                /*.setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(notificationLayout)
-                .setCustomBigContentView(notificationLayoutExpanded)*/
+                //.setStyle(new Notification.MediaStyle().setMediaSession)
                 .setLargeIcon(largeIcon)
                 .setSmallIcon(android.R.drawable.stat_sys_headset)
                 .setContentText(activeAudio.getUserLogin())
@@ -354,7 +376,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         switch (actionNumber) {
             case 0:
                 playbackAction.setAction(ACTION_PLAY);
-
                 return PendingIntent.getService(this, actionNumber, playbackAction, 0);
             case 1:
                 playbackAction.setAction(ACTION_PAUSE);
@@ -525,7 +546,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-
         playMedia();
     }
 

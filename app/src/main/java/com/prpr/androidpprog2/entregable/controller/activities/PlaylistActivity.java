@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,13 +9,17 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import android.os.IBinder;
 import android.os.StrictMode;
+import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.telecom.Call;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -62,15 +67,28 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private SeekBar mseek;
 
 
+    private Button play;
+    private Button pause;
+
     private RecyclerView mRecyclerView;
 
     private ArrayList<Track> mTracks;
     private int currentTrack = 0;
 
     private ReproductorService player;
+    private boolean trackAssigned = false;
     boolean serviceBound = false;
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(serviceBound){
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause);
+            player.updateUI();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -82,7 +100,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
         initViews();
         getData();
-        playAudio(new Random().nextInt(mTracks.size()));
     }
 
     private void initViews() {
@@ -122,6 +139,31 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(plyImg);
         }
 
+        play = findViewById(R.id.playButton);
+        play.setEnabled(true);
+        play.bringToFront();
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int index=0;
+                player.resumeMedia();
+                pause.setVisibility(v.VISIBLE);
+                play.setVisibility(v.INVISIBLE);
+                trackAssigned=true;
+            }
+        });
+        pause = findViewById(R.id.playPause);
+        pause.setEnabled(true);
+        pause.bringToFront();
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player.pauseMedia();
+                play.setVisibility(v.VISIBLE);
+                pause.setVisibility(v.INVISIBLE);
+            }
+        });
+
         mseek = findViewById(R.id.dynamic_seekBar);
 
         shuffle = findViewById(R.id.playlistRandom);
@@ -149,8 +191,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         back2Main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                finish();
+                overridePendingTransition(R.anim.nothing,R.anim.nothing);
             }
         });
 
@@ -192,7 +234,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             player = binder.getService();
             serviceBound = true;
-            player.setUIControls(mseek, tvTitle, tvAuthor);
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause);
         }
 
         @Override
@@ -261,7 +303,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onTrackSelected(int index) {
+        pause.setVisibility(View.VISIBLE);
+        play.setVisibility(View.INVISIBLE);
         currentTrack = index;
+        trackAssigned=true;
         playAudio(index);
     }
 
