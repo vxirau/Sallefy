@@ -135,6 +135,14 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
 
             }
         });
+        //TODO --> Filter Button Implementation
+        btnFilterPlaylists = findViewById(R.id.filter_user_playlists);
+        btnFilterPlaylists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //doFilterPlaylists();
+            }
+        });
 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.userPlaylistsRecyclerview);
@@ -144,6 +152,7 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
     }
+
 
 
     @Override

@@ -102,6 +102,16 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         startActivity(intent);
     }
 
+    @Override
+    public void onUsernameUpdated(User user) {
+
+    }
+
+    @Override
+    public void onEmailUpdated(User user) {
+
+    }
+
     /*@Override
     public void onUsernameUpdated(User user) {
 
