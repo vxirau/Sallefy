@@ -2,6 +2,7 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,13 +11,21 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.utils.ObjectUtils;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
 import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.utils.CloudinaryConfigs;
 import com.prpr.androidpprog2.entregable.utils.Session;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class RegisterActivity extends AppCompatActivity implements UserCallback {
@@ -74,6 +83,9 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     @Override
     public void onRegisterSuccess() {
         UserRegister userData = Session.getInstance(getApplicationContext()).getUserRegister();
+
+        CloudinaryManager.getInstance(this, null).createFolder(userData.getLogin());
+
         doLogin(userData.getLogin(), userData.getPassword());
     }
 
@@ -89,6 +101,26 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     public void onUserInfoReceived(User userData) {
 
     }
+
+    @Override
+    public void onUsernameUpdated(User user) {
+
+    }
+
+    @Override
+    public void onEmailUpdated(User user) {
+
+    }
+
+    /*@Override
+    public void onUsernameUpdated(User user) {
+
+    }
+
+    @Override
+    public void onEmailUpdated(User user) {
+
+    }*/
 
 
     @Override

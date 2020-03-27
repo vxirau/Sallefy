@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fons"
+    android:background="@drawable/fons_app"
     android:orientation="vertical"
     android:weightSum="1.0"
     tools:context=".controller.activities.MainActivity">
@@ -31,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
+        android:layout_marginBottom="100dp"
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
@@ -178,20 +179,44 @@
                 android:backgroundTint="#21D760"
                 android:progressTint="@color/colorWhite"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="85dp"
+                android:layout_marginBottom="87dp"
                 android:colorControlActivated="@drawable/ic_seekbar_scrubber"
                 android:progressBackgroundTint="#21D760" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="66dp"
-                android:background="@drawable/player_background"
+            <Button
+                android:id="@+id/playButton"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="55dp"
+                android:layout_marginRight="20dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="30dp"
+                android:background="@drawable/ic_play_white"
+                android:layout_alignParentRight="true"
+                android:visibility="visible"/>
+            <Button
+                android:id="@+id/playPause"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="55dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/ic_pause_white"
+                android:layout_alignParentRight="true"
+                android:visibility="invisible"/>
+
+            <LinearLayout
+                android:id="@+id/reproductor"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/fons_reproductor"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="35dp"
                 android:orientation="vertical"
+                android:clickable="true"
                 android:textAlignment="center"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/dynamic_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -199,6 +224,7 @@
                     android:textColor="@color/colorWhite"
                     android:text="Probandoo"/>
                 <TextView
+                    android:id="@+id/dynamic_artist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -218,9 +244,10 @@
                 android:background="#2A2D31"
                 app:menu="@menu/navigation"
                 app:itemBackground="@color/menuColor"
-                app:itemIconTint="@drawable/tab_color"
+                app:itemIconTint="@drawable/menu_selector"
                 app:itemIconSize= "30dp"
                 app:labelVisibilityMode="unlabeled" />
+
 
         </RelativeLayout>
 

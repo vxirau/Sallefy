@@ -68,7 +68,7 @@
     <string name="nom_de_la_canco">Song Name</string>
 
     <string name="search_title">Search</string>
-    <string name="search_bar">Search here...</string>
+    <string name="search_bar">Search here…</string>
     <string name="genere_rock">ROCK</string>
     <string name="genere_pop">POP</string>
     <string name="genere_dance">DANCE</string>
@@ -93,4 +93,17 @@
     <string name="user">Ver artista</string>
     <string name="playlist">Añadir a playlist</string>
     <string name="cancel">Cancel</string>
+    <string name="playlist_">Playlists</string>
+    <string name="songs_">Songs</string>
+    <string name="statistics">Statistics</string>
+    <string name="my_songs">My Songs</string>
+    <string name="playlists">Playlists</string>
+    <string name="filters">Filters</string>
+    <string name="create_new_playlist">Create new playlist</string>
+    <string name="create_new_song">Add new song</string>
+    <string name="settings">Settings</string>
+    <string name="settings_change_username">Update Username</string>
+    <string name="settings_change_email">Update Email</string>
+    <string name="settings_add_new_username">Tap your new username</string>
+    <string name="settings_add_new_email">Tap your new email</string>
 </resources>

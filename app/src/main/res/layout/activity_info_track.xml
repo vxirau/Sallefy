@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@drawable/Fons"
-    tools:context=".ac">
+    android:background="@drawable/fons_app">
 
 
 
@@ -17,8 +16,7 @@
         android:layout_width="155dp"
         android:layout_height="148dp"
         android:layout_marginTop="32dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/default_playlist_cover" />
+        android:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/SongName"
@@ -41,14 +39,15 @@
 
 
     <View
-        android:id="@+id/Line"
         android:layout_width="match_parent"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
         android:layout_height="2dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="fitCenter"
-        android:background="@drawable/line" />
+        android:background="#21D760"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentTop="true"
+        />
 
 
     <LinearLayout
@@ -67,7 +66,7 @@
             android:layout_height="30dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/cor" />
+            android:src="@drawable/ic_heart" />
 
 
         <TextView
@@ -76,11 +75,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="20dp"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:text="@string/favoritos"
             android:textAlignment="textStart"
-            android:gravity="start"
-            android:padding="@android:dimen/dialog_min_width_major"/>
+            android:gravity="start"/>
 
     </LinearLayout>
 
@@ -101,7 +99,7 @@
             android:background="@android:color/transparent"
 
             android:scaleType="fitCenter"
-            android:src="@drawable/pencil" />
+            android:src="@drawable/ic_edit" />
 
         <TextView
             android:id="@+id/text_edit"
@@ -110,10 +108,9 @@
             android:layout_marginLeft="20dp"
             android:text="@string/edit"
             android:textColor="@color/colorWhite"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textAlignment="textStart"
-            android:gravity="start"
-            android:padding="@android:dimen/dialog_min_width_major"/>
+            android:gravity="start"/>
 
     </LinearLayout>
 
@@ -131,7 +128,7 @@
             android:layout_height="30dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/user1" />
+            android:src="@drawable/ic_user" />
 
         <TextView
             android:id="@+id/text_user"
@@ -139,11 +136,10 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="20dp"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:text="@string/user"
             android:textAlignment="textStart"
-            android:gravity="start"
-            android:padding="@android:dimen/dialog_min_width_major"/>
+            android:gravity="start"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -159,7 +155,7 @@
             android:layout_height="30dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/add" />
+            android:src="@drawable/ic_new_playlist" />
 
 
         <TextView
@@ -168,24 +164,23 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="20dp"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:text="@string/playlist"
             android:textAlignment="textStart"
-            android:gravity="start"
-            android:padding="@android:dimen/dialog_min_width_major"/>
+            android:gravity="start"/>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/cancel"
         android:layout_width="170dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginTop="170dp"
         android:textColor="#18AB4B"
         android:textSize="24sp"
         android:textAllCaps="false"
-        android:paddingBottom="10dp"
-        android:background="@drawable/Rectangle"
+        android:paddingBottom="5dp"
+        android:background="@drawable/rectangle_blanc_small"
         android:gravity="center"
         android:text="@string/cancel" />
 

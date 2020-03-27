@@ -13,7 +13,7 @@
         android:layout_margin="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:background="@drawable/playlist_background">
+        android:background="@drawable/fons_add2playlist_item">
 
         <ImageView
             android:id="@+id/playlist_img"
@@ -61,7 +61,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/ic_add" />
+            android:background="@drawable/ic_mes" />
 
 
 

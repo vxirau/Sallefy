@@ -7,10 +7,10 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/back_round_white"
+        android:background="@drawable/rectangle_blanc_cuadrat"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="20dp"
@@ -39,13 +39,14 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/info" />
+                    android:src="@drawable/info_dialog_icon" />
 
                 <TextView
                     android:id="@+id/dialog_state_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="30sp"
+                    android:textColor="#000"
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:text="@string/state_wait"/>
@@ -57,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textSize="20sp"
+                android:textColor="#000"
                 android:text="@string/state_task_in_progress"/>
 
             <Button

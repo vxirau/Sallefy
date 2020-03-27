@@ -13,7 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.android.MediaManager;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
@@ -25,10 +29,15 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistMana
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.utils.CloudinaryConfigs;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -39,11 +48,17 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private TextView mFilename;
     private Button btnFind, btnCancel, btnAccept;
     private PlaylistManager pManager;
+    private RecyclerView uRecyclerView;
+
     private Playlist uploadPlylst;
+
     private ArrayList<String> mGenres;
     private ArrayList<Genre> mGenresObjs;
     private Uri mFileUri;
     private Context mContext;
+    private String URL;
+
+
 
 
     @Override
@@ -52,12 +67,25 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         setContentView(R.layout.activity_create_song);
         uploadPlylst = (Playlist) getIntent().getSerializableExtra("Upload");
         mContext = getApplicationContext();
-        initViews();
-        getData();
+        try {
+            initViews();
+            getData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    private void initViews() {
+    private void initViews() throws Exception {
+
+        uRecyclerView = (RecyclerView) findViewById(R.id.llistatDplaylists);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        //String username = Session.getInstance(mContext).getUser().getLogin();
+        Map m = CloudinaryManager.getInstance(this, null).getThumbnails(/*username*/"victorxirau");
+        //adapter = CoverAdapter(this, thumbnails);
         pManager = new PlaylistManager(mContext);
+        uRecyclerView.setLayoutManager(manager);
+        //uRecyclerView.setAdapter(adapter);
 
         etTitle = (EditText) findViewById(R.id.create_song_title);
         mFilename = (TextView) findViewById(R.id.create_song_file_name);

@@ -1,10 +1,12 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,10 +14,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Session;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements UserCallback {
 
@@ -23,6 +30,8 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     private EditText etPassword;
     private Button btnLogin;
     private TextView tvToRegister;
+    private UserToken usTkn;
+    private String username="";
 
 
     @Override
@@ -37,13 +46,6 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
         etLogin = (EditText) findViewById(R.id.login_user);
         etPassword = (EditText) findViewById(R.id.login_password);
-
-        /*
-        * POR AHORA AÑADO MI INFORMACION DE LOGIN AQUI PARA NO TENER QUE INTRODUCIRLA MANUALMENTE CADA VEZ
-        * */
-        etLogin.setText("victorxirau");
-        etPassword.setText("1234");
-
 
         tvToRegister = (TextView) findViewById(R.id.register_btn_action);
         tvToRegister.setOnClickListener(new View.OnClickListener() {
@@ -64,15 +66,16 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
     private void doLogin(String username, String userpassword) {
+        this.username = username;
         UserManager.getInstance(getApplicationContext()).loginAttempt(username, userpassword, LoginActivity.this);
     }
 
 
+
     @Override
     public void onLoginSuccess(UserToken userToken) {
-        Session.getInstance(getApplicationContext()).setUserToken(userToken);
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        usTkn = userToken;
+        UserManager.getInstance(getApplicationContext()).getUserData(username, LoginActivity.this, userToken);
     }
 
     @Override
@@ -93,8 +96,31 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onUserInfoReceived(User userData) {
+        Session.getInstance(getApplicationContext()).setUserToken(usTkn);
+        Session.getInstance(getApplicationContext()).setUser(userData);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onUsernameUpdated(User user) {
 
     }
+
+    @Override
+    public void onEmailUpdated(User user) {
+
+    }
+
+    /*@Override
+    public void onUsernameUpdated(User user) {
+
+    }
+
+    @Override
+    public void onEmailUpdated(User user) {
+
+    }*/
 
     @Override
     public void onFailure(Throwable throwable) {
