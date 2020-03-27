@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/genere_item_layout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_max_height"
+    android:layout_margin="5dp"
+    android:padding="5dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/genere_name"
+        android:text="@string/genere_default_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:background="@drawable/rectangle_gran_gborder_white"
+        android:textColor="#000000"/>
+
+</LinearLayout>

@@ -188,6 +188,11 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     }
 
+    @Override
+    public void onGenreSelected(Genre genere) {
+
+    }
+
 
     @Override
     public void onFailure(Throwable throwable) {

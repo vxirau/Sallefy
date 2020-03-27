@@ -61,6 +61,10 @@ public class User implements Serializable {
     public User() {
     }
 
+    public User(String name) {
+        this.login = name;
+    }
+
     public User(Boolean activated, List<String> authorities, String createdBy, String createdDate, String email, String firstName, Integer id, String imageUrl, String langKey, String lastModifiedBy, String lastModifiedDate, String lastName, Integer playlists, Integer tracks, Integer followers, Integer following, String login) {
         this.activated = activated;
         this.authorities = authorities;

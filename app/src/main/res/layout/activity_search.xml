@@ -54,7 +54,8 @@
 
         </LinearLayout>
 
-        <ScrollView
+        <LinearLayout
+            android:id="@+id/search_genere_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="40dp"
@@ -63,245 +64,14 @@
             app:layout_constraintTop_toBottomOf="@id/search_topZone"
             android:visibility="visible">
 
-            <GridLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:scrollbars="vertical"
+                android:id="@+id/search_dynamic_recyclerView_genere"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:columnCount="2">
+                android:layout_marginTop="5dp"/>
 
-                <Button
-                    android:id="@+id/genere_rock"
-                    android:text="@string/genere_rock"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="10dp"/>
-                <Button
-                    android:id="@+id/genere_pop"
-                    android:text="@string/genere_pop"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginStart="10dp"/>
-
-                <!-- FILA 2 -->
-                <Button
-                    android:id="@+id/genere_dance"
-                    android:text="@string/genere_dance"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="15dp"/>
-                <Button
-                    android:id="@+id/genere_country"
-                    android:text="@string/genere_country"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"/>
-
-                <!-- FILA 3 -->
-                <Button
-                    android:id="@+id/genere_hiphop"
-                    android:text="@string/genere_hiphop"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="15dp"/>
-                <Button
-                    android:id="@+id/genere_rap"
-                    android:text="@string/genere_rap"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"/>
-
-                <!-- FILA 4 -->
-                <Button
-                    android:id="@+id/genere_jazz"
-                    android:text="@string/genere_jazz"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="15dp"/>
-                <Button
-                    android:id="@+id/genere_blues"
-                    android:text="@string/genere_blues"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"/>
-
-                <!-- FILA 5 -->
-                <Button
-                    android:id="@+id/genere_classical"
-                    android:text="@string/genere_classical"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="15dp"/>
-                <Button
-                    android:id="@+id/genere_folk"
-                    android:text="@string/genere_folk"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"/>
-
-                <!-- FILA 6 -->
-                <Button
-                    android:id="@+id/genere_techno"
-                    android:text="@string/genere_techno"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="15dp"/>
-                <Button
-                    android:id="@+id/genere_disco"
-                    android:text="@string/genere_disco"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"/>
-
-                <!-- FILA 7 -->
-                <Button
-                    android:id="@+id/genere_soul"
-                    android:text="@string/genere_soul"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="15dp"/>
-                <Button
-                    android:id="@+id/genere_electronica"
-                    android:text="@string/genere_disco"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"/>
-
-                <!-- FILA 8 -->
-                <Button
-                    android:id="@+id/genere_celtic"
-                    android:text="@string/genere_celtic"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="15dp"/>
-                <Button
-                    android:id="@+id/genere_heavymetal"
-                    android:text="@string/genere_heavymetal"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"/>
-
-                <!-- FILA 9 -->
-                <Button
-                    android:id="@+id/genere_reggae"
-                    android:text="@string/genere_reggae"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="15dp"/>
-                <Button
-                    android:id="@+id/genere_alternativerock"
-                    android:text="@string/genere_alternativerock"
-                    android:layout_columnWeight="1"
-                    android:layout_rowWeight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:textColor="#000000"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"/>
-
-            </GridLayout>
-
-        </ScrollView>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/search_recyclerView_both"
@@ -313,15 +83,14 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="100dp"
             app:layout_constraintTop_toBottomOf="@id/search_topZone"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <!-- PLAYLIST -->
             <LinearLayout
                 android:id="@+id/search_recyclerView_playlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -346,8 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:visibility="visible">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"

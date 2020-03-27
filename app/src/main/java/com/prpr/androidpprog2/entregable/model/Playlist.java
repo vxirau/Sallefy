@@ -45,6 +45,15 @@ public class Playlist implements Serializable {
         this.tracks = null;
     }
 
+    public Playlist(String name, User user) {
+        this.name = name;
+        this.owner = user;
+        this.cover = null;
+        this.thumbnail = null;
+        this.publicAccessible = false;
+        this.tracks = null;
+    }
+
 
     public int getId() {
         return id;
