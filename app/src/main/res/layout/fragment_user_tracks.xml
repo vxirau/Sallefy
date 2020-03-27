@@ -1,0 +1,111 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserPlaylistFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="left"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_search_user_tracks"
+            android:layout_width="280dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:background="@drawable/rectangle_white_border_transparent"
+            android:gravity="left"
+            android:hint="@string/Search"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="#70353535"
+            android:elevation="10dp"
+            />
+        <Button
+            android:id="@+id/btn_filter_user_songs"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@+id/search_user_playlists"
+            android:text="@string/filters"
+            android:layout_gravity="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/rectangle_blanc_small"
+            >
+
+        </Button>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="left"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_add_new_song"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="left"
+            android:background="@drawable/ic_plus_button"
+
+            >
+
+        </Button>
+
+        <TextView
+            android:id="@+id/tv_add_new_song"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_new_song"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/colorWhite"
+            android:clickable="true"
+            >
+
+        </TextView>
+
+    </LinearLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/userTracksRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_marginTop="220dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/configButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="100dp"
+            android:backgroundTint="#21D760"
+            android:elevation="10dp"
+            android:src="@drawable/ic_settings"
+            app:borderWidth="0dp" />
+    </RelativeLayout>
+
+
+
+</FrameLayout>

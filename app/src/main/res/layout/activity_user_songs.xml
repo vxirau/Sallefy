@@ -160,7 +160,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/userPlaylistsRecyclerview"
+            android:id="@+id/userTracksRecyclerview"
             android:layout_width="match_parent"
             android:layout_marginTop="220dp"
             android:layout_height="match_parent"

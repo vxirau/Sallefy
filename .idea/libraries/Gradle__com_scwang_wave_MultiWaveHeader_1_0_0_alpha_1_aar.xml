@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.scwang.wave:MultiWaveHeader:1.0.0-alpha-1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4e8f4dc0a6f8d00f00e7f6892dd9db5f/jetified-MultiWaveHeader-1.0.0-alpha-1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4e8f4dc0a6f8d00f00e7f6892dd9db5f/jetified-MultiWaveHeader-1.0.0-alpha-1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a51aa6831d3dcc6008345c8486e3dbf9/jetified-MultiWaveHeader-1.0.0-alpha-1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a51aa6831d3dcc6008345c8486e3dbf9/jetified-MultiWaveHeader-1.0.0-alpha-1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.scwang.wave/MultiWaveHeader/1.0.0-alpha-1/bbfa81df18c2e56e9225cc1fcdde8488191aebd3/MultiWaveHeader-1.0.0-alpha-1-javadoc.jar!/" />
