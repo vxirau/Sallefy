@@ -99,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         UserToken userToken = Session.getInstance(this).getUserToken();
         String usertkn = userToken.getIdToken();
         pManager = new PlaylistManager(this);
-        pManager.getAllMyPlaylists(this);
+        //pManager.getAllMyPlaylists(this);
         //pManager2 = new PlaylistManager(this);
-        //pManager.getAllPlaylists(this);
+        pManager.getAllPlaylists(this);
 
 
     }
@@ -209,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
             public void onClick(View v) {
                 animateFab();
                 Intent intent = new Intent(getApplicationContext(), NewPlaylistActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
                 Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
                 intent.putExtra("agas", false);
                 intent.putExtra("User", Session.getInstance(c).getUser());
-
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
@@ -295,13 +296,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
-        /*this.discover = (ArrayList) playlists;
+        this.discover = (ArrayList) playlists;
         PlaylistAdapter p = new PlaylistAdapter(this, this.discover);
-        p.setPlaylistCallback(this);*/
-        this.allPlaylists = (ArrayList) playlists;
-        PlaylistAdapter p2 = new PlaylistAdapter(this, this.allPlaylists);
-        p2.setPlaylistCallback(this);
-        allPlaylistRecycle.setAdapter(p2);
+        p.setPlaylistCallback(this);
     }
 
     @Override

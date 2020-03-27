@@ -21,6 +21,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.telecom.Call;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -30,11 +31,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
@@ -115,6 +118,31 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     private void initViews() {
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
+        navigation.setSelectedItemId(R.id.none);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        finish();
+                        overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                    case R.id.buscar:
+                        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                        return true;
+                    case R.id.perfil:
+                        Intent intent2 = new Intent(getApplicationContext(), UserPlaylistActivity.class);
+                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
+                        return true;
+                }
+                return false;
+            }
+        });
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
