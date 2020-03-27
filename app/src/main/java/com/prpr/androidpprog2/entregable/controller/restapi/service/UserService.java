@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
+import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
 
@@ -25,10 +26,6 @@ public interface UserService {
     @GET("users?notFollowing=true&popular=true&size=10")
     Call<List<User>> getTopUsers(@Header("Authorization") String token);
 
-    @GET("users?notFollowing=true&popular=false&recent=true&size=10")
-    Call<List<User>> getNewUsers(@Header("Authorization") String token);
-
-
     @POST("register")
     Call<ResponseBody> registerUser(@Body UserRegister user);
 
@@ -37,6 +34,7 @@ public interface UserService {
 
     @PUT("users")
     Call<User> updateEmail(@Body User user, @Header("Authorization") String token);
+
 
 }
 

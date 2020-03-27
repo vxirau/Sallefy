@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.callback;
 
+import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 
@@ -15,6 +16,6 @@ public interface UserCallback extends FailureCallback {
     void onUsernameUpdated(User user);
     void onEmailUpdated(User user);
     void onTopUsersRecieved(List<User> body);
-
     void onUserSelected(User user);
+
 }

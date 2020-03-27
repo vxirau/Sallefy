@@ -175,6 +175,11 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
     }
 
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
 
     @Override
     public void onPlaylistAddSelected(int position, ArrayList<Playlist> playlist, Track track) {

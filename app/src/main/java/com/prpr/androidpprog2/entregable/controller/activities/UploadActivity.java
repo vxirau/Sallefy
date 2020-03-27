@@ -292,4 +292,9 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     public void onTopPlaylistsFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
 }

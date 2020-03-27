@@ -133,4 +133,9 @@ public class NewPlaylistActivity extends Activity implements PlaylistCallback {
 
     }
 
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
 }

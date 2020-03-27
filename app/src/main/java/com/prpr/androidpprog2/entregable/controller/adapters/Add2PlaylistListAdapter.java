@@ -173,6 +173,11 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
 
     }
 
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout mLayout;
