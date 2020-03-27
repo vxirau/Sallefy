@@ -210,13 +210,15 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
 
         //SOUTS DE TRACKS
         System.out.println("TRACKS ON VIEW");
-        for (Track track : mTracksOnView)
+        for (Track track : mTracksOnView) {
             track.print();
+        }
 
         //SOUTS DE PLAYLISTS
         System.out.println("PLAYLISTS ON VIEW");
-        for (Playlist playlist: mPlaylistOnView)
+        for (Playlist playlist: mPlaylistOnView) {
             playlist.print();
+        }
 
     }
 
