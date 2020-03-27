@@ -83,6 +83,7 @@ public class CloudinaryManager extends AppCompatActivity {
         Map m = MediaManager.get().getCloudinary().search().expression(("folder=sallefy/covers/"+username)).execute();
         System.out.println("he entrat a thumbnails");
         return m;
+
     }
 
     public synchronized void createFolder(String username) {
