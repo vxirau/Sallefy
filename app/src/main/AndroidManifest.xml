@@ -32,6 +32,7 @@
         <activity android:name=".controller.activities.UploadActivity"/>
         <activity android:name=".controller.activities.AddSongsBunchActivity"/>
         <activity android:name=".controller.activities.InfoTrackActivity"/>
+        <activity android:name=".controller.activities.InfoArtistaActivity"/>
         <activity android:name=".controller.activities.SearchActivity"
             android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".controller.activities.UserPlaylistActivity"/>
