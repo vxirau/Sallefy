@@ -171,17 +171,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom">
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/configButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#21D760"
-                android:elevation="10dp"
-                app:borderWidth="0dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="100dp"
-                android:src="@drawable/ic_settings" />
+                android:backgroundTint="#21D760"
+                android:elevation="10dp"
+                android:src="@drawable/ic_settings"
+                app:borderWidth="0dp" />
         </RelativeLayout>
 
     </RelativeLayout>
