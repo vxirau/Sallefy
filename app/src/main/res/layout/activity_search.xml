@@ -65,7 +65,7 @@
             android:layout_marginTop="25dp"
             android:layout_marginBottom="100dp"
             app:layout_constraintTop_toBottomOf="@id/search_topZone"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:scrollbars="vertical"
@@ -130,7 +130,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:scrollbars="horizontal"
+                    android:scrollbars="vertical"
                     android:id="@+id/search_dynamic_recyclerView_songs"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"

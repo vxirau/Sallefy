@@ -77,16 +77,16 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
     void initViews(){
         //No mostrem res
         mGeneresLayout = (LinearLayout) findViewById(R.id.search_genere_layout);
-        mGeneresLayout.setVisibility(View.GONE);
+        //mGeneresLayout.setVisibility(View.GONE);
 
         mPlaylistLayout = (LinearLayout) findViewById(R.id.search_recyclerView_playlist);
-        mPlaylistLayout.setVisibility(View.GONE);
+        //mPlaylistLayout.setVisibility(View.GONE);
 
         mTracksLayout = (LinearLayout) findViewById(R.id.search_recyclerView_song);
-        mTracksLayout.setVisibility(View.GONE);
+        //mTracksLayout.setVisibility(View.GONE);
 
         mBothLayout = (LinearLayout) findViewById(R.id.search_recyclerView_both);
-        mBothLayout.setVisibility(View.GONE);
+        //mBothLayout.setVisibility(View.GONE);
 
         //Obtenim GENERES LIST
         mGeneres = new ArrayList<>();
@@ -104,7 +104,7 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
 
         //Recicle views
         mRecyclerViewTracks = (RecyclerView) findViewById(R.id.search_dynamic_recyclerView_songs);
-        LinearLayoutManager managerTrack = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        LinearLayoutManager managerTrack = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         TrackListAdapter adapterTrack = new TrackListAdapter(this, this, null, null);
         mRecyclerViewTracks.setLayoutManager(managerTrack);
         mRecyclerViewTracks.setAdapter(adapterTrack);
