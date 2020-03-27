@@ -158,6 +158,21 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
 
     }
 
+    @Override
+    public void onTopRecieved(List<Playlist> topPlaylists) {
+
+    }
+
+    @Override
+    public void onNoTopPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopPlaylistsFailure(Throwable throwable) {
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout mLayout;

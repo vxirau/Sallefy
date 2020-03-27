@@ -17,4 +17,6 @@ public interface PlaylistCallback {
     void onAllNoPlaylists(Throwable throwable);
     void onAllPlaylistFailure(Throwable throwable);
     void onTopRecieved(List<Playlist> topPlaylists);
+    void onNoTopPlaylists(Throwable throwable);
+    void onTopPlaylistsFailure(Throwable throwable);
 }

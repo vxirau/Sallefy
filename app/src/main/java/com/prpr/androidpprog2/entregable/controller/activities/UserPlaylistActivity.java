@@ -208,4 +208,19 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
     public void onAllPlaylistFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onTopRecieved(List<Playlist> topPlaylists) {
+
+    }
+
+    @Override
+    public void onNoTopPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopPlaylistsFailure(Throwable throwable) {
+
+    }
 }

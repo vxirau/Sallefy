@@ -160,6 +160,21 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
     }
 
+    @Override
+    public void onTopRecieved(List<Playlist> topPlaylists) {
+
+    }
+
+    @Override
+    public void onNoTopPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopPlaylistsFailure(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onPlaylistAddSelected(int position, ArrayList<Playlist> playlist, Track track) {

@@ -67,7 +67,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     private ArrayList<Playlist> discover;
 
     private RecyclerView allPlaylistRecycle;
+    private RecyclerView topPlaylistsRecycle;
+
+
     private ArrayList<Playlist> allPlaylists;
+    private ArrayList<Playlist> topPlaylists;
 
     private PlaylistManager pManager;
     private PlaylistManager pManager2;
@@ -190,6 +194,13 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         adapter2.setPlaylistCallback(this);
         allPlaylistRecycle.setLayoutManager(manager2);
         allPlaylistRecycle.setAdapter(adapter2);
+
+        topPlaylistsRecycle = (RecyclerView) findViewById(R.id.topPlayedPlaylists);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        PlaylistAdapter adapter = new PlaylistAdapter(this, null);
+        adapter2.setPlaylistCallback(this);
+        topPlaylistsRecycle.setLayoutManager(manager);
+        topPlaylistsRecycle.setAdapter(adapter);
 
 
         mes= findViewById(R.id.mesButton);
@@ -341,6 +352,24 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     @Override
     public void onAllPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopRecieved(List<Playlist> topPlaylists) {
+        this.topPlaylists = (ArrayList) topPlaylists;
+        PlaylistAdapter p2 = new PlaylistAdapter(this, this.topPlaylists);
+        p2.setPlaylistCallback(this);
+        topPlaylistsRecycle.setAdapter(p2);
+    }
+
+    @Override
+    public void onNoTopPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopPlaylistsFailure(Throwable throwable) {
 
     }
 
