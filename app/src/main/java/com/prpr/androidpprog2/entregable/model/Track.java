@@ -133,4 +133,8 @@ public class Track implements Serializable {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    public void print(){
+        System.out.println("ID: " + this.id + "\nName: " + this.name + "\nUser: " + this.getUser().getLogin());
+    }
 }

@@ -121,4 +121,8 @@ public class Playlist implements Serializable {
     public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
     }
+
+    public void print(){
+        System.out.println("ID: " + this.id + "\nName: " + this.name + "\nUser: " + this.getUserLogin());
+    }
 }

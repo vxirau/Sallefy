@@ -50,7 +50,10 @@
                 android:inputType="text"
                 android:drawableEnd="@drawable/ic_search_green"
                 android:textColorHint="#70353535"
-                android:layout_marginHorizontal="40dp"/>
+                android:layout_marginHorizontal="40dp"
+                app:actionViewClass="android.support.v7.widget.SearchView"
+                app:showAsAction="always"/>
+
 
         </LinearLayout>
 
