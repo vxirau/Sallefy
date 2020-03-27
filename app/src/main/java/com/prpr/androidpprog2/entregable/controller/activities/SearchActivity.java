@@ -351,5 +351,10 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
     public void onTopPlaylistsFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
 }
 
