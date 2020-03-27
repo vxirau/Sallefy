@@ -102,6 +102,88 @@
         </Button>
 
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+        <SeekBar
+            android:id="@+id/dynamic_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#21D760"
+            android:progressTint="@color/colorWhite"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="87dp"
+            android:colorControlActivated="@drawable/ic_seekbar_scrubber"
+            android:progressBackgroundTint="#21D760" />
+
+        <Button
+            android:id="@+id/playButton"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="55dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/ic_play_white"
+            android:layout_alignParentRight="true"
+            android:visibility="visible"/>
+        <Button
+            android:id="@+id/playPause"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="55dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/ic_pause_white"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:id="@+id/reproductor"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/fons_reproductor"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="35dp"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:textAlignment="center"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/dynamic_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:text="Probandoo"/>
+            <TextView
+                android:id="@+id/dynamic_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp"
+                android:alpha = ".56"
+                android:paddingBottom="7dp"
+                android:text="Probandoo Artista"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/menu"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:background="#2A2D31"
+            app:menu="@menu/navigation"
+            app:itemBackground="@color/menuColor"
+            app:itemIconTint="@drawable/menu_selector"
+            app:itemIconSize= "30dp"
+            app:labelVisibilityMode="unlabeled" />
+    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

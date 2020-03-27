@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,34 +18,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.activities.AddSongsBunchActivity;
+import com.prpr.androidpprog2.entregable.controller.callbacks.BunchTrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.ViewHolder> {
+public class BunchTrackListAdapter extends RecyclerView.Adapter<BunchTrackListAdapter.ViewHolder> {
 
     private static final String TAG = "TrackListAdapter";
     private ArrayList<Track> mTracks;
     private Context mContext;
-    private TrackListCallback mCallback;
-    private Playlist plylst;
+    private BunchTrackListCallback mCallback;
 
-    public TrackListAdapter(TrackListCallback callback, Context context, ArrayList<Track> tracks, Playlist playlist) {
+    public BunchTrackListAdapter(BunchTrackListCallback callback, Context context, ArrayList<Track> tracks) {
         mTracks = tracks;
         mContext = context;
         mCallback = callback;
-        this.plylst = playlist;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: called.");
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.track_item, parent, false);
-        return new TrackListAdapter.ViewHolder(itemView);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_song_item, parent, false);
+        return new BunchTrackListAdapter.ViewHolder(itemView);
     }
 
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
@@ -52,33 +54,25 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
                 mCallback.onTrackSelected(position);
             }
         });
-        holder.addSong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallback.onTrackAddSelected(position, mTracks, plylst);
+
+        holder.radio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                    if(isChecked){
+                        mCallback.onRadioRemove(mTracks.get(position));
+                    }else{
+                        mCallback.onRadioSelected(mTracks.get(position));
+                    }
+                }
             }
-        });
+        );
         holder.tvTitle.setText(mTracks.get(position).getName());
         holder.tvAuthor.setText(mTracks.get(position).getUserLogin());
-        String segons ="";
-        if(mTracks.get(position).getDuration()!=null){
-            if(mTracks.get(position).getDuration()%60<10){
-                segons = "0" + mTracks.get(position).getDuration()%60;
-            }else{
-                segons = String.valueOf(mTracks.get(position).getDuration()%60);
-            }
-            holder.trackLength.setText(mTracks.get(position).getDuration()/60 + ":" + segons);
-        }else{
-            holder.trackLength.setText("00:00");
-        }
-
 
         if (mTracks.get(position).getThumbnail() != null) {
-            Glide.with(mContext)
-                    .asBitmap()
-                    .placeholder(R.drawable.ic_audiotrack)
-                    .load(mTracks.get(position).getThumbnail())
-                    .into(holder.ivPicture);
+            Picasso.get().load(mTracks.get(position).getThumbnail()).into(holder.ivPicture);
+        }else{
+            Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(holder.ivPicture);
         }
     }
 
@@ -96,19 +90,17 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
 
         LinearLayout mLayout;
         TextView tvTitle;
-        Button addSong;
         TextView tvAuthor;
-        TextView trackLength;
         ImageView ivPicture;
+        CheckBox radio;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            addSong = itemView.findViewById(R.id.addSong);
-            trackLength = itemView.findViewById(R.id.track_duratio);
             mLayout = itemView.findViewById(R.id.track_item_layout);
             tvTitle = (TextView) itemView.findViewById(R.id.track_title);
             tvAuthor = (TextView) itemView.findViewById(R.id.track_author);
             ivPicture = (ImageView) itemView.findViewById(R.id.track_img);
+            radio = itemView.findViewById(R.id.radioButton);
         }
     }
 }

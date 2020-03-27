@@ -11,6 +11,7 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.cloudinary.utils.ObjectUtils;
+import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
@@ -77,20 +78,26 @@ public class CloudinaryManager extends AppCompatActivity {
                 .dispatch();
     }
 
-    public synchronized void getThumbnails() throws IOException {
+    public synchronized Map getThumbnails(String username) throws Exception {
 
-        Map<String, Object> options = new HashMap<>();
-        options.put("public_id", "cover");
-        options.put("folder", "sallefy/covers/victorxirau");
-
-       MediaManager.get().getCloudinary().uploader().generateSprite("cover", options);
-
+        Map m = MediaManager.get().getCloudinary().search().expression(("folder=sallefy/covers/"+username)).execute();
+        System.out.println("he entrat a thumbnails");
+        return m;
     }
 
-    public synchronized void createFolder(String userName) throws IOException {
-        MediaManager.get().getCloudinary().uploader().upload("/Usuarios/martiejarquegalindo/Descargas/elfornet-logo.jpg",
-                ObjectUtils.asMap("public_id", "sallefy/covers/" + userName));
+    public synchronized void createFolder(String username) {
 
+        Map<String, Object> options = new HashMap<>();
+        options.put("public_id", "upload");
+        options.put("folder", "sallefy/covers/" + username);
+        options.put("resource_type", "image");
+
+        String m = MediaManager.get().upload(R.drawable.add_green_button)
+                .unsigned("upload")
+                .options(options)
+                .dispatch();
+
+        System.out.println(m);
     }
 
     private class CloudinaryCallback implements UploadCallback {
