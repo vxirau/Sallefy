@@ -26,7 +26,16 @@ public class PlaylistManager {
     private Context mContext;
     private PlaylistService mPlaylistService;
     private Retrofit mRetrofit;
+    private static PlaylistManager sPlaylistManager;
 
+
+    public static PlaylistManager getInstance (Context context) {
+        if (sPlaylistManager == null) {
+            sPlaylistManager = new PlaylistManager(context);
+        }
+
+        return sPlaylistManager;
+    }
 
     public PlaylistManager(Context context) {
         mContext = context;
