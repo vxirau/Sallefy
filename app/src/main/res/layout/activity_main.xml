@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/top_genres"
+                android:text="@string/new_artists"
                 android:textColor="@color/colorWhite"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
