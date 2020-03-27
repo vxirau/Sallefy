@@ -26,6 +26,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 
 public class RegisterActivity extends AppCompatActivity implements UserCallback {
@@ -109,6 +110,16 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
     @Override
     public void onEmailUpdated(User user) {
+
+    }
+
+    @Override
+    public void onTopUsersRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onUserSelected(User user) {
 
     }
 

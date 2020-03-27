@@ -54,9 +54,9 @@
     <string name="home">Home</string>
     <string name="Search">Search</string>
     <string name="profile">My Profile</string>
-    <string name="top_played">Top Played Playlists</string>
-    <string name="discover_artists">Discover artists</string>
-    <string name="top_genres">Top Genres</string>
+    <string name="top_played">Popular playlists</string>
+    <string name="discover_artists">Popular artists</string>
+    <string name="new_artists">New artists</string>
     <string name="random">Shuffle</string>
     <string name="addsongs_title">Add Songs</string>
     <string name="backText">Back</string>
@@ -103,7 +103,7 @@
     <string name="create_new_song">Create new song</string>
     <string name="genere_electronica">ELECTRONICA</string>
     <string name="genere_default_name">Genere</string>
-    <string name="create_new_song">Add new song</string>
+    <string name="add_new_song">Add new song</string>
     <string name="settings">Settings</string>
     <string name="settings_change_username">Update Username</string>
     <string name="settings_change_email">Update Email</string>

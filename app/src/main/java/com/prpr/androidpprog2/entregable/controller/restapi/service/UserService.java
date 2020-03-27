@@ -22,6 +22,13 @@ public interface UserService {
     @GET("users")
     Call<List<User>> getAllUsers(@Header("Authorization") String token);
 
+    @GET("users?notFollowing=true&popular=true&size=10")
+    Call<List<User>> getTopUsers(@Header("Authorization") String token);
+
+    @GET("users?notFollowing=true&popular=false&recent=true&size=10")
+    Call<List<User>> getNewUsers(@Header("Authorization") String token);
+
+
     @POST("register")
     Call<ResponseBody> registerUser(@Body UserRegister user);
 

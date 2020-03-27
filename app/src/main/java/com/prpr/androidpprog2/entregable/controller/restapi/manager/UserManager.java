@@ -14,6 +14,7 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -136,6 +137,54 @@ public class UserManager {
             }
         });
 
+    }
+
+    public synchronized void getTopUsers (final UserCallback userCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<List<User>> call = mService.getTopUsers( "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onTopUsersRecieved(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    userCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
+    public synchronized void getNewUsers (final UserCallback userCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<List<User>> call = mService.getNewUsers( "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onTopUsersRecieved(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    userCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
     }
 
 

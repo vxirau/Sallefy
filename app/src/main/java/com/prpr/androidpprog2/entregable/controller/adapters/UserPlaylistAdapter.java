@@ -40,7 +40,6 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: called.");
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_playlist_item, parent, false);
         return new UserPlaylistAdapter.ViewHolder(itemView);
     }

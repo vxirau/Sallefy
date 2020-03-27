@@ -1,25 +1,17 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
-import android.app.ActivityManager;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.renderscript.ScriptGroup;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -28,19 +20,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
+import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
@@ -48,7 +42,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PlaylistCallback {
+public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback {
 
     private FloatingActionButton mes;
     private FloatingActionButton btnNewPlaylist;
@@ -68,13 +62,16 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
 
     private RecyclerView allPlaylistRecycle;
     private RecyclerView topPlaylistsRecycle;
+    private RecyclerView topUsersReycle;
 
 
     private ArrayList<Playlist> allPlaylists;
     private ArrayList<Playlist> topPlaylists;
+    private ArrayList<User> topUsers;
+
 
     private PlaylistManager pManager;
-    private PlaylistManager pManager2;
+    private UserManager usrManager;
 
     private ReproductorService serv;
     private boolean servidorVinculat=false;
@@ -103,10 +100,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         UserToken userToken = Session.getInstance(this).getUserToken();
         String usertkn = userToken.getIdToken();
         pManager = new PlaylistManager(this);
-
+        usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
         pManager.getTopPlaylists(this);
-
+        usrManager.getTopUsers(this);
 
     }
 
@@ -201,6 +198,13 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         adapter2.setPlaylistCallback(this);
         topPlaylistsRecycle.setLayoutManager(manager);
         topPlaylistsRecycle.setAdapter(adapter);
+
+        topUsersReycle = (RecyclerView) findViewById(R.id.artists_descobrir);
+        LinearLayoutManager manager3 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        UserAdapter adapter3 = new UserAdapter(this, null);
+        adapter3.setUserCallback(this);
+        topUsersReycle.setLayoutManager(manager3);
+        topUsersReycle.setAdapter(adapter3);
 
 
         mes= findViewById(R.id.mesButton);
@@ -374,4 +378,60 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
     }
 
 
+    @Override
+    public void onLoginSuccess(UserToken userToken) {
+
+    }
+
+    @Override
+    public void onLoginFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+
+    }
+
+    @Override
+    public void onRegisterFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserInfoReceived(User userData) {
+
+    }
+
+    @Override
+    public void onUsernameUpdated(User user) {
+
+    }
+
+    @Override
+    public void onEmailUpdated(User user) {
+
+    }
+
+    @Override
+    public void onTopUsersRecieved(List<User> body) {
+        this.topUsers = (ArrayList) body;
+        //this.topUsers.remove(this.topUsers.size()-1);
+        UserAdapter p3 = new UserAdapter(this, this.topUsers);
+        p3.setUserCallback(this);
+        topUsersReycle.setAdapter(p3);
+    }
+
+    @Override
+    public void onUserSelected(User user) {
+        Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+        intent.putExtra("User", user);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
+
+    }
 }

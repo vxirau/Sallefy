@@ -23,6 +23,8 @@ import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
+import java.util.List;
+
 
 public class SettingsActivity extends AppCompatActivity implements UserCallback {
 
@@ -131,6 +133,16 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback 
     @Override
     public void onEmailUpdated(User user) {
         this.myUser.setEmail(user.getEmail());
+    }
+
+    @Override
+    public void onTopUsersRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onUserSelected(User user) {
+
     }
 
     @Override
