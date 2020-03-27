@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface PlaylistService {
 
@@ -21,6 +22,9 @@ public interface PlaylistService {
 
     @GET("playlists")
     Call<List<Playlist>> getAllPlaylists(@Header("Authorization") String token);
+
+    @GET("playlists?popular={popular}&size=10")
+    Call<List<Playlist>> getTopPlaylists(@Path("popular") Boolean popular, @Header("Authorization") String token);
 
     @PUT("playlists")
     Call<Playlist> addTrackPlaylist(@Body Playlist playlist, @Header("Authorization") String token);

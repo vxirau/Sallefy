@@ -1,48 +1,32 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
-
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import android.os.IBinder;
 import android.os.StrictMode;
-import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.telecom.Call;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -51,7 +35,6 @@ import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +52,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private LinearLayout playing;
     private Button back2Main;
     private Button shuffle;
+    private Button follow;
     private Button addBunch;
     private SeekBar mseek;
 
@@ -161,6 +145,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         TrackListAdapter adapter = new TrackListAdapter(this, this, null, playlst);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
+
+        follow = findViewById(R.id.playlistSeguirBoto);
+        follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         plyName = findViewById(R.id.playlistName);
         plyAuthor = findViewById(R.id.playlistAuthor);

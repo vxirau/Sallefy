@@ -120,6 +120,33 @@ public class PlaylistManager {
         });
     }
 
+    public synchronized void getTopPlaylists(final PlaylistCallback playlistCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        String usertkn = userToken.getIdToken();
+
+        Call<List<Playlist>> call = mPlaylistService.getTopPlaylists(true,"Bearer " + usertkn);
+        call.enqueue(new Callback<List<Playlist>>() {
+            @Override
+            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    playlistCallback.onTopRecieved(response.body());
+                } else {
+                    Log.d(TAG, "Error Not Successful: " + code);
+                    playlistCallback.onAllNoPlaylists(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                playlistCallback.onAllPlaylistFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
+
     public void updatePlaylist(Playlist playlist, final PlaylistCallback playlistCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 

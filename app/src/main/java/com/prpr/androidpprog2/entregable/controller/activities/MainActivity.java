@@ -99,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback 
         UserToken userToken = Session.getInstance(this).getUserToken();
         String usertkn = userToken.getIdToken();
         pManager = new PlaylistManager(this);
-        //pManager.getAllMyPlaylists(this);
-        //pManager2 = new PlaylistManager(this);
+
         pManager.getAllPlaylists(this);
+        pManager.getTopPlaylists(this);
 
 
     }
