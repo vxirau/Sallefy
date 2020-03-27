@@ -11,24 +11,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_width="120dp"
             android:layout_height="120dp"
             app:cardCornerRadius="8dp"
-            android:layout_margin="5dp"
             android:elevation="10dp">
+
             <ImageButton
                 android:id="@+id/playlistImatge"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
-                android:scaleType="centerCrop"
                 android:background="@android:color/transparent"
-                />
+                android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
 
