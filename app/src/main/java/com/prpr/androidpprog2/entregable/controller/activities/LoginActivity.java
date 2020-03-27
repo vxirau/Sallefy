@@ -64,6 +64,9 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
             }
         });
         btnLogin.setEnabled(true);
+
+        etLogin.setText("ernemac");
+        etPassword.setText("contrasenya");
     }
 
     private void doLogin(String username, String userpassword) {

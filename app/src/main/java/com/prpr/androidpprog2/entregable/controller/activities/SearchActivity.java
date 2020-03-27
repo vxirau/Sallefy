@@ -180,9 +180,9 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
         if (mTracksOnView.size() > 0) {
             mRecyclerViewTracks.setAdapter(new TrackListAdapter(this, this, mTracksOnView, null));
             mRecyclerViewTracks.setVisibility(View.VISIBLE);
-        } else {
+        } /*else {
             mRecyclerViewTracks.setVisibility(View.GONE);
-        }
+        }*/
 
         //PLAYLISTS
         mPlaylistOnView.clear();
@@ -194,16 +194,19 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
         if (mPlaylistOnView.size() > 0) {
             mRecyclerViewPlaylist.setAdapter(new PlaylistAdapter(this, mPlaylistOnView));
             mRecyclerViewPlaylist.setVisibility(View.VISIBLE);
-        } else {
+        } /*else {
             mRecyclerViewPlaylist.setVisibility(View.GONE);
-        }
+        }*/
 
         //BOTH
+        /*
         if (mPlaylistOnView.size() < 1 && mTracksOnView.size() < 1) {
             mBothLayout.setVisibility(View.GONE);
         } else {
             mBothLayout.setVisibility(View.VISIBLE);
         }
+
+         */
 
         //SOUTS DE TRACKS
         System.out.println("TRACKS ON VIEW");
