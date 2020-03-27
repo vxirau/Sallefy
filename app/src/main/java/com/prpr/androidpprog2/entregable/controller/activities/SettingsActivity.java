@@ -145,6 +145,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback 
 
     }
 
+
     @Override
     public void onFailure(Throwable throwable) {
 

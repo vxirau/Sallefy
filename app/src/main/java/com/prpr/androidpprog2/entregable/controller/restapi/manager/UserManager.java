@@ -3,9 +3,11 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
+import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserLogin;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
@@ -163,31 +165,6 @@ public class UserManager {
         });
     }
 
-    public synchronized void getNewUsers (final UserCallback userCallback) {
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<List<User>> call = mService.getNewUsers( "Bearer " + userToken.getIdToken());
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-
-                int code = response.code();
-                if (response.isSuccessful()) {
-                    userCallback.onTopUsersRecieved(response.body());
-                } else {
-                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
-                    userCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                Log.d(TAG, "Error: " + t.getMessage());
-                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
-            }
-        });
-    }
-
-
     public synchronized void getUserData (String login, final UserCallback userCallback, UserToken userToken) {
         //UserToken userToken = Session.getInstance(mContext).getUserToken();
         Call<User> call = mService.getUserById(login, "Bearer " + userToken.getIdToken());
@@ -235,7 +212,6 @@ public class UserManager {
             }
         });
     }
-
 
 
 }

@@ -41,6 +41,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback {
 
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     Animation fabOpen, fabClose, rotateForward, rotateBackward;
     boolean isOpen = false;
     private TextView trackTitle;
+    private TextView followingTxt;
     private TextView trackAuthor;
     private SeekBar mSeekBar;
     private Button play;
@@ -57,17 +59,17 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private ImageView im;
 
 
-    private RecyclerView playlists_descobrir;
-    private ArrayList<Playlist> discover;
-
     private RecyclerView allPlaylistRecycle;
     private RecyclerView topPlaylistsRecycle;
     private RecyclerView topUsersReycle;
+    private RecyclerView folloingPlaylistRecycle;
 
 
     private ArrayList<Playlist> allPlaylists;
     private ArrayList<Playlist> topPlaylists;
     private ArrayList<User> topUsers;
+    private ArrayList<Playlist> followingPlaylists;
+    private ArrayList<Playlist> discover;
 
 
     private PlaylistManager pManager;
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager.getAllPlaylists(this);
         pManager.getTopPlaylists(this);
         usrManager.getTopUsers(this);
+        pManager.getFollowingPlaylists(this);
 
     }
 
@@ -160,6 +163,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             }
         });
 
+
+        followingTxt= findViewById(R.id.noFollow);
+
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
         play.bringToFront();
@@ -205,6 +211,13 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         adapter3.setUserCallback(this);
         topUsersReycle.setLayoutManager(manager3);
         topUsersReycle.setAdapter(adapter3);
+
+        folloingPlaylistRecycle = (RecyclerView) findViewById(R.id.followingPlaylists);
+        LinearLayoutManager manager4 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        PlaylistAdapter adapter4 = new PlaylistAdapter(this, null);
+        adapter4.setPlaylistCallback(this);
+        folloingPlaylistRecycle.setLayoutManager(manager4);
+        folloingPlaylistRecycle.setAdapter(adapter4);
 
 
         mes= findViewById(R.id.mesButton);
@@ -377,6 +390,20 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+        if(body.size()==0){
+            folloingPlaylistRecycle.setVisibility(View.GONE);
+            followingTxt.setVisibility(View.VISIBLE);
+        }else{
+            this.followingPlaylists = (ArrayList) body;
+            PlaylistAdapter p2 = new PlaylistAdapter(this, this.followingPlaylists);
+            p2.setPlaylistCallback(this);
+            folloingPlaylistRecycle.setAdapter(p2);
+        }
+
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
@@ -416,7 +443,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     @Override
     public void onTopUsersRecieved(List<User> body) {
         this.topUsers = (ArrayList) body;
-        //this.topUsers.remove(this.topUsers.size()-1);
         UserAdapter p3 = new UserAdapter(this, this.topUsers);
         p3.setUserCallback(this);
         topUsersReycle.setAdapter(p3);
@@ -429,6 +455,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
+
 
     @Override
     public void onFailure(Throwable throwable) {

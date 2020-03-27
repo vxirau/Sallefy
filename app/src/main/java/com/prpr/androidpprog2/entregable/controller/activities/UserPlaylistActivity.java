@@ -223,4 +223,9 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
     public void onTopPlaylistsFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
 }

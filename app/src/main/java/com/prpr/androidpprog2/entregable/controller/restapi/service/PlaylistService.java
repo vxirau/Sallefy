@@ -28,4 +28,8 @@ public interface PlaylistService {
 
     @PUT("playlists")
     Call<Playlist> addTrackPlaylist(@Body Playlist playlist, @Header("Authorization") String token);
+
+    @GET("me/playlists/following")
+    Call<List<Playlist>> getFollowedPlaylists(@Header("Authorization") String token);
+
 }

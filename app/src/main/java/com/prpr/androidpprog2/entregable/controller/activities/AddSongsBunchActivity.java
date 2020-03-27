@@ -229,4 +229,9 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     public void onTopPlaylistsFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
 }

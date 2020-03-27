@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.PlaylistService;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -184,4 +185,32 @@ public class PlaylistManager {
         });
 
     }
+
+
+
+    public synchronized void getFollowingPlaylists (final PlaylistCallback playlistCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<List<Playlist>> call = mPlaylistService.getFollowedPlaylists( "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<List<Playlist>>() {
+            @Override
+            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    playlistCallback.onFollowingRecieved(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    playlistCallback.onNoTopPlaylists(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                playlistCallback.onNoTopPlaylists(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
+
 }

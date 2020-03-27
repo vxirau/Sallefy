@@ -123,6 +123,8 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
     }
 
+
+
     /*@Override
     public void onUsernameUpdated(User user) {
 

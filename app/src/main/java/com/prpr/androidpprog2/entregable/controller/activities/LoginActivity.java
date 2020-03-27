@@ -126,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     }
 
+
     /*@Override
     public void onUsernameUpdated(User user) {
 

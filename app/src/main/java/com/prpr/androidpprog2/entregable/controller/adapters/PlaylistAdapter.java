@@ -2,6 +2,7 @@ package com.prpr.androidpprog2.entregable.controller.adapters;
 
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,9 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             }
         });
         holder.nomPlaylist.setText(playlist.get(position).getName());
+        holder.nomPlaylist.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        holder.nomPlaylist.setSelected(true);
+        holder.nomPlaylist.setSingleLine(true);
         int size = playlist.get(position).getTracks() != null ? playlist.get(position).getTracks().size() : 0 ;
         holder.totalCancons.setText( size + " cançons");
 
