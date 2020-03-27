@@ -30,6 +30,7 @@
 
                 <TextView
                     android:id="@+id/user_playlists_title"
+                    android:textColor="@color/colorWhite"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
@@ -46,6 +47,7 @@
                     android:layout_gravity="center"
                     android:paddingLeft="25dp"
                     android:clickable="true"
+                    android:textColor="@color/colorWhite"
                     android:textSize="20dp"
                     android:layout_toRightOf="@+id/user_playlists_title"
                     android:text="@string/my_songs">
@@ -58,6 +60,7 @@
                     android:layout_gravity="right"
                     android:paddingLeft="25dp"
                     android:clickable="true"
+                    android:textColor="@color/colorWhite"
                     android:layout_toRightOf="@+id/user_my_songs_title"
                     android:textSize="20dp"
                     android:text="@string/statistics">
@@ -146,6 +149,7 @@
                 android:text="@string/create_new_playlist"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
+                android:textColor="@color/colorWhite"
                 android:clickable="true"
                 >
 

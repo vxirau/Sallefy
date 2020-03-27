@@ -48,6 +48,9 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
     private TextView tvGoToStatistics;
     private TextView tvCreateNewPlaylist;
 
+    private TextView trackTitle;
+    private TextView trackAuthor;
+
     private RecyclerView mRecyclerView;
     private ArrayList<Playlist> myPlaylists;
 
@@ -132,15 +135,13 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
             }
         });
 
+
         mRecyclerView = (RecyclerView) findViewById(R.id.userPlaylistsRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         PlaylistAdapter adapter = new PlaylistAdapter(this, null);
-        //adapter.setPlaylistCallback((PlaylistCallback) this);
+        adapter.setPlaylistCallback(this);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
-
-
-
     }
 
 
@@ -156,12 +157,10 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
-        for(int i = 0; i < playlists.size(); i++){
-            this.myPlaylists.add(playlists.get(i));
-            PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, this.myPlaylists);
-            playlistAdapter.setPlaylistCallback(this);
-            mRecyclerView.setAdapter(playlistAdapter);
-        }
+        this.myPlaylists = (ArrayList) playlists;
+        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, this.myPlaylists);
+        playlistAdapter.setPlaylistCallback(this);
+        mRecyclerView.setAdapter(playlistAdapter);
 
     }
 
