@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.PlaylistListCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
@@ -138,7 +139,7 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
 
         mRecyclerView = (RecyclerView) findViewById(R.id.userPlaylistsRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        PlaylistAdapter adapter = new PlaylistAdapter(this, null);
+        UserPlaylistAdapter adapter = new UserPlaylistAdapter(this, null);
         adapter.setPlaylistCallback(this);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
@@ -158,7 +159,7 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
         this.myPlaylists = (ArrayList) playlists;
-        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, this.myPlaylists);
+        UserPlaylistAdapter playlistAdapter = new UserPlaylistAdapter(this, this.myPlaylists);
         playlistAdapter.setPlaylistCallback(this);
         mRecyclerView.setAdapter(playlistAdapter);
 

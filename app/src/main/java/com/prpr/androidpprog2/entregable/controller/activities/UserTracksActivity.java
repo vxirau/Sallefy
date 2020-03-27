@@ -19,10 +19,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
@@ -30,7 +34,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserTracksActivity extends AppCompatActivity {
+public class UserTracksActivity extends AppCompatActivity implements TrackCallback, TrackListCallback {
 
     private static final String TAG = "UserPlaylistActivity";
 
@@ -42,12 +46,19 @@ public class UserTracksActivity extends AppCompatActivity {
     private TextView tvGoToStatistics;
     private TextView tvUploadNewSong;
 
+    private TrackManager trackManager;
+
     private RecyclerView mRecyclerView;
+
+    private ArrayList<Track> myTracks;
+    private Playlist myPlaylist;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_songs);
         initInfo();
+        trackManager = new TrackManager(this);
+        trackManager.getOwnTracks(this);
     }
 
     void initInfo(){
@@ -121,8 +132,54 @@ public class UserTracksActivity extends AppCompatActivity {
             }
         });
 
-
+        mRecyclerView = (RecyclerView) findViewById(R.id.userPlaylistsRecyclerview);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        TrackListAdapter adapter = new TrackListAdapter(this, this, myTracks, myPlaylist);
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setAdapter(adapter);
 
     }
 
+
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPersonalTracksReceived(List<Track> tracks) {
+        this.myTracks = (ArrayList) tracks;
+        TrackListAdapter trackListAdapter = new TrackListAdapter(this, this, this.myTracks, this.myPlaylist);
+        mRecyclerView.setAdapter(trackListAdapter);
+    }
+
+    @Override
+    public void onUserTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onCreateTrack(Track t) {
+
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackSelected(int index) {
+
+    }
+
+    @Override
+    public void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist playlist) {
+
+    }
 }
