@@ -35,7 +35,7 @@
         <activity android:name=".controller.activities.SearchActivity"/>
         <activity android:name=".controller.activities.UserPlaylistActivity"/>
         <activity android:name=".controller.activities.SettingsActivity"/>
-
+        <activity android:name=".controller.activities.UserTracksActivity"/>
         <service android:name=".controller.restapi.service.ReproductorService"/>
 
     </application>

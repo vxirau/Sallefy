@@ -41,7 +41,7 @@ public class UserManager {
         return sUserManager;
     }
 
-    private UserManager(Context cntxt) {
+    public UserManager(Context cntxt) {
         mContext = cntxt;
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(Constants.NETWORK.BASE_URL)
@@ -81,7 +81,7 @@ public class UserManager {
     }
 
 
-    /*public synchronized void updateUsername(User user, final UserCallback userCallback){
+    public synchronized void updateUsername(User user, final UserCallback userCallback){
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
         Call<User> call = mService.updateUsername(user, "Bearer " + userToken.getIdToken());
@@ -136,7 +136,7 @@ public class UserManager {
             }
         });
 
-    }*/
+    }
 
 
     public synchronized void getUserData (String login, final UserCallback userCallback, UserToken userToken) {

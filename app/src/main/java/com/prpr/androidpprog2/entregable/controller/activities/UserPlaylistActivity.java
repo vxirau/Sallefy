@@ -19,6 +19,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.PlaylistListCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -47,12 +49,20 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
     private TextView tvGoToStatistics;
     private TextView tvCreateNewPlaylist;
 
+    private TextView trackTitle;
+    private TextView trackAuthor;
+
     private RecyclerView mRecyclerView;
+    private ArrayList<Playlist> myPlaylists;
+
+    private PlaylistManager playlistManager;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_playlists);
         initInfo();
+        playlistManager = new PlaylistManager(this);
+        playlistManager.getAllMyPlaylists(this);
     }
 
     void initInfo(){
@@ -125,9 +135,22 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
 
             }
         });
+        //TODO --> Filter Button Implementation
+        btnFilterPlaylists = findViewById(R.id.filter_user_playlists);
+        btnFilterPlaylists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //doFilterPlaylists();
+            }
+        });
 
 
-
+        mRecyclerView = (RecyclerView) findViewById(R.id.userPlaylistsRecyclerview);
+        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        UserPlaylistAdapter adapter = new UserPlaylistAdapter(this, null);
+        adapter.setPlaylistCallback(this);
+        mRecyclerView.setLayoutManager(manager);
+        mRecyclerView.setAdapter(adapter);
     }
 
 
@@ -144,6 +167,10 @@ public class UserPlaylistActivity extends AppCompatActivity implements PlaylistC
 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
+        this.myPlaylists = (ArrayList) playlists;
+        UserPlaylistAdapter playlistAdapter = new UserPlaylistAdapter(this, this.myPlaylists);
+        playlistAdapter.setPlaylistCallback(this);
+        mRecyclerView.setAdapter(playlistAdapter);
 
     }
 

@@ -60,6 +60,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_change_username"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@color/colorWhite"
+
             >
 
         </Button>
@@ -90,6 +94,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_change_email"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@color/colorWhite"
             >
 
         </Button>

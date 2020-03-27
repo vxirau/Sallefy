@@ -11,6 +11,6 @@ public interface UserCallback extends FailureCallback {
     void onRegisterSuccess() ;
     void onRegisterFailure(Throwable throwable);
     void onUserInfoReceived(User userData);
-    //void onUsernameUpdated(User user);
-    //void onEmailUpdated(User user);
+    void onUsernameUpdated(User user);
+    void onEmailUpdated(User user);
 }
