@@ -14,8 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-
+        android:usesCleartextTraffic="true"
+        android:windowSoftInputMode="adjustPan"
+        >
 
         <activity android:name=".controller.activities.LoginActivity">
             <intent-filter>
@@ -33,8 +34,7 @@
         <activity android:name=".controller.activities.AddSongsBunchActivity"/>
         <activity android:name=".controller.activities.InfoTrackActivity"/>
         <activity android:name=".controller.activities.InfoArtistaActivity"/>
-        <activity android:name=".controller.activities.SearchActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".controller.activities.SearchActivity"/>
         <activity android:name=".controller.activities.SettingsActivity"/>
         <activity android:name=".controller.activities.UserMainActivity"/>
         <activity android:name=".controller.activities.UserBodyActivity"/>
