@@ -2,6 +2,7 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,6 +40,8 @@ public class InfoTrackActivity extends AppCompatActivity {
     private ImageButton playlist;
     private TextView text_playlist;
     private LinearLayout layoutPlaylist;
+
+    private Button cancel;
 
     private Track trck;
 
@@ -102,6 +105,7 @@ public class InfoTrackActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
+                //TODO: Falta putExtra
                 startActivity(intent);
             }
         });
@@ -113,8 +117,18 @@ public class InfoTrackActivity extends AppCompatActivity {
         layoutPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO: Falta putExtra
                 Intent intent = new Intent(getApplicationContext(), Add2PlaylistActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        cancel= findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.nothing,R.anim.nothing);
             }
         });
 

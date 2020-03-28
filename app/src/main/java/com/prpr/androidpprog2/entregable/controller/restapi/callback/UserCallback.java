@@ -17,5 +17,7 @@ public interface UserCallback extends FailureCallback {
     void onEmailUpdated(User user);
     void onTopUsersRecieved(List<User> body);
     void onUserSelected(User user);
+    void onAllUsersSuccess(List<User> users);
+    void onAllUsersFail(Throwable throwable);
 
 }

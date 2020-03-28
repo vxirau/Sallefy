@@ -145,6 +145,16 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback 
 
     }
 
+    @Override
+    public void onAllUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onAllUsersFail(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onFailure(Throwable throwable) {
