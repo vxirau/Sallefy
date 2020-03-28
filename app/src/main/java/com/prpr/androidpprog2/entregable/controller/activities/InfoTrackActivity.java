@@ -4,14 +4,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 
@@ -23,17 +26,23 @@ public class InfoTrackActivity extends AppCompatActivity {
 
     private ImageButton favorites;
     private TextView text_favorites;
+    private LinearLayout layoutFav;
 
     private ImageButton edit;
     private TextView text_edit;
+    private LinearLayout layoutedit;
 
     private ImageButton artist;
     private TextView text_artist;
+    private LinearLayout layoutArtist;
 
     private ImageButton playlist;
     private TextView text_playlist;
+    private LinearLayout layoutPlaylist;
 
     private Track trck;
+
+    private ErrorDialog er;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -44,6 +53,7 @@ public class InfoTrackActivity extends AppCompatActivity {
     }
 
     private void initViews(){
+        er = new ErrorDialog(this);
         songCover = (ImageView) findViewById(R.id.SongCover);
         songName = (TextView) findViewById(R.id.SongName);
         nomArtista = (TextView) findViewById(R.id.ArtistName);
@@ -59,7 +69,9 @@ public class InfoTrackActivity extends AppCompatActivity {
 
         //Fer crida a l'Api, guardar a playlist de favoritos de usuari
         favorites = (ImageButton) findViewById(R.id.favoritos);
-        favorites.setOnClickListener(new View.OnClickListener() {
+        text_favorites = findViewById(R.id.text_favoritos);
+        layoutFav = findViewById(R.id.layoutFavoritos);
+        layoutFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -68,10 +80,25 @@ public class InfoTrackActivity extends AppCompatActivity {
 
 
         edit= (ImageButton) findViewById(R.id.edit);
+        text_edit = findViewById(R.id.text_edit);
+        layoutedit = findViewById(R.id.layoutedit);
+        layoutedit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())){
+
+                }else{
+                    er.showErrorDialog("This track is not yours to edit");
+                }
+            }
+        });
+
 
 
         artist = (ImageButton) findViewById(R.id.user);
-        artist.setOnClickListener(new View.OnClickListener() {
+        text_artist = findViewById(R.id.text_user);
+        layoutArtist = findViewById(R.id.layoutUser);
+        layoutArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
@@ -81,7 +108,9 @@ public class InfoTrackActivity extends AppCompatActivity {
 
 
         playlist = (ImageButton) findViewById(R.id.playlist);
-        playlist.setOnClickListener(new View.OnClickListener() {
+        text_playlist = findViewById(R.id.text_playlist);
+        layoutPlaylist = findViewById(R.id.layoutPlaylist);
+        layoutPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Add2PlaylistActivity.class);
