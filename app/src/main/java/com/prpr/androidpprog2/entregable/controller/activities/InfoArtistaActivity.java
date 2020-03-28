@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.PlaylistListCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
@@ -47,7 +49,9 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         initViews();
         TrackManager tmanager = new TrackManager(this);
         tmanager.getUserTracks(artist.getLogin(),this);
-
+        /*PlaylistManager pmanager = new PlaylistManager(this);
+        pmanager.getAllMyPlaylists(this);
+        */
     }
 
     private void initViews(){
@@ -56,10 +60,9 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         back.setOnClickListener(new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            //controlar des d'on vens
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-            }
+            finish();
+            overridePendingTransition(R.anim.nothing,R.anim.nothing);
+        }
         });
 
         name = findViewById(R.id.userName);
@@ -72,13 +75,13 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         topSongsRecycle.setLayoutManager(man);
         //topSongsRecycle.setAdapter();
 
+
         playlistByArtistRecycle = (RecyclerView) findViewById(R.id.topPlayedPlaylists);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        //adapter
+        PlaylistAdapter pladapter = new PlaylistAdapter(this,null);
         playlistByArtistRecycle.setLayoutManager(manager);
-        //playlistByArtistRecycle.setAdapter();
-
-         */
+        playlistByArtistRecycle.setAdapter(pladapter);
+        */
 
         allSongsRecycle = (RecyclerView) findViewById(R.id.allSongsRecycle);
         LinearLayoutManager manager2 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
@@ -110,14 +113,14 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     @Override
     public void onPersonalTracksReceived(List<Track> tracks) {
-        this.artTracks = (ArrayList) tracks;
-        TrackListAdapter trackListAdapter = new TrackListAdapter(this, this, this.artTracks, this.artPlaylist);
-        allSongsRecycle.setAdapter(trackListAdapter);
+
     }
 
     @Override
     public void onUserTracksReceived(List<Track> tracks) {
-
+        this.artTracks = (ArrayList) tracks;
+        TrackListAdapter trackListAdapter = new TrackListAdapter(this, this, this.artTracks, this.artPlaylist);
+        allSongsRecycle.setAdapter(trackListAdapter);
     }
 
     @Override
@@ -129,4 +132,5 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     public void onFailure(Throwable throwable) {
 
     }
+
 }
