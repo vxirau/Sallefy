@@ -74,7 +74,8 @@ public class InfoTrackActivity extends AppCompatActivity {
         artist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+                Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
+                startActivity(intent);
             }
         });
 

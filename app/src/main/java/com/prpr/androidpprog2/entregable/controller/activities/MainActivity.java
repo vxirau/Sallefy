@@ -450,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onUserSelected(User user) {
-        Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+        Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
         intent.putExtra("User", user);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
