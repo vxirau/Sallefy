@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.prpr.androidpprog2.entregable.R;
-public class UserPOSALIUNNOMDIFERENT extends AppCompatActivity implements UserCommunicationInterface{
+public class UserMainActivity extends AppCompatActivity implements UserCommunicationInterface{
 
 
     @Override

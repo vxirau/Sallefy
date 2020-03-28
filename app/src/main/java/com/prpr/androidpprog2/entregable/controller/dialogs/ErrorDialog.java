@@ -31,7 +31,7 @@ public class ErrorDialog {
         return sManager;
     }
 
-    private ErrorDialog(Context context) {
+    public ErrorDialog(Context context) {
         mContext = context;
         mDialog = new Dialog(mContext);
     }

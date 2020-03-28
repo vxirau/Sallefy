@@ -51,12 +51,14 @@
 
 
     <LinearLayout
+        android:id="@+id/layoutFavoritos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:clickable="true"
         android:orientation="horizontal">
 
 
@@ -83,12 +85,14 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutedit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
+        android:clickable="true"
         android:layout_marginTop="15dp">
 
 
@@ -115,10 +119,12 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
+        android:clickable="true"
         android:layout_marginTop="15dp">
 
 
@@ -141,11 +147,14 @@
             android:textAlignment="textStart"
             android:gravity="start"/>
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/layoutPlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
+        android:clickable="true"
         android:layout_marginTop="15dp">
 
 

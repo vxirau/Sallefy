@@ -177,7 +177,7 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
                     case R.id.buscar:
                         return true;
                     case R.id.perfil:
-                        Intent intent2 = new Intent(getApplicationContext(), UserPlaylistActivity.class);
+                        Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;

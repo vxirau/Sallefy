@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 
 import com.prpr.androidpprog2.entregable.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class UserTracksFragment extends Fragment {
 
     public UserTracksFragment() {

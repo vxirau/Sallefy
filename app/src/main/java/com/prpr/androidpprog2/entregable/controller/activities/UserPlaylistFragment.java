@@ -8,12 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.prpr.androidpprog2.entregable.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class UserPlaylistFragment extends Fragment {
+
+
+
 
     public UserPlaylistFragment() {
         // Required empty public constructor
@@ -26,4 +31,6 @@ public class UserPlaylistFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_playlist, container, false);
     }
+
+
 }

@@ -1,0 +1,80 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserMenuFragment">
+
+
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/user_playlists_title"
+                android:textColor="@color/colorWhite"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingLeft="25dp"
+                android:clickable="true"
+                android:textSize="20dp"
+                android:text="@string/playlists">
+
+            </TextView>
+            <TextView
+                android:id="@+id/user_my_songs_title"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="25dp"
+                android:clickable="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp"
+                android:layout_toRightOf="@+id/user_playlists_title"
+                android:text="@string/my_songs">
+
+            </TextView>
+            <TextView
+                android:id="@+id/user_statistics_title"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="25dp"
+                android:clickable="true"
+                android:textColor="@color/colorWhite"
+                android:layout_toRightOf="@+id/user_my_songs_title"
+                android:textSize="20dp"
+                android:text="@string/statistics">
+
+            </TextView>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#21D760"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_alignParentTop="true"
+            />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>
