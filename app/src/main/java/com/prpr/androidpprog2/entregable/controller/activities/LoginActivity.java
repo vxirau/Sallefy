@@ -65,8 +65,6 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         });
         btnLogin.setEnabled(true);
 
-        //etLogin.setText("ernemac");
-        //etPassword.setText("contrasenya");
     }
 
     private void doLogin(String username, String userpassword) {
@@ -123,6 +121,16 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onUserSelected(User user) {
+
+    }
+
+    @Override
+    public void onAllUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onAllUsersFail(Throwable throwable) {
 
     }
 

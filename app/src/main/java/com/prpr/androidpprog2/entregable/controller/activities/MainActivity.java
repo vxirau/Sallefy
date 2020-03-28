@@ -456,6 +456,16 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
+    @Override
+    public void onAllUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onAllUsersFail(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onFailure(Throwable throwable) {

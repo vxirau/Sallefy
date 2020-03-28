@@ -165,6 +165,30 @@ public class UserManager {
         });
     }
 
+
+    public synchronized void registerAttempt (String email, String username, String password, final UserCallback userCallback) {
+
+        Call<ResponseBody> call = mService.registerUser(new UserRegister(email, username, password));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onRegisterSuccess();
+                } else {
+                    userCallback.onRegisterFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                userCallback.onFailure(t);
+            }
+        });
+    }
+
     public synchronized void getUserData (String login, final UserCallback userCallback, UserToken userToken) {
         //UserToken userToken = Session.getInstance(mContext).getUserToken();
         Call<User> call = mService.getUserById(login, "Bearer " + userToken.getIdToken());
@@ -189,25 +213,25 @@ public class UserManager {
         });
     }
 
+    public synchronized void getAllUsers (final UserCallback userCallback) {
 
-    public synchronized void registerAttempt (String email, String username, String password, final UserCallback userCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<List<User>> call = mService.getAllUsers("Bearer " + userToken.getIdToken());
 
-        Call<ResponseBody> call = mService.registerUser(new UserRegister(email, username, password));
-
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 
                 int code = response.code();
                 if (response.isSuccessful()) {
-                    userCallback.onRegisterSuccess();
+                    userCallback.onAllUsersSuccess(response.body());
                 } else {
-                    userCallback.onRegisterFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                    userCallback.onAllUsersFail(new Throwable("ERROR " + code + ", " + response.raw().message()));
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<List<User>> call, Throwable t) {
                 userCallback.onFailure(t);
             }
         });
