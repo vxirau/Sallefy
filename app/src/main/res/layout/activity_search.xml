@@ -81,7 +81,8 @@
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="100dp"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:isScrollContainer="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -135,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="210dp"
                         android:maxHeight="570dp"
-                        android:orientation="horizontal" />
+                        android:orientation="vertical" />
 
                 </LinearLayout>
 

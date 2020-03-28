@@ -105,6 +105,7 @@ public class InfoTrackActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
+                //TODO: Falta putExtra
                 startActivity(intent);
             }
         });
@@ -116,6 +117,7 @@ public class InfoTrackActivity extends AppCompatActivity {
         layoutPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO: Falta putExtra
                 Intent intent = new Intent(getApplicationContext(), Add2PlaylistActivity.class);
                 startActivity(intent);
             }
