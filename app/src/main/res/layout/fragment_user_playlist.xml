@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/fons_app"
     tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserPlaylistFragment">
 
     <LinearLayout
@@ -26,6 +27,7 @@
             android:textColor="@color/colorWhite"
             android:textColorHint="#70353535"
             android:elevation="10dp"
+
             />
         <Button
             android:id="@+id/btn_filter_user_playlists"

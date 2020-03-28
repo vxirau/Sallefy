@@ -35,9 +35,10 @@
         <activity android:name=".controller.activities.InfoArtistaActivity"/>
         <activity android:name=".controller.activities.SearchActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".controller.activities.UserPlaylistActivity"/>
         <activity android:name=".controller.activities.SettingsActivity"/>
-        <activity android:name=".controller.activities.UserTracksActivity"/>
+        <activity android:name=".controller.activities.UserMainActivity"/>
+        <activity android:name=".controller.activities.UserBodyActivity"/>
+
         <service android:name=".controller.restapi.service.ReproductorService"/>
 
 

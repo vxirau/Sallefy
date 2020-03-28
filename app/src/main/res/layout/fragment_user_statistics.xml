@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fons_app"
     tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserStatisticsFragment">
 
     <!-- TODO: Update blank fragment layout -->
