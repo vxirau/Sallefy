@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -77,6 +78,7 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         initViews();
     }
 
@@ -118,13 +120,13 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
 
         //Recicle views
         mRecyclerViewTracks = (RecyclerView) findViewById(R.id.search_dynamic_recyclerView_songs);
-        LinearLayoutManager managerTrack = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        LinearLayoutManager managerTrack = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         TrackListAdapter adapterTrack = new TrackListAdapter(this, this, null, null);
         mRecyclerViewTracks.setLayoutManager(managerTrack);
         mRecyclerViewTracks.setAdapter(adapterTrack);
 
         mRecyclerViewPlaylist = (RecyclerView) findViewById(R.id.search_dynamic_recyclerView_playlist);
-        LinearLayoutManager managerPlaylist = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        LinearLayoutManager managerPlaylist = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         PlaylistAdapter adapterPlaylist = new PlaylistAdapter(this, null);
         mRecyclerViewPlaylist.setLayoutManager(managerPlaylist);
         mRecyclerViewPlaylist.setAdapter(adapterPlaylist);
@@ -157,8 +159,9 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
 
             @Override
             public void afterTextChanged(Editable editable) {
-                updateInfo();
                 System.out.println("ele3");
+                updateInfo();
+
             }
         });
 
@@ -435,6 +438,7 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
     public void onTopUsersRecieved(List<User> body) {
 
     }
+
 
     @Override
     public void onUserSelected(User user) {
