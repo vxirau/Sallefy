@@ -37,6 +37,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
@@ -68,6 +69,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private int audioIndex = -1;
     private Track activeAudio;
     private SeekBar mSeekBar;
+    private CircleLineVisualizer Cvisualizer=null;
+
 
     public static final String ACTION_PLAY = "com.prpr.androidpprog2.entregable.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.prpr.androidpprog2.entregable.ACTION_PAUSE";
@@ -155,6 +158,12 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         });
     }
 
+
+
+    public MediaPlayer getPlayer(){
+        return mediaPlayer;
+    }
+
     public void updateUI(){
         if(mediaPlayer != null && title!=null && artist!=null){
             title.setText(activeAudio.getName());
@@ -162,23 +171,23 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             mProgressRunner.run();
             mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
             if(mediaPlayer.isPlaying() || mediaPlayer.getCurrentPosition()==0){
-                pauseB.setVisibility(View.VISIBLE);
+                pauseB.setVisibility(View.VISIBLE); //visible
                 playB.setVisibility(View.INVISIBLE);
             }else{
                 pauseB.setVisibility(View.INVISIBLE);
-                playB.setVisibility(View.VISIBLE);
+                playB.setVisibility(View.VISIBLE); //visible
             }
             if(imahen!=null){
                 Picasso.get().load(activeAudio.getThumbnail()).into(imahen);
 
             }
+
         }
 
     }
 
     private void playMedia() {
         if (!mediaPlayer.isPlaying()) {
-            mProgressRunner.run();
             mediaPlayer.start();
             int duration = mediaPlayer.getDuration();
             mSeekBar.setMax(duration);
@@ -205,7 +214,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     public void resumeMedia() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.seekTo(resumePosition);
-            mProgressRunner.run();
             mediaPlayer.start();
         }
         updateUI();
@@ -237,9 +245,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         registerReceiver(playNewAudio, filter);
     }
 
-    private boolean isPlaying(){
-        return mediaPlayer.isPlaying();
-    }
 
     private void initMediaSession() throws RemoteException {
         if (mediaSessionManager != null) return;

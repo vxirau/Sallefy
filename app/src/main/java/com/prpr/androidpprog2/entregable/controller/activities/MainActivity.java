@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
-        pManager.getTopPlaylists(this);
+        pManager.getAllMyPlaylists(this);
+        ///
         usrManager.getTopUsers(this);
         pManager.getFollowingPlaylists(this);
 
@@ -324,9 +325,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
-        this.discover = (ArrayList) playlists;
-        PlaylistAdapter p = new PlaylistAdapter(this, this.discover);
-        p.setPlaylistCallback(this);
+        this.topPlaylists = (ArrayList) playlists;
+        PlaylistAdapter p2 = new PlaylistAdapter(this, this.topPlaylists);
+        p2.setPlaylistCallback(this);
+        topPlaylistsRecycle.setAdapter(p2);
     }
 
     @Override

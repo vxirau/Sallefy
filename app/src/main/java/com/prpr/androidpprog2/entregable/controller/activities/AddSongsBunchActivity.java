@@ -87,7 +87,6 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
             public void onClick(View v) {
                 ply.getTracks().addAll(bunch);
                 pManager.updatePlaylist(ply, pCall);
-
             }
         });
         cancel= findViewById(R.id.CancelButton);

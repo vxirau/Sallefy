@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -66,6 +67,8 @@ public class ReproductorActivity extends Activity {
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.updateUI();
+
+            updateVisualizer();
         }
     }
 
@@ -77,6 +80,13 @@ public class ReproductorActivity extends Activity {
         initViews();
     }
 
+    private void updateVisualizer(){
+        mPlayer = serv.getPlayer();
+        int audioSessionId = mPlayer.getAudioSessionId();
+        if (audioSessionId != -1)
+            mVisualizer.setAudioSessionId(audioSessionId);
+    }
+
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -85,6 +95,7 @@ public class ReproductorActivity extends Activity {
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.updateUI();
+            updateVisualizer();
 
         }
 
@@ -118,24 +129,19 @@ public class ReproductorActivity extends Activity {
 
     private void initViews() {
 
+
         trackTitle= findViewById(R.id.music_title);
+        trackTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        trackTitle.setSelected(true);
+        trackTitle.setSingleLine(true);
+
+
         trackAuthor = findViewById(R.id.music_artist);
         trackImage = findViewById(R.id.track_img);
 
         mVisualizer = findViewById(R.id.circleVisualizer);
         mVisualizer.setDrawLine(true);
-        mPlayer = new MediaPlayer();
-        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mSeekBar.setMax(mPlayer.getDuration());
 
-                int audioSessionId = mPlayer.getAudioSessionId();
-                if (audioSessionId != -1)
-                    mVisualizer.setAudioSessionId(audioSessionId);
-            }
-        });
 
 
         atras = findViewById(R.id.buttonAtras);
@@ -153,6 +159,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.skipToPrevious();
+                updateVisualizer();
             }
         });
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
@@ -160,6 +167,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.skipToNext();
+                updateVisualizer();
             }
         });
         btnPlay = findViewById(R.id.play);
@@ -169,6 +177,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
+                updateVisualizer();
             }
         });
         btnPause = findViewById(R.id.pause);
@@ -178,6 +187,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
+                updateVisualizer();
             }
         });
 

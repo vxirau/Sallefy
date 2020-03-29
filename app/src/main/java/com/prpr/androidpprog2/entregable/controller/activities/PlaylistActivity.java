@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
@@ -64,6 +65,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     private ArrayList<Track> mTracks;
     private int currentTrack = 0;
+    private CircleLineVisualizer mVisualizer;
 
     private ReproductorService player;
     private boolean trackAssigned = false;
