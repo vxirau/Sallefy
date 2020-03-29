@@ -159,36 +159,37 @@
                     android:layout_width="160dp"
                     android:layout_height="200dp">
 
-                <com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
-                    xmlns:custom="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/circleVisualizer"
-                    android:layout_width="160dp"
-                    android:layout_height="140dp"
-                    custom:avColor="@color/colorVisualizer"
-                    custom:avDensity="0.5"
-                    custom:avType="fill"
-                    custom:avSpeed="medium"
-                    android:layout_centerInParent="true"/>
+                    <com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
+                        xmlns:custom="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/circleVisualizer"
+                        android:layout_width="160dp"
+                        android:layout_height="140dp"
+                        custom:avColor="@color/colorVisualizer"
+                        custom:avDensity="0.5"
+                        custom:avType="fill"
+                        custom:avWidth="6dp"
+                        custom:avSpeed="medium"
+                        android:layout_centerInParent="true"/>
 
-                <Button
-                    android:id="@+id/pause"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:scaleType="center"
-                    android:adjustViewBounds="true"
-                    android:layout_centerInParent="true"
-                    android:visibility="invisible"
-                    android:background="@drawable/ic_pause"/>
+                    <Button
+                        android:id="@+id/pause"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:scaleType="center"
+                        android:adjustViewBounds="true"
+                        android:layout_centerInParent="true"
+                        android:visibility="visible"
+                        android:background="@drawable/ic_pause"/>
 
-                <Button
-                    android:id="@+id/play"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:scaleType="center"
-                    android:adjustViewBounds="true"
-                    android:layout_centerInParent="true"
-                    android:visibility="invisible"
-                    android:background="@drawable/ic_play" />
+                    <Button
+                        android:id="@+id/play"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:scaleType="center"
+                        android:adjustViewBounds="true"
+                        android:layout_centerInParent="true"
+                        android:visibility="invisible"
+                        android:background="@drawable/ic_play" />
                 </RelativeLayout>
 
                 <ImageButton

@@ -181,8 +181,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             public void onClick(View v) {
                 int index=0;
                 player.resumeMedia();
-                pause.setVisibility(v.VISIBLE);
-                play.setVisibility(v.INVISIBLE);
+                pause.setVisibility(View.VISIBLE);
+                play.setVisibility(View.INVISIBLE);
                 trackAssigned=true;
             }
         });
