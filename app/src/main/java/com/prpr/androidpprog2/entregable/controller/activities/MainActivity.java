@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
-        pManager.getTopPlaylists(this);
+        pManager.getAllMyPlaylists(this);
         usrManager.getTopUsers(this);
         pManager.getFollowingPlaylists(this);
 

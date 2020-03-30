@@ -68,7 +68,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private Button pause;
 
     private RecyclerView mRecyclerView;
-
+    private boolean bunch;
     private ArrayList<Track> mTracks;
     private int currentTrack = 0;
     private CircleLineVisualizer mVisualizer;
@@ -105,6 +105,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         setContentView(R.layout.activity_playlist_layout);
         if(getIntent().getSerializableExtra("Playlst")!=null){
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
+        }
+        if(getIntent().getSerializableExtra("bunch")!=null){
+            bunch = (Boolean) getIntent().getSerializableExtra("bunch");
         }
         initViews();
         pManager = new PlaylistManager(this);
@@ -232,8 +235,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playlst.getOwner().getLogin())){
             addBunch.setVisibility(View.VISIBLE);
+            follow.setVisibility(View.GONE);
         }else{
             addBunch.setVisibility(View.INVISIBLE);
+            follow.setVisibility(View.VISIBLE);
         }
 
 
@@ -242,8 +247,15 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         back2Main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                if(bunch){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                }else{
+                    finish();
+                    overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                }
+
             }
         });
 
