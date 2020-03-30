@@ -91,7 +91,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private PhoneStateListener phoneStateListener;
     private TelephonyManager telephonyManager;
 
-
     @Override
     public void onCreate() {
         super.onCreate();

@@ -27,6 +27,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -333,6 +334,16 @@ public class UserBodyActivity extends AppCompatActivity implements UserCommunica
 
     @Override
     public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
 
     }
 

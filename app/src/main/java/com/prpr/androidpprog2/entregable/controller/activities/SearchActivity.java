@@ -33,6 +33,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -398,6 +399,17 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
     public void onFollowingRecieved(List<Playlist> body) {
 
     }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
+
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {

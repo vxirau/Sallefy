@@ -3,6 +3,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import java.util.*;
 
@@ -27,8 +28,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -39,7 +43,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback {
+public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback, PlaylistCallback {
 
     private Playlist playlst;
     private TextView plyName;
@@ -54,6 +58,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private Button back2Main;
     private Button shuffle;
     private Button follow;
+    private Follow followingInfo;
+    private boolean isFollowing = false;
     private Button addBunch;
     private SeekBar mseek;
 
@@ -66,7 +72,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private ArrayList<Track> mTracks;
     private int currentTrack = 0;
     private CircleLineVisualizer mVisualizer;
-
+    private PlaylistManager pManager;
     private ReproductorService player;
     private boolean trackAssigned = false;
     boolean serviceBound = false;
@@ -89,6 +95,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
             player.updateUI();
         }
+        pManager.checkFollowing(playlst.getId(), this);
     }
 
     @Override
@@ -100,6 +107,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
         }
         initViews();
+        pManager = new PlaylistManager(this);
+        pManager.checkFollowing(playlst.getId(), this);
         getData();
     }
 
@@ -149,10 +158,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         mRecyclerView.setAdapter(adapter);
 
         follow = findViewById(R.id.playlistSeguirBoto);
+        follow.setEnabled(true);
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                pManager.followPlaylist(playlst.getId(), PlaylistActivity.this);
             }
         });
 
@@ -357,5 +367,103 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         intent.putExtra("Trck", tracks.get(position));
         intent.putExtra("Playlst", p);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+    }
+
+    @Override
+    public void onPlaylistCreated(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistRecieved(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistSelected(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onTrackAdded(Playlist body) {
+
+    }
+
+    @Override
+    public void onTrackAddFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onAllNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopRecieved(List<Playlist> topPlaylists) {
+
+    }
+
+    @Override
+    public void onNoTopPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopPlaylistsFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+        followingInfo = body;
+        if(followingInfo.isFollowing()){
+            follow.setText("Following");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+            isFollowing=false;
+        }else{
+            follow.setText("Follow");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+            isFollowing=true;
+        }
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
+        followingInfo = body;
+        if(followingInfo.isFollowing()){
+            follow.setText("Following");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+            isFollowing=false;
+        }else{
+            follow.setText("Follow");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+            isFollowing=true;
+        }
     }
 }

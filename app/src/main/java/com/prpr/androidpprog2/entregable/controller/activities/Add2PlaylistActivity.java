@@ -20,6 +20,7 @@ import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -177,6 +178,16 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
     @Override
     public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
 
     }
 

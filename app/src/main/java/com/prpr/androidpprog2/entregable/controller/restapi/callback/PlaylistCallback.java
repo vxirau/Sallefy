@@ -1,6 +1,7 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.callback;
 
 
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface PlaylistCallback {
     void onNoTopPlaylists(Throwable throwable);
     void onTopPlaylistsFailure(Throwable throwable);
     void onFollowingRecieved(List<Playlist> body);
+    void onFollowingChecked(Follow body);
+    void onFollowSuccessfull(Follow body);
 }

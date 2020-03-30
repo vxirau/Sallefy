@@ -6,6 +6,7 @@ import android.util.Log;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.PlaylistService;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -213,4 +214,51 @@ public class PlaylistManager {
     }
 
 
+    public synchronized void checkFollowing (int id, final PlaylistCallback playlistCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<Follow> call = mPlaylistService.checkFollow(Integer.toString(id),  "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Follow>() {
+            @Override
+            public void onResponse(Call<Follow> call, Response<Follow> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    playlistCallback.onFollowingChecked(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    playlistCallback.onPlaylistFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Follow> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                playlistCallback.onPlaylistFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
+    public synchronized void followPlaylist(int id, final PlaylistCallback playlistCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<Follow> call = mPlaylistService.followPlaylist(Integer.toString(id),  "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Follow>() {
+            @Override
+            public void onResponse(Call<Follow> call, Response<Follow> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    playlistCallback.onFollowSuccessfull(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    playlistCallback.onPlaylistFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Follow> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                playlistCallback.onPlaylistFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
 }

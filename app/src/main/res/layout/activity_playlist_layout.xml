@@ -72,9 +72,10 @@
             <Button
                 android:id="@+id/playlistSeguirBoto"
                 android:layout_width="100dp"
-                android:layout_height="20dp"
+                android:layout_height="25dp"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp"
+                android:textSize="12dp"
+                android:textStyle="bold"
                 android:background="@drawable/rectangle_small_gborder_black"
                 android:text="@string/seguir" />
 

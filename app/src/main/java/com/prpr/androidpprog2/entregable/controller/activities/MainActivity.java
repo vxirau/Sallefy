@@ -33,6 +33,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallbac
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
         }
+        pManager.getFollowingPlaylists(this);
     }
 
     @Override
@@ -104,8 +106,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
-        pManager.getAllMyPlaylists(this);
-        ///
+        pManager.getTopPlaylists(this);
         usrManager.getTopUsers(this);
         pManager.getFollowingPlaylists(this);
 
@@ -403,6 +404,16 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             p2.setPlaylistCallback(this);
             folloingPlaylistRecycle.setAdapter(p2);
         }
+
+    }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
 
     }
 
