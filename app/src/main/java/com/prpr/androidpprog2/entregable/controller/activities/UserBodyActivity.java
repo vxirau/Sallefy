@@ -84,7 +84,7 @@ public class UserBodyActivity extends AppCompatActivity implements UserCommunica
 
         userMenu(extras.getInt("Button Pressed"));
 
-        /*switch (extras.getByte("Button Pressed")){
+        switch (extras.getByte("Button Pressed")){
             case 0:
                 initPlaylistInfo();
                 playlistManager = new PlaylistManager(this);
@@ -98,7 +98,7 @@ public class UserBodyActivity extends AppCompatActivity implements UserCommunica
             case 2:
                 initStatisticsInfo();
 
-        }*/
+        }
 
 
     }
@@ -293,6 +293,7 @@ public class UserBodyActivity extends AppCompatActivity implements UserCommunica
 
     }
 
+
     @Override
     public void onTrackAddFailure(Throwable throwable) {
 
@@ -302,6 +303,8 @@ public class UserBodyActivity extends AppCompatActivity implements UserCommunica
     public void onAllPlaylistRecieved(List<Playlist> body) {
 
     }
+
+
 
     @Override
     public void onAllNoPlaylists(Throwable throwable) {

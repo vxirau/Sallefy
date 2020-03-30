@@ -31,6 +31,7 @@ public class UserMenuFragment extends Fragment{
 
         TextView tvUserMenu;
 
+
         for(int i = 0; i < USERMENUBUTTONS.length; i++){
 
             tvUserMenu = (TextView) userMenu.findViewById(USERMENUBUTTONS[i]);
