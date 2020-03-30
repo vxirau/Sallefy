@@ -354,7 +354,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
         NotificationManager notificationManager =(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationChannel notificationChannel = new NotificationChannel("SALLEFY", "Sallefy", NotificationManager.IMPORTANCE_LOW);
+        NotificationChannel notificationChannel = new NotificationChannel("SALLEFY", "Sallefy", NotificationManager.IMPORTANCE_HIGH);
         notificationManager.createNotificationChannel(notificationChannel);
 
         /*RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small_layout);
