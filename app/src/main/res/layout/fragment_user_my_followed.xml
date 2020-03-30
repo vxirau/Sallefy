@@ -2,12 +2,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserMyFollowedFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/fons_app"
+    tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserPlaylistFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/userPlaylistsRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_marginTop="220dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="bottom">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/configButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="100dp"
+            android:backgroundTint="#21D760"
+            android:elevation="10dp"
+            android:src="@drawable/ic_settings"
+            app:borderWidth="0dp" />
+    </RelativeLayout>
 
 </FrameLayout>
