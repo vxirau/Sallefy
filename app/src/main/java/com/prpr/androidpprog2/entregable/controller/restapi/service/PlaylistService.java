@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 
 import java.util.List;
@@ -31,5 +32,15 @@ public interface PlaylistService {
 
     @GET("me/playlists/following")
     Call<List<Playlist>> getFollowedPlaylists(@Header("Authorization") String token);
+
+    @GET("users/{login}/playlists")
+    Call<List<Playlist>> showUserPlaylist(@Path("login") String login, @Header("Authorization") String token);
+
+    @GET("playlists/{id}/follow")
+    Call<Follow> checkFollow(@Path("id") String id, @Header("Authorization") String token);
+
+    @PUT("playlists/{id}/follow")
+    Call<Follow> followPlaylist(@Path("id") String id, @Header("Authorization") String token);
+
 
 }

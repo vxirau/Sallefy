@@ -29,6 +29,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     private Context mContext;
     private PlaylistCallback mCallback;
 
+
     public PlaylistAdapter(Context context, ArrayList<Playlist> playlists ) {
         this.playlist = playlists;
         this.mContext = context;
@@ -37,6 +38,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     public void setPlaylistCallback(final PlaylistCallback itemClickCallback) {
         this.mCallback = itemClickCallback;
     }
+
 
     @NonNull
     @Override

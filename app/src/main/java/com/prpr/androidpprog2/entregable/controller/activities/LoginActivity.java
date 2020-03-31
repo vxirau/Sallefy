@@ -39,7 +39,6 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     public void onCreate(Bundle savedInstanceSate) {
         super.onCreate(savedInstanceSate);
         setContentView(R.layout.activity_login);
-
         initViews();
     }
 
@@ -47,13 +46,13 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
         etLogin = (EditText) findViewById(R.id.login_user);
         etPassword = (EditText) findViewById(R.id.login_password);
-
         tvToRegister = (TextView) findViewById(R.id.register_btn_action);
         tvToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);ˇ
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
         btnLogin = (Button) findViewById(R.id.login_btn_action);
@@ -64,15 +63,12 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
             }
         });
         btnLogin.setEnabled(true);
-
     }
 
     private void doLogin(String username, String userpassword) {
         this.username = username;
         UserManager.getInstance(getApplicationContext()).loginAttempt(username, userpassword, LoginActivity.this);
     }
-
-
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
@@ -94,7 +90,6 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     public void onRegisterFailure(Throwable throwable) {
 
     }
-
 
     @Override
     public void onUserInfoReceived(User userData) {
@@ -126,6 +121,16 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onAllUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onUserIsFollowed(boolean isFollowed) {
+
+    }
+
+    @Override
+    public void onUserIsFollowedFail(Throwable throwable) {
 
     }
 

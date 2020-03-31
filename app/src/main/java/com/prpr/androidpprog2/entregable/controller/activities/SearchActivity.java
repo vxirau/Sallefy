@@ -33,6 +33,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -326,6 +327,16 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
     }
 
     @Override
+    public void onTopTracksRecieved(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
     public void onPlaylistCreated(Playlist playlist) {
 
     }
@@ -400,6 +411,17 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
     }
 
     @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
+
+    }
+
+
+    @Override
     public void onLoginSuccess(UserToken userToken) {
 
     }
@@ -451,6 +473,16 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
     @Override
     public void onAllUsersSuccess(List<User> users) {
         mUsers = (ArrayList<User>) users;
+    }
+
+    @Override
+    public void onUserIsFollowed(boolean isFollowed) {
+
+    }
+
+    @Override
+    public void onUserIsFollowedFail(Throwable throwable) {
+
     }
 
     @Override

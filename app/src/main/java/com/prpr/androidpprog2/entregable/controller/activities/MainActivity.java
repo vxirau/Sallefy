@@ -33,6 +33,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallbac
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -82,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         if(!servidorVinculat){
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
         }
+        pManager.getFollowingPlaylists(this);
     }
 
     @Override
@@ -100,12 +102,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         initViews();
         btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();
-        String usertkn = userToken.getIdToken();
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
         pManager.getAllMyPlaylists(this);
-        ///
         usrManager.getTopUsers(this);
         pManager.getFollowingPlaylists(this);
 
@@ -362,8 +362,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
-
-
     @Override
     public void onAllNoPlaylists(Throwable throwable) {
 
@@ -403,6 +401,16 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             p2.setPlaylistCallback(this);
             folloingPlaylistRecycle.setAdapter(p2);
         }
+
+    }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
 
     }
 
@@ -460,6 +468,16 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onAllUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onUserIsFollowed(boolean isFollowed) {
+
+    }
+
+    @Override
+    public void onUserIsFollowedFail(Throwable throwable) {
 
     }
 

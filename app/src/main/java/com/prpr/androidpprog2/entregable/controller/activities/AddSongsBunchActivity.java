@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -31,6 +33,7 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     private Button upload;
     private Button accept;
     private Button cancel;
+    private TextView noTracks;
     private ArrayList<Track> myTracks;
     private ArrayList<Track> bunch = new ArrayList<>();
     private RecyclerView llistaCancons;
@@ -38,6 +41,15 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     private Playlist ply;
     private PlaylistManager pManager;
     private PlaylistCallback pCall;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(myTracks!=null){
+            BunchTrackListAdapter adapter = new BunchTrackListAdapter(this, this, (ArrayList) ply.getTracks());
+            llistaCancons.setAdapter(adapter);
+        }
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +63,7 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
         ply = (Playlist) getIntent().getSerializableExtra("Playlst");
     }
 
-    private boolean existsInPlaylist(List<Track> t, Track track){
-        boolean exists = false;
-        for(Track tk : t){
-            if(tk.getName().equals(track.getName())){
-                exists=true;
-            }
-        }
-        return exists;
-    }
+
 
     private void initComponents() {
 
@@ -99,6 +103,7 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
         });
         llistaCancons= findViewById(R.id.llistaCancons);
 
+        noTracks = findViewById(R.id.noTracks);
 
     }
 
@@ -118,11 +123,40 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
 
     }
 
+    private boolean existsInPlaylist(List<Track> t, Track track){
+        boolean exists = false;
+        for(Track tk : t){
+            if(tk.getName().equals(track.getName())){
+                exists=true;
+            }
+        }
+        return exists;
+    }
+
     @Override
     public void onPersonalTracksReceived(List<Track> tracks) {
-        myTracks = (ArrayList)tracks;
-        BunchTrackListAdapter adapter = new BunchTrackListAdapter(this, this, myTracks);
-        llistaCancons.setAdapter(adapter);
+        myTracks = new ArrayList<>();
+
+        if(tracks.size()==0){
+            noTracks.setVisibility(View.VISIBLE);
+            llistaCancons.setVisibility(View.GONE);
+            noTracks.setText("You have no tracks");
+        }else{
+
+            for(int i=0; i<tracks.size() ;i++){
+                if(!existsInPlaylist(ply.getTracks(), tracks.get(i))){
+                    myTracks.add(tracks.get(i));
+                }
+            }
+            if(myTracks.size()>0){
+                BunchTrackListAdapter adapter = new BunchTrackListAdapter(this, this, myTracks);
+                llistaCancons.setAdapter(adapter);
+            }else{
+                noTracks.setVisibility(View.VISIBLE);
+                llistaCancons.setVisibility(View.GONE);
+                noTracks.setText("All your tracks are already in this playlist");
+            }
+        }
     }
 
     @Override
@@ -136,6 +170,16 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     }
 
     @Override
+    public void onTopTracksRecieved(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
@@ -145,14 +189,11 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
 
     }
 
+
+
     @Override
     public void onRadioSelected(Track t) {
-        if(existsInPlaylist(ply.getTracks(), t)){
-            ErrorDialog.getInstance(getApplicationContext()).showErrorDialog("Aquesta canço ja està en aquesta playlist!");
-        }else{
-            bunch.add(t);
-        }
-
+        bunch.add(t);
     }
 
     @Override
@@ -190,6 +231,7 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     public void onTrackAdded(Playlist body) {
         Intent intent = new Intent(getApplicationContext(), PlaylistActivity.class);
         intent.putExtra("Playlst", ply);
+        intent.putExtra("bunch", true);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
@@ -231,6 +273,16 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
 
     @Override
     public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
 
     }
 }
