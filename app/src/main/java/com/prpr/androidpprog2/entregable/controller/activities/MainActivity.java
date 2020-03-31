@@ -474,6 +474,16 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
     @Override
+    public void onUserIsFollowed(boolean isFollowed) {
+
+    }
+
+    @Override
+    public void onUserIsFollowedFail(Throwable throwable) {
+
+    }
+
+    @Override
     public void onAllUsersFail(Throwable throwable) {
 
     }

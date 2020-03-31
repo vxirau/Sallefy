@@ -22,6 +22,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistMana
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,6 @@ import java.util.List;
 public class UserPlaylistsFragment extends Fragment implements PlaylistCallback {
 
     private ArrayList<Playlist> myPlaylists;
-    private ArrayList<Playlist> followingPlaylists;
     private Playlist myPlaylist;
 
     private PlaylistManager playlistManager;
@@ -44,6 +44,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     private RecyclerView mRecyclerView;
     public UserPlaylistsFragment() {
         // Required empty public constructor
+        this.myPlaylists = new ArrayList<>();
     }
 
 
@@ -52,6 +53,9 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view =  inflater.inflate(R.layout.fragment_user_playlists, container, false);
+
+
+
 
        btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configPlaylistsButton);
        btnSettingsPlaylists.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +83,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
                startActivity(intent);
            }
        });
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.userPlaylistsRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), null);
@@ -88,7 +93,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
         playlistManager = new PlaylistManager(getContext());
         playlistManager.getAllMyPlaylists(this);
-        playlistManager.getFollowingPlaylists(this);
+
 
 
        return view;
@@ -107,10 +112,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
         this.myPlaylists = (ArrayList) playlists;
-        UserPlaylistAdapter playlistAdapter = new UserPlaylistAdapter(getContext(), this.myPlaylists);
-        playlistAdapter.setPlaylistCallback(this);
-        mRecyclerView.setAdapter(playlistAdapter);
-
+        playlistManager.getFollowingPlaylists(this);
     }
 
     @Override
@@ -165,10 +167,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     @Override
     public void onFollowingRecieved(List<Playlist> body) {
-        this.followingPlaylists = (ArrayList) body;
-        UserPlaylistAdapter playlistAdapter = new UserPlaylistAdapter(getContext(), this.followingPlaylists);
-        playlistAdapter.setPlaylistCallback(this);
-        mRecyclerView.setAdapter(playlistAdapter);
+        this.myPlaylists.addAll(body);
+        UserPlaylistAdapter userPlaylistAdapter = new UserPlaylistAdapter(getContext(), this.myPlaylists);
+        userPlaylistAdapter.setPlaylistCallback(this);
+        mRecyclerView.setAdapter(userPlaylistAdapter);
     }
 
     @Override

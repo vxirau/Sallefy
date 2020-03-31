@@ -130,6 +130,16 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
     @Override
+    public void onUserIsFollowed(boolean isFollowed) {
+
+    }
+
+    @Override
+    public void onUserIsFollowedFail(Throwable throwable) {
+
+    }
+
+    @Override
     public void onAllUsersFail(Throwable throwable) {
 
     }

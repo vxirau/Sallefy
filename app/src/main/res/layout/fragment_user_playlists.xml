@@ -35,7 +35,7 @@
                 android:hint="@string/Search"
                 android:paddingLeft="15dp"
                 android:textColor="@color/colorWhite"
-                android:textColorHint="#70353535" />
+                android:textColorHint="@color/colorWhite" />
 
             <Button
                 android:id="@+id/filter_user_playlists"
@@ -95,8 +95,10 @@
             android:id="@+id/userPlaylistsRecyclerview"
             android:layout_width="match_parent"
             android:layout_marginTop="140dp"
+
             android:layout_height="match_parent"
-            android:orientation="horizontal" />
+            android:orientation="vertical" />
+
 
         <RelativeLayout
             android:layout_width="match_parent"
