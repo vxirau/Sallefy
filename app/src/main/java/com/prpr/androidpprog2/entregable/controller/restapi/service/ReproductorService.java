@@ -161,7 +161,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         return mediaPlayer;
     }
 
-    public void updateUI(){
+    /*public void updateUI(){
         if(mediaPlayer != null && title!=null && artist!=null){
             title.setText(activeAudio.getName());
             artist.setText(activeAudio.getUserLogin());
@@ -181,7 +181,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 }
             }
         }
-    }
+    }*/
 
     private void playMedia() {
         if (!mediaPlayer.isPlaying()) {
@@ -210,7 +210,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 }
             });
         }
-        ferBroadcastUI();
+        assert mediaPlayer != null;
+        scallback.updateUI(activeAudio, mediaPlayer.isPlaying(), posicioActual, mediaPlayer.getDuration());
+        //ferBroadcastUI();
     }
 
     private void stopMedia() {
@@ -225,7 +227,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             mediaPlayer.pause();
             resumePosition = mediaPlayer.getCurrentPosition();
         }
-        ferBroadcastUI();
+        assert mediaPlayer != null;
+        scallback.updateUI(activeAudio, mediaPlayer.isPlaying(), posicioActual, mediaPlayer.getDuration());
+        //ferBroadcastUI();
         
     }
 
@@ -239,7 +243,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             mProgressRunner.run();
             mediaPlayer.start();
         }
-        ferBroadcastUI();
+        assert mediaPlayer != null;
+        scallback.updateUI(activeAudio, mediaPlayer.isPlaying(), posicioActual, mediaPlayer.getDuration());
+        //ferBroadcastUI();
     }
 
     private BroadcastReceiver playNewAudio = new BroadcastReceiver() {
@@ -261,7 +267,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     };
 
     private void register_playNewAudio() {
-        ferBroadcastUI();
+        //assert mediaPlayer != null;
+        //scallback.updateUI(activeAudio, mediaPlayer.isPlaying(), posicioActual, mediaPlayer.getDuration());
+        //ferBroadcastUI();
         
         IntentFilter filter = new IntentFilter(PlaylistActivity.Broadcast_PLAY_NEW_AUDIO);
         registerReceiver(playNewAudio, filter);
@@ -424,7 +432,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             default:
                 break;
         }
-        ferBroadcastUI();
+        assert mediaPlayer != null;
+        scallback.updateUI(activeAudio, mediaPlayer.isPlaying(), posicioActual, mediaPlayer.getDuration());
+        //ferBroadcastUI();
         
         return null;
     }
@@ -444,7 +454,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         } else if (actionString.equalsIgnoreCase(ACTION_STOP)) {
             transportControls.stop();
         }
-        ferBroadcastUI();
+        assert mediaPlayer != null;
+        scallback.updateUI(activeAudio, mediaPlayer.isPlaying(), posicioActual, mediaPlayer.getDuration());
+        //ferBroadcastUI();
         
     }
 
@@ -460,7 +472,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
-        ferBroadcastUI();
+        assert mediaPlayer != null;
+        scallback.updateUI(activeAudio, mediaPlayer.isPlaying(), posicioActual, mediaPlayer.getDuration());
+        //ferBroadcastUI();
     }
 
     private void ferBroadcastUI() {
@@ -472,6 +486,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             intent.putExtra("position", posicioActual);
             intent.putExtra("duration", mediaPlayer.getDuration());
         }
+        
+        
+        
         sendBroadcast(intent);
     }
 
@@ -487,7 +504,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
-        ferBroadcastUI();
+        assert mediaPlayer != null;
+        scallback.updateUI(activeAudio, mediaPlayer.isPlaying(), posicioActual, mediaPlayer.getDuration());
+        //ferBroadcastUI();
     }
 
 

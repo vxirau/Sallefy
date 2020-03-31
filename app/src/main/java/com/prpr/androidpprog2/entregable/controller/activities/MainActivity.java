@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
-            serv.updateUI();
+            //serv.updateUI();
         }
         pManager.getFollowingPlaylists(this);
     }

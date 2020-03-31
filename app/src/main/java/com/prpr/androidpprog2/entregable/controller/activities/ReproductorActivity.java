@@ -65,7 +65,7 @@ public class ReproductorActivity extends Activity {
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
-            serv.updateUI();
+            //serv.updateUI();
             updateVisualizer();
         }
     }
@@ -95,7 +95,7 @@ public class ReproductorActivity extends Activity {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
             servidorVinculat = true;
-            serv.updateUI();
+            //serv.updateUI();
             updateVisualizer();
         }
 

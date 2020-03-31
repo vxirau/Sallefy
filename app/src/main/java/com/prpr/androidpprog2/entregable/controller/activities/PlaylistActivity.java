@@ -176,7 +176,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         mseek.setProgress(progress);
     }
 
-    private void updateUI(Track t, boolean playing, int position, int duration) {
+    @Override
+    public void updateUI(Track t, boolean playing, int position, int duration) {
         isPlaying=playing;
         mseek.setMax(duration);
         if(!t.getName().equals(tvTitle.getText())){
