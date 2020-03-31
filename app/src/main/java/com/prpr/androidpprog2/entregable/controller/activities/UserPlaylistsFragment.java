@@ -22,6 +22,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistMana
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,6 @@ import java.util.List;
 public class UserPlaylistsFragment extends Fragment implements PlaylistCallback {
 
     private ArrayList<Playlist> myPlaylists;
-    private ArrayList<Playlist> followingPlaylists;
     private Playlist myPlaylist;
 
     private PlaylistManager playlistManager;
@@ -44,6 +44,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     private RecyclerView mRecyclerView;
     public UserPlaylistsFragment() {
         // Required empty public constructor
+        this.myPlaylists = new ArrayList<>();
     }
 
 
@@ -54,7 +55,6 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
        View view =  inflater.inflate(R.layout.fragment_user_playlists, container, false);
 
 
-       followingPlaylists = new ArrayList<>();
 
 
        btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configPlaylistsButton);
@@ -93,7 +93,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
         playlistManager = new PlaylistManager(getContext());
         playlistManager.getAllMyPlaylists(this);
-        playlistManager.getFollowingPlaylists(this);
+
 
 
        return view;
@@ -112,8 +112,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
         this.myPlaylists = (ArrayList) playlists;
-
-
+        playlistManager.getFollowingPlaylists(this);
     }
 
     @Override
@@ -168,11 +167,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     @Override
     public void onFollowingRecieved(List<Playlist> body) {
-        this.followingPlaylists = (ArrayList) body;
-        this.followingPlaylists.addAll(myPlaylists);
-        UserPlaylistAdapter playlistAdapter = new UserPlaylistAdapter(getContext(), this.followingPlaylists);
-        playlistAdapter.setPlaylistCallback(this);
-        mRecyclerView.setAdapter(playlistAdapter);
+        this.myPlaylists.addAll(body);
+        UserPlaylistAdapter userPlaylistAdapter = new UserPlaylistAdapter(getContext(), this.myPlaylists);
+        userPlaylistAdapter.setPlaylistCallback(this);
+        mRecyclerView.setAdapter(userPlaylistAdapter);
     }
 
     @Override
