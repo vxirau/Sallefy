@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
 
     @Override
-    public void onStart() {
+    public void onResume() {
         super.onStart();
         if(!servidorVinculat){
             Intent intent = new Intent(this, ReproductorService.class);
@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         initViews();
         btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();
-        String usertkn = userToken.getIdToken();
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
