@@ -61,13 +61,6 @@ public class UserMainActivity extends AppCompatActivity{
         initGeneralViews();
         initPlaylistViews();
 
-
-
-
-
-
-
-
     }
 
     void initGeneralViews(){

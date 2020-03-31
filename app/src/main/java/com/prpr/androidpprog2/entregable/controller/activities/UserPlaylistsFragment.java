@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
@@ -34,6 +35,9 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     private PlaylistManager playlistManager;
 
     private Button btnFilterPlaylists;
+    private Button btnAddNewPlaylist;
+
+    private TextView tvAddnewPlaylist;
 
     private FloatingActionButton btnSettingsPlaylists;
 
@@ -58,6 +62,23 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
            }
        });
 
+       tvAddnewPlaylist = (TextView) view.findViewById(R.id.tv_add_new_playlist);
+       tvAddnewPlaylist.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent intent = new Intent(getContext(), NewPlaylistActivity.class);
+               startActivity(intent);
+           }
+       });
+
+       btnAddNewPlaylist = (Button) view.findViewById(R.id.add_new_playlist);
+       btnAddNewPlaylist.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent intent = new Intent(getContext(), NewPlaylistActivity.class);
+               startActivity(intent);
+           }
+       });
         mRecyclerView = (RecyclerView) view.findViewById(R.id.userPlaylistsRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), null);

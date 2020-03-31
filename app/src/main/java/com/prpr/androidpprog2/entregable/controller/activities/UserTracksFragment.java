@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
@@ -25,6 +26,7 @@ import com.prpr.androidpprog2.entregable.model.Track;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class UserTracksFragment extends Fragment implements TrackListCallback, TrackCallback {
@@ -35,6 +37,11 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     private Playlist myPlaylist;
     private RecyclerView mRecyclerView;
 
+    static final int TRACK_FILTER_REQUEST= 1;
+
+    private Button btnAddNewTrack;
+
+    private TextView tvAddnewTrack;
 
     private TrackManager trackManager;
 
@@ -58,6 +65,7 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
             }
         });
 
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.userTracksRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         TrackListAdapter adapter = new TrackListAdapter(this, getContext(), myTracks, myPlaylist);
@@ -66,7 +74,35 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
         trackManager = new TrackManager(getContext());
         trackManager.getOwnTracks(this);
+        tvAddnewTrack = (TextView) view.findViewById(R.id.tv_add_new_song);
+        tvAddnewTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), UploadActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        btnAddNewTrack = (Button) view.findViewById(R.id.add_new_song);
+        btnAddNewTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), UploadActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnFilterTracks = (Button) view.findViewById(R.id.filter_user_songs);
+        btnFilterTracks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), FilterTracksActivity.class);
+                intent.putExtra("Tracks", myTracks);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivityForResult(intent, TRACK_FILTER_REQUEST);
+                //myTracks.clear();
+                //myTracks = (ArrayList<Track>) Objects.requireNonNull(getActivity().getIntent().getExtras()).getSerializable("Tracks filtered");
+            }
+        });
 
         return view;
     }

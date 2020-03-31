@@ -75,7 +75,7 @@
             </Button>
 
             <TextView
-                android:id="@+id/tv_add_new_song"
+                android:id="@+id/tv_add_new_playlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/create_new_playlist"
