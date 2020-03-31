@@ -66,10 +66,6 @@
     <string name="default_reproductions">100.000</string>
     <string name="track_thumbnail">Track Thumbnail</string>
     <string name="nom_de_la_canco">Song Name</string>
-    <string name="noTopAvailable">There are no Top Songs available</string>
-    <string name="noPlistAvailable">There are no Playlist available</string>
-    <string name="noSongsAvailable">There are no Songs available</string>
-    <string name="remember">Remember Me</string>
 
     <string name="search_title">Search</string>
     <string name="search_bar">Search here…</string>
@@ -113,6 +109,22 @@
     <string name="settings_change_email">Update Email</string>
     <string name="settings_add_new_username">Tap your new username</string>
     <string name="settings_add_new_email">Tap your new email</string>
+
+    <string name="followed_users">Following</string>
+    <string name="apply_filter">Apply filter</string>
+    <string name="filter_track_search_genre">Type a genre</string>
+    <string name="filter_tracks_title">Filter tracks</string>
+    <string name="filter_tracks_genres">Filter by genre</string>
+
+    <string name="filter_tracks_descendent">Filter tracks</string>
+
+
+    <string name="noTopAvailable">There are no Top Songs available</string>
+    <string name="noPlistAvailable">There are no Playlist available</string>
+    <string name="noSongsAvailable">There are no Songs available</string>
+    <string name="remember">Remember Me</string>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

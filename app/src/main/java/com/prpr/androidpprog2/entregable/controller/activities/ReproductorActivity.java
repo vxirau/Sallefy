@@ -65,7 +65,6 @@ public class ReproductorActivity extends Activity {
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
-            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.updateUI();
             updateVisualizer();
         }
@@ -96,7 +95,6 @@ public class ReproductorActivity extends Activity {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
             servidorVinculat = true;
-            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.updateUI();
             updateVisualizer();
         }

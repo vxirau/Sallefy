@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
-            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
         }
         pManager.getFollowingPlaylists(this);
@@ -117,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
             servidorVinculat = true;
-            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
         }
 
         @Override

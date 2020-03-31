@@ -18,7 +18,9 @@ import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -41,6 +43,7 @@ import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
+import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
@@ -64,8 +67,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private ImageView imahen;
     private Button playB;
     private Button pauseB;
-    private SeekBar seekBar;
     private ArrayList<Track> audioList;
+    private int posicioActual=0;
     private int audioIndex = -1;
     private Track activeAudio;
     private SeekBar mSeekBar;
@@ -77,6 +80,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     public static final String ACTION_PREVIOUS = "com.prpr.androidpprog2.entregable.ACTION_PREVIOUS";
     public static final String ACTION_NEXT = "com.prpr.androidpprog2.entregable.ACTION_NEXT";
     public static final String ACTION_STOP = "com.prpr.androidpprog2.entregable.ACTION_STOP";
+    public static final String BROADCAST_UI = "com.prpr.androidpprog2.entregable.updateUI";
+
 
     private MediaSessionManager mediaSessionManager;
     private MediaSessionCompat mediaSession;
@@ -87,17 +92,21 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     private static final int NOTIFICATION_ID = 101;
 
+    private ServiceCallback scallback;
     private boolean ongoingCall = false;
     private PhoneStateListener phoneStateListener;
     private TelephonyManager telephonyManager;
+    private Intent update;
 
     @Override
     public void onCreate() {
         super.onCreate();
         callStateListener();
+        update = new Intent(BROADCAST_UI);
         registerBecomingNoisyReceiver();
         register_playNewAudio();
     }
+
 
     private Runnable mProgressRunner = new Runnable() {
         @Override
@@ -113,6 +122,20 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             }
         }
     };
+
+    public Runnable getmProgressRunner(){
+        return mProgressRunner;
+    }
+
+    public void setmSeekBar(SeekBar s){
+        mSeekBar = s;
+    }
+
+
+
+    public void setSeekCallback(ServiceCallback s){
+        scallback = s;
+    }
 
     private void initMediaPlayer() {
         mediaPlayer = new MediaPlayer();
@@ -134,29 +157,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mediaPlayer.prepareAsync();
     }
 
-    public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg) {
-        mSeekBar = seekBar;
-        title = titol;
-        artist = autor;
-        playB = play;
-        pauseB = pause;
-        imahen = trackImg;
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    mediaPlayer.seekTo(progress);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-    }
-
     public MediaPlayer getPlayer(){
         return mediaPlayer;
     }
@@ -165,7 +165,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         if(mediaPlayer != null && title!=null && artist!=null){
             title.setText(activeAudio.getName());
             artist.setText(activeAudio.getUserLogin());
-            mProgressRunner.run();
             mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
             if(mediaPlayer.isPlaying() || mediaPlayer.getCurrentPosition()==0){
                 pauseB.setVisibility(View.VISIBLE);
@@ -190,8 +189,28 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             int duration = mediaPlayer.getDuration();
             mSeekBar.setMax(duration);
             mSeekBar.postDelayed(mProgressRunner, 1000);
+            mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if(!fromUser){
+                        scallback.onSeekBarUpdate(progress, mediaPlayer.getDuration());
+                    }else{
+                        mediaPlayer.seekTo(progress);
+                    }
+                }
+            });
         }
-        updateUI();
+        ferBroadcastUI();
     }
 
     private void stopMedia() {
@@ -206,15 +225,21 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             mediaPlayer.pause();
             resumePosition = mediaPlayer.getCurrentPosition();
         }
-        updateUI();
+        ferBroadcastUI();
+        
+    }
+
+    public void seekToPosition(int position){
+        mediaPlayer.seekTo(position);
     }
 
     public void resumeMedia() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.seekTo(resumePosition);
+            mProgressRunner.run();
             mediaPlayer.start();
         }
-        updateUI();
+        ferBroadcastUI();
     }
 
     private BroadcastReceiver playNewAudio = new BroadcastReceiver() {
@@ -236,7 +261,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     };
 
     private void register_playNewAudio() {
-        updateUI();
+        ferBroadcastUI();
+        
         IntentFilter filter = new IntentFilter(PlaylistActivity.Broadcast_PLAY_NEW_AUDIO);
         registerReceiver(playNewAudio, filter);
     }
@@ -398,7 +424,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             default:
                 break;
         }
-        updateUI();
+        ferBroadcastUI();
+        
         return null;
     }
 
@@ -417,7 +444,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         } else if (actionString.equalsIgnoreCase(ACTION_STOP)) {
             transportControls.stop();
         }
-        updateUI();
+        ferBroadcastUI();
+        
     }
 
 
@@ -432,7 +460,19 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
-        updateUI();
+        ferBroadcastUI();
+    }
+
+    private void ferBroadcastUI() {
+        Intent intent = new Intent();
+        intent.setAction(BROADCAST_UI);
+        intent.putExtra("activeTrack", activeAudio);
+        if(mediaPlayer!=null){
+            intent.putExtra("playing", mediaPlayer.isPlaying());
+            intent.putExtra("position", posicioActual);
+            intent.putExtra("duration", mediaPlayer.getDuration());
+        }
+        sendBroadcast(intent);
     }
 
     public void skipToPrevious() {
@@ -447,7 +487,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
-        updateUI();
+        ferBroadcastUI();
     }
 
 
