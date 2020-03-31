@@ -28,6 +28,7 @@ import java.util.List;
 public class UserPlaylistsFragment extends Fragment implements PlaylistCallback {
 
     private ArrayList<Playlist> myPlaylists;
+    private ArrayList<Playlist> followingPlaylists;
     private Playlist myPlaylist;
 
     private PlaylistManager playlistManager;
@@ -66,6 +67,8 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
         playlistManager = new PlaylistManager(getContext());
         playlistManager.getAllMyPlaylists(this);
+        playlistManager.getFollowingPlaylists(this);
+
 
        return view;
     }
@@ -86,6 +89,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
         UserPlaylistAdapter playlistAdapter = new UserPlaylistAdapter(getContext(), this.myPlaylists);
         playlistAdapter.setPlaylistCallback(this);
         mRecyclerView.setAdapter(playlistAdapter);
+
     }
 
     @Override
@@ -140,7 +144,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     @Override
     public void onFollowingRecieved(List<Playlist> body) {
-
+        this.followingPlaylists = (ArrayList) body;
+        UserPlaylistAdapter playlistAdapter = new UserPlaylistAdapter(getContext(), this.followingPlaylists);
+        playlistAdapter.setPlaylistCallback(this);
+        mRecyclerView.setAdapter(playlistAdapter);
     }
 
     @Override
