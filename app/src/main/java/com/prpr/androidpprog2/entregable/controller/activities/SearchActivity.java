@@ -272,6 +272,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     }
 
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
+
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
@@ -323,6 +333,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onAllUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onUserIsFollowed(boolean isFollowed) {
+
+    }
+
+    @Override
+    public void onUserIsFollowedFail(Throwable throwable) {
 
     }
 
