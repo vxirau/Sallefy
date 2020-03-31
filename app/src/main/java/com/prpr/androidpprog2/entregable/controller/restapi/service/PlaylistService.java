@@ -32,4 +32,7 @@ public interface PlaylistService {
     @GET("me/playlists/following")
     Call<List<Playlist>> getFollowedPlaylists(@Header("Authorization") String token);
 
+    @GET("users/{login}/playlists")
+    Call<List<Playlist>> showUserPlaylist(@Path("login") String login, @Header("Authorization") String token);
+
 }

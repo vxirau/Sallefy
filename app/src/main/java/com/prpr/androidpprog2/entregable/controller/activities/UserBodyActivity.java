@@ -371,6 +371,16 @@ public class UserBodyActivity extends AppCompatActivity implements UserCommunica
     }
 
     @Override
+    public void onTopTracksRecieved(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

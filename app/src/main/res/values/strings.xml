@@ -60,12 +60,15 @@
     <string name="random">Shuffle</string>
     <string name="addsongs_title">Add Songs</string>
     <string name="backText">Back</string>
-    <string name="top_songs">Top Songs</string>
-    <string name="top_playists">Playlist by the artist</string>
-    <string name="all_songs_by_artist">Checkout all songs by artist!</string>
+    <string name="top_songs"><b>Top Songs</b></string>
+    <string name="top_playists"><b>Playlist by the artist</b></string>
+    <string name="all_songs_by_artist"><b>Checkout all songs by artist!</b></string>
     <string name="default_reproductions">100.000</string>
     <string name="track_thumbnail">Track Thumbnail</string>
     <string name="nom_de_la_canco">Song Name</string>
+    <string name="noTopAvailable">There are no Top Songs available</string>
+    <string name="noPlistAvailable">There are no Playlist available</string>
+    <string name="noSongsAvailable">There are no Songs available</string>
 
     <string name="search_title">Search</string>
     <string name="search_bar">Search here…</string>

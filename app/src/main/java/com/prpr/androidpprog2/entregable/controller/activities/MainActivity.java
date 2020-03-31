@@ -360,8 +360,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
-
-
     @Override
     public void onAllNoPlaylists(Throwable throwable) {
 

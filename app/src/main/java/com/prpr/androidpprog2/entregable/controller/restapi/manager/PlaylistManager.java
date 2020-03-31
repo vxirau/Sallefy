@@ -186,8 +186,6 @@ public class PlaylistManager {
 
     }
 
-
-
     public synchronized void getFollowingPlaylists (final PlaylistCallback playlistCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
         Call<List<Playlist>> call = mPlaylistService.getFollowedPlaylists( "Bearer " + userToken.getIdToken());
@@ -212,5 +210,28 @@ public class PlaylistManager {
         });
     }
 
+    public synchronized void showUserPlaylist(String login,final PlaylistCallback playlistCallback){
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<List<Playlist>> call = mPlaylistService.showUserPlaylist( login,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<List<Playlist>>() {
+            @Override
+            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
 
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    playlistCallback.onAllPlaylistRecieved(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    playlistCallback.onAllNoPlaylists(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
 }
