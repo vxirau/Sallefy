@@ -211,9 +211,9 @@ public class PlaylistManager {
         });
     }
 
-    public synchronized void showUserPlaylist(String login,final PlaylistCallback playlistCallback){
+    public synchronized void showUserPlaylist(String login,final PlaylistCallback playlistCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<List<Playlist>> call = mPlaylistService.showUserPlaylist( login,"Bearer " + userToken.getIdToken());
+        Call<List<Playlist>> call = mPlaylistService.showUserPlaylist(login, "Bearer " + userToken.getIdToken());
         call.enqueue(new Callback<List<Playlist>>() {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
@@ -232,6 +232,7 @@ public class PlaylistManager {
 
             }
         });
+    }
 
     public synchronized void checkFollowing (int id, final PlaylistCallback playlistCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
@@ -282,4 +283,4 @@ public class PlaylistManager {
     }
 
     }
-}
+

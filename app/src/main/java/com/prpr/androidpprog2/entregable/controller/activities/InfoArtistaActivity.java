@@ -19,6 +19,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
@@ -29,7 +30,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfoArtistaActivity extends AppCompatActivity implements TrackListCallback, TrackCallback , PlaylistCallback{
+public class InfoArtistaActivity extends AppCompatActivity implements TrackListCallback, TrackCallback, PlaylistCallback{
 
     private Button back;
     private RecyclerView topSongsRecycle;
@@ -97,8 +98,6 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         TrackListAdapter adapter = new TrackListAdapter(this,this, artTracks , null);
         allSongsRecycle.setLayoutManager(manager2);
         allSongsRecycle.setAdapter(adapter);
-
-
 
     }
 
@@ -246,6 +245,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     @Override
     public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
 
     }
 }
