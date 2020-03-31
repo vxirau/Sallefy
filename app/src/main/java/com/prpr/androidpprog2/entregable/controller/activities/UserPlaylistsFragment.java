@@ -53,6 +53,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
         // Inflate the layout for this fragment
        View view =  inflater.inflate(R.layout.fragment_user_playlists, container, false);
 
+
+       followingPlaylists = new ArrayList<>();
+
+
        btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configPlaylistsButton);
        btnSettingsPlaylists.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -79,6 +83,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
                startActivity(intent);
            }
        });
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.userPlaylistsRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), null);
@@ -107,9 +112,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
         this.myPlaylists = (ArrayList) playlists;
-        UserPlaylistAdapter playlistAdapter = new UserPlaylistAdapter(getContext(), this.myPlaylists);
-        playlistAdapter.setPlaylistCallback(this);
-        mRecyclerView.setAdapter(playlistAdapter);
+
 
     }
 
@@ -166,6 +169,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     @Override
     public void onFollowingRecieved(List<Playlist> body) {
         this.followingPlaylists = (ArrayList) body;
+        this.followingPlaylists.addAll(myPlaylists);
         UserPlaylistAdapter playlistAdapter = new UserPlaylistAdapter(getContext(), this.followingPlaylists);
         playlistAdapter.setPlaylistCallback(this);
         mRecyclerView.setAdapter(playlistAdapter);

@@ -95,8 +95,9 @@
             android:id="@+id/userPlaylistsRecyclerview"
             android:layout_width="match_parent"
             android:layout_marginTop="140dp"
+
             android:layout_height="match_parent"
-            android:orientation="horizontal" />
+            android:orientation="vertical" />
 
         <RelativeLayout
             android:layout_width="match_parent"
