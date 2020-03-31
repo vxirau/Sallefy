@@ -45,6 +45,12 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
         initViews();
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
+    }
+
     private void initViews () {
         etEmail = (EditText) findViewById(R.id.register_email);
         etLogin = (EditText) findViewById(R.id.register_login);
@@ -62,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
                 UserManager.getInstance(getApplicationContext()).registerAttempt(email, login, password, RegisterActivity.this);
             }
         });
+
 
         btnBack = (Button) findViewById(R.id.back2login);
         btnBack.setOnClickListener(new View.OnClickListener() {
