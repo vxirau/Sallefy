@@ -83,7 +83,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private MediaSession mSession;
     private MediaControllerCompat.TransportControls transportControls;
 
-    private final IBinder iBinder = new LocalBinder();
+    private IBinder iBinder = new LocalBinder();
 
     private static final int NOTIFICATION_ID = 101;
 
@@ -484,6 +484,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
         handleIncomingActions(intent);
         return super.onStartCommand(intent, flags, startId);
+
     }
 
     @Override
@@ -504,6 +505,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @Override
     public IBinder onBind(Intent intent) {
+        if (iBinder == null){
+            iBinder = new LocalBinder();
+        }
         return iBinder;
     }
 
@@ -599,6 +603,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
                 audioManager.abandonAudioFocus(this);
     }
+
 
     public class LocalBinder extends Binder {
         public ReproductorService getService() {
