@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -35,6 +37,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -78,19 +81,18 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     private ReproductorService serv;
     private boolean servidorVinculat=false;
+    private boolean isPlaying = false;
 
+    //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
 
+    //TODO: VINCULAR CORRECTAMENT SERVEI.
+
+    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
 
     @Override
     public void onResume() {
         super.onResume();
-        if(!servidorVinculat){
-            Intent intent = new Intent(this, ReproductorService.class);
-            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }else{
-            //serv.updateUI();
-        }
         pManager.getFollowingPlaylists(this);
     }
 
@@ -110,32 +112,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
-            serv = binder.getService();
-            servidorVinculat = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            servidorVinculat = false;
-        }
-    };
-
-    void doUnbindService() {
-        if (servidorVinculat) {
-            unbindService(serviceConnection);
-            servidorVinculat = false;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        doUnbindService();
-    }
 
     private void initViews() {
 
