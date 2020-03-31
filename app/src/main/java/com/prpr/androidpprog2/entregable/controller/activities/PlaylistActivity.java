@@ -217,7 +217,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                overridePendingTransition( R.anim.slide_up, R.anim.slide_down );
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
 
