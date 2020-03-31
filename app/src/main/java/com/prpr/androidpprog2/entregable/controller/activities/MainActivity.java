@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onResume() {
-        super.onStart();
+        super.onResume();
         if(!servidorVinculat){
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
