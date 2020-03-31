@@ -135,6 +135,6 @@ public class Track implements Serializable {
     }
 
     public void print(){
-        System.out.println("ID: " + this.id + "\nName: " + this.name + "\nUser: " + this.getUser().getLogin());
+        System.out.println("ID: " + this.id + "\nName: " + this.name + "\nUser: " + this.getUser().getLogin() + "\nFoto: " + this.getThumbnail());
     }
 }

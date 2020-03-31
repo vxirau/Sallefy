@@ -1,6 +1,5 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.callback;
 
-import com.prpr.androidpprog2.entregable.controller.adapters.GenereAdapter;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Track;
 

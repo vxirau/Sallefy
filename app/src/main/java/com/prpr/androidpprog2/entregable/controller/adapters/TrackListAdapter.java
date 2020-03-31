@@ -74,7 +74,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         }
 
 
-        if (mTracks.get(position).getThumbnail() != null) {
+        if (mTracks.get(position).getThumbnail() != null && !mTracks.get(position).getThumbnail().equals("")) {
             Picasso.get().load(mTracks.get(position).getThumbnail()).into(holder.ivPicture);
         }else{
             Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(holder.ivPicture);

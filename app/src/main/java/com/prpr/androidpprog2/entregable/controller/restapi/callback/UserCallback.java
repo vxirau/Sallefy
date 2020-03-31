@@ -1,10 +1,8 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.callback;
 
-import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface UserCallback extends FailureCallback {

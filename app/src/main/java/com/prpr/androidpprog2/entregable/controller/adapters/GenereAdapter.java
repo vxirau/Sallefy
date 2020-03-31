@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,12 +26,9 @@ public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder
     private Context mContext;
     private GenreCallback mCallback;
 
-    public GenereAdapter(Context context, ArrayList<Genre> generes ) {
+    public GenereAdapter(Context context, final GenreCallback itemClickCallback, ArrayList<Genre> generes ) {
         this.generes = generes;
         this.mContext = context;
-    }
-
-    public void setGenereCallback(final GenreCallback itemClickCallback) {
         this.mCallback = itemClickCallback;
     }
 
@@ -42,6 +40,7 @@ public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder
         return new GenereAdapter.ViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +49,7 @@ public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder
             }
         });
 
-        holder.nomGenere.setText(generes.get(position).getName());
+        holder.nomGenere.setText("Tuputamadre");//generes.get(position).getName());
 
     }
 
