@@ -15,14 +15,14 @@
         tools:layout="@layout/fragment_user_menu">
 
     </fragment>
-    <RelativeLayout
+    <FrameLayout
 
         android:id="@+id/relativeUserLayout"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         >
 
-    </RelativeLayout>
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
