@@ -90,26 +90,26 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     @Override
     public void onPause() {
         super.onPause();
-        unregisterReceiver(broadcastUIReceiver);
+        //unregisterReceiver(broadcastUIReceiver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(broadcastUIReceiver, new IntentFilter(ReproductorService.BROADCAST_UI));
+        //registerReceiver(broadcastUIReceiver, new IntentFilter(ReproductorService.BROADCAST_UI));
         //player.setmSeekBar(mseek);
         pManager.checkFollowing(playlst.getId(), this);
     }
 
 
-    private BroadcastReceiver broadcastUIReceiver = new BroadcastReceiver() {
+    /*private BroadcastReceiver broadcastUIReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateUI((Track) intent.getSerializableExtra("activeTrack"),
                     (boolean) intent.getSerializableExtra("playing"),
                     (int) intent.getSerializableExtra("position"), (int) intent.getSerializableExtra("duration"));
         }
-    };
+    };*/
 
     private void playAudio(int audioIndex) {
         if (!serviceBound) {
