@@ -1,6 +1,7 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -35,12 +36,19 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     private EditText etLogin;
     private EditText etPassword;
     private Button btnRegister;
+    private Button btnBack;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         initViews();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
 
     private void initViews () {
@@ -58,6 +66,18 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
                 String email = etEmail.getText().toString();
                 Session.getInstance(getApplicationContext()).setUserRegister(new UserRegister(email, login, password));
                 UserManager.getInstance(getApplicationContext()).registerAttempt(email, login, password, RegisterActivity.this);
+            }
+        });
+
+
+        btnBack = (Button) findViewById(R.id.back2login);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                } else finish();
             }
         });
     }
@@ -125,6 +145,16 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
     @Override
     public void onAllUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onUserIsFollowed(boolean isFollowed) {
+
+    }
+
+    @Override
+    public void onUserIsFollowedFail(Throwable throwable) {
 
     }
 

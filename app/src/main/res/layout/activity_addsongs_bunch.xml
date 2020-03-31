@@ -38,6 +38,18 @@
         android:orientation="vertical"
         android:layout_marginTop="110dp"/>
 
+    <TextView
+        android:id="@+id/noTracks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="140dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible"
+        android:textSize="20sp"/>
+
 
 
     <RelativeLayout

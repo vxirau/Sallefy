@@ -26,4 +26,7 @@ public interface TrackService {
     @POST("tracks")
     Call<ResponseBody> createTrack(@Body Track track, @Header("Authorization") String token);
 
+    @GET("users/{login}/tracks?popular=true&size=10")
+    Call<List<Track>> getTopTracks(@Path("login") String login, @Header("Authorization") String token);
+
 }

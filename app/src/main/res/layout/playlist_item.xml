@@ -44,7 +44,8 @@
                 android:layout_width="125dp"
                 android:autoSizeTextType="uniform"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
+                android:layout_marginLeft="5dp"
                 android:text="@string/default_playlist_name"
                 />
 

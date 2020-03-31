@@ -1,8 +1,11 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import java.util.*;
 
@@ -26,9 +29,13 @@ import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -39,69 +46,177 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback {
+public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback, PlaylistCallback, ServiceCallback {
 
     private Playlist playlst;
     private TextView plyName;
     private TextView plyAuthor;
     private ImageView plyImg;
-    private ImageView im;
 
 
     private TextView tvTitle;
     private TextView tvAuthor;
     private LinearLayout playing;
+
     private Button back2Main;
     private Button shuffle;
     private Button follow;
+    private Follow followingInfo;
+    private boolean isFollowing = false;
     private Button addBunch;
-    private SeekBar mseek;
-
-
     private Button play;
     private Button pause;
 
     private RecyclerView mRecyclerView;
-
+    private boolean bunch;
     private ArrayList<Track> mTracks;
     private int currentTrack = 0;
-    private CircleLineVisualizer mVisualizer;
+    private PlaylistManager pManager;
 
+
+    //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
+    private SeekBar mseek;
+    private boolean isPlaying = false;
     private ReproductorService player;
-    private boolean trackAssigned = false;
     boolean serviceBound = false;
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
-
+    private Intent intent;
 
     @Override
     public void onStart() {
         super.onStart();
-        if(serviceBound){
-            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
-            player.updateUI();
-        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastUIReceiver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(serviceBound){
-            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
-            player.updateUI();
+        registerReceiver(broadcastUIReceiver, new IntentFilter(ReproductorService.BROADCAST_UI));
+        //player.setmSeekBar(mseek);
+        pManager.checkFollowing(playlst.getId(), this);
+    }
+
+
+    private BroadcastReceiver broadcastUIReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateUI((Track) intent.getSerializableExtra("activeTrack"),
+                    (boolean) intent.getSerializableExtra("playing"),
+                    (int) intent.getSerializableExtra("position"), (int) intent.getSerializableExtra("duration"));
+        }
+    };
+
+    private void playAudio(int audioIndex) {
+        if (!serviceBound) {
+            PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
+            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+            Intent playerIntent = new Intent(this, ReproductorService.class);
+            startService(playerIntent);
+            bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        } else {
+            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            sendBroadcast(broadcastIntent);
+        }
+        tvTitle.setText(mTracks.get(audioIndex).getName());
+        tvAuthor.setText(mTracks.get(audioIndex).getUserLogin());
+    }
+
+
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
+            player = binder.getService();
+            player.setmSeekBar(mseek);
+            player.setSeekCallback(PlaylistActivity.this);
+            serviceBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            serviceBound = false;
+        }
+    };
+
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("Sallefy", serviceBound);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        serviceBound = savedInstanceState.getBoolean("Sallefy");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (serviceBound) {
+            unbindService(serviceConnection);
+            player.stopSelf();
         }
     }
+
+    @Override
+    public void onSeekBarUpdate(int progress, int duration) {
+        if(isPlaying){
+            mseek.postDelayed(player.getmProgressRunner(), 1000);
+        }
+        mseek.setProgress(progress);
+    }
+
+    private void updateUI(Track t, boolean playing, int position, int duration) {
+        isPlaying=playing;
+        mseek.setMax(duration);
+        if(!t.getName().equals(tvTitle.getText())){
+            tvAuthor.setText(t.getUserLogin());
+            tvTitle.setText(t.getName());
+            if(playing || position==0){
+                pause.setVisibility(View.VISIBLE);
+                play.setVisibility(View.INVISIBLE);
+            }else{
+                pause.setVisibility(View.INVISIBLE);
+                play.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+
+    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_layout);
+
+        intent = new Intent(this, ReproductorService.class);
+
         if(getIntent().getSerializableExtra("Playlst")!=null){
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
         }
+        if(getIntent().getSerializableExtra("bunch")!=null){
+            bunch = (Boolean) getIntent().getSerializableExtra("bunch");
+        }
         initViews();
+        pManager = new PlaylistManager(this);
+        pManager.checkFollowing(playlst.getId(), this);
         getData();
     }
+
+
 
     private void initViews() {
 
@@ -138,7 +253,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                overridePendingTransition( R.anim.slide_up, R.anim.slide_down );
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
 
@@ -149,10 +264,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         mRecyclerView.setAdapter(adapter);
 
         follow = findViewById(R.id.playlistSeguirBoto);
+        follow.setEnabled(true);
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                pManager.followPlaylist(playlst.getId(), PlaylistActivity.this);
             }
         });
 
@@ -183,7 +299,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 player.resumeMedia();
                 pause.setVisibility(View.VISIBLE);
                 play.setVisibility(View.INVISIBLE);
-                trackAssigned=true;
             }
         });
         pause = findViewById(R.id.playPause);
@@ -199,6 +314,20 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         });
 
         mseek = findViewById(R.id.dynamic_seekBar);
+        mseek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    player.seekToPosition(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
 
         shuffle = findViewById(R.id.playlistRandom);
         shuffle.setEnabled(true);
@@ -222,8 +351,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playlst.getOwner().getLogin())){
             addBunch.setVisibility(View.VISIBLE);
+            follow.setVisibility(View.GONE);
         }else{
             addBunch.setVisibility(View.INVISIBLE);
+            follow.setVisibility(View.VISIBLE);
         }
 
 
@@ -232,8 +363,15 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         back2Main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                if(bunch){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                }else{
+                    finish();
+                    overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                }
+
             }
         });
 
@@ -245,21 +383,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     }
 
-    private void playAudio(int audioIndex) {
-        if (!serviceBound) {
-            PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
-            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
-            Intent playerIntent = new Intent(this, ReproductorService.class);
-            startService(playerIntent);
-            bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-        } else {
-            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
-            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
-            sendBroadcast(broadcastIntent);
-        }
-        tvTitle.setText(mTracks.get(audioIndex).getName());
-        tvAuthor.setText(mTracks.get(audioIndex).getUserLogin());
-    }
+
 
 
     private void getData() {
@@ -268,44 +392,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         mRecyclerView.setAdapter(adapter);
     }
 
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
-            player = binder.getService();
-            serviceBound = true;
-            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            serviceBound = false;
-        }
-    };
-
-
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean("Sallefy", serviceBound);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        serviceBound = savedInstanceState.getBoolean("Sallefy");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (serviceBound) {
-            unbindService(serviceConnection);
-            player.stopSelf();
-        }
-    }
 
 
     @Override
@@ -336,6 +422,16 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     }
 
+    @Override
+    public void onTopTracksRecieved(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTopTracks(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onFailure(Throwable throwable) {
@@ -347,7 +443,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         pause.setVisibility(View.VISIBLE);
         play.setVisibility(View.INVISIBLE);
         currentTrack = index;
-        trackAssigned=true;
         playAudio(index);
     }
 
@@ -358,4 +453,104 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         intent.putExtra("Playlst", p);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
+
+    @Override
+    public void onPlaylistCreated(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistRecieved(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistSelected(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onTrackAdded(Playlist body) {
+
+    }
+
+    @Override
+    public void onTrackAddFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onAllNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopRecieved(List<Playlist> topPlaylists) {
+
+    }
+
+    @Override
+    public void onNoTopPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopPlaylistsFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+        followingInfo = body;
+        if(followingInfo.isFollowing()){
+            follow.setText("Following");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+            isFollowing=false;
+        }else{
+            follow.setText("Follow");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+            isFollowing=true;
+        }
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
+        followingInfo = body;
+        if(followingInfo.isFollowing()){
+            follow.setText("Following");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+            isFollowing=false;
+        }else{
+            follow.setText("Follow");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+            isFollowing=true;
+        }
+    }
+
+
 }

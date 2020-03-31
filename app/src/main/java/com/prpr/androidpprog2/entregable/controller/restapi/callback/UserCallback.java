@@ -16,6 +16,8 @@ public interface UserCallback extends FailureCallback {
     void onTopUsersRecieved(List<User> body);
     void onUserSelected(User user);
     void onAllUsersSuccess(List<User> users);
+    void onUserIsFollowed(boolean isFollowed);
+    void onUserIsFollowedFail(Throwable throwable);
     void onAllUsersFail(Throwable throwable);
 
 }

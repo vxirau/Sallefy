@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center_vertical"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserMenuFragment">
 
 
@@ -12,6 +13,7 @@
         android:layout_height="100dp"
         android:gravity="center"
         android:orientation="vertical"
+        android:background="@drawable/fons_app"
         android:layout_alignParentTop="true">
 
         <LinearLayout
@@ -23,42 +25,54 @@
             <TextView
                 android:id="@+id/user_playlists_title"
                 android:textColor="@color/colorWhite"
-                android:layout_width="140dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:paddingLeft="25dp"
                 android:clickable="true"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:text="@string/playlists">
 
             </TextView>
             <TextView
                 android:id="@+id/user_my_songs_title"
-                android:layout_width="140dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingLeft="25dp"
+                android:paddingLeft="10dp"
                 android:clickable="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:layout_toRightOf="@+id/user_playlists_title"
                 android:text="@string/my_songs">
 
             </TextView>
             <TextView
                 android:id="@+id/user_statistics_title"
-                android:layout_width="140dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:paddingLeft="25dp"
+                android:paddingLeft="10dp"
                 android:clickable="true"
                 android:textColor="@color/colorWhite"
                 android:layout_toRightOf="@+id/user_my_songs_title"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:text="@string/statistics">
 
             </TextView>
+            <TextView
+                android:id="@+id/user_my_followed_title"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="5dp"
+                android:clickable="true"
+                android:textColor="@color/colorWhite"
+                android:layout_toRightOf="@+id/user_my_songs_title"
+                android:textSize="18dp"
+                android:text="@string/followed_users">
 
+            </TextView>
 
         </LinearLayout>
 

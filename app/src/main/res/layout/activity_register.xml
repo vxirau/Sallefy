@@ -17,9 +17,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="40dp"
-        android:background="@drawable/fondo_input_2">
+        android:background="@drawable/fondo_input_2"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView5"
@@ -29,13 +29,13 @@
             android:gravity="center"
             android:text="@string/registrar_se"
             android:textColor="#353535"
-            android:textSize="24sp"/>
+            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
             android:gravity="center"
             android:orientation="vertical">
@@ -48,12 +48,12 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/settings_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#353535"
 
-                    style="@style/settings_title"
-                    android:text="@string/login_username"/>
+                    android:text="@string/login_username"
+                    android:textColor="#353535" />
 
                 <EditText
                     android:id="@+id/register_login"
@@ -64,8 +64,7 @@
                     android:background="@drawable/rectangle_gran_gborder_transparent"
                     android:gravity="center"
                     android:hint="@string/login_username"
-                    android:textColorHint="#70353535"
-                  />
+                    android:textColorHint="#70353535" />
 
             </LinearLayout>
 
@@ -77,23 +76,23 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/settings_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#353535"
 
-                    style="@style/settings_title"
-                    android:text="@string/login_email"/>
+                    android:text="@string/login_email"
+                    android:textColor="#353535" />
 
                 <EditText
                     android:id="@+id/register_email"
                     android:layout_width="322dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    android:inputType="textEmailAddress"
                     android:background="@drawable/rectangle_gran_gborder_transparent"
                     android:gravity="center"
                     android:hint="@string/login_email"
-                    android:textColorHint="#70353535"/>
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="#70353535" />
 
             </LinearLayout>
 
@@ -105,24 +104,24 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/settings_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#353535"
 
-                    style="@style/settings_title"
-                    android:text="@string/login_password"/>
+                    android:text="@string/login_password"
+                    android:textColor="#353535" />
 
                 <EditText
                     android:id="@+id/register_password"
                     android:layout_width="322dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="10dp"
-                    android:inputType="textPassword"
-                    android:ems="10"
                     android:background="@drawable/rectangle_gran_gborder_transparent"
+                    android:ems="10"
                     android:gravity="center"
                     android:hint="@string/login_password"
-                    android:textColorHint="#70353535"/>
+                    android:inputType="textPassword"
+                    android:textColorHint="#70353535" />
 
             </LinearLayout>
 
@@ -132,22 +131,31 @@
             android:id="@+id/register_btn_action"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/rectangle_g_nosombra"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold"
-            android:textSize="20sp"
             android:fontFamily="@font/gotham_bold"
-            android:text="@string/action_register"/>
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="@string/action_register"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/back2login"
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/gotham_bold"
+            android:text="@string/backText"
+            android:textAllCaps="false"
+            android:textColor="#21D760"
+            android:textSize="15sp" />
 
 
     </LinearLayout>
-
-
 
 
 </LinearLayout>

@@ -35,6 +35,10 @@ public class UserManager {
     private UserService mService;
     private UserTokenService mTokenService;
 
+    public UserManager() {
+
+    }
+
 
     public static UserManager getInstance(Context context) {
         if (sUserManager == null) {
@@ -236,5 +240,27 @@ public class UserManager {
         });
     }
 
+    public synchronized void userIsFollowed(String login, final UserCallback userCallback){
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<Boolean> call = mService.userIsFollowed(login, "Bearer " + userToken.getIdToken());
 
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onUserIsFollowed(response.body());
+                } else {
+                    userCallback.onUserIsFollowedFail(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                userCallback.onFailure(t);
+            }
+        });
+
+
+    }
 }

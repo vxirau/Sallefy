@@ -11,4 +11,6 @@ public interface TrackCallback extends FailureCallback {
     void onPersonalTracksReceived(List<Track> tracks);
     void onUserTracksReceived(List<Track> tracks);
     void onCreateTrack(Track t);
+    void onTopTracksRecieved(List<Track> tracks);
+    void onNoTopTracks(Throwable throwable);
 }
