@@ -2,29 +2,21 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.os.Bundle;
 
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.prpr.androidpprog2.entregable.R;
 
 
 public class UserStatisticsFragment extends Fragment {
 
-
-
     public UserStatisticsFragment() {
         // Required empty public constructor
     }
 
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

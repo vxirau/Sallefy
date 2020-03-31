@@ -1,14 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fons_app"
-    tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserStatisticsFragment">
+    android:gravity="center"
+    tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserStatisticsFragment"
+    android:background="@drawable/fons_app">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="bottom">
+
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/configUsersFollowedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="50dp"
+                android:backgroundTint="#21D760"
+                android:elevation="10dp"
+                android:src="@drawable/ic_settings"
+                app:borderWidth="0dp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </FrameLayout>

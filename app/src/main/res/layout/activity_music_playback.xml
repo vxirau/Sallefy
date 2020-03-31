@@ -134,14 +134,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/currentTime"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:gravity="center"
+                android:text="@string/default_duration"
+                android:textColor="@color/colorWhite"
+                android:textSize="10sp" />
+
             <SeekBar
                 android:id="@+id/seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:backgroundTint="@color/colorWhite"
                 android:progressBackgroundTint="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/totalTime"
+                android:layout_width="40dp"
+                android:layout_marginRight="30dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/default_duration"
+                android:textColor="@color/colorWhite"
+                android:textSize="10sp" />
+
+        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,36 +186,36 @@
                     android:layout_width="160dp"
                     android:layout_height="200dp">
 
-                <com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
-                    xmlns:custom="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/circleVisualizer"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    custom:avColor="@color/colorVisualizer"
-                    custom:avDensity="0.2"
-                    custom:avWidth="6dp"
-                    custom:avSpeed="slow"
-                    custom:avType="outline"
-                    android:layout_centerInParent="true"/>
+                    <com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
+                        xmlns:custom="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/visualizerC"
+                        android:layout_width="160dp"
+                        android:layout_height="140dp"
+                        custom:avColor="@color/colorVisualizer"
+                        custom:avDensity="0.5"
+                        custom:avType="fill"
+                        custom:avSpeed="medium"
+                        android:layout_centerInParent="true"/>
 
-                <Button
-                    android:id="@+id/pause"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:scaleType="center"
-                    android:adjustViewBounds="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/ic_pause"/>
+                    <Button
+                        android:id="@+id/pause"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:scaleType="center"
+                        android:adjustViewBounds="true"
+                        android:layout_centerInParent="true"
+                        android:visibility="invisible"
+                        android:background="@drawable/ic_pause"/>
 
-                <Button
-                    android:id="@+id/play"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:scaleType="center"
-                    android:adjustViewBounds="true"
-                    android:layout_centerInParent="true"
-                    android:visibility="invisible"
-                    android:background="@drawable/ic_play" />
+                    <Button
+                        android:id="@+id/play"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:scaleType="center"
+                        android:adjustViewBounds="true"
+                        android:layout_centerInParent="true"
+                        android:visibility="invisible"
+                        android:background="@drawable/ic_play" />
                 </RelativeLayout>
 
                 <ImageButton
@@ -199,7 +226,17 @@
                     android:src="@drawable/ic_skip_next" />
 
             </LinearLayout>
+            <ImageButton
+                android:id="@+id/botoShuffle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:background="@drawable/no_shuffle"
+                tools:layout_editor_absoluteY="677dp" />
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

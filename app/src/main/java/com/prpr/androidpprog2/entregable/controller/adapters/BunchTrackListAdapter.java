@@ -59,9 +59,9 @@ public class BunchTrackListAdapter extends RecyclerView.Adapter<BunchTrackListAd
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                     if(isChecked){
-                        mCallback.onRadioRemove(mTracks.get(position));
-                    }else{
                         mCallback.onRadioSelected(mTracks.get(position));
+                    }else{
+                        mCallback.onRadioRemove(mTracks.get(position));
                     }
                 }
             }

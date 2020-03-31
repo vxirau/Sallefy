@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -46,11 +48,10 @@ public class ReproductorActivity extends Activity {
     private Button btnPause;
 
     private ImageButton btnForward;
+    private ImageButton shuffle;
+    private boolean isShuffle=false;
     private Button atras;
     private SeekBar mSeekBar;
-    private Handler mHandler;
-    private Runnable mRunnable;
-    private Track trck;
     private CircleLineVisualizer mVisualizer;
     private MediaPlayer mPlayer;
 
@@ -58,14 +59,15 @@ public class ReproductorActivity extends Activity {
     private boolean servidorVinculat=false;
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         if(!servidorVinculat){
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.updateUI();
+            updateVisualizer();
         }
     }
 
@@ -75,6 +77,17 @@ public class ReproductorActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
         initViews();
+
+    }
+
+    private void updateVisualizer(){
+        mPlayer = serv.getPlayer();
+        if(mPlayer!=null){
+            int audioSessionId = mPlayer.getAudioSessionId();
+            if (audioSessionId != -1)
+                mVisualizer.setAudioSessionId(audioSessionId);
+        }
+
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -85,7 +98,7 @@ public class ReproductorActivity extends Activity {
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.updateUI();
-
+            updateVisualizer();
         }
 
         @Override
@@ -118,22 +131,32 @@ public class ReproductorActivity extends Activity {
 
     private void initViews() {
 
+
         trackTitle= findViewById(R.id.music_title);
+        trackTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        trackTitle.setSelected(true);
+        trackTitle.setSingleLine(true);
+
+
         trackAuthor = findViewById(R.id.music_artist);
         trackImage = findViewById(R.id.track_img);
 
-        mVisualizer = findViewById(R.id.circleVisualizer);
+        mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
         mVisualizer.setDrawLine(true);
-        mPlayer = new MediaPlayer();
-        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mSeekBar.setMax(mPlayer.getDuration());
 
-                int audioSessionId = mPlayer.getAudioSessionId();
-                if (audioSessionId != -1)
-                    mVisualizer.setAudioSessionId(audioSessionId);
+
+        shuffle = (ImageButton) findViewById(R.id.botoShuffle);
+        shuffle.setEnabled(true);
+        shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isShuffle){
+                    shuffle.setBackgroundResource(R.drawable.no_shuffle);;
+                    isShuffle=false;
+                }else{
+                    shuffle.setBackgroundResource(R.drawable.si_shuffle);;
+                    isShuffle=true;
+                }
             }
         });
 
@@ -153,6 +176,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.skipToPrevious();
+                updateVisualizer();
             }
         });
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
@@ -160,6 +184,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.skipToNext();
+                updateVisualizer();
             }
         });
         btnPlay = findViewById(R.id.play);
@@ -169,6 +194,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
+                updateVisualizer();
             }
         });
         btnPause = findViewById(R.id.pause);
@@ -178,6 +204,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
+                updateVisualizer();
             }
         });
 

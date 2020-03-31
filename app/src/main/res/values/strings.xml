@@ -112,9 +112,16 @@
     <string name="settings_change_email">Update Email</string>
     <string name="settings_add_new_username">Tap your new username</string>
     <string name="settings_add_new_email">Tap your new email</string>
+    <string name="followed_users">Following</string>
+    <string name="apply_filter">Apply filter</string>
+    <string name="filter_track_search_genre">Type a genre</string>
+    <string name="filter_tracks_title">Filter tracks</string>
+    <string name="filter_tracks_genres">Filter by genre</string>
 
+    <string name="filter_tracks_descendent">Filter tracks</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="not_following">You don\'t follow any playlists!</string>
     <string name="search_user_">Users</string>
+    <string name="allTracksDone">alltracks</string>
 </resources>
