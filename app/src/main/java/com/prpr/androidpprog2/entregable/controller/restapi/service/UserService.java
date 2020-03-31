@@ -27,7 +27,7 @@ public interface UserService {
     Call<List<User>> getTopUsers(@Header("Authorization") String token);
 
     @GET("users/{login}/follow")
-    Call<Boolean> userIsFollowed(@Header("Authorization") String token);
+    Call<Boolean> userIsFollowed(@Path("login") String login, @Header("Authorization") String token);
 
     @POST("register")
     Call<ResponseBody> registerUser(@Body UserRegister user);

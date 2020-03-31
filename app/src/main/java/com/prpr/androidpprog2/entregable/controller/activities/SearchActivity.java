@@ -466,6 +466,16 @@ public class SearchActivity extends AppCompatActivity implements TrackListCallba
     }
 
     @Override
+    public void onUserIsFollowed(boolean isFollowed) {
+
+    }
+
+    @Override
+    public void onUserIsFollowedFail(Throwable throwable) {
+
+    }
+
+    @Override
     public void onAllUsersFail(Throwable throwable) {
         System.out.println("All users fail");
     }
