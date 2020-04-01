@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -35,6 +36,7 @@ import java.util.Objects;
 public class UserTracksFragment extends Fragment implements TrackListCallback, TrackCallback {
 
     private ArrayList<Track> myTracks;
+    private ArrayList<Track> genreFilteredTracks;
     private Button btnFilterTracks;
     private FloatingActionButton btnSettingsTracks;
     private Playlist myPlaylist;
@@ -60,6 +62,8 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_tracks, container, false);
+
+
 
         btnSettingsTracks = (FloatingActionButton) view.findViewById(R.id.configTracksButton);
         btnSettingsTracks.setOnClickListener(new View.OnClickListener() {
@@ -100,12 +104,8 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
         btnFilterTracks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), FilterTracksActivity.class);
-                intent.putExtra("Tracks", myTracks);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivityForResult(intent, TRACK_FILTER_REQUEST);
-                //myTracks.clear();
-                //myTracks = (ArrayList<Track>) Objects.requireNonNull(getActivity().getIntent().getExtras()).getSerializable("Tracks filtered");
+                //TODO: FILTER IMPLEMENTATION
+
             }
         });
         etSearchTracks = (EditText) view.findViewById(R.id.search_user_tracks);
