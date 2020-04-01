@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
+import com.prpr.androidpprog2.entregable.controller.adapters.UserFollowedAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
@@ -33,6 +36,8 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     private UserManager userManager;
     private RecyclerView mRecyclerView;
 
+    private FloatingActionButton btnSettingsPlaylists;
+
     public UserFollowedFragment() {
         // Required empty public constructor
         this.followedUsers = new ArrayList<>();
@@ -45,10 +50,25 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_followed, container, false);
 
+        btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configUsersFollowedButton);
+        btnSettingsPlaylists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        etSearchFollowed = (EditText) view.findViewById(R.id.search_user_users_followed);
+        etSearchFollowed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Implement search
+            }
+        });
         mRecyclerView = (RecyclerView) view.findViewById(R.id.usersFollowedRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        UserAdapter adapter = new UserAdapter(getContext(), null);
+        UserFollowedAdapter adapter = new UserFollowedAdapter(getContext(), null);
         adapter.setUserCallback(this);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
@@ -113,9 +133,9 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     @Override
     public void onFollowedUsersSuccess(List<User> users) {
         this.followedUsers = (ArrayList) users;
-        UserAdapter userAdapter = new UserAdapter(getContext(), this.followedUsers);
-        userAdapter.setUserCallback(this);
-        mRecyclerView.setAdapter(userAdapter);
+        UserFollowedAdapter userFollowedAdapter = new UserFollowedAdapter(getContext(), this.followedUsers);
+        userFollowedAdapter.setUserCallback(this);
+        mRecyclerView.setAdapter(userFollowedAdapter);
     }
 
 

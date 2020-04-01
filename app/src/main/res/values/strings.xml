@@ -5,6 +5,12 @@
     <string name="default_track_author">Author</string>
     <string name="default_duration">03:20</string>
     <string name="default_playlist_name">Playlist Title</string>
+    <string name="default_user_name">User Name</string>
+    <string name="default_user_login">User Login</string>
+    <string name="default_user_followed">nFollowers</string>
+    <string name="default_user_following">nFollowing</string>
+    <string name="default_user_tracks">nTracks</string>
+    <string name="default_user_playlists">nPlaylists</string>
     <string name="default_playlist_song_amount">20 songs</string>
 
     <string name="action_login">Log in</string>
