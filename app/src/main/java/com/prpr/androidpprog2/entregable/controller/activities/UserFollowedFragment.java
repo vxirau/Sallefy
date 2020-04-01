@@ -26,8 +26,6 @@ import java.util.List;
 
 public class UserFollowedFragment extends Fragment implements UserCallback {
 
-    private ArrayList<User> allUsers;
-    boolean itIsFollowed;
     private ArrayList<User> followedUsers;
 
     private EditText etSearchFollowed;
@@ -37,7 +35,7 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
 
     public UserFollowedFragment() {
         // Required empty public constructor
-
+        this.followedUsers = new ArrayList<>();
     }
 
 
@@ -46,23 +44,17 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_followed, container, false);
-        this.allUsers = new ArrayList<>();
-        this.followedUsers = new ArrayList<>();
 
-        userManager = new UserManager();
-        userManager.getAllUsers(this);
 
-        for(int i = 0; i < allUsers.size(); i++){
-            userManager.userIsFollowed(allUsers.get(i).getLogin(), this);
-            if(itIsFollowed) followedUsers.add(allUsers.get(i));
-        }
-
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.userPlaylistsRecyclerview);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.usersFollowedRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         UserAdapter adapter = new UserAdapter(getContext(), null);
         adapter.setUserCallback(this);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
+
+        userManager = new UserManager(getContext());
+        userManager.getFollowedUsers(this);
 
 
         return view;
@@ -115,21 +107,25 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
 
     @Override
     public void onAllUsersSuccess(List<User> users) {
-        this.allUsers = (ArrayList) users;
+
     }
 
     @Override
-    public void onUserIsFollowed(boolean isFollowed) {
-        this.itIsFollowed = isFollowed;
+    public void onFollowedUsersSuccess(List<User> users) {
+        this.followedUsers = (ArrayList) users;
+        UserAdapter userAdapter = new UserAdapter(getContext(), this.followedUsers);
+        userAdapter.setUserCallback(this);
+        mRecyclerView.setAdapter(userAdapter);
     }
 
-    @Override
-    public void onUserIsFollowedFail(Throwable throwable) {
-
-    }
 
     @Override
     public void onAllUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFail(Throwable throwable) {
 
     }
 

@@ -167,7 +167,30 @@ public class UserManager {
             }
         });
     }
+    public synchronized void getFollowedUsers(final UserCallback userCallback){
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<List<User>> call = mService.getFollowedUsers("Bearer " + userToken.getIdToken());
 
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onFollowedUsersSuccess(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    userCallback.onFollowedUsersFail(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                userCallback.onFailure(t);
+            }
+        });
+
+
+    }
 
     public synchronized void registerAttempt (String email, String username, String password, final UserCallback userCallback) {
 
@@ -240,27 +263,5 @@ public class UserManager {
         });
     }
 
-    public synchronized void userIsFollowed(String login, final UserCallback userCallback){
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<Boolean> call = mService.userIsFollowed(login, "Bearer " + userToken.getIdToken());
 
-        call.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                int code = response.code();
-                if (response.isSuccessful()) {
-                    userCallback.onUserIsFollowed(response.body());
-                } else {
-                    userCallback.onUserIsFollowedFail(new Throwable("ERROR " + code + ", " + response.raw().message()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                userCallback.onFailure(t);
-            }
-        });
-
-
-    }
 }
