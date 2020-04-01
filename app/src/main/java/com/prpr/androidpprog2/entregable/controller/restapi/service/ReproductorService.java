@@ -198,6 +198,11 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
     }*/
 
+    public MediaPlayer getPlayer(){
+        return mediaPlayer;
+    }
+
+
     public void seekToPosition(int position){
         mediaPlayer.seekTo(position);
     }

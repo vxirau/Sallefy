@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import com.chibde.visualizer.CircleBarVisualizer;
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -33,7 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-public class ReproductorActivity extends Activity {
+public class ReproductorActivity extends Activity implements ServiceCallback {
 
     private static final String TAG = "DynamicPlaybackActivity";
     private static final String PLAY_VIEW = "PlayIcon";
@@ -58,6 +59,21 @@ public class ReproductorActivity extends Activity {
     private ReproductorService serv;
     private boolean servidorVinculat=false;
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!servidorVinculat){
+            Intent intent = new Intent(this, ReproductorService.class);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }else{
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.updateUI();
+            serv.setSeekCallback(this);
+        }
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -65,28 +81,27 @@ public class ReproductorActivity extends Activity {
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
-            //serv.updateUI();
+            serv.setSeekCallback(this);
+            serv.updateUI();
             updateVisualizer();
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
         initViews();
-
+        updateVisualizer();
     }
 
     private void updateVisualizer(){
-        //mPlayer = serv.getPlayer();
+        mPlayer = serv.getPlayer();
         if(mPlayer!=null){
             int audioSessionId = mPlayer.getAudioSessionId();
             if (audioSessionId != -1)
                 mVisualizer.setAudioSessionId(audioSessionId);
         }
-
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -94,9 +109,10 @@ public class ReproductorActivity extends Activity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
+            serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
-            //serv.updateUI();
-            updateVisualizer();
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.setSeekCallback(ReproductorActivity.this);
         }
 
         @Override
@@ -104,6 +120,18 @@ public class ReproductorActivity extends Activity {
             servidorVinculat = false;
         }
     };
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("Sallefy", servidorVinculat);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        servidorVinculat = savedInstanceState.getBoolean("Sallefy");
+    }
 
     void doUnbindService() {
         if (servidorVinculat) {
@@ -115,9 +143,20 @@ public class ReproductorActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        doUnbindService();
+        if (servidorVinculat) {
+            doUnbindService();
+            serv.stopSelf();
+        }
     }
 
+
+    @Override
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+        if(isPlaying){
+            mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
+        }
+        mSeekBar.setProgress(progress);
+    }
 
     @Override
     public void finish() {
