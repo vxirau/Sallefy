@@ -30,10 +30,9 @@
                 android:layout_marginTop="10dp"
                 android:paddingLeft="15dp"
                 android:background="@drawable/rectangle_white_border_transparent"
-                android:gravity="left"
                 android:hint="@string/Search"
                 android:textColor="@color/colorWhite"
-                android:textColorHint="#70353535"
+                android:textColorHint="@color/colorWhite"
                 android:elevation="10dp"
                 />
             <Button

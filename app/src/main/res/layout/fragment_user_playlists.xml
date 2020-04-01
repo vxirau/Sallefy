@@ -31,7 +31,6 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rectangle_white_border_transparent"
                 android:elevation="10dp"
-                android:gravity="left"
                 android:hint="@string/Search"
                 android:paddingLeft="15dp"
                 android:textColor="@color/colorWhite"

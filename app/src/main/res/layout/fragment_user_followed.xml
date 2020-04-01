@@ -32,6 +32,7 @@
                 android:paddingLeft="15dp"
                 android:background="@drawable/rectangle_white_border_transparent"
                 android:hint="@string/Search"
+                android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorWhite"
                 android:elevation="10dp"
                 />

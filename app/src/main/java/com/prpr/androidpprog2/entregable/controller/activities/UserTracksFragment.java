@@ -7,10 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,6 +45,8 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     private Button btnAddNewTrack;
 
     private TextView tvAddnewTrack;
+
+    private EditText etSearchTracks;
 
     private TrackManager trackManager;
 
@@ -103,8 +108,35 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
                 //myTracks = (ArrayList<Track>) Objects.requireNonNull(getActivity().getIntent().getExtras()).getSerializable("Tracks filtered");
             }
         });
+        etSearchTracks = (EditText) view.findViewById(R.id.search_user_tracks);
+        etSearchTracks.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+        });
         return view;
+    }
+
+    private void filter(String text){
+        ArrayList<Track> filteredTracks = new ArrayList<>();
+
+        for(Track t : myTracks){
+            if(t.getName().toLowerCase().contains(text.toLowerCase())){
+                filteredTracks.add(t);
+            }
+        }
+        mRecyclerView.setAdapter(new TrackListAdapter(this, getContext(), filteredTracks, this.myPlaylist));
     }
 
     @Override

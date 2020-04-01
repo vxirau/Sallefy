@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +17,13 @@ import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserFollowedAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
+import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -61,12 +65,23 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
         });
 
         etSearchFollowed = (EditText) view.findViewById(R.id.search_user_users_followed);
-        etSearchFollowed.setOnClickListener(new View.OnClickListener() {
+        etSearchFollowed.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                //TODO: Implement search
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
             }
         });
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.usersFollowedRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         UserFollowedAdapter adapter = new UserFollowedAdapter(getContext(), null);
@@ -79,6 +94,17 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
 
 
         return view;
+    }
+
+    private void filter(String text){
+        ArrayList<User> filteredUsers = new ArrayList<>();
+
+        for(User u : followedUsers){
+            if(u.getLogin().toLowerCase().contains(text.toLowerCase())){
+                filteredUsers.add(u);
+            }
+        }
+        mRecyclerView.setAdapter(new UserFollowedAdapter(getContext(), filteredUsers));
     }
 
     @Override
