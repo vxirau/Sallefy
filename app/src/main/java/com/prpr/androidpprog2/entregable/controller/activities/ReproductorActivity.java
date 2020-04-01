@@ -80,7 +80,7 @@ public class ReproductorActivity extends Activity {
     }
 
     private void updateVisualizer(){
-        mPlayer = serv.getPlayer();
+        //mPlayer = serv.getPlayer();
         if(mPlayer!=null){
             int audioSessionId = mPlayer.getAudioSessionId();
             if (audioSessionId != -1)

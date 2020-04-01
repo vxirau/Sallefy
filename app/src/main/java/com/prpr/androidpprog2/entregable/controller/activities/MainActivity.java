@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback {
+public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback, ServiceCallback {
 
     private FloatingActionButton mes;
     private FloatingActionButton btnNewPlaylist;
@@ -81,20 +81,73 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     private ReproductorService serv;
     private boolean servidorVinculat=false;
-    private boolean isPlaying = false;
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
 
-    //TODO: VINCULAR CORRECTAMENT SERVEI.
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
+            serv = binder.getService();
+            serv.setmSeekBar(mSeekBar);
+            servidorVinculat = true;
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
+            serv.setSeekCallback(MainActivity.this);
+        }
 
-    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            servidorVinculat = false;
+        }
+    };
 
+    void doUnbindService() {
+        if (servidorVinculat) {
+            unbindService(serviceConnection);
+            servidorVinculat = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        doUnbindService();
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!servidorVinculat){
+            Intent intent = new Intent(this, ReproductorService.class);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }else{
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
+            serv.updateUI();
+            serv.setSeekCallback(this);
+        }
+    }
 
     @Override
     public void onResume() {
         super.onResume();
+        if(servidorVinculat){
+            serv.setSeekCallback(this);
+        }
         pManager.getFollowingPlaylists(this);
     }
+
+
+    @Override
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+        if(isPlaying){
+            mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
+        }
+        mSeekBar.setProgress(progress);
+    }
+
+    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -465,4 +518,5 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     public void onFailure(Throwable throwable) {
 
     }
+
 }

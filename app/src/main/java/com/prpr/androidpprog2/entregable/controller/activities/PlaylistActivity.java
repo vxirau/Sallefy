@@ -76,40 +76,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private SeekBar mseek;
-    private boolean isPlaying = false;
     private ReproductorService player;
+    private ImageView im;
     boolean serviceBound = false;
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
-    private Intent intent;
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //unregisterReceiver(broadcastUIReceiver);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //registerReceiver(broadcastUIReceiver, new IntentFilter(ReproductorService.BROADCAST_UI));
-        //player.setmSeekBar(mseek);
-        pManager.checkFollowing(playlst.getId(), this);
-    }
-
-
-    /*private BroadcastReceiver broadcastUIReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            updateUI((Track) intent.getSerializableExtra("activeTrack"),
-                    (boolean) intent.getSerializableExtra("playing"),
-                    (int) intent.getSerializableExtra("position"), (int) intent.getSerializableExtra("duration"));
-        }
-    };*/
 
     private void playAudio(int audioIndex) {
         if (!serviceBound) {
@@ -137,6 +108,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             player.setmSeekBar(mseek);
             player.setSeekCallback(PlaylistActivity.this);
             serviceBound = true;
+            player.setUIControls(mseek,tvTitle, tvAuthor, play, pause, im);
         }
 
         @Override
@@ -169,14 +141,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
         if(isPlaying){
             mseek.postDelayed(player.getmProgressRunner(), 1000);
         }
         mseek.setProgress(progress);
     }
 
-    @Override
+/*    @Override
     public void updateUI(Track t, boolean playing, int position, int duration) {
         isPlaying=playing;
         mseek.setMax(duration);
@@ -191,31 +163,41 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 play.setVisibility(View.VISIBLE);
             }
         }
+    }*/
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(serviceBound){
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
+            player.updateUI();
+        }
     }
 
-
-    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(serviceBound){
+            player.setUIControls(mseek,tvTitle, tvAuthor, play, pause, im);
+            player.updateUI();
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_layout);
-
-        intent = new Intent(this, ReproductorService.class);
-
         if(getIntent().getSerializableExtra("Playlst")!=null){
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
         }
-        if(getIntent().getSerializableExtra("bunch")!=null){
-            bunch = (Boolean) getIntent().getSerializableExtra("bunch");
-        }
         initViews();
-        pManager = new PlaylistManager(this);
-        pManager.checkFollowing(playlst.getId(), this);
         getData();
     }
+
+    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
 
 
