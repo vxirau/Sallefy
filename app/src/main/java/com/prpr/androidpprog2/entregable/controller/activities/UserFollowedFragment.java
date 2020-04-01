@@ -22,6 +22,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallbac
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +123,10 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
 
     @Override
     public void onUserSelected(User user) {
-
+        Intent intent = new Intent(getContext(), InfoArtistaActivity.class);
+        intent.putExtra("User", user);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
     @Override

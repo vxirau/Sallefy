@@ -48,6 +48,17 @@ public class UserFollowedAdapter extends RecyclerView.Adapter<UserFollowedAdapte
     }
 
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(mCallback!=null){
+                    mCallback.onUserSelected(users.get(position));
+                }
+            }
+        });
+
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +68,7 @@ public class UserFollowedAdapter extends RecyclerView.Adapter<UserFollowedAdapte
                 }
             }
         });
+
 
         holder.userlogin.setText(users.get(position).getLogin());
 

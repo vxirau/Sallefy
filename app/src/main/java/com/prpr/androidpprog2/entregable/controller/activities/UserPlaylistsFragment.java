@@ -21,6 +21,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -122,7 +123,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     @Override
     public void onPlaylistSelected(Playlist playlist) {
-
+        Intent intent = new Intent(getContext(), PlaylistActivity.class);
+        intent.putExtra("Playlst", playlist);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
     @Override
