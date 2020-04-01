@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+
             android:layout_marginStart="20dp"
             android:layout_marginEnd="10dp"
             android:gravity="left"
@@ -31,33 +31,19 @@
                 android:layout_marginTop="10dp"
                 android:paddingLeft="15dp"
                 android:background="@drawable/rectangle_white_border_transparent"
-                android:gravity="left"
                 android:hint="@string/Search"
                 android:textColor="@color/colorWhite"
-                android:textColorHint="#70353535"
+                android:textColorHint="@color/colorWhite"
                 android:elevation="10dp"
                 />
 
 
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:gravity="left"
-            android:orientation="horizontal">
-
-
-        </LinearLayout>
-
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/usersFollowedRecyclerview"
             android:layout_width="match_parent"
-            android:layout_marginTop="220dp"
+            android:layout_marginTop="100dp"
             android:layout_height="match_parent"
             android:orientation="horizontal" />
 

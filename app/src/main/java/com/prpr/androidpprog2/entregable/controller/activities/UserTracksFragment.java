@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -7,10 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,6 +36,7 @@ import java.util.Objects;
 public class UserTracksFragment extends Fragment implements TrackListCallback, TrackCallback {
 
     private ArrayList<Track> myTracks;
+    private ArrayList<Track> genreFilteredTracks;
     private Button btnFilterTracks;
     private FloatingActionButton btnSettingsTracks;
     private Playlist myPlaylist;
@@ -42,6 +47,8 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     private Button btnAddNewTrack;
 
     private TextView tvAddnewTrack;
+
+    private EditText etSearchTracks;
 
     private TrackManager trackManager;
 
@@ -55,6 +62,8 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_tracks, container, false);
+
+
 
         btnSettingsTracks = (FloatingActionButton) view.findViewById(R.id.configTracksButton);
         btnSettingsTracks.setOnClickListener(new View.OnClickListener() {
@@ -95,16 +104,39 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
         btnFilterTracks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), FilterTracksActivity.class);
-                intent.putExtra("Tracks", myTracks);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivityForResult(intent, TRACK_FILTER_REQUEST);
-                //myTracks.clear();
-                //myTracks = (ArrayList<Track>) Objects.requireNonNull(getActivity().getIntent().getExtras()).getSerializable("Tracks filtered");
+                //TODO: FILTER IMPLEMENTATION
+
             }
         });
+        etSearchTracks = (EditText) view.findViewById(R.id.search_user_tracks);
+        etSearchTracks.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+        });
         return view;
+    }
+
+    private void filter(String text){
+        ArrayList<Track> filteredTracks = new ArrayList<>();
+
+        for(Track t : myTracks){
+            if(t.getName().toLowerCase().contains(text.toLowerCase())){
+                filteredTracks.add(t);
+            }
+        }
+        mRecyclerView.setAdapter(new TrackListAdapter(this, getContext(), filteredTracks, this.myPlaylist));
     }
 
     @Override

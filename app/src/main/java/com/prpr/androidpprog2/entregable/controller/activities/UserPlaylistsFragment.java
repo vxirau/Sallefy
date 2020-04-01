@@ -8,26 +8,35 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.SearchManager;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.User;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserPlaylistsFragment extends Fragment implements PlaylistCallback {
+public class UserPlaylistsFragment extends Fragment implements PlaylistCallback{
 
     private ArrayList<Playlist> myPlaylists;
     private Playlist myPlaylist;
@@ -38,6 +47,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     private Button btnAddNewPlaylist;
 
     private TextView tvAddnewPlaylist;
+    private EditText etSearchPlaylist;
 
     private FloatingActionButton btnSettingsPlaylists;
 
@@ -84,6 +94,24 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
            }
        });
 
+        etSearchPlaylist = (EditText) view.findViewById(R.id.search_user_playlists);
+        etSearchPlaylist.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+        });
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.userPlaylistsRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         UserPlaylistAdapter adapter = new UserPlaylistAdapter(getContext(), null);
@@ -97,6 +125,17 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
 
        return view;
+    }
+
+    private void filter(String text){
+        ArrayList<Playlist> filteredPlaylists = new ArrayList<>();
+
+        for(Playlist p : myPlaylists){
+            if(p.getName().toLowerCase().contains(text.toLowerCase())){
+                filteredPlaylists.add(p);
+            }
+        }
+        mRecyclerView.setAdapter(new UserPlaylistAdapter(getContext(), filteredPlaylists ));
     }
 
     @Override
@@ -122,7 +161,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     @Override
     public void onPlaylistSelected(Playlist playlist) {
-
+        Intent intent = new Intent(getContext(), PlaylistActivity.class);
+        intent.putExtra("Playlst", playlist);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
     @Override
@@ -182,4 +224,5 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     public void onFollowSuccessfull(Follow body) {
 
     }
+
 }
