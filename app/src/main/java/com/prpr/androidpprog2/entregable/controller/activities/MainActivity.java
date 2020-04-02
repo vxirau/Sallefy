@@ -188,7 +188,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
+        if(getIntent().getSerializableExtra("sameUser")!=null){
+            sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
+        }
         initViews();
         btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();

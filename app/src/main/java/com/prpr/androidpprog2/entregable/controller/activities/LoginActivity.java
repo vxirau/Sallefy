@@ -132,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         Session.getInstance(getApplicationContext()).setUser(userData);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         //prova
-        intent.putExtra("sameUser", true);
+        intent.putExtra("sameUser", false);
         //es pot esborrar, es per veure si la meva part esta bé
         startActivity(intent);
     }
