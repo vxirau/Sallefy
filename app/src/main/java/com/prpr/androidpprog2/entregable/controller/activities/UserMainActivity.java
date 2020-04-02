@@ -65,29 +65,6 @@ public class UserMainActivity extends AppCompatActivity{
 
     void initGeneralViews(){
 
-       BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
-        navigation.setSelectedItemId(R.id.perfil);
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                        return true;
-                    case R.id.buscar:
-                        Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
-                        return true;
-                    case R.id.perfil:
-                        return true;
-                }
-                return false;
-            }
-        });
-
 
         tvUserPlaylists = (TextView) findViewById(R.id.user_playlists_title);
         tvUserPlaylists.setOnClickListener(new View.OnClickListener() {
