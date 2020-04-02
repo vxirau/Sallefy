@@ -76,43 +76,19 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private SeekBar mseek;
-    private boolean isPlaying = false;
     private ReproductorService player;
-    boolean serviceBound = false;
+    private ImageView im;
+    private boolean serviceBound = false;
+    private boolean isShuffle = false;
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
-    private Intent intent;
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        unregisterReceiver(broadcastUIReceiver);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(broadcastUIReceiver, new IntentFilter(ReproductorService.BROADCAST_UI));
-        //player.setmSeekBar(mseek);
-        pManager.checkFollowing(playlst.getId(), this);
-    }
-
-
-    private BroadcastReceiver broadcastUIReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            updateUI((Track) intent.getSerializableExtra("activeTrack"),
-                    (boolean) intent.getSerializableExtra("playing"),
-                    (int) intent.getSerializableExtra("position"), (int) intent.getSerializableExtra("duration"));
-        }
-    };
 
     private void playAudio(int audioIndex) {
         if (!serviceBound) {
+            if(isShuffle){
+                getNewIndex(audioIndex);
+                audioIndex =0;
+            }
             PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
             PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
             Intent playerIntent = new Intent(this, ReproductorService.class);
@@ -127,6 +103,17 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         tvAuthor.setText(mTracks.get(audioIndex).getUserLogin());
     }
 
+    private void getNewIndex(int ogIndex){
+        int finalIndex=0;
+        Track t = mTracks.get(ogIndex);
+        Collections.shuffle(mTracks);
+        for(int i=0; i<mTracks.size() ;i++){
+            if(mTracks.get(i).getName().equals(t.getName()) && mTracks.get(i).getUserLogin().equals(t.getUserLogin())){
+                finalIndex=i;
+            }
+        }
+        Collections.swap(mTracks, 0, finalIndex);
+    }
 
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -137,6 +124,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             player.setmSeekBar(mseek);
             player.setSeekCallback(PlaylistActivity.this);
             serviceBound = true;
+            player.setUIControls(mseek,tvTitle, tvAuthor, play, pause, im);
         }
 
         @Override
@@ -145,19 +133,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
     };
 
-
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean("Sallefy", serviceBound);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        serviceBound = savedInstanceState.getBoolean("Sallefy");
-    }
 
     @Override
     protected void onDestroy() {
@@ -169,52 +144,44 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
         if(isPlaying){
             mseek.postDelayed(player.getmProgressRunner(), 1000);
         }
         mseek.setProgress(progress);
     }
 
-    private void updateUI(Track t, boolean playing, int position, int duration) {
-        isPlaying=playing;
-        mseek.setMax(duration);
-        if(!t.getName().equals(tvTitle.getText())){
-            tvAuthor.setText(t.getUserLogin());
-            tvTitle.setText(t.getName());
-            if(playing || position==0){
-                pause.setVisibility(View.VISIBLE);
-                play.setVisibility(View.INVISIBLE);
-            }else{
-                pause.setVisibility(View.INVISIBLE);
-                play.setVisibility(View.VISIBLE);
-            }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(serviceBound){
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
+            player.updateUI();
         }
     }
 
-
-    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(serviceBound){
+            player.setSeekCallback(this);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_layout);
-
-        intent = new Intent(this, ReproductorService.class);
-
         if(getIntent().getSerializableExtra("Playlst")!=null){
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
         }
-        if(getIntent().getSerializableExtra("bunch")!=null){
-            bunch = (Boolean) getIntent().getSerializableExtra("bunch");
-        }
         initViews();
-        pManager = new PlaylistManager(this);
-        pManager.checkFollowing(playlst.getId(), this);
         getData();
     }
+
+    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
 
 
@@ -334,6 +301,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isShuffle=true;
                 playAudio(new Random().nextInt(mTracks.size()));
             }
         });
@@ -363,13 +331,17 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         back2Main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //player.savePosition();
                 if(bunch){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 }else{
-                    finish();
-                    overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                    /*finish();
+                    overridePendingTransition(R.anim.nothing,R.anim.nothing);*/
                 }
 
             }

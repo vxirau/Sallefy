@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
-import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.PlaylistService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;

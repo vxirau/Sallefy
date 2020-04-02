@@ -220,4 +220,8 @@ public class User implements Serializable {
     public void setLogin(String login) {
         this.login = login;
     }
+
+    public void print(){
+        System.out.println("\nMail: " + this.getEmail());
+    }
 }

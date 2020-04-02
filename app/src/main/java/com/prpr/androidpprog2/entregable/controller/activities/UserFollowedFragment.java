@@ -1,24 +1,35 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
+import com.prpr.androidpprog2.entregable.controller.adapters.UserFollowedAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
+import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +37,6 @@ import java.util.List;
 
 public class UserFollowedFragment extends Fragment implements UserCallback {
 
-    private ArrayList<User> allUsers;
-    boolean itIsFollowed;
     private ArrayList<User> followedUsers;
 
     private EditText etSearchFollowed;
@@ -35,9 +44,11 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     private UserManager userManager;
     private RecyclerView mRecyclerView;
 
+    private FloatingActionButton btnSettingsPlaylists;
+
     public UserFollowedFragment() {
         // Required empty public constructor
-
+        this.followedUsers = new ArrayList<>();
     }
 
 
@@ -46,26 +57,80 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_followed, container, false);
-        this.allUsers = new ArrayList<>();
-        this.followedUsers = new ArrayList<>();
 
-        userManager = new UserManager();
-        userManager.getAllUsers(this);
+        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.menu);
+        navigation.setSelectedItemId(R.id.perfil);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                        return true;
+                    case R.id.buscar:
+                        Intent intent2 = new Intent(getContext(), SearchActivity.class);
+                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
+                        return true;
+                    case R.id.perfil:
+                        return true;
+                }
+                return false;
+            }
+        });
 
-        for(int i = 0; i < allUsers.size(); i++){
-            userManager.userIsFollowed(allUsers.get(i).getLogin(), this);
-            if(itIsFollowed) followedUsers.add(allUsers.get(i));
-        }
+        btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configUsersFollowedButton);
+        btnSettingsPlaylists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.userPlaylistsRecyclerview);
+        etSearchFollowed = (EditText) view.findViewById(R.id.search_user_users_followed);
+        etSearchFollowed.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+        });
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.usersFollowedRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        UserAdapter adapter = new UserAdapter(getContext(), null);
+        UserFollowedAdapter adapter = new UserFollowedAdapter(getContext(), null);
         adapter.setUserCallback(this);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
 
+        userManager = new UserManager(getContext());
+        userManager.getFollowedUsers(this);
+
 
         return view;
+    }
+
+    private void filter(String text){
+        ArrayList<User> filteredUsers = new ArrayList<>();
+
+        for(User u : followedUsers){
+            if(u.getLogin().toLowerCase().contains(text.toLowerCase())){
+                filteredUsers.add(u);
+            }
+        }
+        mRecyclerView.setAdapter(new UserFollowedAdapter(getContext(), filteredUsers));
     }
 
     @Override
@@ -110,26 +175,33 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
 
     @Override
     public void onUserSelected(User user) {
-
+        Intent intent = new Intent(getContext(), InfoArtistaActivity.class);
+        intent.putExtra("User", user);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
     @Override
     public void onAllUsersSuccess(List<User> users) {
-        this.allUsers = (ArrayList) users;
+
     }
 
     @Override
-    public void onUserIsFollowed(boolean isFollowed) {
-        this.itIsFollowed = isFollowed;
+    public void onFollowedUsersSuccess(List<User> users) {
+        this.followedUsers = (ArrayList) users;
+        UserFollowedAdapter userFollowedAdapter = new UserFollowedAdapter(getContext(), this.followedUsers);
+        userFollowedAdapter.setUserCallback(this);
+        mRecyclerView.setAdapter(userFollowedAdapter);
     }
 
-    @Override
-    public void onUserIsFollowedFail(Throwable throwable) {
-
-    }
 
     @Override
     public void onAllUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFail(Throwable throwable) {
 
     }
 

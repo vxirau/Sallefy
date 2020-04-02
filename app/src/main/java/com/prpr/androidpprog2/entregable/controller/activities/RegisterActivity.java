@@ -167,17 +167,17 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     }
 
     @Override
-    public void onUserIsFollowed(boolean isFollowed) {
-
-    }
-
-    @Override
-    public void onUserIsFollowedFail(Throwable throwable) {
+    public void onFollowedUsersSuccess(List<User> users) {
 
     }
 
     @Override
     public void onAllUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFail(Throwable throwable) {
 
     }
 

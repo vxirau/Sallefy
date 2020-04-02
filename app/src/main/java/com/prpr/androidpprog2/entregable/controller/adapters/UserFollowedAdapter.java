@@ -24,14 +24,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+public class UserFollowedAdapter extends RecyclerView.Adapter<UserFollowedAdapter.ViewHolder> {
 
     private static final String TAG = "UserAdapter";
     private ArrayList<User> users;
     private Context mContext;
     private UserCallback mCallback;
 
-    public UserAdapter(Context context, ArrayList<User> users ) {
+    public UserFollowedAdapter(Context context, ArrayList<User> users ) {
         this.users = users;
         this.mContext = context;
     }
@@ -43,11 +43,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item, parent, false);
-        return new UserAdapter.ViewHolder(itemView);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_followed_item, parent, false);
+        return new UserFollowedAdapter.ViewHolder(itemView);
     }
 
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(mCallback!=null){
+                    mCallback.onUserSelected(users.get(position));
+                }
+            }
+        });
+
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,17 +68,38 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 }
             }
         });
-        if(users.get(position).getFirstName() != null & users.get(position).getLastName()!=null){
-            holder.username.setText(users.get(position).getFirstName() + " " + users.get(position).getLastName());
-        }else if(users.get(position).getFirstName() != null & users.get(position).getLastName()==null){
-            holder.username.setText(users.get(position).getFirstName());
-        }else{
-            holder.username.setText("-- --");
-        }
-        holder.username.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        holder.username.setSelected(true);
-        holder.username.setSingleLine(true);
+
+
         holder.userlogin.setText(users.get(position).getLogin());
+
+        holder.userlogin.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        holder.userlogin.setSelected(true);
+        holder.userlogin.setSingleLine(true);
+
+        if(users.get(position).getTracks() != null){
+            holder.userTracks.setText(users.get(position).getTracks());
+        }else{
+            holder.userTracks.setText("0 tracks by this user");
+        }
+
+        if(users.get(position).getFollowers() != null) {
+
+            holder.userNumFollowers.setText(users.get(position).getFollowers());
+        }else{
+            holder.userNumFollowers.setText("0 followers");
+        }
+
+        if(users.get(position).getFollowing() != null) {
+            holder.userNumFollowing.setText(users.get(position).getFollowing());
+        }else {
+            holder.userNumFollowing.setText("0 following");
+        }
+
+        if(users.get(position).getPlaylists() != null) {
+            holder.userNumPlaylists.setText(users.get(position).getPlaylists());
+        }else {
+            holder.userNumPlaylists.setText("0 playlists by this user");
+        }
 
         if (users.get(position).getImageUrl() != null && !users.get(position).getImageUrl().isEmpty()) {
             Picasso.get().load(users.get(position).getImageUrl()).into(holder.image);
@@ -84,16 +116,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout mLayout;
-        TextView username;
         TextView userlogin;
+        TextView userTracks;
+        TextView userNumFollowers;
+        TextView userNumFollowing;
+        TextView userNumPlaylists;
         ImageButton image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mLayout = itemView.findViewById(R.id.user_item_layout);
-            username = (TextView) itemView.findViewById(R.id.userName);
+            mLayout = itemView.findViewById(R.id.user_followed_item_layout);
             userlogin = (TextView) itemView.findViewById(R.id.userLogin);
+            userTracks = (TextView) itemView.findViewById(R.id.userNumTracks);
+            userNumFollowers= (TextView) itemView.findViewById(R.id.numUsersFollowed);;
+            userNumFollowing= (TextView) itemView.findViewById(R.id.numUsersFollowing);;
+            userNumPlaylists= (TextView) itemView.findViewById(R.id.numUsersPlaylists);;
             image = (ImageButton) itemView.findViewById(R.id.userImage);
         }
     }

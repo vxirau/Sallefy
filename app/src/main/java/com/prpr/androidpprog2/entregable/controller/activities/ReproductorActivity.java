@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import com.chibde.visualizer.CircleBarVisualizer;
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -33,7 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-public class ReproductorActivity extends Activity {
+public class ReproductorActivity extends Activity implements ServiceCallback {
 
     private static final String TAG = "DynamicPlaybackActivity";
     private static final String PLAY_VIEW = "PlayIcon";
@@ -58,45 +59,57 @@ public class ReproductorActivity extends Activity {
     private ReproductorService serv;
     private boolean servidorVinculat=false;
 
+    //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
+
+
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         if(!servidorVinculat){
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.updateUI();
-            updateVisualizer();
+            serv.setSeekCallback(this);
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(servidorVinculat){
+            serv.setSeekCallback(this);
         }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
         initViews();
-
+        //updateVisualizer();
     }
 
-    private void updateVisualizer(){
+    /*private void updateVisualizer(){
         mPlayer = serv.getPlayer();
         if(mPlayer!=null){
             int audioSessionId = mPlayer.getAudioSessionId();
             if (audioSessionId != -1)
                 mVisualizer.setAudioSessionId(audioSessionId);
         }
-
-    }
+    }*/
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
+            //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
-            serv.updateUI();
-            updateVisualizer();
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.setSeekCallback(ReproductorActivity.this);
         }
 
         @Override
@@ -112,11 +125,23 @@ public class ReproductorActivity extends Activity {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         doUnbindService();
     }
+
+
+    @Override
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+        if(isPlaying){
+            mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
+        }
+        mSeekBar.setProgress(progress);
+    }
+
+    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
 
     @Override
@@ -139,8 +164,8 @@ public class ReproductorActivity extends Activity {
         trackAuthor = findViewById(R.id.music_artist);
         trackImage = findViewById(R.id.track_img);
 
-        mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
-        mVisualizer.setDrawLine(true);
+        /*mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
+        mVisualizer.setDrawLine(true);*/
 
 
         shuffle = (ImageButton) findViewById(R.id.botoShuffle);
@@ -174,7 +199,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.skipToPrevious();
-                updateVisualizer();
+                //updateVisualizer();
             }
         });
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
@@ -182,7 +207,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.skipToNext();
-                updateVisualizer();
+                //updateVisualizer();
             }
         });
         btnPlay = findViewById(R.id.play);
@@ -192,7 +217,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
-                updateVisualizer();
+                //updateVisualizer();
             }
         });
         btnPause = findViewById(R.id.pause);
@@ -202,7 +227,7 @@ public class ReproductorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
-                updateVisualizer();
+                //updateVisualizer();
             }
         });
 

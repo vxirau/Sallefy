@@ -1,10 +1,8 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.callback;
 
-import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface UserCallback extends FailureCallback {
@@ -18,8 +16,8 @@ public interface UserCallback extends FailureCallback {
     void onTopUsersRecieved(List<User> body);
     void onUserSelected(User user);
     void onAllUsersSuccess(List<User> users);
-    void onUserIsFollowed(boolean isFollowed);
-    void onUserIsFollowedFail(Throwable throwable);
+    void onFollowedUsersSuccess(List<User> users);
     void onAllUsersFail(Throwable throwable);
+    void onFollowedUsersFail(Throwable throwable);
 
 }
