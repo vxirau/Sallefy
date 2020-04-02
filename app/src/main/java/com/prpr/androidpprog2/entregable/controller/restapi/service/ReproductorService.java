@@ -162,7 +162,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(!fromUser){
+                if(!fromUser && scallback!=null){
                     scallback.onSeekBarUpdate(progress, mediaPlayer.getDuration(), mediaPlayer.isPlaying());
                 }else{
                     mediaPlayer.seekTo(progress);
@@ -197,7 +197,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             mProgressRunner.run();
             mSeekBar.setMax(mediaPlayer.getDuration());
             mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
-            if(mediaPlayer.isPlaying() || mediaPlayer.getCurrentPosition()==0){
+            if(mediaPlayer.isPlaying()){
                 pauseB.setVisibility(View.VISIBLE);
                 playB.setVisibility(View.INVISIBLE);
             }else{

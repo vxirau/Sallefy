@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +43,7 @@ import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.util.ArrayList;
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private Button play;
     private Button pause;
     private ImageView im;
-
+    private boolean sameUser = false;
 
     private RecyclerView allPlaylistRecycle;
     private RecyclerView topPlaylistsRecycle;
@@ -80,11 +82,15 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private PlaylistManager pManager;
     private UserManager usrManager;
 
-    private ReproductorService serv;
-    private boolean servidorVinculat=false;
+
     private LinearLayout playing;
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
+    public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
+    private ReproductorService serv;
+    private boolean servidorVinculat=false;
+    private ArrayList<Track> audioList;
+    private int audioIndex = -1;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -95,6 +101,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.setSeekCallback(MainActivity.this);
+            if(sameUser){
+                serv.pauseMedia();
+            }
         }
 
         @Override
@@ -130,6 +139,24 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }
     }
 
+
+    private void loadPreviousSession() {
+        audioList = PreferenceUtils.getAllTracks(getApplicationContext());
+        audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
+        loadAudioPlay(audioIndex);
+        Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+        sendBroadcast(broadcastIntent);
+    }
+
+    private void loadAudioPlay(int audioIndex) {
+        Intent playerIntent = new Intent(this, ReproductorService.class);
+        startService(playerIntent);
+        bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        trackTitle.setText(audioList.get(audioIndex).getName());
+        trackAuthor.setText(audioList.get(audioIndex).getUserLogin());
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -142,19 +169,26 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
-        if(isPlaying){
-            mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
+        if(!sameUser){
+            if(isPlaying){
+                mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
+            }
+            mSeekBar.setProgress(progress);
+        }else{
+            serv.pauseMedia();
+            sameUser=false;
         }
-        mSeekBar.setProgress(progress);
+
     }
 
+
+
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
         initViews();
         btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();
@@ -164,9 +198,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager.getAllMyPlaylists(this);
         usrManager.getTopUsers(this);
         pManager.getFollowingPlaylists(this);
-
+        if(sameUser){
+            loadPreviousSession();
+        }
     }
-
 
     private void initViews() {
 
@@ -194,11 +229,15 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         });
 
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         followingTxt= findViewById(R.id.noFollow);
 
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
         play.bringToFront();
+        play.setVisibility(View.VISIBLE);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         });
         pause = findViewById(R.id.playPause);
         pause.setEnabled(true);
+        pause.setVisibility(View.INVISIBLE);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -440,7 +480,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             p2.setPlaylistCallback(this);
             folloingPlaylistRecycle.setAdapter(p2);
         }
-
     }
 
     @Override
