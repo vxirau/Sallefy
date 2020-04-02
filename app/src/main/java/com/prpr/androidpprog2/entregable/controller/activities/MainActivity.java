@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     private ReproductorService serv;
     private boolean servidorVinculat=false;
+    private LinearLayout playing;
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
 
@@ -210,6 +212,16 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
+            }
+        });
+
+        playing = findViewById(R.id.reproductor);
+        playing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
 

@@ -134,19 +134,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     };
 
 
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean("Sallefy", serviceBound);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        serviceBound = savedInstanceState.getBoolean("Sallefy");
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -163,24 +150,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
         mseek.setProgress(progress);
     }
-
-/*    @Override
-    public void updateUI(Track t, boolean playing, int position, int duration) {
-        isPlaying=playing;
-        mseek.setMax(duration);
-        if(!t.getName().equals(tvTitle.getText())){
-            tvAuthor.setText(t.getUserLogin());
-            tvTitle.setText(t.getName());
-            if(playing || position==0){
-                pause.setVisibility(View.VISIBLE);
-                play.setVisibility(View.INVISIBLE);
-            }else{
-                pause.setVisibility(View.INVISIBLE);
-                play.setVisibility(View.VISIBLE);
-            }
-        }
-    }*/
-
 
 
     @Override
@@ -368,8 +337,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 }else{
-                    finish();
-                    overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                    /*finish();
+                    overridePendingTransition(R.anim.nothing,R.anim.nothing);*/
                 }
 
             }
