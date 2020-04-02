@@ -58,6 +58,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     private MediaPlayer mediaPlayer;
     private int resumePosition;
+    private int positionActivity;
     private AudioManager audioManager;
     private TextView title;
     private TextView artist;
@@ -113,6 +114,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             }
         }
     };
+
+
+
 
 
     public Runnable getmProgressRunner(){
@@ -171,13 +175,27 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+        if(mediaPlayer!=null){
+            //updatePosition();
+            updateUI();
+        }
     }
+
+    /*private void updatePosition() {
+        mediaPlayer.seekTo(positionActivity);
+        mSeekBar.setProgress(positionActivity);
+    }
+
+    public void savePosition(){
+        positionActivity = mediaPlayer.getCurrentPosition();
+    }*/
 
     public void updateUI(){
         if(mediaPlayer != null && title!=null && artist!=null){
             title.setText(activeAudio.getName());
             artist.setText(activeAudio.getUserLogin());
             mProgressRunner.run();
+            mSeekBar.setMax(mediaPlayer.getDuration());
             mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
             if(mediaPlayer.isPlaying() || mediaPlayer.getCurrentPosition()==0){
                 pauseB.setVisibility(View.VISIBLE);

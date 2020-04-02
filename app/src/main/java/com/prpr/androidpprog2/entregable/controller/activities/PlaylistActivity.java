@@ -78,12 +78,17 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private SeekBar mseek;
     private ReproductorService player;
     private ImageView im;
-    boolean serviceBound = false;
+    private boolean serviceBound = false;
+    private boolean isShuffle = false;
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
 
 
     private void playAudio(int audioIndex) {
         if (!serviceBound) {
+            if(isShuffle){
+                getNewIndex(audioIndex);
+                audioIndex =0;
+            }
             PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
             PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
             Intent playerIntent = new Intent(this, ReproductorService.class);
@@ -98,6 +103,17 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         tvAuthor.setText(mTracks.get(audioIndex).getUserLogin());
     }
 
+    private void getNewIndex(int ogIndex){
+        int finalIndex=0;
+        Track t = mTracks.get(ogIndex);
+        Collections.shuffle(mTracks);
+        for(int i=0; i<mTracks.size() ;i++){
+            if(mTracks.get(i).getName().equals(t.getName()) && mTracks.get(i).getUserLogin().equals(t.getUserLogin())){
+                finalIndex=i;
+            }
+        }
+        Collections.swap(mTracks, 0, finalIndex);
+    }
 
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -180,8 +196,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     protected void onResume() {
         super.onResume();
         if(serviceBound){
-            player.setUIControls(mseek,tvTitle, tvAuthor, play, pause, im);
-            player.updateUI();
+            player.setSeekCallback(this);
         }
     }
 
@@ -317,6 +332,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isShuffle=true;
                 playAudio(new Random().nextInt(mTracks.size()));
             }
         });
@@ -346,6 +362,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         back2Main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //player.savePosition();
                 if(bunch){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

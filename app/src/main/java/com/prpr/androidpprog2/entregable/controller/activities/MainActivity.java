@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
-            serv.setmSeekBar(mSeekBar);
+            //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.setSeekCallback(MainActivity.this);

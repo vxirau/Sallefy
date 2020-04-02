@@ -59,6 +59,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
     private ReproductorService serv;
     private boolean servidorVinculat=false;
 
+    //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
+
 
     @Override
     public void onStart() {
@@ -77,13 +79,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
     @Override
     public void onResume() {
         super.onResume();
-        if(!servidorVinculat){
-            Intent intent = new Intent(this, ReproductorService.class);
-            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }else{
+        if(servidorVinculat){
             serv.setSeekCallback(this);
-            serv.updateUI();
-            updateVisualizer();
         }
     }
 
@@ -92,24 +89,24 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
         initViews();
-        updateVisualizer();
+        //updateVisualizer();
     }
 
-    private void updateVisualizer(){
+    /*private void updateVisualizer(){
         mPlayer = serv.getPlayer();
         if(mPlayer!=null){
             int audioSessionId = mPlayer.getAudioSessionId();
             if (audioSessionId != -1)
                 mVisualizer.setAudioSessionId(audioSessionId);
         }
-    }
+    }*/
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
-            serv.setmSeekBar(mSeekBar);
+            //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.setSeekCallback(ReproductorActivity.this);
@@ -121,18 +118,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         }
     };
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putBoolean("Sallefy", servidorVinculat);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        servidorVinculat = savedInstanceState.getBoolean("Sallefy");
-    }
-
     void doUnbindService() {
         if (servidorVinculat) {
             unbindService(serviceConnection);
@@ -140,13 +125,11 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (servidorVinculat) {
-            doUnbindService();
-            serv.stopSelf();
-        }
+        doUnbindService();
     }
 
 
@@ -157,6 +140,9 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         }
         mSeekBar.setProgress(progress);
     }
+
+    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
+
 
     @Override
     public void finish() {
@@ -178,8 +164,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         trackAuthor = findViewById(R.id.music_artist);
         trackImage = findViewById(R.id.track_img);
 
-        mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
-        mVisualizer.setDrawLine(true);
+        /*mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
+        mVisualizer.setDrawLine(true);*/
 
 
         shuffle = (ImageButton) findViewById(R.id.botoShuffle);
@@ -213,7 +199,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             @Override
             public void onClick(View v) {
                 serv.skipToPrevious();
-                updateVisualizer();
+                //updateVisualizer();
             }
         });
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
@@ -221,7 +207,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             @Override
             public void onClick(View v) {
                 serv.skipToNext();
-                updateVisualizer();
+                //updateVisualizer();
             }
         });
         btnPlay = findViewById(R.id.play);
@@ -231,7 +217,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
-                updateVisualizer();
+                //updateVisualizer();
             }
         });
         btnPause = findViewById(R.id.pause);
@@ -241,7 +227,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
-                updateVisualizer();
+                //updateVisualizer();
             }
         });
 
