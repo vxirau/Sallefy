@@ -1,6 +1,7 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.utils.ObjectUtils;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
@@ -37,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     private EditText etPassword;
     private Button btnRegister;
     private Button btnBack;
+    private StorageReference mStorage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,7 +111,19 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     public void onRegisterSuccess() {
         UserRegister userData = Session.getInstance(getApplicationContext()).getUserRegister();
 
-        CloudinaryManager.getInstance(this, null).createFolder(userData.getLogin());
+        //CloudinaryManager.getInstance(this, null).createFolder(userData.getLogin());
+
+        Uri uri = Uri.parse("R.drawable.add_green_button");
+
+        mStorage = FirebaseStorage.getInstance().getReference();
+        StorageReference filePath = mStorage.child(etLogin.getText().toString()).child(uri.getLastPathSegment());
+
+        filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(RegisterActivity.this,"exito pelotudo",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         doLogin(userData.getLogin(), userData.getPassword());
     }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "116780264700",
+    "firebase_url": "https://sallefy.firebaseio.com",
+    "project_id": "sallefy",
+    "storage_bucket": "sallefy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116780264700:android:e82f77042a395c143e3b79",
+        "android_client_info": {
+          "package_name": "salle.android.projects.service_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116780264700-luc3dlqibv2gmcuiqlde0oemfsa2ichc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCON5vo95ZwSqOoccFj3K9NBHXiWHU0CKg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116780264700-luc3dlqibv2gmcuiqlde0oemfsa2ichc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
