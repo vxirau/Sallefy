@@ -475,14 +475,10 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
-    public void onUserIsFollowed(boolean isFollowed) {
+    public void onFollowedUsersSuccess(List<User> users) {
 
     }
 
-    @Override
-    public void onUserIsFollowedFail(Throwable throwable) {
-
-    }
 
     @Override
     public void onAllUsersFail(Throwable throwable) {

@@ -337,11 +337,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 }else{
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                    /*finish();
-                    overridePendingTransition(R.anim.nothing,R.anim.nothing);*/
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);*/
+                    finish();
+                    overridePendingTransition(R.anim.nothing,R.anim.nothing);
                 }
 
             }
