@@ -154,16 +154,6 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
 
 
 
-        playing = findViewById(R.id.reproductor);
-        playing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-            }
-        });*/
-
 
        /*BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.perfil);
