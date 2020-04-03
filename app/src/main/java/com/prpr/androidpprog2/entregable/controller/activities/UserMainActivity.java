@@ -18,7 +18,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+
+
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -77,17 +78,17 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
+           /* ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
             //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
-            serv.setSeekCallback(UserMainActivity.this);
+            serv.setSeekCallback(UserMainActivity.this);*/
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            servidorVinculat = false;
+            //servidorVinculat = false;
         }
     };
 
@@ -108,33 +109,32 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     @Override
     public void onStart() {
         super.onStart();
-        if(!servidorVinculat){
+        /*if(!servidorVinculat){
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
             serv.setSeekCallback(this);
-        }
+        }*/
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(servidorVinculat){
+        /*if(servidorVinculat){
             serv.setSeekCallback(this);
-        }
+        }*/
     }
 
 
     @Override
     public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
-        if(isPlaying){
+        /*if(isPlaying){
             mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
         }
-        mSeekBar.setProgress(progress);
+        mSeekBar.setProgress(progress);*/
     }
-
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
@@ -151,7 +151,7 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
 
     void initGeneralViews(){
 
-        play = findViewById(R.id.playButton);
+        /*play = findViewById(R.id.playButton);
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
@@ -185,33 +185,8 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
-        });
+        });*/
 
-
-
-
-       BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
-        navigation.setSelectedItemId(R.id.perfil);
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                        return true;
-                    case R.id.buscar:
-                        Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
-                        return true;
-                    case R.id.perfil:
-                        return true;
-                }
-                return false;
-            }
-        });
 
 
         tvUserPlaylists = (TextView) findViewById(R.id.user_playlists_title);
