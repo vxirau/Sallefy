@@ -1,10 +1,13 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,7 +36,11 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +49,17 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     private ArrayList<Track> myTracks;
     private ArrayList<Track> genreFilteredTracks;
+
+
+
     private Button btnFilterTracks;
+
+    private Button btnFilterByAscending;
+    private Button btnFilterByDescending;
+
+    Animation fabOpen, fabClose, rotateForward, rotateBackward;
+    boolean isOpen = false;
+
     private FloatingActionButton btnSettingsTracks;
     private Playlist myPlaylist;
     private RecyclerView mRecyclerView;
@@ -131,13 +149,37 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
             }
         });
         btnFilterTracks = (Button) view.findViewById(R.id.filter_user_songs);
+        btnFilterTracks.setEnabled(true);
         btnFilterTracks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: FILTER IMPLEMENTATION
+                animateFab();
 
             }
         });
+
+
+
+        btnFilterByAscending = view.findViewById(R.id.btn_filter_songs_by_name_ascendent);
+        btnFilterByAscending.setEnabled(false);
+        btnFilterByAscending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+                sortNameAscendent();
+            }
+        });
+
+        btnFilterByDescending = view.findViewById(R.id.btn_filter_songs_by_name_descendent);
+        btnFilterByDescending.setEnabled(false);
+        btnFilterByDescending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+                sortNameDescendent();
+            }
+        });
+
         etSearchTracks = (EditText) view.findViewById(R.id.search_user_tracks);
         etSearchTracks.addTextChangedListener(new TextWatcher() {
             @Override
@@ -158,6 +200,23 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
         return view;
     }
 
+
+    private void sortNameAscendent(){
+
+        Collections.sort(myTracks, Track.TrackNameAscendentComparator);
+
+        mRecyclerView.setAdapter(new TrackListAdapter(this, getContext(), myTracks, this.myPlaylist));
+
+    }
+
+    private void sortNameDescendent(){
+
+        Collections.sort(myTracks, Track.TrackNameDescendentComparator);
+
+        mRecyclerView.setAdapter(new TrackListAdapter(this, getContext(), myTracks, this.myPlaylist));
+
+    }
+
     private void filter(String text){
         ArrayList<Track> filteredTracks = new ArrayList<>();
 
@@ -167,6 +226,32 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
             }
         }
         mRecyclerView.setAdapter(new TrackListAdapter(this, getContext(), filteredTracks, this.myPlaylist));
+    }
+
+    private void animateFab(){
+        if(isOpen){
+
+            //btnFilterByAscending.startAnimation(fabClose);
+            btnFilterByAscending.setClickable(false);
+            btnFilterByAscending.setEnabled(false);
+            btnFilterByAscending.setVisibility(View.INVISIBLE);
+            //btnFilterByRecent.startAnimation(fabClose);
+            btnFilterByDescending.setClickable(false);
+            btnFilterByDescending.setEnabled(false);
+            btnFilterByDescending.setVisibility(View.INVISIBLE);
+            isOpen=false;
+        }else{
+
+            //btnFilterByPlays.startAnimation(fabOpen);
+            btnFilterByAscending.setClickable(true);
+            btnFilterByAscending.setEnabled(true);
+            btnFilterByAscending.setVisibility(View.VISIBLE);
+            //btnFilterByRecent.startAnimation(fabOpen);
+            btnFilterByDescending.setClickable(true);
+            btnFilterByDescending.setEnabled(true);
+            btnFilterByDescending.setVisibility(View.VISIBLE);
+            isOpen=true;
+        }
     }
 
     @Override
@@ -220,4 +305,6 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     public void onFailure(Throwable throwable) {
 
     }
+
+
 }

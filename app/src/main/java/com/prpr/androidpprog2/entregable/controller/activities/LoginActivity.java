@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//import com.google.android.gms.tasks.OnSuccessListener;
+//import com.google.firebase.storage.FirebaseStorage;
+//import com.google.firebase.storage.StorageReference;
+//import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
@@ -38,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     private TextView tvToRegister;
     private UserToken usTkn;
     private String username="";
+    //private StorageReference mStorage;
 
 
     @Override
@@ -107,6 +113,25 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
+
+        /*Uri imageUri = (new Uri.Builder())
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(getResources().getResourcePackageName(R.drawable.boto_canviar))
+                .appendPath(getResources().getResourceTypeName(R.drawable.boto_canviar))
+                .appendPath(getResources().getResourceEntryName(R.drawable.boto_canviar))
+                .build();*/
+
+        Uri imageUri = Uri.parse("android.resource://"+getApplicationContext().getPackageName()+"/drawable/cancel_edit");
+
+        /*mStorage = FirebaseStorage.getInstance().getReference();
+        StorageReference filePath = mStorage.child(etLogin.getText().toString()).child(imageUri.getLastPathSegment());
+
+        filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(LoginActivity.this,"exito pelotudo",Toast.LENGTH_SHORT).show();
+            }
+        });*/
         usTkn = userToken;
         UserManager.getInstance(getApplicationContext()).getUserData(username, LoginActivity.this, userToken);
     }
