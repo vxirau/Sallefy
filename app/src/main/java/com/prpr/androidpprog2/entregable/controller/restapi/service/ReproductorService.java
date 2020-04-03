@@ -174,8 +174,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-
-
     public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg){
         mSeekBar = seekBar;
         title = titol;
@@ -401,13 +399,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void buildNotification(PlaybackStatus playbackStatus) {
 
-        int notificationAction = android.R.drawable.ic_media_pause;
+        int notificationAction = R.drawable.ic_pause_white;
         PendingIntent play_pauseAction = null;
         if (playbackStatus == PlaybackStatus.PLAYING) {
-            notificationAction = android.R.drawable.ic_media_pause;
+            notificationAction = R.drawable.ic_pause_white;
             play_pauseAction = playbackAction(1);
         } else if (playbackStatus == PlaybackStatus.PAUSED) {
-            notificationAction = android.R.drawable.ic_media_play;
+            notificationAction = R.drawable.ic_play_white;
             play_pauseAction = playbackAction(0);
         }
 
@@ -431,22 +429,28 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         NotificationChannel notificationChannel = new NotificationChannel("SALLEFY", "Sallefy", NotificationManager.IMPORTANCE_LOW);
         notificationManager.createNotificationChannel(notificationChannel);
 
-        /*RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small_layout);
-        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_big_layout);*/
 
+        MediaSessionCompat.Token token = mediaSession.getSessionToken();
 
-        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this, "SALLEFY")
-                .setShowWhen(false)
-                //.setStyle(new Notification.MediaStyle().setMediaSession)
-                .setLargeIcon(largeIcon)
-                .setSmallIcon(android.R.drawable.stat_sys_headset)
-                .setContentText(activeAudio.getUserLogin())
+        NotificationCompat.Builder  notification = new NotificationCompat.Builder(this, "SALLEFY")
+                // Show controls on lock screen even when user hides sensitive content.
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                // Add media control buttons that invoke intents in your media service
+                .addAction(R.drawable.ic_skip_previous, "previous", playbackAction(3)) // #0
+                .addAction(notificationAction, "pause", play_pauseAction)  // #1
+                .addAction(R.drawable.ic_skip_next, "next", playbackAction(2))     // #2
+                // Apply the media style template
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(1)
+                        .setMediaSession(token))
                 .setContentTitle(activeAudio.getName())
-                .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
-                .addAction(notificationAction, "play/pause", play_pauseAction)
-                .addAction(android.R.drawable.ic_media_next, "next", playbackAction(2));
+                .setContentText(activeAudio.getUserLogin())
+                .setLargeIcon(largeIcon);
 
-        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notificationBuilder.build());
+
+
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notification.build());
     }
 
     private void removeNotification() {
