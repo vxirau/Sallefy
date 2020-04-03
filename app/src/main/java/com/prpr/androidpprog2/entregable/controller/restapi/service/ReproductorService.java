@@ -433,14 +433,11 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         MediaSessionCompat.Token token = mediaSession.getSessionToken();
 
         NotificationCompat.Builder  notification = new NotificationCompat.Builder(this, "SALLEFY")
-                // Show controls on lock screen even when user hides sensitive content.
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                // Add media control buttons that invoke intents in your media service
-                .addAction(R.drawable.ic_skip_previous, "previous", playbackAction(3)) // #0
-                .addAction(notificationAction, "pause", play_pauseAction)  // #1
-                .addAction(R.drawable.ic_skip_next, "next", playbackAction(2))     // #2
-                // Apply the media style template
+                .setSmallIcon(R.drawable.noti_icon)
+                .addAction(R.drawable.ic_skip_previous, "previous", playbackAction(3))
+                .addAction(notificationAction, "pause", play_pauseAction)
+                .addAction(R.drawable.ic_skip_next, "next", playbackAction(2))
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1)
                         .setMediaSession(token))

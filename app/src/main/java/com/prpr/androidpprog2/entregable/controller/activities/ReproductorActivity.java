@@ -231,6 +231,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         });
         btnPause = findViewById(R.id.pause);
         btnPause.setEnabled(true);
+        btnPause.setVisibility(View.VISIBLE);
         btnPause.bringToFront();
         btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
