@@ -93,6 +93,7 @@
             android:id="@+id/userPlaylistsRecyclerview"
             android:layout_width="match_parent"
             android:layout_marginTop="140dp"
+            android:layout_marginBottom="107dp"
             android:layout_height="match_parent"
             android:orientation="vertical" />
 
@@ -118,6 +119,7 @@
 
     </RelativeLayout>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -125,29 +127,43 @@
 
         <LinearLayout
 
-            android:id="@+id/actionbuttons"
+            android:id="@+id/filterButtons"
             android:layout_width="70dp"
-            android:layout_height="200dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="70dp"
+            android:layout_marginLeft="320dp"
+            android:layout_marginTop="50dp"
             android:orientation="vertical">
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/filter_tracks_"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#21D760"
+            <Button
+                android:id="@+id/btn_filter_playlists_by_name_ascendent"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
                 android:layout_marginBottom="10dp"
+                android:text="@string/filter_track_by_ascendent"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/rectangle_blanc_small"
                 android:visibility="invisible"
                 android:elevation="10dp"
                 app:borderWidth="0dp"
-                android:src="@drawable/ic_upload" />
+                android:src="@drawable/rectangle_blanc_small" />
+
+            <Button
+                android:id="@+id/btn_filter_playlists_by_name_descendent"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/filter_track_by_descendent"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/rectangle_blanc_small"
+                android:visibility="invisible"
+                android:elevation="10dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/rectangle_blanc_small" />
+
 
         </LinearLayout>
 
     </RelativeLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

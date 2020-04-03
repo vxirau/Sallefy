@@ -200,12 +200,7 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
         return view;
     }
 
-    private void sortMostLiked(){
 
-        Collections.sort(myTracks, Track.TrackDurationComparator);
-
-
-    }
     private void sortNameAscendent(){
 
         Collections.sort(myTracks, Track.TrackNameAscendentComparator);

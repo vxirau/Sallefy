@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
+import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallback;
@@ -37,6 +39,7 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -49,6 +52,12 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback{
 
     private Button btnFilterPlaylists;
     private Button btnAddNewPlaylist;
+
+    Animation fabOpen, fabClose, rotateForward, rotateBackward;
+    boolean isOpen = false;
+
+    private Button btnFilterByAscending;
+    private Button btnFilterByDescending;
 
     private TextView tvAddnewPlaylist;
     private EditText etSearchPlaylist;
@@ -100,6 +109,36 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback{
                startActivity(intent);
            }
        });
+
+        btnFilterPlaylists = (Button) view.findViewById(R.id.filter_user_playlists);
+        btnFilterPlaylists.setEnabled(true);
+        btnFilterPlaylists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+
+            }
+        });
+
+        btnFilterByAscending = view.findViewById(R.id.btn_filter_playlists_by_name_ascendent);
+        btnFilterByAscending.setEnabled(false);
+        btnFilterByAscending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+                sortNameAscendent();
+            }
+        });
+
+        btnFilterByDescending = view.findViewById(R.id.btn_filter_playlists_by_name_descendent);
+        btnFilterByDescending.setEnabled(false);
+        btnFilterByDescending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+                sortNameDescendent();
+            }
+        });
 
        tvAddnewPlaylist = (TextView) view.findViewById(R.id.tv_add_new_playlist);
        tvAddnewPlaylist.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +200,48 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback{
             }
         }
         mRecyclerView.setAdapter(new UserPlaylistAdapter(getContext(), filteredPlaylists ));
+    }
+
+    private void sortNameAscendent(){
+
+        Collections.sort(myPlaylists, Playlist.PlaylistNameAscendentComparator);
+
+        mRecyclerView.setAdapter(new UserPlaylistAdapter(getContext(), this.myPlaylists));
+
+    }
+
+    private void sortNameDescendent(){
+
+        Collections.sort(myPlaylists, Playlist.PlaylistNameDescendentComparator);
+
+        mRecyclerView.setAdapter(new UserPlaylistAdapter(getContext(), this.myPlaylists));
+
+    }
+
+    private void animateFab(){
+        if(isOpen){
+
+            //btnFilterByAscending.startAnimation(fabClose);
+            btnFilterByAscending.setClickable(false);
+            btnFilterByAscending.setEnabled(false);
+            btnFilterByAscending.setVisibility(View.INVISIBLE);
+            //btnFilterByRecent.startAnimation(fabClose);
+            btnFilterByDescending.setClickable(false);
+            btnFilterByDescending.setEnabled(false);
+            btnFilterByDescending.setVisibility(View.INVISIBLE);
+            isOpen=false;
+        }else{
+
+            //btnFilterByPlays.startAnimation(fabOpen);
+            btnFilterByAscending.setClickable(true);
+            btnFilterByAscending.setEnabled(true);
+            btnFilterByAscending.setVisibility(View.VISIBLE);
+            //btnFilterByRecent.startAnimation(fabOpen);
+            btnFilterByDescending.setClickable(true);
+            btnFilterByDescending.setEnabled(true);
+            btnFilterByDescending.setVisibility(View.VISIBLE);
+            isOpen=true;
+        }
     }
 
     @Override
