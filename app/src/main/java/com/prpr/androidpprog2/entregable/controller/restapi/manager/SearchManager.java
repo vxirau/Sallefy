@@ -79,6 +79,10 @@ public class SearchManager {
                         searchCallback.onNoUserSearchRecived();
                     }
 
+                    if ((data.getPlaylists() == null || data.getPlaylists().size() == 0) && (data.getTracks() == null || data.getTracks().size() != 0) && (data.getUsers() == null || data.getUsers().size() == 0)){
+                        searchCallback.onEmptySearch();
+                    }
+
                 } else {
                     Log.d(TAG, "Error: " + code);
                     searchCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
