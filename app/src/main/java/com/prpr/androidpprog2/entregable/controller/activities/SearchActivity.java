@@ -13,6 +13,7 @@ import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,9 +29,6 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.SearchManager;
 import com.prpr.androidpprog2.entregable.model.Genre;
@@ -62,7 +60,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     private LinearLayout mPlaylistLayout;
     private LinearLayout mTracksLayout;
     private LinearLayout mUsersLayout;
-    private ScrollView mGeneresLayout;
+    private LinearLayout mGeneresLayout;
     private ScrollView mBothLayout;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +72,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     void initViews(){
         //No mostrem res
-        mGeneresLayout = (ScrollView) findViewById(R.id.search_genere_layout);
+        mGeneresLayout = (LinearLayout) findViewById(R.id.search_genere_layout);
         mGeneresLayout.setVisibility(View.GONE);
 
         mPlaylistLayout = (LinearLayout) findViewById(R.id.search_recyclerView_playlist);
@@ -91,7 +89,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
         //Obtenim GENERES LIST
         mGeneres = new ArrayList<>();
-        //GenreManager.getInstance(this).getAllGenres(this);
+        GenreManager.getInstance(this).getAllGenres(this);
 
         //Recicle views
         mRecyclerViewPlaylist = (RecyclerView) findViewById(R.id.search_dynamic_recyclerView_playlist);
@@ -115,10 +113,10 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         mRecyclerViewUser.setAdapter(adapterUser);
 
         getmRecyclerViewGeneres = (RecyclerView) findViewById(R.id.search_dynamic_recyclerView_genere);
-        LinearLayoutManager managerGenere = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        GridLayoutManager managerGenere = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         GenereAdapter adapterGenere = new GenereAdapter(this, this, null);
-        mRecyclerViewPlaylist.setLayoutManager(managerGenere);
-        mRecyclerViewPlaylist.setAdapter(adapterGenere);
+        getmRecyclerViewGeneres.setLayoutManager(managerGenere);
+        getmRecyclerViewGeneres.setAdapter(adapterGenere);
 
         //Search bar
         mSearchText = (EditText) findViewById(R.id.search_bar);
@@ -135,7 +133,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
             @Override
             public void afterTextChanged(Editable editable) {
-                call();
+                searchCall();
             }
         });
 
@@ -163,9 +161,12 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
             }
         });
     }
-    private void call (){
+    private void searchCall (){
         if (!mSearchText.getText().toString().equals("")) {
             SearchManager.getInstance(this).getSearch(this, mSearchText.getText().toString());
+        } else {
+            mGeneresLayout.setVisibility(View.VISIBLE);
+            mBothLayout.setVisibility(View.GONE);
         }
     }
 
@@ -181,7 +182,8 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         GenereAdapter adapter = new GenereAdapter(this, this, mGeneres);
         getmRecyclerViewGeneres.setAdapter(adapter);
 
-        //mGeneresLayout.setVisibility(View.VISIBLE);
+        mGeneresLayout.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -272,6 +274,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     }
 
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
+
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
@@ -327,6 +339,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
+    public void onUserIsFollowed(boolean isFollowed) {
+
+    }
+
+    @Override
+    public void onUserIsFollowedFail(Throwable throwable) {
+
+    }
+
+    @Override
     public void onAllUsersFail(Throwable throwable) {
 
     }
@@ -336,16 +358,9 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     public void onTrackSearchRecived(ArrayList<Track> tracks) {
         mRecyclerViewTracks.setAdapter(new TrackListAdapter(this, this, tracks, null));
 
-        /*
-        //SOUTS DE PLAYLISTS
-        System.out.println("TRACKS ON VIEW");
-        for (Track playlist: tracks) {
-            playlist.print();
-        }
-        */
-
         mTracksLayout.setVisibility(View.VISIBLE);
         mBothLayout.setVisibility(View.VISIBLE);
+        mGeneresLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -355,18 +370,13 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onPlaylistSearchRecived(ArrayList<Playlist> playlists) {
-        mRecyclerViewPlaylist.setAdapter(new PlaylistAdapter(this, playlists));
-
-        /*
-        //SOUTS DE PLAYLISTS
-        System.out.println("PLAYLISTS ON VIEW");
-        for (Playlist playlist: playlists) {
-            playlist.print();
-        }
-         */
+        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, playlists);
+        playlistAdapter.setPlaylistCallback(this);
+        mRecyclerViewPlaylist.setAdapter(playlistAdapter);
 
         mPlaylistLayout.setVisibility(View.VISIBLE);
         mBothLayout.setVisibility(View.VISIBLE);
+        mGeneresLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -376,23 +386,23 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onUserSearchRecived(ArrayList<User> users) {
-        mRecyclerViewUser.setAdapter(new UserAdapter(this, users));
-
-        /*
-        //SOUTS DE USERS
-        System.out.println("USERS ON VIEW");
-        for (User playlist: users) {
-            playlist.print();
-        }
-         */
+        UserAdapter userAdapter = new UserAdapter(this, users);
+        userAdapter.setUserCallback(this);
+        mRecyclerViewUser.setAdapter(userAdapter);
 
         mUsersLayout.setVisibility(View.VISIBLE);
         mBothLayout.setVisibility(View.VISIBLE);
+        mGeneresLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void onNoUserSearchRecived() {
         mUsersLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onEmptySearch() {
+        mBothLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -404,5 +414,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     public void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist playlist) {
 
     }
+
 }
 
