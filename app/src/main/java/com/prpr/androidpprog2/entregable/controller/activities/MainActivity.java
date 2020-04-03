@@ -1,6 +1,5 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +47,6 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback, ServiceCallback {
 
@@ -168,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(!sameUser){
             if(isPlaying){
                 mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);

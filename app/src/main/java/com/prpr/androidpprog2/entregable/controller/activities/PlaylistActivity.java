@@ -144,7 +144,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(isPlaying){
             mseek.postDelayed(player.getmProgressRunner(), 1000);
         }

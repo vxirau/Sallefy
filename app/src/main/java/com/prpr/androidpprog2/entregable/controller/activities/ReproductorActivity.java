@@ -44,6 +44,9 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
     private TextView trackAuthor;
     private ImageView trackImage;
 
+    private TextView duracioTotal;
+    private TextView duracioActual;
+
     private ImageButton btnBackward;
     private Button btnPlay;
     private Button btnPause;
@@ -70,6 +73,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.setDuracioTotal(duracioTotal);
             serv.updateUI();
             serv.setSeekCallback(this);
         }
@@ -109,6 +113,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.setDuracioTotal(duracioTotal);
             serv.setSeekCallback(ReproductorActivity.this);
         }
 
@@ -134,11 +139,12 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
 
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(isPlaying){
             mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
         }
         mSeekBar.setProgress(progress);
+        duracioActual.setText(duracio);
     }
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
@@ -159,6 +165,9 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         trackTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         trackTitle.setSelected(true);
         trackTitle.setSingleLine(true);
+
+        duracioTotal = findViewById(R.id.totalTime);
+        duracioActual = findViewById(R.id.currentTime);
 
 
         trackAuthor = findViewById(R.id.music_artist);

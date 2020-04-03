@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -51,6 +52,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public class ReproductorService extends Service implements MediaPlayer.OnCompletionListener,MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener,
@@ -151,6 +153,28 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mediaPlayer.prepareAsync();
     }
 
+    private String duractioActual(){
+        int duration = mediaPlayer.getCurrentPosition();
+        @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(duration),
+                TimeUnit.MILLISECONDS.toSeconds(duration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration))
+        );
+        return time;
+    }
+
+    public void setDuracioTotal(TextView txt){
+        int duration = mediaPlayer.getDuration();
+        @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(duration),
+                TimeUnit.MILLISECONDS.toSeconds(duration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration))
+        );
+        txt.setText(time);
+    }
+
+
+
 
     public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg){
         mSeekBar = seekBar;
@@ -163,7 +187,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(!fromUser && scallback!=null){
-                    scallback.onSeekBarUpdate(progress, mediaPlayer.getDuration(), mediaPlayer.isPlaying());
+                    scallback.onSeekBarUpdate(progress, mediaPlayer.getDuration(), mediaPlayer.isPlaying(), duractioActual());
                 }else{
                     mediaPlayer.seekTo(progress);
                 }

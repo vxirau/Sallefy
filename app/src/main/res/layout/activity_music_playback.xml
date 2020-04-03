@@ -143,11 +143,11 @@
                 android:id="@+id/currentTime"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="50dp"
                 android:gravity="center"
                 android:text="@string/default_duration"
                 android:textColor="@color/colorWhite"
-                android:textSize="10sp" />
+                android:textSize="15sp" />
 
             <SeekBar
                 android:id="@+id/seekBar"
@@ -161,12 +161,12 @@
             <TextView
                 android:id="@+id/totalTime"
                 android:layout_width="40dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginRight="50dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/default_duration"
                 android:textColor="@color/colorWhite"
-                android:textSize="10sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 

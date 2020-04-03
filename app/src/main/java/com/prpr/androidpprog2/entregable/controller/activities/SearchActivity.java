@@ -143,7 +143,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(isPlaying){
             mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
         }

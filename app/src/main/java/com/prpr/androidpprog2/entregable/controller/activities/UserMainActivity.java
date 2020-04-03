@@ -129,7 +129,7 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
 
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         /*if(isPlaying){
             mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
         }
