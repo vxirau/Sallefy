@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -35,16 +38,17 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback {
+public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback, ServiceCallback {
 
     private FloatingActionButton mes;
     private FloatingActionButton btnNewPlaylist;
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private Button play;
     private Button pause;
     private ImageView im;
-
+    private boolean sameUser = false;
 
     private RecyclerView allPlaylistRecycle;
     private RecyclerView topPlaylistsRecycle;
@@ -76,46 +80,28 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private PlaylistManager pManager;
     private UserManager usrManager;
 
+
+    private LinearLayout playing;
+
+    //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
+    public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
     private ReproductorService serv;
     private boolean servidorVinculat=false;
-
-
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(!servidorVinculat){
-            Intent intent = new Intent(this, ReproductorService.class);
-            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }else{
-            serv.updateUI();
-        }
-        pManager.getFollowingPlaylists(this);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initViews();
-        btnNewPlaylist.setEnabled(true);
-        UserToken userToken = Session.getInstance(this).getUserToken();
-        pManager = new PlaylistManager(this);
-        usrManager = new UserManager(this);
-        pManager.getAllPlaylists(this);
-        pManager.getAllMyPlaylists(this);
-        usrManager.getTopUsers(this);
-        pManager.getFollowingPlaylists(this);
-
-    }
+    private ArrayList<Track> audioList;
+    private int audioIndex = -1;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
+            //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
+            serv.setSeekCallback(MainActivity.this);
+            if(sameUser){
+                serv.pauseMedia();
+            }
         }
 
         @Override
@@ -135,6 +121,86 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     protected void onDestroy() {
         super.onDestroy();
         doUnbindService();
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!servidorVinculat){
+            Intent intent = new Intent(this, ReproductorService.class);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }else{
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
+            serv.updateUI();
+            serv.setSeekCallback(this);
+        }
+    }
+
+
+    private void loadPreviousSession() {
+        audioList = PreferenceUtils.getAllTracks(getApplicationContext());
+        audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
+        loadAudioPlay(audioIndex);
+        Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+        sendBroadcast(broadcastIntent);
+    }
+
+    private void loadAudioPlay(int audioIndex) {
+        Intent playerIntent = new Intent(this, ReproductorService.class);
+        startService(playerIntent);
+        bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        trackTitle.setText(audioList.get(audioIndex).getName());
+        trackAuthor.setText(audioList.get(audioIndex).getUserLogin());
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(servidorVinculat){
+            serv.setSeekCallback(this);
+        }
+        pManager.getFollowingPlaylists(this);
+    }
+
+
+    @Override
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
+        if(!sameUser){
+            if(isPlaying){
+                mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
+            }
+            mSeekBar.setProgress(progress);
+        }else{
+            serv.pauseMedia();
+            sameUser=false;
+        }
+
+    }
+
+
+
+    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if(getIntent().getSerializableExtra("sameUser")!=null){
+            sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
+        }
+        initViews();
+        btnNewPlaylist.setEnabled(true);
+        UserToken userToken = Session.getInstance(this).getUserToken();
+        pManager = new PlaylistManager(this);
+        usrManager = new UserManager(this);
+        pManager.getAllPlaylists(this);
+        pManager.getAllMyPlaylists(this);
+        usrManager.getTopUsers(this);
+        pManager.getFollowingPlaylists(this);
+        if(sameUser){
+            loadPreviousSession();
+        }
     }
 
     private void initViews() {
@@ -163,11 +229,15 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         });
 
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         followingTxt= findViewById(R.id.noFollow);
 
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
         play.bringToFront();
+        play.setVisibility(View.VISIBLE);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,11 +246,22 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         });
         pause = findViewById(R.id.playPause);
         pause.setEnabled(true);
+        pause.setVisibility(View.INVISIBLE);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
+            }
+        });
+
+        playing = findViewById(R.id.reproductor);
+        playing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
 
@@ -399,7 +480,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             p2.setPlaylistCallback(this);
             folloingPlaylistRecycle.setAdapter(p2);
         }
-
     }
 
     @Override
@@ -470,17 +550,18 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
     @Override
-    public void onUserIsFollowed(boolean isFollowed) {
+    public void onFollowedUsersSuccess(List<User> users) {
 
     }
 
-    @Override
-    public void onUserIsFollowedFail(Throwable throwable) {
-
-    }
 
     @Override
     public void onAllUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFail(Throwable throwable) {
 
     }
 
@@ -489,4 +570,5 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     public void onFailure(Throwable throwable) {
 
     }
+
 }

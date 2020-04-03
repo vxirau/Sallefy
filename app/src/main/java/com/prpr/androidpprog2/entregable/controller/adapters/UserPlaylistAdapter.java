@@ -45,6 +45,14 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
     }
 
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mCallback!=null){
+                    mCallback.onPlaylistSelected(playlist.get(position));
+                }
+            }
+        });
         holder.ivPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +61,11 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
                 }
             }
         });
+
         holder.nomPlaylist.setText(playlist.get(position).getName());
+
+
+
         int size = playlist.get(position).getTracks() != null ? playlist.get(position).getTracks().size() : 0 ;
         holder.totalCancons.setText( size + " cançons");
 

@@ -5,6 +5,12 @@
     <string name="default_track_author">Author</string>
     <string name="default_duration">03:20</string>
     <string name="default_playlist_name">Playlist Title</string>
+    <string name="default_user_name">User Name</string>
+    <string name="default_user_login">User Login</string>
+    <string name="default_user_followed">nFollowers</string>
+    <string name="default_user_following">nFollowing</string>
+    <string name="default_user_tracks">nTracks</string>
+    <string name="default_user_playlists">nPlaylists</string>
     <string name="default_playlist_song_amount">20 songs</string>
 
     <string name="action_login">Log in</string>
@@ -114,7 +120,8 @@
     <string name="apply_filter">Apply filter</string>
     <string name="filter_track_search_genre">Type a genre</string>
     <string name="filter_tracks_title">Filter tracks</string>
-    <string name="filter_tracks_genres">Filter by genre</string>
+    <string name="filter_track_by_ascendent">Asc</string>
+    <string name="filter_track_by_descendent">Desc</string>
 
     <string name="filter_tracks_descendent">Filter tracks</string>
 
