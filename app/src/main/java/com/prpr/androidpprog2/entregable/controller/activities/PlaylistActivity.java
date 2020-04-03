@@ -404,6 +404,16 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     }
 
+    @Override
+    public void onTrackLiked() {
+
+    }
+
+    @Override
+    public void onTrackNotFound(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onFailure(Throwable throwable) {

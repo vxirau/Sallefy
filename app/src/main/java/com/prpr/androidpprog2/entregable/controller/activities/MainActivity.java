@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
 
-
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
-        pManager.getAllMyPlaylists(this);
+        pManager.getTopPlaylists(this);
         usrManager.getTopUsers(this);
         pManager.getFollowingPlaylists(this);
         if(sameUser){

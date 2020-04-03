@@ -371,6 +371,10 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         });
     }
 
+    public Track getCurrentTrack(){
+        return activeAudio;
+    }
+
     private void updateMetaData() {
 
 

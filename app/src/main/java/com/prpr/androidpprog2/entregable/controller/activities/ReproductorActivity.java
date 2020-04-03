@@ -27,14 +27,17 @@ import com.chibde.visualizer.CircleBarVisualizer;
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.List;
 
-public class ReproductorActivity extends Activity implements ServiceCallback {
+public class ReproductorActivity extends Activity implements ServiceCallback, TrackCallback {
 
     private static final String TAG = "DynamicPlaybackActivity";
     private static final String PLAY_VIEW = "PlayIcon";
@@ -51,6 +54,9 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
     private Button btnPlay;
     private Button btnPause;
 
+    private Button likeTrack;
+    private boolean liked=false;
+
     private ImageButton btnForward;
     private ImageButton shuffle;
     private boolean isShuffle=false;
@@ -59,8 +65,12 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
     private CircleLineVisualizer mVisualizer;
     private MediaPlayer mPlayer;
 
+    private TrackManager tManager;
+
     private ReproductorService serv;
     private boolean servidorVinculat=false;
+
+
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
 
@@ -93,7 +103,9 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
         initViews();
+        tManager = new TrackManager(this);
         //updateVisualizer();
+
     }
 
     /*private void updateVisualizer(){
@@ -159,6 +171,16 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
 
 
     private void initViews() {
+
+        likeTrack= findViewById(R.id.addFavorite);
+        likeTrack.setEnabled(true);
+        likeTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tManager.likeTrack(serv.getCurrentTrack().getId(), ReproductorActivity.this);
+            }
+        });
+
 
 
         trackTitle= findViewById(R.id.music_title);
@@ -253,4 +275,60 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         super.onPause();
     }
 
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPersonalTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onUserTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onCreateTrack(Track t) {
+
+    }
+
+    @Override
+    public void onTopTracksRecieved(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackLiked() {
+
+        if(liked){
+            likeTrack.setBackgroundResource(R.drawable.ic_favorite_track);;
+            liked=false;
+        }else{
+            likeTrack.setBackgroundResource(R.drawable.ic_favorite_true);;
+            liked=true;
+        }
+    }
+
+    @Override
+    public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
+
+    }
 }
