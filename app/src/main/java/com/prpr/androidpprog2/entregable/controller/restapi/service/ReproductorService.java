@@ -315,6 +315,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         @Override
         public void onReceive(Context context, Intent intent) {
             audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
+            audioList = PreferenceUtils.getAllTracks(getApplicationContext());
             if (audioIndex != -1 && audioIndex < audioList.size()) {
                 activeAudio = audioList.get(audioIndex);
             } else {
@@ -331,7 +332,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
 
     private void register_playNewAudio() {
-        //updateUI();
         IntentFilter filter = new IntentFilter(PlaylistActivity.Broadcast_PLAY_NEW_AUDIO);
         registerReceiver(playNewAudio, filter);
     }
