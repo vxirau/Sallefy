@@ -39,9 +39,6 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.SearchManager;
@@ -88,7 +85,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     private LinearLayout playing;
     private ReproductorService serv;
     private boolean servidorVinculat=false;
-
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -153,12 +149,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
-
-
-
-
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -168,7 +158,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     void initViews(){
 
-
+        //PART REPRODUCCIÓ
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
         play.bringToFront();
@@ -178,6 +168,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
                 serv.resumeMedia();
             }
         });
+
         pause = findViewById(R.id.playPause);
         pause.setEnabled(true);
         pause.bringToFront();
@@ -205,20 +196,15 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
             }
         });
 
-
-
         //No mostrem res
         mGeneresLayout = (LinearLayout) findViewById(R.id.search_genere_layout);
         mGeneresLayout.setVisibility(View.GONE);
 
         mPlaylistLayout = (LinearLayout) findViewById(R.id.search_recyclerView_playlist);
-        //mPlaylistLayout.setVisibility(View.GONE);
 
         mTracksLayout = (LinearLayout) findViewById(R.id.search_recyclerView_song);
-        //mTracksLayout.setVisibility(View.GONE);
 
         mUsersLayout = (LinearLayout) findViewById(R.id.search_recyclerView_user);
-        //mUsersLayout.setVisibility(View.GONE);
 
         mBothLayout = (ScrollView) findViewById(R.id.search_scroll_all);
         mBothLayout.setVisibility(View.INVISIBLE);
@@ -298,7 +284,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         });
     }
     private void searchCall (){
-        if (!mSearchText.getText().toString().equals("")) {
+        if (!mSearchText.getText().toString().equals("") && mSearchText.getText().toString().length() > 1) {
             SearchManager.getInstance(this).getSearch(this, mSearchText.getText().toString());
         } else {
             mGeneresLayout.setVisibility(View.VISIBLE);

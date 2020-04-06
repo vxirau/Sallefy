@@ -47,6 +47,7 @@ public class Playlist implements Serializable, Comparable<Playlist> {
     }
 
     public Playlist(String name, User user) {
+        this.id = -5;
         this.name = name;
         this.owner = user;
         this.cover = null;
