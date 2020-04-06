@@ -26,26 +26,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center"
                 android:layout_marginTop="20dp">
 
                 <Button
                     android:id="@+id/back2Main"
                     android:layout_width="20dp"
                     android:layout_height="15dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="25dp"
                     android:background="@drawable/ic_back_down"
                     android:rotation="90" />
 
                 <TextView
                     android:id="@+id/playlistName"
                     android:layout_width="match_parent"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
                     android:gravity="center"
                     android:text="@string/nom_de_la_playlist"
                     android:textColor="@color/colorWhite"
                     android:textSize="20dp" />
 
+                <Button
+                    android:id="@+id/infoPlaylist"
+                    android:layout_width="5dp"
+                    android:layout_height="21dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@drawable/ic_playlist_info"/>
 
             </LinearLayout>
 

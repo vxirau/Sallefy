@@ -59,6 +59,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private LinearLayout playing;
 
     private Button back2Main;
+    private Button infoPlaylist;
     private Button shuffle;
     private Button follow;
     private Follow followingInfo;
@@ -327,6 +328,18 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             addBunch.setVisibility(View.INVISIBLE);
             follow.setVisibility(View.VISIBLE);
         }
+
+
+        infoPlaylist = findViewById(R.id.infoPlaylist);
+        infoPlaylist.setEnabled(true);
+        infoPlaylist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InfoPlaylistActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+            }
+        });
 
 
         back2Main = findViewById(R.id.back2Main);

@@ -106,6 +106,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.nothing,R.anim.nothing);
             }
         });
 
