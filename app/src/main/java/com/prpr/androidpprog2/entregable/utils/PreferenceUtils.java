@@ -20,6 +20,8 @@ public class PreferenceUtils {
     private static String KEY_USER = "userLogin";
     private static String KEY_PASSWORD = "password";
     private static String KEY_TRACK = "track";
+    private static String KEY_PLY_ID = "id";
+
     private static String KEY_ALL_TRACK = "track";
 
 
@@ -37,6 +39,19 @@ public class PreferenceUtils {
     public static int getTrackIndex(Context context){
         SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);
         return Integer.parseInt(Objects.requireNonNull(prefs.getString(KEY_TRACK, null)));
+    }
+
+    public static boolean savePlayID(Context context, int index){
+        SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString(KEY_PLY_ID, String.valueOf(index));
+        prefsEditor.apply();
+        return true;
+    }
+
+    public static int getPlayID(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);
+        return Integer.parseInt(Objects.requireNonNull(prefs.getString(KEY_PLY_ID, null)));
     }
 
 
