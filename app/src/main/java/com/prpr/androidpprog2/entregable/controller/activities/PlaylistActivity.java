@@ -1,4 +1,5 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
+
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import java.util.*;
 
@@ -24,6 +26,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -142,7 +145,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             player.setmSeekBar(mseek);
             player.setSeekCallback(PlaylistActivity.this);
             serviceBound = true;
-            player.setUIControls(mseek,tvTitle, tvAuthor, play, pause, im);
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
         }
 
         @Override
@@ -173,9 +176,13 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     @Override
     public void onStart() {
         super.onStart();
-        if(serviceBound){
+        if(!serviceBound){
+            Intent intent = new Intent(this, ReproductorService.class);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }else{
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
             player.updateUI();
+            player.setSeekCallback(this);
         }
         pManager.checkFollowing(playlst.getId(), this);
     }
@@ -217,12 +224,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        finish();
-                        overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                        Intent intent0 = new Intent(getApplicationContext(), MainActivity.class);
+                        intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent0, Constants.NETWORK.LOGIN_OK);
+                        return true;
                     case R.id.buscar:
-                        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                        Intent intent1 = new Intent(getApplicationContext(), SearchActivity.class);
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent1, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
                         Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
@@ -289,6 +298,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 int index=0;
@@ -301,6 +311,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         pause.setEnabled(true);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 player.pauseMedia();
@@ -521,14 +532,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     private void getData() {
-        mTracks = (ArrayList) playlst.getTracks();
+        mTracks = (ArrayList<Track>) playlst.getTracks();
         TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onTracksReceived(List<Track> tracks) {
-        mTracks = (ArrayList) tracks;
+        mTracks = (ArrayList<Track>) tracks;
         PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
         TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
