@@ -58,6 +58,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     private Button btnFilterPlaylists;
     private Button btnAddNewPlaylist;
+    private Button btnResetFilters;
 
     Animation fabOpen, fabClose, rotateForward, rotateBackward;
     boolean isOpen = false;
@@ -197,6 +198,16 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
             }
         });
 
+        btnResetFilters = view.findViewById(R.id.btn_reset_filters_playlists);
+        btnResetFilters.setEnabled(false);
+        btnResetFilters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+                resetFilters();
+            }
+        });
+
        tvAddnewPlaylist = (TextView) view.findViewById(R.id.tv_add_new_playlist);
        tvAddnewPlaylist.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -275,6 +286,11 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     }
 
+    private void resetFilters(){
+
+        playlistManager.getAllMyPlaylists(this);
+
+    }
 
 
     private void animateFab(){
@@ -288,6 +304,11 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
             btnFilterByDescending.setClickable(false);
             btnFilterByDescending.setEnabled(false);
             btnFilterByDescending.setVisibility(View.INVISIBLE);
+
+            btnResetFilters.setClickable(false);
+            btnResetFilters.setEnabled(false);
+            btnResetFilters.setVisibility(View.INVISIBLE);
+
             isOpen=false;
         }else{
 
@@ -299,6 +320,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
             btnFilterByDescending.setClickable(true);
             btnFilterByDescending.setEnabled(true);
             btnFilterByDescending.setVisibility(View.VISIBLE);
+
+            btnResetFilters.setClickable(true);
+            btnResetFilters.setEnabled(true);
+            btnResetFilters.setVisibility(View.VISIBLE);
             isOpen=true;
         }
     }
