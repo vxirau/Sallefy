@@ -59,6 +59,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     private SeekBar mSeekBar;
     private Button play;
     private Button pause;
+    private Button btnBack;
     private ImageView im;
     private LinearLayout playing;
     private ReproductorService serv;
@@ -202,7 +203,15 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             }
         });
 
+        btnBack = findViewById(R.id.back2User);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
+                startActivity(intent);
 
+            }
+        });
 
         etUsername = (EditText) findViewById(R.id.textview_settings_change_username);
         etEmail = (EditText) findViewById(R.id.textview_settings_change_email);
