@@ -49,7 +49,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class UserPlaylistsFragment extends Fragment implements PlaylistCallback, ServiceCallback {
+public class UserPlaylistsFragment extends Fragment implements PlaylistCallback {
 
     private ArrayList<Playlist> myPlaylists;
     private Playlist myPlaylist;
@@ -79,7 +79,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback,
     }
 
 
-    //------------------------------------------------------------------------------------------
+    /*
     private TextView trackTitle;
     private TextView followingTxt;
     private TextView trackAuthor;
@@ -102,8 +102,8 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback,
     public void setService(ReproductorService serv){
         servei = serv;
     }
+    */
 
-    //------------------------------------------------------------------------------------------
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,7 +112,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback,
 
         View view =  inflater.inflate(R.layout.fragment_user_playlists, container, false);
 
-        //------------------------------------------------------------------------------------------
+        /*
         play = view.findViewById(R.id.playButton);
         play.setEnabled(true);
         play.bringToFront();
@@ -154,7 +154,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback,
         servei.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
         servei.setSeekCallback(UserPlaylistsFragment.this);
 
-        //------------------------------------------------------------------------------------------
+        */
 
         // Inflate the layout for this fragment
 

@@ -208,7 +208,7 @@ public class UserMainActivity extends AppCompatActivity {
 
 
 
-        userPlaylistsFragment.setService(serv);
+        //userPlaylistsFragment.setService(serv);
 
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
