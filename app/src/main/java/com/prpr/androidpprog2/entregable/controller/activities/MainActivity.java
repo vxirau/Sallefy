@@ -50,6 +50,8 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback, ServiceCallback {
 
     private FloatingActionButton mes;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private Button play;
     private Button pause;
     private ImageView im;
-    private boolean sameUser = false;
+    private boolean sameUser = true;
 
     private RecyclerView allPlaylistRecycle;
     private RecyclerView topPlaylistsRecycle;
