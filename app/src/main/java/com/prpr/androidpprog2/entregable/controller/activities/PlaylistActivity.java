@@ -336,7 +336,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             addBunch.setVisibility(View.INVISIBLE);
             follow.setVisibility(View.VISIBLE);
         }
-
+        if(playlst.getId()==-5){
+            follow.setVisibility(View.GONE);
+        }
 
         infoPlaylist = findViewById(R.id.infoPlaylist);
         infoPlaylist.setEnabled(true);
