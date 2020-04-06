@@ -126,16 +126,16 @@
 
             android:id="@+id/filterButtons"
             android:layout_width="70dp"
-            android:layout_height="80dp"
+            android:layout_height="105dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="320dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="45dp"
             android:orientation="vertical">
             <Button
                 android:id="@+id/btn_filter_songs_by_name_ascendent"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:text="@string/filter_track_by_ascendent"
                 android:textColor="@color/colorPrimaryDark"
 
@@ -149,8 +149,21 @@
                 android:id="@+id/btn_filter_songs_by_name_descendent"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:text="@string/filter_track_by_descendent"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/rectangle_blanc_small"
+                android:visibility="invisible"
+                android:elevation="10dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/rectangle_blanc_small" />
+
+            <Button
+                android:id="@+id/btn_reset_filters_tracks"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/reset_filters"
                 android:textColor="@color/colorPrimaryDark"
                 android:background="@drawable/rectangle_blanc_small"
                 android:visibility="invisible"
