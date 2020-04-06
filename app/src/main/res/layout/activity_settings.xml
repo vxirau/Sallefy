@@ -113,6 +113,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:backgroundTint="#21D760"
+            android:thumb="@drawable/seek_thumb"
             android:progressTint="@color/colorWhite"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="87dp"
@@ -143,10 +144,10 @@
         <LinearLayout
             android:id="@+id/reproductor"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="60dp"
             android:background="@drawable/fons_reproductor"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="30dp"
             android:orientation="vertical"
             android:clickable="true"
             android:textAlignment="center"
@@ -157,8 +158,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="18sp"
-                android:textColor="@color/colorWhite"
-                android:text="Probandoo"/>
+                android:textColor="@color/colorWhite"/>
             <TextView
                 android:id="@+id/dynamic_artist"
                 android:layout_width="match_parent"
@@ -167,8 +167,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="14dp"
                 android:alpha = ".56"
-                android:paddingBottom="7dp"
-                android:text="Probandoo Artista"/>
+                android:paddingBottom="12dp"/>
 
         </LinearLayout>
 

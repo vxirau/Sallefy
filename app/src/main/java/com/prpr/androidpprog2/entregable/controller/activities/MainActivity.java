@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private int audioIndex = -1;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
@@ -165,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(!sameUser){
@@ -240,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         play.bringToFront();
         play.setVisibility(View.VISIBLE);
         play.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
@@ -250,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pause.setVisibility(View.INVISIBLE);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();

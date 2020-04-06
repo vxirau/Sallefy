@@ -264,6 +264,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             }
         });
 
+        if(playlst.getId()==-5){
+            follow.setVisibility(View.GONE);
+        }
+
         plyName = findViewById(R.id.playlistName);
         plyAuthor = findViewById(R.id.playlistAuthor);
         plyImg = findViewById(R.id.playlistCover);

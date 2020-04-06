@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +20,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -45,7 +49,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class UserPlaylistsFragment extends Fragment implements PlaylistCallback, ServiceCallback {
+public class UserPlaylistsFragment extends Fragment implements PlaylistCallback {
 
     private ArrayList<Playlist> myPlaylists;
     private Playlist myPlaylist;
@@ -75,61 +79,91 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback,
     }
 
 
-    //------------------------------------------------------------------------------------------
-
+    /*
+    private TextView trackTitle;
+    private TextView followingTxt;
+    private TextView trackAuthor;
+    private SeekBar mSeekBar;
+    private Button play;
+    private Button pause;
+    private ImageView im;
+    private LinearLayout playing;
+    private ReproductorService serv;
+    private boolean servidorVinculat=false;
     @Override
     public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
-
+        if(isPlaying){
+            mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
+        }
+        mSeekBar.setProgress(progress);
     }
 
-    //------------------------------------------------------------------------------------------
+
+    public void setService(ReproductorService serv){
+        servei = serv;
+    }
+    */
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //------------------------------------------------------------------------------------------
-        servei.setSeekCallback(this);
 
+        View view =  inflater.inflate(R.layout.fragment_user_playlists, container, false);
 
-
-
-
-
-        //------------------------------------------------------------------------------------------
-
-        // Inflate the layout for this fragment
-       View view =  inflater.inflate(R.layout.fragment_user_playlists, container, false);
-
-        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.menu);
-        navigation.setSelectedItemId(R.id.perfil);
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        /*
+        play = view.findViewById(R.id.playButton);
+        play.setEnabled(true);
+        play.bringToFront();
+        play.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                        return true;
-                    case R.id.buscar:
-                        Intent intent2 = new Intent(getContext(), SearchActivity.class);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
-                        return true;
-                    case R.id.perfil:
-                        return true;
-                }
-                return false;
+            public void onClick(View v) {
+                serv.resumeMedia();
+            }
+        });
+        pause = view.findViewById(R.id.playPause);
+        pause.setEnabled(true);
+        pause.bringToFront();
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serv.pauseMedia();
             }
         });
 
+        trackAuthor = view.findViewById(R.id.dynamic_artist);
+        trackTitle = view.findViewById(R.id.dynamic_title);
+        trackTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        trackTitle.setSelected(true);
+        trackTitle.setSingleLine(true);
+        mSeekBar = (SeekBar) view.findViewById(R.id.dynamic_seekBar);
+
+        playing = view.findViewById(R.id.reproductor);
+        playing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ReproductorActivity.class);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                //overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+            }
+        });
+
+        servei.setSeekCallback(this);
+        servei.setmSeekBar(mSeekBar);
+        servei.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
+        servei.setSeekCallback(UserPlaylistsFragment.this);
+
+        */
+
+        // Inflate the layout for this fragment
 
        btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configPlaylistsButton);
        btnSettingsPlaylists.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                Intent intent = new Intent(getContext(), SettingsActivity.class);
+               intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                startActivity(intent);
            }
        });
@@ -140,7 +174,6 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback,
             @Override
             public void onClick(View view) {
                 animateFab();
-
             }
         });
 
@@ -242,9 +275,6 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback,
 
     }
 
-    public void setService(ReproductorService serv){
-        servei = serv;
-    }
 
 
     private void animateFab(){

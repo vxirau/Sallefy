@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -45,10 +47,11 @@ import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserMainActivity extends AppCompatActivity {
+public class UserMainActivity extends AppCompatActivity implements ServiceCallback{
 
     private TextView tvUserPlaylists;
     private TextView tvUserTracks;
@@ -70,21 +73,20 @@ public class UserMainActivity extends AppCompatActivity {
     private ReproductorService serv;
     private boolean servidorVinculat=false;
 
-
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-           /* ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
+            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
             //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
-            serv.setSeekCallback(UserMainActivity.this);*/
+            serv.setSeekCallback(UserMainActivity.this);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            //servidorVinculat = false;
+            servidorVinculat = false;
         }
     };
 
@@ -111,26 +113,28 @@ public class UserMainActivity extends AppCompatActivity {
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
-
+            serv.setSeekCallback(this);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        /*if(servidorVinculat){
+        if(servidorVinculat){
             serv.setSeekCallback(this);
-        }*/
+        }
     }
 
-/*
+
     @Override
     public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(isPlaying){
             mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
         }
         mSeekBar.setProgress(progress);
-    }*/
+    }
+
+
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
@@ -148,10 +152,47 @@ public class UserMainActivity extends AppCompatActivity {
     void initGeneralViews(){
 
 
+        play = findViewById(R.id.playButton);
+        play.setEnabled(true);
+        play.bringToFront();
+        play.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                serv.resumeMedia();
+            }
+        });
+
+        pause = findViewById(R.id.playPause);
+        pause.setEnabled(true);
+        pause.bringToFront();
+        pause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                serv.pauseMedia();
+            }
+        });
+
+        trackAuthor = findViewById(R.id.dynamic_artist);
+        trackTitle = findViewById(R.id.dynamic_title);
+        trackTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        trackTitle.setSelected(true);
+        trackTitle.setSingleLine(true);
+        mSeekBar = (SeekBar) findViewById(R.id.dynamic_seekBar);
+
+        playing = findViewById(R.id.reproductor);
+        playing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+            }
+        });
 
 
-
-       /*BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.perfil);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -172,7 +213,7 @@ public class UserMainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-        });*/
+        });
 
 
         tvUserPlaylists = (TextView) findViewById(R.id.user_playlists_title);
@@ -209,13 +250,16 @@ public class UserMainActivity extends AppCompatActivity {
 
 
 
-
     }
 
     void initPlaylistViews(){
 
         UserPlaylistsFragment userPlaylistsFragment = new UserPlaylistsFragment();
-        userPlaylistsFragment.setService(serv);
+
+
+
+        //userPlaylistsFragment.setService(serv);
+
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.relativeUserLayout, userPlaylistsFragment, userPlaylistsFragment.getTag())
