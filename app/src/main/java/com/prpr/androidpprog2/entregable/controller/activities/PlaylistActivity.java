@@ -180,7 +180,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
         }
         pManager = new PlaylistManager(this);
-        pManager.checkFollowing(playlst.getId(), this);
+        if(playlst.getId()!=-5){
+            pManager.checkFollowing(playlst.getId(), this);
+        }
         initViews();
         getData();
     }
@@ -234,7 +236,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
 
+
+
         follow = findViewById(R.id.playlistSeguirBoto);
+
+        if(playlst.getId()==-5){
+            follow.setVisibility(View.GONE);
+        }
+
         follow.setEnabled(true);
         follow.setOnClickListener(new View.OnClickListener() {
             @Override

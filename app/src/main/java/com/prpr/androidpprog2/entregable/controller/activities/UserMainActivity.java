@@ -48,16 +48,12 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserMainActivity extends AppCompatActivity implements ServiceCallback {
+public class UserMainActivity extends AppCompatActivity {
 
     private TextView tvUserPlaylists;
     private TextView tvUserTracks;
     private TextView tvUserStatistics;
     private TextView tvUserFollowed;
-
-
-
-
 
     private FloatingActionButton btnSettingsStatistics;
     private FloatingActionButton btnSettingsFollowed;
@@ -109,14 +105,14 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     @Override
     public void onStart() {
         super.onStart();
-        /*if(!servidorVinculat){
+        if(!servidorVinculat){
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
-            serv.setSeekCallback(this);
-        }*/
+
+        }
     }
 
     @Override
@@ -127,14 +123,14 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
         }*/
     }
 
-
+/*
     @Override
     public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
-        /*if(isPlaying){
+        if(isPlaying){
             mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
         }
-        mSeekBar.setProgress(progress);*/
-    }
+        mSeekBar.setProgress(progress);
+    }*/
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
@@ -219,13 +215,11 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     void initPlaylistViews(){
 
         UserPlaylistsFragment userPlaylistsFragment = new UserPlaylistsFragment();
-
+        userPlaylistsFragment.setService(serv);
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.relativeUserLayout, userPlaylistsFragment, userPlaylistsFragment.getTag())
                 .commit();
-
-
 
 
 

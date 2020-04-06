@@ -27,10 +27,12 @@ import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.SearchManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -43,7 +45,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class UserPlaylistsFragment extends Fragment implements PlaylistCallback{
+public class UserPlaylistsFragment extends Fragment implements PlaylistCallback, ServiceCallback {
 
     private ArrayList<Playlist> myPlaylists;
     private Playlist myPlaylist;
@@ -64,6 +66,8 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback{
 
     private FloatingActionButton btnSettingsPlaylists;
 
+    private ReproductorService servei;
+
     private RecyclerView mRecyclerView;
     public UserPlaylistsFragment() {
         // Required empty public constructor
@@ -71,9 +75,29 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback{
     }
 
 
+    //------------------------------------------------------------------------------------------
+
+    @Override
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
+
+    }
+
+    //------------------------------------------------------------------------------------------
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //------------------------------------------------------------------------------------------
+        servei.setSeekCallback(this);
+
+
+
+
+
+
+        //------------------------------------------------------------------------------------------
+
         // Inflate the layout for this fragment
        View view =  inflater.inflate(R.layout.fragment_user_playlists, container, false);
 
@@ -218,6 +242,11 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback{
 
     }
 
+    public void setService(ReproductorService serv){
+        servei = serv;
+    }
+
+
     private void animateFab(){
         if(isOpen){
 
@@ -330,5 +359,6 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback{
     public void onFollowSuccessfull(Follow body) {
 
     }
+
 
 }

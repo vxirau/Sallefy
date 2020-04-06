@@ -39,6 +39,8 @@ public class UserMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_menu, container, false);
+
+
     }
 
 
