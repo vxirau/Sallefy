@@ -138,11 +138,7 @@ public class UserMainActivity extends AppCompatActivity {
 
     void initGeneralViews(){
 
-
-
-
-
-       /*BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.perfil);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -163,7 +159,7 @@ public class UserMainActivity extends AppCompatActivity {
                 }
                 return false;
             }
-        });*/
+        });
 
 
         tvUserPlaylists = (TextView) findViewById(R.id.user_playlists_title);

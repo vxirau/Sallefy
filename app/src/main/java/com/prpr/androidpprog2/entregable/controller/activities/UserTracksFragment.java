@@ -80,33 +80,6 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
         View view = inflater.inflate(R.layout.fragment_user_tracks, container, false);
 
 
-
-        BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.menu);
-        navigation.setSelectedItemId(R.id.perfil);
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                        return true;
-                    case R.id.buscar:
-                        Intent intent2 = new Intent(getContext(), SearchActivity.class);
-                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
-                        return true;
-                    case R.id.perfil:
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-
-
         btnSettingsTracks = (FloatingActionButton) view.findViewById(R.id.configTracksButton);
         btnSettingsTracks.setOnClickListener(new View.OnClickListener() {
             @Override
