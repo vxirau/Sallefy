@@ -84,7 +84,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
-            serv.setmVisualizer(mVisualizer);
+            //serv.setmVisualizer(mVisualizer);
             serv.setDuracioTotal(duracioTotal);
             serv.updateUI();
             serv.setSeekCallback(this);
@@ -113,10 +113,9 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
-            //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
-            serv.setmVisualizer(mVisualizer);
+            //serv.setmVisualizer(mVisualizer);
             serv.setDuracioTotal(duracioTotal);
             serv.setSeekCallback(ReproductorActivity.this);
         }

@@ -105,18 +105,16 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
 
     private void playAudio(int audioIndex) {
+        PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
+        PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+
         if (!serviceBound) {
-            if(isShuffle){
-                getNewIndex(audioIndex);
-                audioIndex =0;
-            }
-            PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
-            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
             Intent playerIntent = new Intent(this, ReproductorService.class);
             startService(playerIntent);
             bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            sendBroadcast(broadcastIntent);
         } else {
-            PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
             Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
             sendBroadcast(broadcastIntent);
         }
@@ -178,6 +176,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         super.onStart();
         if(!serviceBound){
             Intent intent = new Intent(this, ReproductorService.class);
+            startService(intent);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
