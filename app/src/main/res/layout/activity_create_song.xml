@@ -28,27 +28,65 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
+
             <TextView
+                android:id="@+id/text_truck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="@string/track_thumbnail"
                 android:textColor="#000000"
                 android:textSize="20dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/llistatDplaylists"
+            <ImageView
+                android:id="@+id/image_upload"
+                android:layout_width="172dp"
+                android:layout_height="112dp"
+                android:layout_gravity="center"
+                android:background="@drawable/default_cover" />
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/track_cover_selector_background"
-                android:maxHeight="570dp"
-                android:orientation="horizontal"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button_choose_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/crear" />
+
+                <TextView
+                    android:id="@+id/text_view_show_uploads"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/showUpload"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/button_upload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="0dp"
+                    android:text="@string/upload" />
+
+
+            </LinearLayout>
+
+
+
 
         </LinearLayout>
 
@@ -106,7 +144,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -131,25 +169,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/create_song_accept"
                 android:layout_width="290dp"
-                android:layout_height="50dp"
-                android:textSize="22sp"
-                android:textAllCaps="false"
-                android:layout_marginBottom="20dp"
+                android:layout_height="35dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/rectangle_green_sombra"
                 android:text="@string/action_accept"
-                android:textColor="@color/colorWhite" />
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="22sp" />
 
             <Button
                 android:id="@+id/create_song_cancel"
                 android:layout_width="120dp"
-                android:layout_height="50dp"
+                android:layout_height="35dp"
                 android:text="@string/cancelar"
                 android:textColor="#21D760"
                 android:textSize="20sp"
