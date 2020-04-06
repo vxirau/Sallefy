@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import java.util.*;
 
@@ -21,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -200,8 +202,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        finish();
-                        overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                        Intent intent3 = new Intent(getApplicationContext(), MainActivity.class);
+                        intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent3, Constants.NETWORK.LOGIN_OK);
                     case R.id.buscar:
                         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -272,6 +275,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 int index=0;
@@ -284,6 +288,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         pause.setEnabled(true);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 player.pauseMedia();

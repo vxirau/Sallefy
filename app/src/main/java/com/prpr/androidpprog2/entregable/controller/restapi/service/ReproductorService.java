@@ -38,6 +38,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
@@ -60,15 +61,17 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     private MediaPlayer mediaPlayer;
     private int resumePosition;
-    private int positionActivity;
     private AudioManager audioManager;
     private TextView title;
     private TextView artist;
     private ImageView imahen;
     private Button playB;
     private Button pauseB;
-    private SeekBar seekBar;
     private ArrayList<Track> audioList;
+
+    private CircleLineVisualizer mVisualizer;
+
+
     private int audioIndex = -1;
     private Track activeAudio;
     private NotificationCompat.Builder notification;
@@ -94,6 +97,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private TelephonyManager telephonyManager;
     private ServiceCallback scallback;
 
+    private boolean isShuffle=false;
+
 
     @Override
     public void onCreate() {
@@ -118,9 +123,25 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     };
 
+    public void setmVisualizer(CircleLineVisualizer mVisualizer) {
+        this.mVisualizer = mVisualizer;
+        int audioSessionId = mediaPlayer.getAudioSessionId();
+        if (audioSessionId != -1) {
+            mVisualizer.setAudioSessionId(audioSessionId);
+        }
+    }
 
+    public void toggleShuffle(){
+        if(isShuffle){
+            isShuffle=false;
+        }else{
+            isShuffle=true;
+        }
+    }
 
-
+    public boolean isShuffle(){
+        return isShuffle;
+    }
 
     public Runnable getmProgressRunner(){
         return mProgressRunner;
@@ -204,14 +225,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     }
 
-    /*private void updatePosition() {
-        mediaPlayer.seekTo(positionActivity);
-        mSeekBar.setProgress(positionActivity);
-    }
 
-    public void savePosition(){
-        positionActivity = mediaPlayer.getCurrentPosition();
-    }*/
 
     public void updateUI(){
         if(mediaPlayer != null && title!=null && artist!=null){
@@ -229,8 +243,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             }
             if(imahen!=null){
                 Picasso.get().load(activeAudio.getThumbnail()).into(imahen);
-
             }
+
+
         }
 
     }
@@ -254,6 +269,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             int duration = mediaPlayer.getDuration();
             mSeekBar.setMax(duration);
             mSeekBar.postDelayed(mProgressRunner, 1000);
+            int audioSessionId = mediaPlayer.getAudioSessionId();
+            if(mVisualizer!=null){
+                if (audioSessionId != -1) {
+                    mVisualizer.setAudioSessionId(audioSessionId);
+                }
+            }
+
 
         }
         updateUI();
