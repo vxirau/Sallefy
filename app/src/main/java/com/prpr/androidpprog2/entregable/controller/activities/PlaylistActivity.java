@@ -159,6 +159,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
             player.updateUI();
         }
+        pManager.checkFollowing(playlst.getId(), this);
     }
 
     @Override
@@ -177,6 +178,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         if(getIntent().getSerializableExtra("Playlst")!=null){
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
         }
+        pManager = new PlaylistManager(this);
+        pManager.checkFollowing(playlst.getId(), this);
         initViews();
         getData();
     }

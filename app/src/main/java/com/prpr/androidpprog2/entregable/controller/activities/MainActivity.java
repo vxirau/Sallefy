@@ -411,9 +411,19 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         topPlaylistsRecycle.setAdapter(p2);
     }
 
+
+    private void removePrivate(){
+        for(int i=0; i<this.allPlaylists.size() ;i++){
+            if(!this.allPlaylists.get(i).isPublicAccessible()){
+                this.allPlaylists.remove(i);
+            }
+        }
+    }
+
     @Override
     public void onAllPlaylistRecieved(List<Playlist> body) {
         this.allPlaylists = (ArrayList) body;
+        removePrivate();
         PlaylistAdapter p2 = new PlaylistAdapter(this, this.allPlaylists);
         p2.setPlaylistCallback(this);
         allPlaylistRecycle.setAdapter(p2);
