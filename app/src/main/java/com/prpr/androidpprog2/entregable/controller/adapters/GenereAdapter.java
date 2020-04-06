@@ -1,6 +1,5 @@
 package com.prpr.androidpprog2.entregable.controller.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +39,6 @@ public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder
         return new GenereAdapter.ViewHolder(itemView);
     }
 
-    @SuppressLint("SetTextI18n")
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,8 +46,8 @@ public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder
                 mCallback.onGenreSelected(generes.get(position));
             }
         });
-
-        holder.nomGenere.setText("Tuputamadre");//generes.get(position).getName());
+        String output = generes.get(position).getName().substring(0, 1).toUpperCase() + generes.get(position).getName().substring(1).toLowerCase();
+        holder.nomGenere.setText(output);
 
     }
 

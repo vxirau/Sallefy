@@ -26,26 +26,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center"
                 android:layout_marginTop="20dp">
 
                 <Button
                     android:id="@+id/back2Main"
                     android:layout_width="20dp"
                     android:layout_height="15dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="25dp"
                     android:background="@drawable/ic_back_down"
                     android:rotation="90" />
 
                 <TextView
                     android:id="@+id/playlistName"
                     android:layout_width="match_parent"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
                     android:gravity="center"
                     android:text="@string/nom_de_la_playlist"
                     android:textColor="@color/colorWhite"
                     android:textSize="20dp" />
 
+                <Button
+                    android:id="@+id/infoPlaylist"
+                    android:layout_width="5dp"
+                    android:layout_height="21dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@drawable/ic_playlist_info"/>
 
             </LinearLayout>
 
@@ -126,6 +134,63 @@
             android:layout_marginBottom="100dp"/>
 
 
+
+
+        <LinearLayout
+            android:id="@+id/actionbuttons"
+            android:layout_width="70dp"
+            android:layout_height="270dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="100dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/playlistSortAlpha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#21D760"
+                android:layout_marginBottom="10dp"
+                android:visibility="invisible"
+                android:elevation="10dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_sort_alpha" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/playlistSortTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#21D760"
+                android:layout_marginBottom="10dp"
+                android:visibility="invisible"
+                android:elevation="10dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_time" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/playlistSortArtist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#21D760"
+                android:elevation="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_user"
+                app:borderWidth="0dp"
+                android:visibility="invisible" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/playlistSorts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#21D760"
+                android:elevation="10dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_sort" />
+
+        </LinearLayout>
+
         <SeekBar
             android:id="@+id/dynamic_seekBar"
             android:layout_width="match_parent"
@@ -133,8 +198,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:backgroundTint="#21D760"
-            android:progressTint="@color/colorWhite"
             android:thumb="@drawable/seek_thumb"
+            android:progressTint="@color/colorWhite"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="87dp"
             android:colorControlActivated="@drawable/ic_seekbar_scrubber"

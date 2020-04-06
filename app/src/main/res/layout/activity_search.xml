@@ -55,16 +55,15 @@
 
         </LinearLayout>
 
-        <ScrollView
+        <LinearLayout
             android:id="@+id/search_genere_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="40dp"
+            android:layout_marginHorizontal="37.5dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="100dp"
             app:layout_constraintTop_toBottomOf="@id/search_topZone"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="horizontal">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_dynamic_recyclerView_genere"
@@ -72,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"/>
 
-        </ScrollView>
+        </LinearLayout>
 
         <ScrollView
             android:id="@+id/search_scroll_all"
@@ -180,8 +179,8 @@
             android:layout_height="20dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:thumb="@drawable/seek_thumb"
             android:backgroundTint="#21D760"
+            android:thumb="@drawable/seek_thumb"
             android:progressTint="@color/colorWhite"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="87dp"

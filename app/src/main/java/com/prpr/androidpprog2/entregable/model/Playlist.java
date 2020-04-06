@@ -6,9 +6,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 
-public class Playlist implements Serializable {
+public class Playlist implements Serializable, Comparable<Playlist> {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -46,6 +47,7 @@ public class Playlist implements Serializable {
     }
 
     public Playlist(String name, User user) {
+        this.id = -5;
         this.name = name;
         this.owner = user;
         this.cover = null;
@@ -125,4 +127,53 @@ public class Playlist implements Serializable {
     public void print(){
         System.out.println("ID: " + this.id + "\nName: " + this.name + "\nUser: " + this.getUserLogin());
     }
+
+
+
+    public static Comparator<Playlist> PlaylistNameAscendentComparator
+            = new Comparator<Playlist>() {
+
+        @Override
+        public int compare(Playlist firstPlaylist, Playlist secondPlaylist) {
+            String firstPlaylistReleased = firstPlaylist.getName().toUpperCase();
+            String secondPlaylistReleased = secondPlaylist.getName().toUpperCase();
+
+            if(firstPlaylistReleased != null && secondPlaylistReleased != null){
+                return firstPlaylistReleased.compareTo(secondPlaylistReleased);
+            }else{
+                return 0;
+            }
+        }
+
+
+
+    };
+    public static Comparator<Playlist> PlaylistNameDescendentComparator
+            = new Comparator<Playlist>() {
+
+        public int compare(Playlist firstPlaylist, Playlist secondPlaylist) {
+
+            String firstTrackReleased = firstPlaylist.getName().toUpperCase();
+            String secondTrackReleased = secondPlaylist.getName().toUpperCase();
+
+            if(firstTrackReleased != null && secondTrackReleased != null){
+                return secondTrackReleased.compareTo(firstTrackReleased);
+            }else{
+                return 0;
+            }
+
+
+        }
+
+    };
+    @Override
+    public int compareTo(Playlist playlist) {
+        int compareId = ((Playlist) playlist).getId();
+
+        //ascending order
+        return this.id - compareId;
+
+
+    }
+
 }

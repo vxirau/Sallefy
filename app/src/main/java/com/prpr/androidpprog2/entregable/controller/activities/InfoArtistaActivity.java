@@ -125,7 +125,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(isPlaying){
             mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
         }
@@ -290,6 +290,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     @Override
     public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackLiked() {
+
+    }
+
+    @Override
+    public void onTrackNotFound(Throwable throwable) {
 
     }
 

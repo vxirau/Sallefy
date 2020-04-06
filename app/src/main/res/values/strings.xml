@@ -123,8 +123,9 @@
     <string name="apply_filter">Apply filter</string>
     <string name="filter_track_search_genre">Type a genre</string>
     <string name="filter_tracks_title">Filter tracks</string>
-    <string name="filter_tracks_genres">Filter by genre</string>
-
+    <string name="filter_track_by_ascendent">Asc</string>
+    <string name="filter_track_by_descendent">Desc</string>
+    <string name="reset_filters">Reset</string>
     <string name="filter_tracks_descendent">Filter tracks</string>
 
 

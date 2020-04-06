@@ -109,6 +109,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.nothing,R.anim.nothing);
             }
         });
 
@@ -313,6 +314,16 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     @Override
     public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackLiked() {
+
+    }
+
+    @Override
+    public void onTrackNotFound(Throwable throwable) {
 
     }
 

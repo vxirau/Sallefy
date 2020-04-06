@@ -3,9 +3,10 @@ package com.prpr.androidpprog2.entregable.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 
-public class Track implements Serializable {
+public class Track implements Serializable, Comparable<Track> {
 
     @SerializedName("color")
     private String color;
@@ -135,6 +136,136 @@ public class Track implements Serializable {
     }
 
     public void print(){
-        System.out.println("ID: " + this.id + "\nName: " + this.name + "\nUser: " + this.getUser().getLogin() + "\nFoto: " + this.getThumbnail());
+        System.out.println("ID: " + this.id + "\nName: " + this.name + "\nUser: " + this.getUser().getLogin() + "\nFoto: " + this.getThumbnail() + "\nRelease: " + this.getReleased());
     }
+
+    public static Comparator<Track> TrackDurationComparator
+            = new Comparator<Track>() {
+
+        public int compare(Track firstTrack, Track secondTrack) {
+
+            Integer firstTrackDuration = firstTrack.getDuration();
+            Integer secondTrackDuration = secondTrack.getDuration();
+
+            if(firstTrackDuration != null && secondTrackDuration != null){
+                return secondTrackDuration.compareTo(firstTrackDuration);
+            }else{
+                return 0;
+            }
+
+
+        }
+
+    };
+
+    public static Comparator<Track> TrackAscendentDurationComparator
+            = new Comparator<Track>() {
+
+        public int compare(Track firstTrack, Track secondTrack) {
+
+            Integer firstTrackReleased = firstTrack.getDuration();
+            Integer secondTrackReleased = secondTrack.getDuration();
+
+            if(firstTrackReleased != null && secondTrackReleased != null){
+                return firstTrackReleased.compareTo(secondTrackReleased);
+            }else{
+                return 0;
+            }
+        }
+    };
+
+    public static Comparator<Track> TrackDescendentDurationComparator
+            = new Comparator<Track>() {
+
+        public int compare(Track firstTrack, Track secondTrack) {
+
+            Integer firstTrackDuration = firstTrack.getDuration();
+            Integer secondTrackDuration = secondTrack.getDuration();
+
+            if(firstTrackDuration != null && secondTrackDuration != null){
+                return secondTrackDuration.compareTo(firstTrackDuration);
+            }else{
+                return 0;
+            }
+        }
+    };
+
+    public static Comparator<Track> TrackNameAscendentComparator
+            = new Comparator<Track>() {
+
+        public int compare(Track firstTrack, Track secondTrack) {
+
+            String firstTrackReleased = firstTrack.getName().toUpperCase();
+            String secondTrackReleased = secondTrack.getName().toUpperCase();
+
+            if(firstTrackReleased != null && secondTrackReleased != null){
+                return firstTrackReleased.compareTo(secondTrackReleased);
+            }else{
+                return 0;
+            }
+        }
+    };
+
+    public static Comparator<Track> TrackNameDescendentComparator
+            = new Comparator<Track>() {
+
+        public int compare(Track firstTrack, Track secondTrack) {
+
+            String firstTrackReleased = firstTrack.getName().toUpperCase();
+            String secondTrackReleased = secondTrack.getName().toUpperCase();
+
+            if(firstTrackReleased != null && secondTrackReleased != null){
+                return secondTrackReleased.compareTo(firstTrackReleased);
+            }else{
+                return 0;
+            }
+        }
+    };
+
+    public static Comparator<Track> TrackArtistNameAscendentComparator
+            = new Comparator<Track>() {
+
+        public int compare(Track firstTrack, Track secondTrack) {
+
+            String firstTrackArtistName = firstTrack.getUser().getFirstName();
+            String secondTrackArtistName = secondTrack.getUser().getFirstName();
+
+            if(firstTrackArtistName != null && secondTrackArtistName != null){
+                return firstTrackArtistName.compareTo(secondTrackArtistName);
+            }else{
+                return 0;
+            }
+        }
+    };
+
+    public static Comparator<Track> TrackArtistNameDescendentComparator
+            = new Comparator<Track>() {
+
+        public int compare(Track firstTrack, Track secondTrack) {
+
+            String firstTrackArtistName = firstTrack.getUser().getFirstName();
+            String secondTrackArtistName = secondTrack.getUser().getFirstName();
+
+            if(firstTrackArtistName != null && secondTrackArtistName != null){
+                return secondTrackArtistName.compareTo(firstTrackArtistName);
+            }else{
+                return 0;
+            }
+        }
+    };
+
+
+
+    @Override
+    public int compareTo(Track track) {
+        int compareDuration = ((Track) track).getDuration();
+
+        //ascending order
+        return this.duration - compareDuration;
+
+
+    }
+
+
+
 }

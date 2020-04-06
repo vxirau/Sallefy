@@ -17,10 +17,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+//import com.google.android.gms.tasks.OnSuccessListener;
+//import com.google.firebase.storage.FirebaseStorage;
+//import com.google.firebase.storage.StorageReference;
+//import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     private TextView tvToRegister;
     private UserToken usTkn;
     private String username="";
-    private StorageReference mStorage;
+    //private StorageReference mStorage;
 
 
     @Override
@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
         Uri imageUri = Uri.parse("android.resource://"+getApplicationContext().getPackageName()+"/drawable/cancel_edit");
 
-        mStorage = FirebaseStorage.getInstance().getReference();
+        /*mStorage = FirebaseStorage.getInstance().getReference();
         StorageReference filePath = mStorage.child(etLogin.getText().toString()).child(imageUri.getLastPathSegment());
 
         filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(LoginActivity.this,"exito pelotudo",Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
         usTkn = userToken;
         UserManager.getInstance(getApplicationContext()).getUserData(username, LoginActivity.this, userToken);
     }
@@ -156,6 +156,9 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         Session.getInstance(getApplicationContext()).setUserToken(usTkn);
         Session.getInstance(getApplicationContext()).setUser(userData);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        //prova
+        intent.putExtra("sameUser", false);
+        //es pot esborrar, es per veure si la meva part esta bé
         startActivity(intent);
     }
 

@@ -1,4 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
+
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -6,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import java.util.*;
 
@@ -14,6 +17,8 @@ import android.os.StrictMode;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,12 +26,14 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
@@ -53,12 +60,12 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private TextView plyAuthor;
     private ImageView plyImg;
 
-
     private TextView tvTitle;
     private TextView tvAuthor;
     private LinearLayout playing;
 
     private Button back2Main;
+    private Button infoPlaylist;
     private Button shuffle;
     private Button follow;
     private Follow followingInfo;
@@ -72,6 +79,20 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private ArrayList<Track> mTracks;
     private int currentTrack = 0;
     private PlaylistManager pManager;
+
+    //Sort
+    private FloatingActionButton mSorts;
+    private FloatingActionButton mSortAlpha;
+    private FloatingActionButton mSortTime;
+    private FloatingActionButton mSortArtist;
+    private int mSorted = -1;
+    private boolean isOpen;
+    private boolean asc_dsc;
+
+    Animation fabOpen, fabClose;
+    private final int SORT_AZ = 0;
+    private final int SORT_TIME = 1;
+    private final int SORT_ARTIST = 2;
 
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
@@ -124,7 +145,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             player.setmSeekBar(mseek);
             player.setSeekCallback(PlaylistActivity.this);
             serviceBound = true;
-            player.setUIControls(mseek,tvTitle, tvAuthor, play, pause, im);
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
         }
 
         @Override
@@ -144,7 +165,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(isPlaying){
             mseek.postDelayed(player.getmProgressRunner(), 1000);
         }
@@ -155,10 +176,15 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     @Override
     public void onStart() {
         super.onStart();
-        if(serviceBound){
+        if(!serviceBound){
+            Intent intent = new Intent(this, ReproductorService.class);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }else{
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
             player.updateUI();
+            player.setSeekCallback(this);
         }
+        pManager.checkFollowing(playlst.getId(), this);
     }
 
     @Override
@@ -177,6 +203,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         if(getIntent().getSerializableExtra("Playlst")!=null){
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
         }
+        pManager = new PlaylistManager(this);
+        if(playlst.getId()!=-5){
+            pManager.checkFollowing(playlst.getId(), this);
+        }
         initViews();
         getData();
     }
@@ -194,12 +224,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        finish();
-                        overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                        Intent intent0 = new Intent(getApplicationContext(), MainActivity.class);
+                        intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent0, Constants.NETWORK.LOGIN_OK);
+                        return true;
                     case R.id.buscar:
-                        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                        Intent intent1 = new Intent(getApplicationContext(), SearchActivity.class);
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent1, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
                         Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
@@ -230,6 +262,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
 
+
+
         follow = findViewById(R.id.playlistSeguirBoto);
         follow.setEnabled(true);
         follow.setOnClickListener(new View.OnClickListener() {
@@ -238,6 +272,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 pManager.followPlaylist(playlst.getId(), PlaylistActivity.this);
             }
         });
+
+        if(playlst.getId()==-5){
+            follow.setVisibility(View.GONE);
+        }
 
         plyName = findViewById(R.id.playlistName);
         plyAuthor = findViewById(R.id.playlistAuthor);
@@ -260,6 +298,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 int index=0;
@@ -272,11 +311,12 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         pause.setEnabled(true);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 player.pauseMedia();
-                play.setVisibility(v.VISIBLE);
-                pause.setVisibility(v.INVISIBLE);
+                play.setVisibility(View.VISIBLE);
+                pause.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -324,6 +364,20 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             addBunch.setVisibility(View.INVISIBLE);
             follow.setVisibility(View.VISIBLE);
         }
+        if(playlst.getId()==-5){
+            follow.setVisibility(View.GONE);
+        }
+
+        infoPlaylist = findViewById(R.id.infoPlaylist);
+        infoPlaylist.setEnabled(true);
+        infoPlaylist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InfoPlaylistActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+            }
+        });
 
 
         back2Main = findViewById(R.id.back2Main);
@@ -337,11 +391,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 }else{
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                    /*finish();
-                    overridePendingTransition(R.anim.nothing,R.anim.nothing);*/
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);*/
+                    finish();
+                    overridePendingTransition(R.anim.nothing,R.anim.nothing);
                 }
 
             }
@@ -353,22 +407,139 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         tvTitle.setSelected(true);
         tvTitle.setSingleLine(true);
 
+        fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(this, R.anim.fab_close);
+
+        mSorts = findViewById(R.id.playlistSorts);
+        mSorts.setEnabled(true);
+        mSorts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+            }
+        });
+
+        mSortAlpha = findViewById(R.id.playlistSortAlpha);
+        mSortAlpha.setEnabled(false);
+        mSortAlpha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+                sortAZ();
+            }
+        });
+
+        mSortTime = findViewById(R.id.playlistSortTime);
+        mSortTime.setEnabled(false);
+        mSortTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+                sortTime();
+            }
+        });
+
+        mSortArtist = findViewById(R.id.playlistSortArtist);
+        mSortArtist.setEnabled(false);
+        mSortArtist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+                sortArtist();
+
+            }
+        });
     }
 
+    private void sortAZ(){
+        if (mSorted != SORT_AZ) {
+            Collections.sort(mTracks, Track.TrackNameAscendentComparator);
+            asc_dsc = true;
+        } else {
+            if (asc_dsc) {
+                Collections.sort(mTracks, Track.TrackNameDescendentComparator);
+                asc_dsc = false;
+            } else {
+                Collections.sort(mTracks, Track.TrackNameAscendentComparator);
+                asc_dsc = true;
+            }
+        }
+        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        mRecyclerView.setAdapter(adapter);
+        mSorted = SORT_AZ;
+    }
 
+    private void sortTime(){
+        if (mSorted != SORT_TIME) {
+            Collections.sort(mTracks, Track.TrackAscendentDurationComparator);
+            asc_dsc = true;
+        } else {
+            if (asc_dsc) {
+                Collections.sort(mTracks, Track.TrackDescendentDurationComparator);
+                asc_dsc = false;
+            } else {
+                Collections.sort(mTracks, Track.TrackAscendentDurationComparator);
+                asc_dsc = true;
+            }
+        }
+        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        mRecyclerView.setAdapter(adapter);
+        mSorted = SORT_TIME;
+    }
 
+    private void sortArtist(){
+        if (mSorted != SORT_ARTIST) {
+            Collections.sort(mTracks, Track.TrackArtistNameAscendentComparator);
+            asc_dsc = true;
+        } else {
+            if (asc_dsc) {
+                Collections.sort(mTracks, Track.TrackArtistNameDescendentComparator);
+                asc_dsc = false;
+            } else {
+                Collections.sort(mTracks, Track.TrackArtistNameAscendentComparator);
+                asc_dsc = true;
+            }
+        }
+        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        mRecyclerView.setAdapter(adapter);
+        mSorted = SORT_ARTIST;
+    }
+
+    private void animateFab(){
+        if(isOpen){
+            mSortArtist.startAnimation(fabClose);
+            mSortArtist.setClickable(false);
+            mSortArtist.setEnabled(false);
+            mSortTime.startAnimation(fabClose);
+            mSortTime.setClickable(false);
+            mSortTime.setEnabled(false);
+            mSortAlpha.startAnimation(fabClose);
+            mSortAlpha.setClickable(false);
+            mSortAlpha.setEnabled(false);
+            isOpen=false;
+        }else{
+            mSortArtist.startAnimation(fabOpen);
+            mSortArtist.setClickable(true);
+            mSortArtist.setEnabled(true);
+            mSortTime.startAnimation(fabOpen);
+            mSortTime.setClickable(true);
+            mSortTime.setEnabled(true);
+            mSortAlpha.startAnimation(fabOpen);
+            mSortAlpha.setClickable(true);
+            mSortAlpha.setEnabled(true);
+            isOpen=true;
+        }
+    }
 
     private void getData() {
-        mTracks = (ArrayList) playlst.getTracks();
+        mTracks = (ArrayList<Track>) playlst.getTracks();
         TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
     }
 
-
-
     @Override
     public void onTracksReceived(List<Track> tracks) {
-        mTracks = (ArrayList) tracks;
+        mTracks = (ArrayList<Track>) tracks;
         PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
         TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
@@ -401,6 +572,16 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackLiked() {
+
+    }
+
+    @Override
+    public void onTrackNotFound(Throwable throwable) {
 
     }
 

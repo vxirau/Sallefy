@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
@@ -17,8 +18,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+
+
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,19 +47,16 @@ import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserMainActivity extends AppCompatActivity implements ServiceCallback {
+public class UserMainActivity extends AppCompatActivity implements ServiceCallback{
 
     private TextView tvUserPlaylists;
     private TextView tvUserTracks;
     private TextView tvUserStatistics;
     private TextView tvUserFollowed;
-
-
-
-
 
     private FloatingActionButton btnSettingsStatistics;
     private FloatingActionButton btnSettingsFollowed;
@@ -72,7 +72,6 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     private LinearLayout playing;
     private ReproductorService serv;
     private boolean servidorVinculat=false;
-
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -128,12 +127,13 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
 
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(isPlaying){
             mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
         }
         mSeekBar.setProgress(progress);
     }
+
 
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
@@ -151,19 +151,23 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
 
     void initGeneralViews(){
 
+
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
             }
         });
+
         pause = findViewById(R.id.playPause);
         pause.setEnabled(true);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
@@ -188,9 +192,7 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
         });
 
 
-
-
-       BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.perfil);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -248,19 +250,20 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
 
 
 
-
     }
 
     void initPlaylistViews(){
 
         UserPlaylistsFragment userPlaylistsFragment = new UserPlaylistsFragment();
 
+
+
+        //userPlaylistsFragment.setService(serv);
+
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.relativeUserLayout, userPlaylistsFragment, userPlaylistsFragment.getTag())
                 .commit();
-
-
 
 
 

@@ -21,20 +21,24 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.chibde.visualizer.CircleBarVisualizer;
 import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.List;
 
-public class ReproductorActivity extends Activity implements ServiceCallback {
+public class ReproductorActivity extends Activity implements ServiceCallback, TrackCallback {
 
     private static final String TAG = "DynamicPlaybackActivity";
     private static final String PLAY_VIEW = "PlayIcon";
@@ -44,9 +48,15 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
     private TextView trackAuthor;
     private ImageView trackImage;
 
+    private TextView duracioTotal;
+    private TextView duracioActual;
+
     private ImageButton btnBackward;
     private Button btnPlay;
     private Button btnPause;
+
+    private Button likeTrack;
+    private boolean liked=false;
 
     private ImageButton btnForward;
     private ImageButton shuffle;
@@ -56,8 +66,12 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
     private CircleLineVisualizer mVisualizer;
     private MediaPlayer mPlayer;
 
+    private TrackManager tManager;
+
     private ReproductorService serv;
     private boolean servidorVinculat=false;
+
+
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
 
@@ -70,6 +84,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.setmVisualizer(mVisualizer);
+            serv.setDuracioTotal(duracioTotal);
             serv.updateUI();
             serv.setSeekCallback(this);
         }
@@ -89,17 +105,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
         initViews();
-        //updateVisualizer();
+        tManager = new TrackManager(this);
     }
-
-    /*private void updateVisualizer(){
-        mPlayer = serv.getPlayer();
-        if(mPlayer!=null){
-            int audioSessionId = mPlayer.getAudioSessionId();
-            if (audioSessionId != -1)
-                mVisualizer.setAudioSessionId(audioSessionId);
-        }
-    }*/
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -109,6 +116,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.setmVisualizer(mVisualizer);
+            serv.setDuracioTotal(duracioTotal);
             serv.setSeekCallback(ReproductorActivity.this);
         }
 
@@ -134,11 +143,12 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
 
 
     @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying) {
+    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
         if(isPlaying){
             mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
         }
         mSeekBar.setProgress(progress);
+        duracioActual.setText(duracio);
     }
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
@@ -154,18 +164,31 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
 
     private void initViews() {
 
+        likeTrack= findViewById(R.id.addFavorite);
+        likeTrack.setEnabled(true);
+        likeTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tManager.likeTrack(serv.getCurrentTrack().getId(), ReproductorActivity.this);
+            }
+        });
+
+
 
         trackTitle= findViewById(R.id.music_title);
         trackTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         trackTitle.setSelected(true);
         trackTitle.setSingleLine(true);
 
+        duracioTotal = findViewById(R.id.totalTime);
+        duracioActual = findViewById(R.id.currentTime);
+
 
         trackAuthor = findViewById(R.id.music_artist);
         trackImage = findViewById(R.id.track_img);
 
-        /*mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
-        mVisualizer.setDrawLine(true);*/
+        mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
+        mVisualizer.setDrawLine(true);
 
 
         shuffle = (ImageButton) findViewById(R.id.botoShuffle);
@@ -199,7 +222,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             @Override
             public void onClick(View v) {
                 serv.skipToPrevious();
-                //updateVisualizer();
             }
         });
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
@@ -207,27 +229,27 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
             @Override
             public void onClick(View v) {
                 serv.skipToNext();
-                //updateVisualizer();
             }
         });
         btnPlay = findViewById(R.id.play);
         btnPlay.setEnabled(true);
         btnPlay.bringToFront();
         btnPlay.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
-                //updateVisualizer();
             }
         });
         btnPause = findViewById(R.id.pause);
         btnPause.setEnabled(true);
+        btnPause.setVisibility(View.VISIBLE);
         btnPause.bringToFront();
         btnPause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
-                //updateVisualizer();
             }
         });
 
@@ -243,4 +265,60 @@ public class ReproductorActivity extends Activity implements ServiceCallback {
         super.onPause();
     }
 
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPersonalTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onUserTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onCreateTrack(Track t) {
+
+    }
+
+    @Override
+    public void onTopTracksRecieved(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackLiked() {
+
+        if(liked){
+            likeTrack.setBackgroundResource(R.drawable.ic_favorite_track);;
+            liked=false;
+        }else{
+            likeTrack.setBackgroundResource(R.drawable.ic_favorite_true);;
+            liked=true;
+        }
+    }
+
+    @Override
+    public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
+
+    }
 }

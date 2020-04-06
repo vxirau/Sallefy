@@ -13,4 +13,5 @@ public interface SearchCallback extends FailureCallback{
     void onNoPlaylistSearchRecived();
     void onUserSearchRecived(ArrayList<User> users);
     void onNoUserSearchRecived();
+    void onEmptySearch();
 }

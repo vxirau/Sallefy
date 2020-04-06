@@ -180,6 +180,16 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     }
 
     @Override
+    public void onTrackLiked() {
+
+    }
+
+    @Override
+    public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
