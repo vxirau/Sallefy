@@ -239,11 +239,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
 
         follow = findViewById(R.id.playlistSeguirBoto);
-
-        if(playlst.getId()==-5){
-            follow.setVisibility(View.GONE);
-        }
-
         follow.setEnabled(true);
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,6 +246,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 pManager.followPlaylist(playlst.getId(), PlaylistActivity.this);
             }
         });
+
+        if(playlst.getId()==-5){
+            follow.setVisibility(View.GONE);
+        }
 
         plyName = findViewById(R.id.playlistName);
         plyAuthor = findViewById(R.id.playlistAuthor);

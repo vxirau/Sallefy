@@ -45,6 +45,7 @@ import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,14 +60,6 @@ public class UserMainActivity extends AppCompatActivity {
     private FloatingActionButton btnSettingsFollowed;
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
-    private TextView trackTitle;
-    private TextView followingTxt;
-    private TextView trackAuthor;
-    private SeekBar mSeekBar;
-    private Button play;
-    private Button pause;
-    private ImageView im;
-    private LinearLayout playing;
     private ReproductorService serv;
     private boolean servidorVinculat=false;
 
@@ -74,17 +67,15 @@ public class UserMainActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-           /* ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
+           ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
-            //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
-            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
-            serv.setSeekCallback(UserMainActivity.this);*/
+
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            //servidorVinculat = false;
+            servidorVinculat = false;
         }
     };
 
@@ -108,11 +99,11 @@ public class UserMainActivity extends AppCompatActivity {
         if(!servidorVinculat){
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }else{
+        }/*else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
 
-        }
+        }*/
     }
 
     @Override
@@ -209,13 +200,16 @@ public class UserMainActivity extends AppCompatActivity {
 
 
 
-
     }
 
     void initPlaylistViews(){
 
         UserPlaylistsFragment userPlaylistsFragment = new UserPlaylistsFragment();
+
+
+
         userPlaylistsFragment.setService(serv);
+
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.relativeUserLayout, userPlaylistsFragment, userPlaylistsFragment.getTag())

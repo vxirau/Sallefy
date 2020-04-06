@@ -71,6 +71,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private ArrayList<Track> audioList;
     private int audioIndex = -1;
     private Track activeAudio;
+    private NotificationCompat.Builder notification;
     private SeekBar mSeekBar;
 
     public static final String ACTION_PLAY = "com.prpr.androidpprog2.entregable.ACTION_PLAY";
@@ -266,18 +267,22 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void pauseMedia() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
+            buildNotification(PlaybackStatus.PAUSED);
             resumePosition = mediaPlayer.getCurrentPosition();
         }
         updateUI();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void resumeMedia() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.seekTo(resumePosition);
             mProgressRunner.run();
+            buildNotification(PlaybackStatus.PLAYING);
             mediaPlayer.start();
         }
         updateUI();
@@ -402,13 +407,15 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void buildNotification(PlaybackStatus playbackStatus) {
-
+        boolean ongoing = true;
         int notificationAction = R.drawable.ic_pause_white;
         PendingIntent play_pauseAction = null;
         if (playbackStatus == PlaybackStatus.PLAYING) {
+            ongoing = true;
             notificationAction = R.drawable.ic_pause_white;
             play_pauseAction = playbackAction(1);
         } else if (playbackStatus == PlaybackStatus.PAUSED) {
+            ongoing=false;
             notificationAction = R.drawable.ic_play_white;
             play_pauseAction = playbackAction(0);
         }
@@ -436,7 +443,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
         MediaSessionCompat.Token token = mediaSession.getSessionToken();
 
-        NotificationCompat.Builder  notification = new NotificationCompat.Builder(this, "SALLEFY")
+        notification = new NotificationCompat.Builder(this, "SALLEFY")
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSmallIcon(R.drawable.noti_icon)
                 .addAction(R.drawable.ic_skip_previous, "previous", playbackAction(3))
@@ -447,7 +454,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                         .setMediaSession(token))
                 .setContentTitle(activeAudio.getName())
                 .setContentText(activeAudio.getUserLogin())
-                .setLargeIcon(largeIcon);
+                .setLargeIcon(largeIcon)
+                .setOngoing(ongoing);
 
 
 
@@ -687,6 +695,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private void callStateListener() {
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         phoneStateListener = new PhoneStateListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onCallStateChanged(int state, String incomingNumber) {
                 switch (state) {
