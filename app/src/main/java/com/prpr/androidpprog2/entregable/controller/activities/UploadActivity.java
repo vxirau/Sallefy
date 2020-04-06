@@ -193,7 +193,6 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         } else {
             Toast.makeText(this,"You have to choose a file",Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void getData() {

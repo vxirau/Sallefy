@@ -57,14 +57,11 @@ public class ImageActivity  extends AppCompatActivity implements ImageAdapter.On
                     uri.add(file);
                 }
 
-
                 iAdapt = new ImageAdapter(ImageActivity.this, uri);
                 rView.setAdapter(iAdapt);
 
                 iAdapt.onClickedItem(ImageActivity.this);
                 pBar.setVisibility(View.INVISIBLE);
-
-
 
             }
 

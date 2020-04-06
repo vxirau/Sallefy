@@ -42,6 +42,7 @@
         <activity android:name=".controller.activities.SettingsActivity"/>
         <activity android:name=".controller.activities.UserMainActivity"/>
         <activity android:name=".controller.activities.InfoPlaylistActivity"/>
+        <activity android:name=".controller.activities.ImageActivity"/>
 
         <service android:name=".controller.restapi.service.ReproductorService"/>
 
