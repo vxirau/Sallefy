@@ -21,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.chibde.visualizer.CircleBarVisualizer;
@@ -83,6 +84,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.setmVisualizer(mVisualizer);
             serv.setDuracioTotal(duracioTotal);
             serv.updateUI();
             serv.setSeekCallback(this);
@@ -104,18 +106,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         setContentView(R.layout.activity_music_playback);
         initViews();
         tManager = new TrackManager(this);
-        //updateVisualizer();
-
     }
-
-    /*private void updateVisualizer(){
-        mPlayer = serv.getPlayer();
-        if(mPlayer!=null){
-            int audioSessionId = mPlayer.getAudioSessionId();
-            if (audioSessionId != -1)
-                mVisualizer.setAudioSessionId(audioSessionId);
-        }
-    }*/
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -125,6 +116,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.setmVisualizer(mVisualizer);
             serv.setDuracioTotal(duracioTotal);
             serv.setSeekCallback(ReproductorActivity.this);
         }
@@ -195,8 +187,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         trackAuthor = findViewById(R.id.music_artist);
         trackImage = findViewById(R.id.track_img);
 
-        /*mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
-        mVisualizer.setDrawLine(true);*/
+        mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
+        mVisualizer.setDrawLine(true);
 
 
         shuffle = (ImageButton) findViewById(R.id.botoShuffle);
@@ -230,7 +222,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             @Override
             public void onClick(View v) {
                 serv.skipToPrevious();
-                //updateVisualizer();
             }
         });
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
@@ -238,17 +229,16 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             @Override
             public void onClick(View v) {
                 serv.skipToNext();
-                //updateVisualizer();
             }
         });
         btnPlay = findViewById(R.id.play);
         btnPlay.setEnabled(true);
         btnPlay.bringToFront();
         btnPlay.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
-                //updateVisualizer();
             }
         });
         btnPause = findViewById(R.id.pause);
@@ -256,10 +246,10 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         btnPause.setVisibility(View.VISIBLE);
         btnPause.bringToFront();
         btnPause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
-                //updateVisualizer();
             }
         });
 
