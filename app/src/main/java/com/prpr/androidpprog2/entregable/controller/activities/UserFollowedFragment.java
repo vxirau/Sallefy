@@ -63,6 +63,7 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
         });

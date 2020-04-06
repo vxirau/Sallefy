@@ -163,6 +163,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
            @Override
            public void onClick(View view) {
                Intent intent = new Intent(getContext(), SettingsActivity.class);
+               intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                startActivity(intent);
            }
        });
