@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Editable;
@@ -21,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -163,6 +165,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
@@ -173,6 +176,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         pause.setEnabled(true);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
