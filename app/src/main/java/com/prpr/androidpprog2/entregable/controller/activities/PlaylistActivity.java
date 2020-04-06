@@ -101,7 +101,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private ReproductorService player;
     private ImageView im;
     private boolean serviceBound = false;
-    private boolean isShuffle = false;
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
 
 
@@ -342,7 +341,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isShuffle=true;
+                player.setShuffle(true);
                 playAudio(new Random().nextInt(mTracks.size()));
             }
         });

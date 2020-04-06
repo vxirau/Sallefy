@@ -54,6 +54,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 
@@ -69,6 +70,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private Button playB;
     private Button pauseB;
     private ArrayList<Track> audioList;
+    private ArrayList<Track> shuffledAudioList;
 
     private int currentPlaylistID;
 
@@ -141,7 +143,10 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }else{
             shuffle.setBackgroundResource(R.drawable.si_shuffle);;
         }
+    }
 
+    public void setShuffle(boolean valor){
+        isShuffle = valor;
     }
 
     public void toggleShuffle(){
@@ -270,15 +275,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     }
 
-    /*private void updateProgress(){
-        mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
-    }*/
-
-    public MediaPlayer getPlayer(){
-        return mediaPlayer;
-    }
-
-
     public void seekToPosition(int position){
         mediaPlayer.seekTo(position);
     }
@@ -338,6 +334,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             int index = PreferenceUtils.getPlayID(getApplicationContext());
             if(currentPlaylistID!=index){
                 audioList = PreferenceUtils.getAllTracks(getApplicationContext());
+                shuffledAudioList = audioList;
+                Collections.shuffle(shuffledAudioList);
+
             }
             audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
             if (audioIndex != -1 && audioIndex < audioList.size()) {
@@ -663,7 +662,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
 
     }
 

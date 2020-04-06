@@ -65,11 +65,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
     private Button atras;
     private SeekBar mSeekBar;
     private CircleLineVisualizer mVisualizer;
-    private MediaPlayer mPlayer;
 
     private TrackManager tManager;
-
-    private boolean isShuffle;
 
     private ReproductorService serv;
     private boolean servidorVinculat=false;
