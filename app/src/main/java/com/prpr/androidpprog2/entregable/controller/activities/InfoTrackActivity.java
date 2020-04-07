@@ -8,18 +8,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.Intent;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
 
-public class InfoTrackActivity extends AppCompatActivity {
+
+public class InfoTrackActivity extends AppCompatActivity implements TrackCallback {
 
     private ImageView songCover;
     private TextView songName;
@@ -47,12 +53,17 @@ public class InfoTrackActivity extends AppCompatActivity {
 
     private ErrorDialog er;
 
+    private TrackManager tManager;
+
+    private boolean liked = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_track);
         trck = (Track) getIntent().getSerializableExtra("Trck");
         initViews();
+        tManager = new TrackManager(this);
     }
 
     private void initViews(){
@@ -70,14 +81,13 @@ public class InfoTrackActivity extends AppCompatActivity {
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(songCover);
         }
 
-        //Fer crida a l'Api, guardar a playlist de favoritos de usuari
         favorites = (ImageButton) findViewById(R.id.favoritos);
         text_favorites = findViewById(R.id.text_favoritos);
         layoutFav = findViewById(R.id.layoutFavoritos);
         layoutFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                tManager.likeTrack(trck.getId(), InfoTrackActivity.this);
             }
         });
 
@@ -89,7 +99,8 @@ public class InfoTrackActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())){
-
+                    Intent intent = new Intent(getApplicationContext(), EditSongActivity.class);
+                    intent.putExtra("Trck", trck);
                 }else{
                     er.showErrorDialog("This track is not yours to edit");
                 }
@@ -105,7 +116,7 @@ public class InfoTrackActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
-                //TODO: Falta putExtra
+                intent.putExtra("User", trck.getUserLogin());
                 startActivity(intent);
             }
         });
@@ -119,7 +130,8 @@ public class InfoTrackActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Add2PlaylistActivity.class);
                 intent.putExtra("Trck", trck);
-                startActivity(intent);
+
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
 
@@ -131,6 +143,62 @@ public class InfoTrackActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.nothing,R.anim.nothing);
             }
         });
+
+    }
+
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPersonalTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onUserTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onCreateTrack(Track t) {
+
+    }
+
+    @Override
+    public void onTopTracksRecieved(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackLiked() {
+        if(liked){
+            Toast.makeText(getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT);
+            liked= false;
+        }else{
+            Toast.makeText(getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT);
+            liked= true;
+        }
+    }
+
+    @Override
+    public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFailure(Throwable throwable) {
 
     }
 }
