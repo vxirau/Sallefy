@@ -20,20 +20,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.ImageAdapter;
+import com.prpr.androidpprog2.entregable.model.Upload;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ImageActivity  extends AppCompatActivity implements ImageAdapter.OnClickListener {
+public class ImageActivity  extends AppCompatActivity {
     private RecyclerView rView;
     private ImageAdapter iAdapt;
 
     private ProgressBar pBar;
 
     private DatabaseReference mDataBase;
-    private List<String> uri;
+    private List<Upload> iUploads;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -45,7 +46,7 @@ public class ImageActivity  extends AppCompatActivity implements ImageAdapter.On
         rView.setHasFixedSize(true);
         rView.setLayoutManager(new LinearLayoutManager(this));
 
-        uri = new ArrayList<>();
+        iUploads = new ArrayList<>();
 
         mDataBase = FirebaseDatabase.getInstance().getReference(Session.getUser().getLogin());
 
@@ -53,33 +54,21 @@ public class ImageActivity  extends AppCompatActivity implements ImageAdapter.On
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot d : dataSnapshot.getChildren()){
-                    String file = d.getValue(String.class);
-                    uri.add(file);
+                    Upload u = d.getValue(Upload.class);
+                    iUploads.add(u);
                 }
 
-                iAdapt = new ImageAdapter(ImageActivity.this, uri);
+                iAdapt = new ImageAdapter(ImageActivity.this, iUploads);
                 rView.setAdapter(iAdapt);
 
-                iAdapt.onClickedItem(ImageActivity.this);
                 pBar.setVisibility(View.INVISIBLE);
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(ImageActivity.this, databaseError.getMessage(),Toast.LENGTH_SHORT).show();
                 pBar.setVisibility(View.INVISIBLE);
             }
         });
-    }
-
-    @Override
-    public void OnSelectedItem(int position) {
-        Toast.makeText(ImageActivity.this, "Select item", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDeleteItem(int position) {
-        Toast.makeText(ImageActivity.this, "Delete item", Toast.LENGTH_SHORT).show();
     }
 }
