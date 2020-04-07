@@ -142,9 +142,16 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     }
 
     @Override
-    public void onUsernameUpdated(User user) {
+    public void onUserFirstNameUpdated(User user) {
 
     }
+
+    @Override
+    public void onUserLastNameUpdated(User user) {
+
+    }
+
+
 
     @Override
     public void onEmailUpdated(User user) {

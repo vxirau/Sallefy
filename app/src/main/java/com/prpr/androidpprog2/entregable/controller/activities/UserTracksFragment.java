@@ -81,7 +81,7 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
         View view = inflater.inflate(R.layout.fragment_user_tracks, container, false);
 
 
-        btnSettingsTracks = (FloatingActionButton) view.findViewById(R.id.configTracksButton);
+        /*btnSettingsTracks = (FloatingActionButton) view.findViewById(R.id.configTracksButton);
         btnSettingsTracks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +89,7 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.userTracksRecyclerview);

@@ -51,71 +51,155 @@
             android:layout_marginBottom="15dp"
             android:layout_alignParentTop="true"
             />
-        <TextView
-            android:id="@+id/settings_change_username"
+        <ScrollView
+            android:id="@+id/settings_scrollview"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:gravity="left"
-            android:text="@string/settings_change_username"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
-        <EditText
-            android:id="@+id/textview_settings_change_username"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:background="@drawable/rectangle_gran_gborder_white"
-            android:hint="@string/settings_add_new_username"
-            android:textColorHint="#70353535"
-            >
-        </EditText>
-        <Button
-            android:id="@+id/update_username_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_change_username"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:background="@color/colorWhite"
-
+            android:layout_height="500dp"
             >
 
-        </Button>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/settings_change_email"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:gravity="left"
-            android:text="@string/settings_change_email"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/settings_change_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="55dp"
+                    android:gravity="left"
+                    android:text="@string/settings_change_first_name"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/textview_settings_change_first_name"
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rectangle_gran_gborder_white"
+                    android:hint="@string/settings_add_new_first_name"
+                    android:textColorHint="#70353535">
+                </EditText>
+                <Button
+                    android:id="@+id/update_first_name_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:background="@color/colorWhite">
 
-        <EditText
-            android:id="@+id/textview_settings_change_email"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:background="@drawable/rectangle_gran_gborder_white"
-            android:hint="@string/settings_add_new_email"
-            android:textColorHint="#70353535"
-            >
-        </EditText>
+                </Button>
 
-        <Button
-            android:id="@+id/update_email_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_change_email"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:background="@color/colorWhite"
-            >
+                <TextView
+                    android:id="@+id/settings_change_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="55dp"
+                    android:gravity="left"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/settings_change_last_name"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/textview_settings_change_last_name"
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rectangle_gran_gborder_white"
+                    android:hint="@string/settings_add_new_last_name"
+                    android:textColorHint="#70353535"
+                    >
+                </EditText>
+                <Button
+                    android:id="@+id/update_last_name_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:background="@color/colorWhite">
 
-        </Button>
+                </Button>
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/settings_change_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="55dp"
+                    android:gravity="left"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/settings_change_email"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/textview_settings_change_email"
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rectangle_gran_gborder_white"
+                    android:hint="@string/settings_add_new_email"
+                    android:textColorHint="#70353535"
+                    >
+                </EditText>
+                <Button
+                    android:id="@+id/update_email_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:background="@color/colorWhite">
+
+                </Button>
+
+                <TextView
+                    android:id="@+id/settings_update_profile_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="55dp"
+                    android:gravity="left"
+                    android:text="@string/settings_change_profile_pic"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    app:cardCornerRadius="250dp"
+                    android:layout_gravity="center">
+
+                    <ImageButton
+                        android:id="@+id/userImage"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:background="@android:color/transparent"
+                        />
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/update_pic_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:background="@color/colorWhite">
+
+                </Button>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -198,5 +282,8 @@
             app:labelVisibilityMode="unlabeled" />
     </RelativeLayout>
 
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

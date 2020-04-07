@@ -15,8 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
@@ -35,18 +38,27 @@ import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorS
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class SettingsActivity extends AppCompatActivity implements UserCallback, ServiceCallback {
 
-    private EditText etUsername;
-    private EditText etEmail;
+    private EditText etFirstName;
+    private Button btnFirstName;
 
-    private Button btnUsername;
+    private EditText etLastName;
+    private Button btnLastName;
+
+    private EditText etEmail;
     private Button btnEmail;
 
+    private ImageButton imgBtnUserPic;
+    private Button btnUserPic;
+
+    private ScrollView settingsScrollView;
     private User myUser;
 
     private UserManager userManager;
@@ -135,6 +147,9 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        if(getIntent().getSerializableExtra("UserInfo")!=null){
+            myUser = (User) getIntent().getSerializableExtra("UserInfo");
+        }
         initViews();
 
     }
@@ -213,31 +228,72 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             }
         });
 
-        etUsername = (EditText) findViewById(R.id.textview_settings_change_username);
-        etEmail = (EditText) findViewById(R.id.textview_settings_change_email);
+        etFirstName = (EditText) findViewById(R.id.textview_settings_change_first_name);
 
-        btnUsername =  (Button) findViewById(R.id.update_username_button);
-        btnUsername.setOnClickListener(new View.OnClickListener() {
+
+        btnFirstName =  (Button) findViewById(R.id.update_first_name_button);
+        btnFirstName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doUpdateUsername(myUser);
+               doUpdateFirstName(myUser);
 
             }
         });
 
-        btnEmail =  (Button) findViewById(R.id.update_email_button);
+        etLastName = (EditText) findViewById(R.id.textview_settings_change_last_name);
 
+        btnLastName =  (Button) findViewById(R.id.update_last_name_button);
+        btnLastName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doUpdateLastName(myUser);
+
+            }
+        });
+
+        etEmail = (EditText) findViewById(R.id.textview_settings_change_email);
+
+        btnEmail =  (Button) findViewById(R.id.update_email_button);
+        btnEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doUpdateEmail(myUser);
+
+            }
+        });
+
+        imgBtnUserPic = findViewById(R.id.userImage);
+        //userManager.getUser(myUser.getLogin(), this);
+        if(myUser.getImageUrl()!=null){
+            Picasso.get().load(myUser.getImageUrl()).into(imgBtnUserPic);
+        }else{
+            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(imgBtnUserPic);
+        }
+        imgBtnUserPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        settingsScrollView = findViewById(R.id.settings_scrollview);
 
     }
 
-    private void doUpdateUsername(User user){
+    private void doUpdateFirstName(User user){
         userManager = new UserManager(this);
-        userManager.updateUsername(user, this);
+        userManager.updateUserFirstName(user, this);
+    }
+
+    private void doUpdateLastName(User user){
+        userManager = new UserManager(this);
+        userManager.updateUserLastName(user, this);
     }
 
     private void doUpdateEmail(User user){
         userManager = new UserManager(this);
         userManager.updateEmail(user, this);
+        System.out.println(user.getEmail());
     }
 
     @Override
@@ -263,11 +319,20 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     @Override
     public void onUserInfoReceived(User userData) {
 
+        this.myUser = userData;
+
+
     }
 
     @Override
-    public void onUsernameUpdated(User user) {
-        this.myUser.setLogin(user.getLogin());
+    public void onUserFirstNameUpdated(User user) {
+
+        this.myUser.setFirstName(user.getFirstName());
+    }
+
+    @Override
+    public void onUserLastNameUpdated(User user) {
+        this.myUser.setLastName(user.getLastName());
     }
 
     @Override

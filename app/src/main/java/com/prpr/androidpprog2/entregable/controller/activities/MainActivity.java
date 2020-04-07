@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private PlaylistManager pManager;
     private UserManager usrManager;
 
+    private User user;
 
     private LinearLayout playing;
 
@@ -197,6 +198,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         if(getIntent().getSerializableExtra("sameUser")!=null){
             sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
         }
+
+        if(getIntent().getSerializableExtra("UserInfo")!=null){
+            user = (User) getIntent().getSerializableExtra("UserInfo");
+        }
         initViews();
         btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();
@@ -224,11 +229,13 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                     case R.id.buscar:
                         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent.putExtra("UserInfo", user);
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
                         Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent2.putExtra("UserInfo", user);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                 }
@@ -540,9 +547,16 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
     @Override
-    public void onUsernameUpdated(User user) {
+    public void onUserFirstNameUpdated(User user) {
 
     }
+
+    @Override
+    public void onUserLastNameUpdated(User user) {
+
+    }
+
+
 
     @Override
     public void onEmailUpdated(User user) {

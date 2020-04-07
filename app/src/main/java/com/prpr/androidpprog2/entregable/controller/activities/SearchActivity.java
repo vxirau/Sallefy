@@ -69,6 +69,9 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     //Cerca
     private EditText mSearchText;
 
+    //Usuari
+    private User user;
+
     //Possibles layouts en la cerca
     private LinearLayout mPlaylistLayout;
     private LinearLayout mTracksLayout;
@@ -154,6 +157,9 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        if(getIntent().getSerializableExtra("UserInfo")!=null){
+            user = (User) getIntent().getSerializableExtra("UserInfo");
+        }
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         initViews();
     }
@@ -280,6 +286,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
                     case R.id.perfil:
                         Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent2.putExtra("UserInfo", user);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                 }
@@ -437,9 +444,15 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
-    public void onUsernameUpdated(User user) {
+    public void onUserFirstNameUpdated(User user) {
 
     }
+
+    @Override
+    public void onUserLastNameUpdated(User user) {
+
+    }
+
 
     @Override
     public void onEmailUpdated(User user) {
