@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,9 +58,9 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     private TextView tvUserTracks;
     private TextView tvUserStatistics;
     private TextView tvUserFollowed;
-
+    private User user;
     private FloatingActionButton btnSettingsStatistics;
-    private FloatingActionButton btnSettingsFollowed;
+    private FloatingActionButton btnSettings;
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
@@ -144,6 +145,9 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+        if(getIntent().getSerializableExtra("UserInfo")!=null){
+            user = (User) getIntent().getSerializableExtra("UserInfo");
+        }
         initGeneralViews();
         initPlaylistViews();
 
@@ -248,7 +252,15 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
             }
         });
 
-
+        btnSettings = (FloatingActionButton) findViewById(R.id.configButton);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                intent.putExtra("UserInfo", user);
+                startActivity(intent);
+            }
+        });
 
     }
 

@@ -58,7 +58,7 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_followed, container, false);
 
-        btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configUsersFollowedButton);
+        /*btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configUsersFollowedButton);
         btnSettingsPlaylists.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +66,7 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
-        });
+        });*/
 
         etSearchFollowed = (EditText) view.findViewById(R.id.search_user_users_followed);
         etSearchFollowed.addTextChangedListener(new TextWatcher() {
@@ -137,9 +137,16 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     }
 
     @Override
-    public void onUsernameUpdated(User user) {
+    public void onUserFirstNameUpdated(User user) {
 
     }
+
+    @Override
+    public void onUserLastNameUpdated(User user) {
+
+    }
+
+
 
     @Override
     public void onEmailUpdated(User user) {

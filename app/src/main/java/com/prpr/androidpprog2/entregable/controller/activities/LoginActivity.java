@@ -158,14 +158,22 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         //prova
         intent.putExtra("sameUser", false);
+        intent.putExtra("UserInfo", userData);
         //es pot esborrar, es per veure si la meva part esta bé
         startActivity(intent);
     }
 
     @Override
-    public void onUsernameUpdated(User user) {
+    public void onUserFirstNameUpdated(User user) {
 
     }
+
+    @Override
+    public void onUserLastNameUpdated(User user) {
+
+    }
+
+
 
     @Override
     public void onEmailUpdated(User user) {
