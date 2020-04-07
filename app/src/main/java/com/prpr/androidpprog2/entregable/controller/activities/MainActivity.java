@@ -48,6 +48,7 @@ import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -432,6 +433,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     public void onAllPlaylistRecieved(List<Playlist> body) {
         this.allPlaylists = (ArrayList) body;
         removePrivate();
+        Collections.shuffle(this.allPlaylists);
         PlaylistAdapter p2 = new PlaylistAdapter(this, this.allPlaylists);
         p2.setPlaylistCallback(this);
         allPlaylistRecycle.setAdapter(p2);

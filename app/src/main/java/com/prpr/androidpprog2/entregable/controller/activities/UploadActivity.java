@@ -1,23 +1,33 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.android.MediaManager;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
@@ -30,37 +40,37 @@ import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
-import com.prpr.androidpprog2.entregable.utils.CloudinaryConfigs;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
 public class UploadActivity extends AppCompatActivity implements GenreCallback, TrackCallback, PlaylistCallback {
 
+    private static final int chooseRequest = 1;
+
     private EditText etTitle;
     private Spinner mSpinner;
-    private TextView mFilename;
-    private Button btnFind, btnCancel, btnAccept;
+    private TextView mFilename, txtShow;
+    private Button btnFind, btnCancel, btnAccept, btnChoose, btnUpload;
     private PlaylistManager pManager;
     private RecyclerView uRecyclerView;
+    private String username;
+    private ImageView thumbnail;
+    private Uri mFileUri,mPhotoUri;
 
     private Playlist uploadPlylst;
 
     private ArrayList<String> mGenres;
     private ArrayList<Genre> mGenresObjs;
-    private Uri mFileUri;
     private Context mContext;
-    private String URL;
-
-
-
+    private StorageReference mStorage;
+    private DatabaseReference mDatabase;
+    private StorageTask mUploadTask;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,25 +78,18 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         setContentView(R.layout.activity_create_song);
         uploadPlylst = (Playlist) getIntent().getSerializableExtra("Upload");
         mContext = getApplicationContext();
-        try {
-            initViews();
-            getData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        initViews();
+        getData();
+
 
     }
 
-    private void initViews() throws Exception {
+    private void initViews() {
 
-        uRecyclerView = (RecyclerView) findViewById(R.id.llistatDplaylists);
-        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        String username = Session.getInstance(mContext).getUser().getLogin();
-        Map m = CloudinaryManager.getInstance(this, null).getThumbnails(username);
-        //adapter = CoverAdapter(this, thumbnails);
+
         pManager = new PlaylistManager(mContext);
-        uRecyclerView.setLayoutManager(manager);
-        //uRecyclerView.setAdapter(adapter);
+        mStorage = FirebaseStorage.getInstance().getReference(Session.getUser().getLogin());
+        mDatabase = FirebaseDatabase.getInstance().getReference(Session.getUser().getLogin());
 
         etTitle = (EditText) findViewById(R.id.create_song_title);
         mFilename = (TextView) findViewById(R.id.create_song_file_name);
@@ -122,6 +125,74 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
             }
         });
 
+        btnChoose = (Button) findViewById(R.id.button_choose_image);
+        btnChoose.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                chooseFile();
+            }
+        });
+        btnUpload = (Button) findViewById(R.id.button_upload);
+        btnUpload.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(mUploadTask != null && mUploadTask.isInProgress()){
+                    Toast.makeText(UploadActivity.this, "Upload already in progress", Toast.LENGTH_SHORT).show();
+                } else {
+                    uploadFile();
+                }
+            }
+        });
+        txtShow = (TextView) findViewById(R.id.text_view_show_uploads);
+        txtShow.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                openImages();
+            }
+        });
+
+        thumbnail = (ImageView) findViewById(R.id.image_upload);
+
+    }
+
+    private void openImages(){
+        Intent intent = new Intent(this, ImageActivity.class);
+        startActivity(intent);
+    }
+
+    private void chooseFile(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,chooseRequest);
+    }
+
+    private String getExtension(Uri uri){
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mTm = MimeTypeMap.getSingleton();
+        return mTm.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile(){
+        if(mPhotoUri != null){
+            StorageReference fileRef = mStorage.child("file" + System.currentTimeMillis() + "." + getExtension(mPhotoUri));
+            mUploadTask = fileRef.putFile(mPhotoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(UploadActivity.this, "Upload successfull", Toast.LENGTH_SHORT).show();
+                    String data = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                    String uploadId = mDatabase.push().getKey();
+                    mDatabase.child(uploadId).setValue(data);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(UploadActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(this,"You have to choose a file",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getData() {
@@ -164,6 +235,12 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         if (requestCode == Constants.STORAGE.SONG_SELECTED && resultCode == RESULT_OK) {
             mFileUri = data.getData();
             mFilename.setText(mFileUri.toString());
+        } else {
+            if(requestCode == RESULT_OK && resultCode == chooseRequest && data != null && data.getData() != null){
+                mPhotoUri = data.getData();
+                Picasso.get().load(mPhotoUri).fit().centerCrop().into(thumbnail);
+            }
+
         }
     }
 
