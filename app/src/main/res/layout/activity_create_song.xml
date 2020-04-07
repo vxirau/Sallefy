@@ -46,7 +46,7 @@
                 android:layout_width="172dp"
                 android:layout_height="112dp"
                 android:layout_gravity="center"
-                android:background="@drawable/default_cover" />
+                android:background="@drawable/default_cover"/>
 
 
             <LinearLayout

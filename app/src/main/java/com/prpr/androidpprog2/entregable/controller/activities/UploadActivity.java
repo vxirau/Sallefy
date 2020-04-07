@@ -20,8 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,6 +42,7 @@ import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.Upload;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
@@ -132,8 +135,9 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
                 chooseFile();
             }
         });
+
         btnUpload = (Button) findViewById(R.id.button_upload);
-        btnUpload.setOnClickListener(new View.OnClickListener(){
+        btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mUploadTask != null && mUploadTask.isInProgress()){
@@ -143,6 +147,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
                 }
             }
         });
+
         txtShow = (TextView) findViewById(R.id.text_view_show_uploads);
         txtShow.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -180,9 +185,11 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(UploadActivity.this, "Upload successfull", Toast.LENGTH_SHORT).show();
-                    String data = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                    String uploadId = mDatabase.push().getKey();
-                    mDatabase.child(uploadId).setValue(data);
+                    Task<Uri> uri = fileRef.getDownloadUrl();
+                    String iconPathFirebase = uri.getResult().toString();
+                    Upload upload = new Upload(iconPathFirebase);
+                    String id = mDatabase.push().getKey();
+                    mDatabase.child(id).setValue(upload);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -236,7 +243,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
             mFileUri = data.getData();
             mFilename.setText(mFileUri.toString());
         } else {
-            if(requestCode == RESULT_OK && resultCode == chooseRequest && data != null && data.getData() != null){
+            if(requestCode == chooseRequest  && resultCode == RESULT_OK && data != null && data.getData() != null){
                 mPhotoUri = data.getData();
                 Picasso.get().load(mPhotoUri).fit().centerCrop().into(thumbnail);
             }

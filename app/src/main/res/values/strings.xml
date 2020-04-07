@@ -75,6 +75,8 @@
     <string name="nom_de_la_canco">Song Name</string>
     <string name="edita">Enter file name</string>
     <string name="showUpload">Show Uploads</string>
+    <string name="selectItem">Select Thumbnail</string>
+    <string name="deletItem">Delete Cover</string>
 
     <string name="search_title">Search</string>
     <string name="search_bar">Search here…</string>

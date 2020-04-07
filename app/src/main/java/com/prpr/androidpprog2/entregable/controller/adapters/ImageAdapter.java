@@ -10,13 +10,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.ImageActivity;
+import com.prpr.androidpprog2.entregable.model.Upload;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -24,10 +27,9 @@ import java.util.List;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
     private Context mContext;
-    private List<String> mFiles;
-    private OnClickListener ilistener;
+    private List<Upload> mFiles;
 
-    public ImageAdapter(Context mContext, List<String> mFiles){
+    public ImageAdapter(Context mContext, List<Upload> mFiles) {
         this.mContext = mContext;
         this.mFiles = mFiles;
     }
@@ -35,21 +37,28 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.image_item,parent,false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.image_item, parent, false);
         return new ImageViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
 
-        String uri = mFiles.get(position);
-        Picasso.get().load(uri).placeholder(R.mipmap.ic_launcher_round).fit().centerCrop().into(holder.iButton);
-
-        holder.iButton.setOnClickListener(new View.OnClickListener(){
+        Upload uCurrent = mFiles.get(position);
+        //Picasso.get().load(uCurrent.getImageUrl()).fit().centerCrop().into(holder.iButton);
+        Glide.with(mContext).load(uCurrent.getImageUrl()).into(holder.iButton);
+        holder.iButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "Item " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.iButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                return false;
             }
         });
     }
@@ -59,56 +68,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         return mFiles.size();
     }
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
+    public class ImageViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageButton iButton;
+        public ImageView iButton;
 
-        public ImageViewHolder(View itemView){
+        public ImageViewHolder(View itemView) {
             super(itemView);
-            iButton = itemView.findViewById(R.id.imageItem);
-            itemView.setOnCreateContextMenuListener(this);
+            iButton =  (ImageView) itemView.findViewById(R.id.imageItem);
+
         }
 
-        @Override
-        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-            contextMenu.setHeaderTitle("What are we going to do?");
-            MenuItem SelectPhoto = contextMenu.add(Menu.NONE,1,1,"Select Photo");
-            MenuItem Delete = contextMenu.add(Menu.NONE,2,2,"Delete");
-
-            SelectPhoto.setOnMenuItemClickListener(this);
-            Delete.setOnMenuItemClickListener(this);
-        }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            if(ilistener != null){
-                int position = getAdapterPosition();
-                if(position != RecyclerView.NO_POSITION){
-                    switch(menuItem.getItemId()) {
-                        case 1:
-                            ilistener.OnSelectedItem(position);
-                            return true;
-                        case 2:
-                            ilistener.onDeleteItem(position);
-                            return true;
-                    }
-                }
-            }
-            return false;
-        }
     }
-
-    public interface OnClickListener {
-
-        void OnSelectedItem(int position);
-
-        void onDeleteItem(int position);
-
-    }
-
-    public void onClickedItem(OnClickListener listener){
-        ilistener = listener;
-    }
-
-
 }
