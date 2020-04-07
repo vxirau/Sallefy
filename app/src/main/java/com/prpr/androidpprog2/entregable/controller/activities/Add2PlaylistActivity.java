@@ -50,7 +50,6 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
     private RecyclerView mRecyclerView;
 
     private ArrayList<Playlist> playlists;
-    private int currentPlaylist = 0;
     private PlaylistManager pManager;
     private Add2PlaylistListAdapter adapter;
     private Playlist currentList;
@@ -62,7 +61,9 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_song_2_playlist);
         trck = (Track) getIntent().getSerializableExtra("Trck");
-        currentList = (Playlist) getIntent().getSerializableExtra("Playlst");
+        if( getIntent().getSerializableExtra("Playlst") != null){
+            currentList = (Playlist) getIntent().getSerializableExtra("Playlst");
+        }
         initViews();
         UserToken userToken = Session.getInstance(this).getUserToken();
         String usertkn = userToken.getIdToken();
@@ -100,9 +101,15 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PlaylistActivity.class);
-                intent.putExtra("Playlst", currentList);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                if(currentList!=null){
+                    Intent intent = new Intent(getApplicationContext(), PlaylistActivity.class);
+                    intent.putExtra("Playlst", currentList);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                }else{
+                    finish();
+                    overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                }
+
             }
         });
 

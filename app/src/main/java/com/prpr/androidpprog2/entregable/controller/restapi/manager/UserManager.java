@@ -87,16 +87,44 @@ public class UserManager {
     }
 
 
-    public synchronized void updateUsername(User user, final UserCallback userCallback){
+   public synchronized void updateUserFirstName(User user, final UserCallback userCallback){
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<User> call = mService.updateUsername(user, "Bearer " + userToken.getIdToken());
+        Call<User> call = mService.updateUserFirstName(user, "Bearer " + userToken.getIdToken());
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 int code = response.code();
                 if (response.isSuccessful()) {
-                    userCallback.onUsernameUpdated(response.body());
+                    userCallback.onUserFirstNameUpdated(response.body());
+                } else {
+                    try{
+                        userCallback.onFailure(new Throwable(response.errorBody().string()));
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+
+    }
+
+    public synchronized void updateUserLastName(User user, final UserCallback userCallback){
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+
+        Call<User> call = mService.updateUserLastName(user, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onUserLastNameUpdated(response.body());
                 } else {
                     try{
                         userCallback.onFailure(new Throwable(response.errorBody().string()));
@@ -238,7 +266,29 @@ public class UserManager {
             }
         });
     }
+    public synchronized void getUser (String login, final UserCallback userCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<User> call = mService.getUserById(login, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
 
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onUserInfoReceived(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    userCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
     public synchronized void getAllUsers (final UserCallback userCallback) {
 
         UserToken userToken = Session.getInstance(mContext).getUserToken();

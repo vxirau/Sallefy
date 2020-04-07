@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -100,20 +101,21 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private ReproductorService player;
     private ImageView im;
     private boolean serviceBound = false;
-    private boolean isShuffle = false;
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
 
 
     private void playAudio(int audioIndex) {
+
         PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
         PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+        PreferenceUtils.savePlayID(getApplicationContext(), playlst.getId());
 
         if (!serviceBound) {
             Intent playerIntent = new Intent(this, ReproductorService.class);
             startService(playerIntent);
             bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
-            sendBroadcast(broadcastIntent);
+            //Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            //sendBroadcast(broadcastIntent);
         } else {
             Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
             sendBroadcast(broadcastIntent);
@@ -176,7 +178,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         super.onStart();
         if(!serviceBound){
             Intent intent = new Intent(this, ReproductorService.class);
-            startService(intent);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
@@ -340,7 +341,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isShuffle=true;
+                player.setShuffle(true);
                 playAudio(new Random().nextInt(mTracks.size()));
             }
         });

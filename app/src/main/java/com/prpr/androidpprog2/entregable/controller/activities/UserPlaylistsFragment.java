@@ -159,7 +159,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
         // Inflate the layout for this fragment
 
-       btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configPlaylistsButton);
+       /*btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configPlaylistsButton);
        btnSettingsPlaylists.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
@@ -167,7 +167,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                startActivity(intent);
            }
-       });
+       });*/
 
         btnFilterPlaylists = (Button) view.findViewById(R.id.filter_user_playlists);
         btnFilterPlaylists.setEnabled(true);

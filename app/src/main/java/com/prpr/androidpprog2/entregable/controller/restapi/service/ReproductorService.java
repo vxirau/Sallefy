@@ -29,6 +29,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.SeekBar;
@@ -53,6 +54,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 
@@ -68,8 +70,12 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private Button playB;
     private Button pauseB;
     private ArrayList<Track> audioList;
+    private ArrayList<Track> shuffledAudioList;
+
+    private int currentPlaylistID;
 
     private CircleLineVisualizer mVisualizer;
+    private ImageButton shuffle;
 
 
     private int audioIndex = -1;
@@ -97,7 +103,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private TelephonyManager telephonyManager;
     private ServiceCallback scallback;
 
-    private boolean isShuffle=false;
+    private boolean isShuffle;
 
 
     @Override
@@ -131,12 +137,27 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     }
 
+    public void setShuffleButtonUI(){
+        if(!isShuffle){
+            shuffle.setBackgroundResource(R.drawable.no_shuffle);;
+        }else{
+            shuffle.setBackgroundResource(R.drawable.si_shuffle);;
+        }
+    }
+
+    public void setShuffle(boolean valor){
+        isShuffle = valor;
+    }
+
     public void toggleShuffle(){
         if(isShuffle){
             isShuffle=false;
+            shuffle.setBackgroundResource(R.drawable.no_shuffle);;
         }else{
             isShuffle=true;
+            shuffle.setBackgroundResource(R.drawable.si_shuffle);;
         }
+
     }
 
     public boolean isShuffle(){
@@ -220,12 +241,14 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         if(mediaPlayer!=null){
-            //updatePosition();
             updateUI();
         }
     }
 
 
+    public void setRandomButton(ImageButton shuffle) {
+        this.shuffle = shuffle;
+    }
 
     public void updateUI(){
         if(mediaPlayer != null && title!=null && artist!=null){
@@ -242,22 +265,15 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 playB.setVisibility(View.VISIBLE);
             }
             if(imahen!=null){
-                Picasso.get().load(activeAudio.getThumbnail()).into(imahen);
+                if (activeAudio.getThumbnail() != null && !activeAudio.getThumbnail().equals("")) {
+                    Picasso.get().load(activeAudio.getThumbnail()).into(imahen);
+                }else{
+                    Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(imahen);
+                }
             }
-
-
         }
 
     }
-
-    /*private void updateProgress(){
-        mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
-    }*/
-
-    public MediaPlayer getPlayer(){
-        return mediaPlayer;
-    }
-
 
     public void seekToPosition(int position){
         mediaPlayer.seekTo(position);
@@ -314,13 +330,31 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onReceive(Context context, Intent intent) {
+
+            int index = PreferenceUtils.getPlayID(getApplicationContext());
+            if(currentPlaylistID!=index){
+                audioList = PreferenceUtils.getAllTracks(getApplicationContext());
+                shuffledAudioList = audioList;
+                Collections.shuffle(shuffledAudioList);
+
+            }
             audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
-            audioList = PreferenceUtils.getAllTracks(getApplicationContext());
             if (audioIndex != -1 && audioIndex < audioList.size()) {
                 activeAudio = audioList.get(audioIndex);
             } else {
                 stopSelf();
             }
+            if(mediaSessionManager == null){
+                try {
+                    initMediaSession();
+                    initMediaPlayer();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    stopSelf();
+                }
+                buildNotification(PlaybackStatus.PLAYING);
+            }
+
             stopMedia();
             mediaPlayer.reset();
             initMediaPlayer();
@@ -336,9 +370,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         registerReceiver(playNewAudio, filter);
     }
 
-    private boolean isPlaying(){
-        return mediaPlayer.isPlaying();
-    }
 
     private void initMediaSession() throws RemoteException {
         if (mediaSessionManager != null) return;
@@ -566,7 +597,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         try {
             audioList = PreferenceUtils.getAllTracks(getApplicationContext());
             audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
-
+            currentPlaylistID=-1;
             if (audioIndex != -1 && audioIndex < audioList.size()) {
                 activeAudio = audioList.get(audioIndex);
             } else {
@@ -631,7 +662,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
 
     }
 
@@ -707,6 +737,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
                 audioManager.abandonAudioFocus(this);
     }
+
 
     public class LocalBinder extends Binder {
         public ReproductorService getService() {

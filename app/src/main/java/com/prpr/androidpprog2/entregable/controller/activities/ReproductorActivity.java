@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,11 +61,10 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
 
     private ImageButton btnForward;
     private ImageButton shuffle;
-    private boolean isShuffle=false;
+    private LinearLayout shuffleLayout;
     private Button atras;
     private SeekBar mSeekBar;
     private CircleLineVisualizer mVisualizer;
-    private MediaPlayer mPlayer;
 
     private TrackManager tManager;
 
@@ -82,11 +82,14 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         if(!servidorVinculat){
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
+            serv.setRandomButton(shuffle);
             //serv.setmVisualizer(mVisualizer);
             serv.setDuracioTotal(duracioTotal);
             serv.updateUI();
+            serv.setShuffleButtonUI();
             serv.setSeekCallback(this);
         }
     }
@@ -97,6 +100,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         super.onResume();
         if(servidorVinculat){
             serv.setSeekCallback(this);
+            serv.setShuffleButtonUI();
         }
     }
 
@@ -116,6 +120,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             //serv.setmVisualizer(mVisualizer);
+            serv.setRandomButton(shuffle);
+            serv.setShuffleButtonUI();
             serv.setDuracioTotal(duracioTotal);
             serv.setSeekCallback(ReproductorActivity.this);
         }
@@ -173,7 +179,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         });
 
 
-
         trackTitle= findViewById(R.id.music_title);
         trackTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         trackTitle.setSelected(true);
@@ -190,18 +195,21 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         mVisualizer.setDrawLine(true);
 
 
+        shuffleLayout = findViewById(R.id.shuffleLayout);
+        shuffleLayout.setEnabled(true);
+        shuffleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serv.toggleShuffle();
+            }
+        });
+
         shuffle = (ImageButton) findViewById(R.id.botoShuffle);
         shuffle.setEnabled(true);
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isShuffle){
-                    shuffle.setBackgroundResource(R.drawable.no_shuffle);;
-                    isShuffle=false;
-                }else{
-                    shuffle.setBackgroundResource(R.drawable.si_shuffle);;
-                    isShuffle=true;
-                }
+                serv.toggleShuffle();
             }
         });
 
