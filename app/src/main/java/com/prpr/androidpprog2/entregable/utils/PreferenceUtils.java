@@ -21,7 +21,8 @@ public class PreferenceUtils {
     private static String KEY_PASSWORD = "password";
     private static String KEY_TRACK = "track";
     private static String KEY_PLY_ID = "id";
-
+    private static String KEY_SHUFFLE = "shuffle";
+    private static String KEY_CURRENT_TRACK = "activeAudio";
     private static String KEY_ALL_TRACK = "track";
 
 
@@ -40,6 +41,39 @@ public class PreferenceUtils {
         SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);
         return Integer.parseInt(Objects.requireNonNull(prefs.getString(KEY_TRACK, null)));
     }
+
+    public static boolean saveTrack(Context context,Track t){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(t);
+        editor.putString(KEY_CURRENT_TRACK, json);
+        editor.apply();
+        return true;
+    }
+
+    public static Track getTrack(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = prefs.getString(KEY_CURRENT_TRACK, null);
+        Type type = new TypeToken<Track>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
+
+    public static boolean saveShuffle(Context context, boolean shuf){
+        SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString(KEY_SHUFFLE, String.valueOf(shuf));
+        prefsEditor.apply();
+        return true;
+    }
+
+    public static boolean getShuffle(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);
+        return Boolean.parseBoolean(prefs.getString(KEY_SHUFFLE, null));
+    }
+
 
     public static boolean savePlayID(Context context, int index){
         SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);

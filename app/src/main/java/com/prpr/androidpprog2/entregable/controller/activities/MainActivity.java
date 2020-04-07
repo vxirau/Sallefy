@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             if(sameUser){
                 serv.pauseMedia();
             }
+            boolean shuf = PreferenceUtils.getShuffle(getApplicationContext());
+            serv.setShuffle(shuf);
         }
 
         @Override
@@ -147,18 +149,17 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     private void loadPreviousSession() {
         audioList = PreferenceUtils.getAllTracks(getApplicationContext());
-        audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
-        loadAudioPlay(audioIndex);
+        Track t = PreferenceUtils.getTrack(getApplicationContext());
+        audioIndex = audioList.indexOf(t);
+        start();
         Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
         sendBroadcast(broadcastIntent);
     }
 
-    private void loadAudioPlay(int audioIndex) {
+    private void start() {
         Intent playerIntent = new Intent(this, ReproductorService.class);
         startService(playerIntent);
         bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-        trackTitle.setText(audioList.get(audioIndex).getName());
-        trackAuthor.setText(audioList.get(audioIndex).getUserLogin());
     }
 
 
