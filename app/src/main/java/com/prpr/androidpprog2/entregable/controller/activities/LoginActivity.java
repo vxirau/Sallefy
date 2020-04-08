@@ -21,6 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 //import com.google.firebase.storage.FirebaseStorage;
 //import com.google.firebase.storage.StorageReference;
 //import com.google.firebase.storage.UploadTask;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
@@ -43,7 +47,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     private TextView tvToRegister;
     private UserToken usTkn;
     private String username="";
-    //private StorageReference mStorage;
+    private StorageReference mStorage;
 
 
     @Override
@@ -121,17 +125,22 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
                 .appendPath(getResources().getResourceEntryName(R.drawable.boto_canviar))
                 .build();*/
 
-        Uri imageUri = Uri.parse("android.resource://"+getApplicationContext().getPackageName()+"/drawable/cancel_edit");
+        //Uri imageUri = Uri.parse("android.resource://"+getApplicationContext().getPackageName()+"/drawable/cancel_edit");
 
-        /*mStorage = FirebaseStorage.getInstance().getReference();
-        StorageReference filePath = mStorage.child(etLogin.getText().toString()).child(imageUri.getLastPathSegment());
+        mStorage = FirebaseStorage.getInstance().getReference();
+        StorageReference filePath = mStorage.child(Session.changeLogin(etLogin.getText().toString()));
 
+        //.child(imageUri.getLastPathSegment());
+        /*
         filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(LoginActivity.this,"exito pelotudo",Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
+
+        */
+
         usTkn = userToken;
         UserManager.getInstance(getApplicationContext()).getUserData(username, LoginActivity.this, userToken);
     }

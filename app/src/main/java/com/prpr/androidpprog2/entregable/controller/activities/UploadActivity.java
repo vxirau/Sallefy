@@ -3,6 +3,7 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -33,6 +34,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.adapters.ImageAdapter;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
@@ -68,7 +70,6 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private String username;
     private ImageView thumbnail;
     private Uri mFileUri,mPhotoUri;
-    private String thumbnailPas;
 
     private Playlist uploadPlylst;
 
@@ -78,6 +79,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
     private Task<Uri> mUploadTask;
+    private String downloadUri, coverPas;
 
 
 
@@ -97,8 +99,9 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
 
         pManager = new PlaylistManager(mContext);
-        mStorage = FirebaseStorage.getInstance().getReference(Session.getUser().getLogin());
-        mDatabase = FirebaseDatabase.getInstance().getReference(Session.getUser().getLogin());
+
+        mStorage = FirebaseStorage.getInstance().getReference(Session.changeLogin(Session.getUser().getLogin()));
+        mDatabase = FirebaseDatabase.getInstance().getReference(Session.changeLogin(Session.getUser().getLogin()));
 
 
         etTitle = (EditText) findViewById(R.id.create_song_title);
@@ -165,11 +168,15 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
         thumbnail = (ImageView) findViewById(R.id.image_upload);
 
+        if(ImageAdapter.upload != null){
+            Picasso.get().load(ImageAdapter.upload.getImageUrl()).fit().centerCrop().into(thumbnail);
+            coverPas = ImageAdapter.upload.getImageUrl();
+        }
     }
 
     private void openImages(){
         Intent intent = new Intent(this, ImageActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,2);
     }
 
     private void chooseFile(){
@@ -200,7 +207,8 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
-                        String downloadUri = task.getResult().toString();
+                        Toast.makeText(UploadActivity.this,"Upload Successful", Toast.LENGTH_SHORT).show();
+                        downloadUri = task.getResult().toString();
                         Upload upload = new Upload(downloadUri);
                         String id = mDatabase.push().getKey();
                         mDatabase.child(id).setValue(upload);
@@ -232,7 +240,6 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         } else {
             Toast.makeText(this, "You have to choose a file", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void getData() {
@@ -266,7 +273,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
                 genre = g;
             }
         }
-        CloudinaryManager.getInstance(this, this).uploadAudioFile(mFileUri, etTitle.getText().toString(), genre);
+        CloudinaryManager.getInstance(this, this).uploadAudioFile(mFileUri, etTitle.getText().toString(), genre, coverPas);
     }
 
     @Override
@@ -276,14 +283,19 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
             mFileUri = data.getData();
             mFilename.setText(mFileUri.toString());
         } else {
-            if(requestCode == chooseRequest  && resultCode == RESULT_OK && data != null && data.getData() != null){
+            if(requestCode == chooseRequest && resultCode == RESULT_OK && data != null && data.getData() != null) {
                 mPhotoUri = data.getData();
+                Upload u = new Upload(mPhotoUri.toString());
+                coverPas = u.getImageUrl();
                 Picasso.get().load(mPhotoUri).fit().centerCrop().into(thumbnail);
+            } else {
+                if(requestCode == 2 && ImageAdapter.upload != null){
+                    Picasso.get().load(ImageAdapter.upload.getImageUrl()).fit().centerCrop().into(thumbnail);
+                    coverPas = ImageAdapter.upload.getImageUrl();
+                }
             }
         }
     }
-
-
 
     @Override
     protected void onPause() {
@@ -343,8 +355,13 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     @Override
     public void onCreateTrack(Track t) {
-        uploadPlylst.getTracks().add(t);
-        pManager.updatePlaylist(uploadPlylst, this);
+        if(uploadPlylst != null) {
+            uploadPlylst.getTracks().add(t);
+            pManager.updatePlaylist(uploadPlylst, this);
+        } else {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+        }
     }
 
     @Override

@@ -394,6 +394,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
             plists.setVisibility(View.VISIBLE);
         } else {
             PlaylistAdapter padapt = new PlaylistAdapter(this, this.artPlaylist);
+            padapt.setPlaylistCallback(this);
             playlistByArtistRecycle.setAdapter(padapt);
         }
     }
