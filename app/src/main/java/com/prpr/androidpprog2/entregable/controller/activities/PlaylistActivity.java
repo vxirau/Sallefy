@@ -90,7 +90,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private boolean isOpen;
     private boolean asc_dsc;
 
-    Animation fabOpen, fabClose;
+    private Animation fabOpen, fabClose;
     private final int SORT_AZ = 0;
     private final int SORT_TIME = 1;
     private final int SORT_ARTIST = 2;
@@ -104,36 +104,27 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
 
 
+
+
     private void playAudio(int audioIndex) {
 
         PreferenceUtils.saveAllTracks(getApplicationContext(), mTracks);
         PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+        PreferenceUtils.saveTrack(getApplicationContext(), mTracks.get(audioIndex));
         PreferenceUtils.savePlayID(getApplicationContext(), playlst.getId());
 
         if (!serviceBound) {
             Intent playerIntent = new Intent(this, ReproductorService.class);
             startService(playerIntent);
             bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-            //Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
-            //sendBroadcast(broadcastIntent);
+            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            sendBroadcast(broadcastIntent);
         } else {
             Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
             sendBroadcast(broadcastIntent);
         }
         tvTitle.setText(mTracks.get(audioIndex).getName());
         tvAuthor.setText(mTracks.get(audioIndex).getUserLogin());
-    }
-
-    private void getNewIndex(int ogIndex){
-        int finalIndex=0;
-        Track t = mTracks.get(ogIndex);
-        Collections.shuffle(mTracks);
-        for(int i=0; i<mTracks.size() ;i++){
-            if(mTracks.get(i).getName().equals(t.getName()) && mTracks.get(i).getUserLogin().equals(t.getUserLogin())){
-                finalIndex=i;
-            }
-        }
-        Collections.swap(mTracks, 0, finalIndex);
     }
 
 
@@ -341,8 +332,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                player.setShuffle(true);
                 playAudio(new Random().nextInt(mTracks.size()));
+                player.setShuffle(true);
             }
         });
 

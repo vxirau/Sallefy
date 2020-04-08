@@ -106,6 +106,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private boolean isShuffle;
 
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -147,6 +149,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     public void setShuffle(boolean valor){
         isShuffle = valor;
+        PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
     }
 
     public void toggleShuffle(){
@@ -157,12 +160,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             isShuffle=true;
             shuffle.setBackgroundResource(R.drawable.si_shuffle);;
         }
-
+        PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
     }
 
-    public boolean isShuffle(){
-        return isShuffle;
-    }
 
     public Runnable getmProgressRunner(){
         return mProgressRunner;
@@ -326,17 +326,22 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         updateUI();
     }
 
+    private void makeShuffled(){
+        shuffledAudioList = new ArrayList<>();
+        shuffledAudioList.addAll(audioList);
+        Collections.shuffle(shuffledAudioList);
+    }
+
     private BroadcastReceiver playNewAudio = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onReceive(Context context, Intent intent) {
 
             int index = PreferenceUtils.getPlayID(getApplicationContext());
-            if(currentPlaylistID!=index){
+            isShuffle= PreferenceUtils.getShuffle(getApplicationContext());
+            if(currentPlaylistID!=index || shuffledAudioList==null){
                 audioList = PreferenceUtils.getAllTracks(getApplicationContext());
-                shuffledAudioList = audioList;
-                Collections.shuffle(shuffledAudioList);
-
+                makeShuffled();
             }
             audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
             if (audioIndex != -1 && audioIndex < audioList.size()) {
@@ -402,8 +407,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             public void onSkipToNext() {
                 super.onSkipToNext();
                 skipToNext();
-                updateMetaData();
-                buildNotification(PlaybackStatus.PLAYING);
+                //updateMetaData();
+                //buildNotification(PlaybackStatus.PLAYING);
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -411,8 +416,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
                 skipToPrevious();
-                updateMetaData();
-                buildNotification(PlaybackStatus.PLAYING);
+               // updateMetaData();
+                //buildNotification(PlaybackStatus.PLAYING);
             }
 
             @Override
@@ -561,45 +566,108 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
+    private int newIndex(Track actual){
+        if(isShuffle){
+            return shuffledAudioList.indexOf(actual);
+        }else{
+            return audioList.indexOf(actual);
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void skipToNext() {
-        if (audioIndex == audioList.size() - 1) {
-            audioIndex = 0;
-            activeAudio = audioList.get(audioIndex);
-        } else {
-            activeAudio = audioList.get(++audioIndex);
+
+        if(isShuffle){
+            if (newIndex(activeAudio) == shuffledAudioList.size() - 1) {
+                activeAudio = shuffledAudioList.get(0);
+            } else {
+                int index = newIndex(activeAudio);
+                activeAudio = shuffledAudioList.get(++index);
+            }
+        }else{
+            if (newIndex(activeAudio) == audioList.size() - 1) {
+                activeAudio = audioList.get(0);
+            } else {
+                int index = newIndex(activeAudio) +1;
+                activeAudio = audioList.get(index);
+            }
         }
+        audioIndex = newIndex(activeAudio);
+
         PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+        PreferenceUtils.saveTrack(getApplicationContext(), activeAudio);
+        PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
+
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
         updateUI();
+        updateMetaData();
+        buildNotification(PlaybackStatus.PLAYING);
     }
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void skipToPrevious() {
-
-        if (audioIndex == 0) {
-            audioIndex = audioList.size() - 1;
-            activeAudio = audioList.get(audioIndex);
-        } else {
-            activeAudio = audioList.get(--audioIndex);
+        audioIndex = newIndex(activeAudio);
+        if(isShuffle){
+            if (audioIndex == 0) {
+                audioIndex = shuffledAudioList.size() - 1;
+                activeAudio = shuffledAudioList.get(audioIndex);
+            } else {
+                activeAudio = shuffledAudioList.get(--audioIndex);
+            }
+        }else{
+            if (audioIndex == 0) {
+                audioIndex = audioList.size() - 1;
+                activeAudio = audioList.get(audioIndex);
+            } else {
+                activeAudio = audioList.get(--audioIndex);
+            }
         }
+
+        audioIndex = newIndex(activeAudio);
         PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+        PreferenceUtils.saveTrack(getApplicationContext(), activeAudio);
+        PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
         updateUI();
+        updateMetaData();
+        buildNotification(PlaybackStatus.PLAYING);
     }
 
+
+    private int indexTrack(Track tr){
+        int index=-1;
+        for(int i=0; i<audioList.size() ;i++){
+            if(tr.getId()==audioList.get(i).getId()){
+                return i;
+            }
+        }
+        return index;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
             audioList = PreferenceUtils.getAllTracks(getApplicationContext());
-            audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
-            currentPlaylistID=-1;
+            Track t = PreferenceUtils.getTrack(getApplicationContext());
+            audioIndex = indexTrack(t);
+            isShuffle = PreferenceUtils.getShuffle(getApplicationContext());
+            currentPlaylistID=PreferenceUtils.getPlayID(getApplicationContext());
+
             if (audioIndex != -1 && audioIndex < audioList.size()) {
-                activeAudio = audioList.get(audioIndex);
+                if(t!=null){
+                    activeAudio=t;
+                    makeShuffled();
+                }else{
+                    activeAudio = audioList.get(audioIndex);
+                }
             } else {
                 stopSelf();
             }

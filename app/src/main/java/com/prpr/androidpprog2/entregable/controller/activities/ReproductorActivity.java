@@ -210,6 +210,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             @Override
             public void onClick(View v) {
                 serv.toggleShuffle();
+
             }
         });
 
@@ -226,6 +227,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         });
         btnBackward = (ImageButton)findViewById(R.id.music_backward_btn);
         btnBackward.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.skipToPrevious();
@@ -233,6 +235,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         });
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
         btnForward.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.skipToNext();

@@ -1,3 +1,4 @@
+
 <resources>
     <string name="app_name">Sallefy</string>
 
@@ -116,15 +117,18 @@
     <string name="genere_default_name">Genere</string>
     <string name="add_new_song">Add new song</string>
     <string name="settings">Settings</string>
+    <string name="settings_change_username">Update Username</string>
+    <string name="settings_change_email">Update Email</string>
+    <string name="settings_add_new_username">Tap your new username</string>
+    <string name="settings_add_new_email">Tap your new email</string>
+
+
     <string name="settings_change_first_name">Update First Name</string>
     <string name="settings_change_last_name">Update Last Name</string>
     <string name="update">Update</string>
-    <string name="settings_change_email">Update Email</string>
     <string name="settings_change_profile_pic">Update Profile Pic</string>
     <string name="settings_add_new_first_name">Tap your First Name</string>
     <string name="settings_add_new_last_name">Tap your Last Name</string>
-    <string name="settings_add_new_email">Tap your email</string>
-
     <string name="followed_users">Following</string>
     <string name="apply_filter">Apply filter</string>
     <string name="filter_track_search_genre">Type a genre</string>
@@ -151,4 +155,8 @@
     <string name="boto_change">Canviar portada</string>
     <string name="nom_canco">nom_canco</string>
     <string name="boto_canviar_genere">canviar genere</string>
+    <string name="canvi_genere">Gènere</string>
+    <string name="canvi_nom">Nom de la canço</string>
+    <string name="canvi_durada">Durada</string>
 </resources>
+
