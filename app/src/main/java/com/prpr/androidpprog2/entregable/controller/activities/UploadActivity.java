@@ -20,10 +20,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -49,6 +51,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 
@@ -65,6 +68,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private String username;
     private ImageView thumbnail;
     private Uri mFileUri,mPhotoUri;
+    private String thumbnailPas;
 
     private Playlist uploadPlylst;
 
@@ -73,7 +77,9 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private Context mContext;
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
-    private StorageTask mUploadTask;
+    private Task<Uri> mUploadTask;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,15 +90,14 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         initViews();
         getData();
 
-
     }
-
     private void initViews() {
 
 
         pManager = new PlaylistManager(mContext);
         mStorage = FirebaseStorage.getInstance().getReference(Session.getUser().getLogin());
         mDatabase = FirebaseDatabase.getInstance().getReference(Session.getUser().getLogin());
+
 
         etTitle = (EditText) findViewById(R.id.create_song_title);
         mFilename = (TextView) findViewById(R.id.create_song_file_name);
@@ -140,7 +145,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mUploadTask != null && mUploadTask.isInProgress()){
+                if(mUploadTask != null){
                     Toast.makeText(UploadActivity.this, "Upload already in progress", Toast.LENGTH_SHORT).show();
                 } else {
                     uploadFile();
@@ -178,14 +183,37 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         return mTm.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void uploadFile(){
-        if(mPhotoUri != null){
+    private void uploadFile() {
+        if (mPhotoUri != null) {
             StorageReference fileRef = mStorage.child("file" + System.currentTimeMillis() + "." + getExtension(mPhotoUri));
+            mUploadTask = fileRef.putFile(mPhotoUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        String downloadUri = task.getResult().toString();
+                        Upload upload = new Upload(downloadUri);
+                        String id = mDatabase.push().getKey();
+                        mDatabase.child(id).setValue(upload);
+                    } else {
+                        Toast.makeText(UploadActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            /*StorageReference fileRef = mStorage.child("file" + System.currentTimeMillis() + "." + getExtension(mPhotoUri));
             mUploadTask = fileRef.putFile(mPhotoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(UploadActivity.this, "Upload successfull", Toast.LENGTH_SHORT).show();
-                    Task<Uri> uri = fileRef.getDownloadUrl();
+                    Task<Uri> uri = fileRef.getDownloadUrl()
                     String iconPathFirebase = uri.getResult().toString();
                     Upload upload = new Upload(iconPathFirebase);
                     String id = mDatabase.push().getKey();
@@ -197,9 +225,12 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
                     Toast.makeText(UploadActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+            */
+
         } else {
-            Toast.makeText(this,"You have to choose a file",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You have to choose a file", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private void getData() {
@@ -247,9 +278,10 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
                 mPhotoUri = data.getData();
                 Picasso.get().load(mPhotoUri).fit().centerCrop().into(thumbnail);
             }
-
         }
     }
+
+
 
     @Override
     protected void onPause() {
@@ -265,7 +297,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     public void onGenresReceive(ArrayList<Genre> genres) {
         mGenresObjs = genres;
         mGenres = (ArrayList<String>) genres.stream().map(Genre -> Genre.getName()).collect(Collectors.toList());
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, mGenres);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, mGenres);
         mSpinner.setAdapter(adapter);
     }
 
