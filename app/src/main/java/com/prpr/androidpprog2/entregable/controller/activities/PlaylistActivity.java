@@ -42,6 +42,7 @@ import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
@@ -60,6 +61,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private Playlist playlst;
     private TextView plyName;
     private TextView plyAuthor;
+    private TextView followers;
     private ImageView plyImg;
 
     private TextView tvTitle;
@@ -81,6 +83,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private ArrayList<Track> mTracks;
     private int currentTrack = 0;
     private PlaylistManager pManager;
+    private TrackManager trackManager;
 
     //Sort
     private FloatingActionButton mSorts;
@@ -199,6 +202,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
         }
         pManager = new PlaylistManager(this);
+        trackManager = new TrackManager(this);
         if(playlst.getId()!=-5){
             pManager.checkFollowing(playlst.getId(), this);
         }
@@ -246,6 +250,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        followers = findViewById(R.id.followers);
+        followers.setText(playlst.getFollowers() +" Followers");
 
         playing = findViewById(R.id.reproductor);
         playing.setOnClickListener(new View.OnClickListener() {
@@ -576,16 +583,29 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     }
 
-    @Override
-    public void onTrackLiked() {
+    private int trackById(int id){
+        int valor = 0;
+        for(int i=0; i<mTracks.size() ;i++){
+            if(mTracks.get(i).getId()==id){
+                valor = i;
+            }
+        }
+        return valor;
+    }
 
+    @Override
+    public void onTrackLiked(int id) {
+        if(mTracks.get(trackById(id)).isLiked()){
+            mTracks.get(trackById(id)).setLiked(false);
+        }else{
+            mTracks.get(trackById(id)).setLiked(true);
+        }
     }
 
     @Override
     public void onTrackNotFound(Throwable throwable) {
 
     }
-
 
     @Override
     public void onFailure(Throwable throwable) {
@@ -607,6 +627,12 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         intent.putExtra("Playlst", p);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
+
+    @Override
+    public void onTrackSelectedLiked(int position) {
+        trackManager.likeTrack(mTracks.get(position).getId(), PlaylistActivity.this);
+    }
+
 
     @Override
     public void onPlaylistCreated(Playlist playlist) {

@@ -54,13 +54,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 Toast.makeText(mContext, "Item " + position, Toast.LENGTH_SHORT).show();
             }
         });
-        holder.iButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
 
-                return false;
-            }
-        });
+
     }
 
     @Override
@@ -68,7 +63,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         return mFiles.size();
     }
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder {
+    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
         public ImageView iButton;
 
@@ -76,7 +71,35 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             super(itemView);
             iButton =  (ImageView) itemView.findViewById(R.id.imageItem);
 
+            iButton.setOnCreateContextMenuListener(this);
+
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            MenuItem Select = contextMenu.add(Menu.NONE, 1, 1, "Select");
+            MenuItem Delete = contextMenu.add(Menu.NONE, 2, 2, "Delete");
+            Select.setOnMenuItemClickListener(onEditMenu);
+            Delete.setOnMenuItemClickListener(onEditMenu);
+        }
+
+        private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+                    case 1:
+                        Toast.makeText(mContext, "Select Thumbnail", Toast.LENGTH_SHORT).show();
+
+                        break;
+
+                    case 2:
+                        Toast.makeText(mContext, "Delete Thumbnail" + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        };
 
     }
 }

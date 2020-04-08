@@ -61,6 +61,24 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         });
         holder.tvTitle.setText(mTracks.get(position).getName());
         holder.tvAuthor.setText(mTracks.get(position).getUserLogin());
+
+        if(mTracks.get(position).isLiked()){
+            holder.like.setBackgroundResource(R.drawable.ic_heart);
+        }else{
+            holder.like.setBackgroundResource(R.drawable.ic_heart_no);
+        }
+        holder.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onTrackSelectedLiked(position);
+                if(mTracks.get(position).isLiked()){
+                    holder.like.setBackgroundResource(R.drawable.ic_heart_no);
+                }else{
+                    holder.like.setBackgroundResource(R.drawable.ic_heart);
+                }
+            }
+        });
+
         String segons ="";
         if(mTracks.get(position).getDuration()!=null){
             if(mTracks.get(position).getDuration()%60<10){
@@ -96,6 +114,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         LinearLayout mLayout;
         TextView tvTitle;
         Button addSong;
+        Button like;
         TextView tvAuthor;
         TextView trackLength;
         ImageView ivPicture;
@@ -105,6 +124,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
             addSong = itemView.findViewById(R.id.addSong);
             trackLength = itemView.findViewById(R.id.track_duratio);
             mLayout = itemView.findViewById(R.id.track_item_layout);
+            like = itemView.findViewById(R.id.add2Favorite);
             tvTitle = (TextView) itemView.findViewById(R.id.track_title);
             tvAuthor = (TextView) itemView.findViewById(R.id.track_author);
             ivPicture = (ImageView) itemView.findViewById(R.id.track_img);

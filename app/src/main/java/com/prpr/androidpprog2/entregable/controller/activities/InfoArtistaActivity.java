@@ -245,6 +245,11 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
+    public void onTrackSelectedLiked(int position) {
+
+    }
+
+    @Override
     public void onTracksReceived(List<Track> tracks) {
 
     }
@@ -294,9 +299,10 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
-    public void onTrackLiked() {
+    public void onTrackLiked(int id) {
 
     }
+
 
     @Override
     public void onTrackNotFound(Throwable throwable) {

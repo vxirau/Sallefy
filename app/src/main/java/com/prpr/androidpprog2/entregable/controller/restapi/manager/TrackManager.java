@@ -179,7 +179,7 @@ public class TrackManager {
 
                 int code = response.code();
                 if (response.isSuccessful()) {
-                    trackCallback.onTrackLiked();
+                    trackCallback.onTrackLiked(id);
                 } else {
                     Log.d(TAG, "Error Not Successful: " + code);
                     trackCallback.onTrackNotFound(new Throwable("ERROR " + code + ", " + response.raw().message()));

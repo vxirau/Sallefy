@@ -9,35 +9,30 @@ import java.util.List;
 public class Track implements Serializable, Comparable<Track> {
 
     @SerializedName("color")
-    private String color;
-
+    public String color;
     @SerializedName("duration")
-    private Integer duration;
-
+    public int duration;
     @SerializedName("genres")
-    private List<Genre> genres;
-
+    public List<Genre> genres = null;
     @SerializedName("id")
-    private Integer id;
-
+    public int id;
+    @SerializedName("liked")
+    public boolean liked;
+    @SerializedName("likes")
+    public int likes;
     @SerializedName("name")
-    private String name;
-
+    public String name;
     @SerializedName("owner")
-    private User user;
-
+    public User user;
+    @SerializedName("plays")
+    public int plays;
     @SerializedName("released")
-    private String released;
-
+    public String released;
     @SerializedName("thumbnail")
-    private String thumbnail;
-
+    public String thumbnail;
     @SerializedName("url")
-    private String url;
+    public String url;
 
-    private boolean selected = false;
-
-    private boolean liked;
 
     public String getColor() {
         return color;
@@ -127,12 +122,28 @@ public class Track implements Serializable, Comparable<Track> {
         this.liked = liked;
     }
 
-    public boolean isSelected() {
-        return selected;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getPlays() {
+        return plays;
+    }
+
+    public void setPlays(int plays) {
+        this.plays = plays;
     }
 
     public void print(){

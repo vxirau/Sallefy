@@ -169,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         if(servidorVinculat){
             serv.setSeekCallback(this);
         }
+        pManager.getAllPlaylists(this);
+        pManager.getTopPlaylists(this);
         pManager.getFollowingPlaylists(this);
     }
 

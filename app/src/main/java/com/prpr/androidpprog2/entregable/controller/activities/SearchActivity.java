@@ -545,5 +545,10 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     }
 
+    @Override
+    public void onTrackSelectedLiked(int position) {
+
+    }
+
 }
 
