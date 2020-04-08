@@ -4,6 +4,8 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.ImageAdapter;
 import com.prpr.androidpprog2.entregable.model.Upload;
@@ -33,6 +36,8 @@ public class ImageActivity  extends AppCompatActivity {
 
     private ProgressBar pBar;
 
+
+    //private FirebaseStorage mStorage;
     private DatabaseReference mDataBase;
     private List<Upload> iUploads;
 
@@ -48,13 +53,18 @@ public class ImageActivity  extends AppCompatActivity {
 
         iUploads = new ArrayList<>();
 
+
         mDataBase = FirebaseDatabase.getInstance().getReference(Session.getUser().getLogin());
+        //mStorage = FirebaseStorage.getInstance();
 
         mDataBase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //iUploads.clear();
+
                 for(DataSnapshot d : dataSnapshot.getChildren()){
                     Upload u = d.getValue(Upload.class);
+                    //u.setmKey(d.getKey());
                     iUploads.add(u);
                 }
 
@@ -71,4 +81,6 @@ public class ImageActivity  extends AppCompatActivity {
             }
         });
     }
+
+
 }
