@@ -38,6 +38,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorS
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -146,9 +147,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        if(getIntent().getSerializableExtra("UserInfo")!=null){
-            myUser = (User) getIntent().getSerializableExtra("UserInfo");
-        }
+        myUser = Session.getUser();
         initViews();
 
     }
@@ -213,13 +212,15 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
+                        Intent intent3 = new Intent(getApplicationContext(), UserMainActivity.class);
+                        intent3.putExtra("UserInfo", myUser);
                         return true;
                 }
                 return false;
             }
         });
 
-        System.out.println("USER: "+ myUser.getFirstName() + "  " +  myUser.getLastName() +"       " +myUser.getLogin() );
+
 
         btnBack = findViewById(R.id.back2User);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -280,24 +281,25 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     private void doUpdateUser(){
 
-        if(myUser == null) System.out.println("es null que flipas");
+
         System.out.println("viejo" + myUser.getFirstName());
-        if(etFirstName.getText() != null){
+        if(etFirstName.getText().length() > 0 || etFirstName.getText() != null){
             this.myUser.setFirstName(etFirstName.getText().toString());
         }
-        if(etLastName.getText() != null){
+        if(etLastName.getText().length() > 0 || etLastName.getText() != null){
             this.myUser.setLastName(etLastName.getText().toString());
         }
-        if(etEmail.getText() != null){
+        if(etEmail.getText().length() > 0 || etEmail.getText() != null){
             this.myUser.setEmail(etEmail.getText().toString());
         }
-        System.out.println("nuevo" + myUser.getFirstName());
+        System.out.println("nuevo" + myUser.getId());
         //if(pictureSelected){
          //   this.myUser.seti
         //}
-        this.userManager = new UserManager();
-        this.userManager.updateUser(myUser, this);
-        System.out.println("after update" + myUser.getFirstName());
+
+        userManager = new UserManager(this);
+        userManager.updateUser(myUser, this);
+        System.out.println("after update" + myUser.getId());
 
     }
 
@@ -330,13 +332,18 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     }
 
     @Override
-    public void onUserUpdated(User user) {
-        this.myUser = user;
+    public void onUserUpdated() {
+        finish();
     }
 
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onUserUpdateFailure(Throwable throwable) {
 
     }
 

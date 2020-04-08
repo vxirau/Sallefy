@@ -550,9 +550,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
     @Override
-    public void onUserUpdated(User user) {
+    public void onUserUpdated() {
 
     }
+
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
@@ -560,6 +561,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         UserAdapter p3 = new UserAdapter(this, this.topUsers);
         p3.setUserCallback(this);
         topUsersReycle.setAdapter(p3);
+    }
+
+    @Override
+    public void onUserUpdateFailure(Throwable throwable) {
+
     }
 
     @Override

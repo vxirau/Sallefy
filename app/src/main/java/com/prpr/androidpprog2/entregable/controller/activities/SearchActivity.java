@@ -445,12 +445,18 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
-    public void onUserUpdated(User user) {
+    public void onUserUpdated() {
+
+    }
+
+
+    @Override
+    public void onTopUsersRecieved(List<User> body) {
 
     }
 
     @Override
-    public void onTopUsersRecieved(List<User> body) {
+    public void onUserUpdateFailure(Throwable throwable) {
 
     }
 

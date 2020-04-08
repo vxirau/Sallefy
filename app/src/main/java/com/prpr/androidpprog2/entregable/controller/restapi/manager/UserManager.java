@@ -3,10 +3,11 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
-import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
+import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserLogin;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
@@ -34,10 +35,6 @@ public class UserManager {
 
     private UserService mService;
     private UserTokenService mTokenService;
-
-    public UserManager() {
-
-    }
 
 
     public static UserManager getInstance(Context context) {
@@ -87,26 +84,32 @@ public class UserManager {
     }
 
 
-   public synchronized void updateUser(User user, final UserCallback userCallback){
-       UserToken userToken = Session.getInstance(mContext).getUserToken();
+    public void updateUser(User user, final UserCallback userCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-       Call<ResponseBody> call = mService.updateUser(user, "Bearer " + userToken.getIdToken());
-       call.enqueue(new Callback<ResponseBody>() {
+        Call<User> call = mService.updateUser(user, "Bearer " + userToken.getIdToken());
+       call.enqueue(new Callback<User>() {
            @Override
-           public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+           public void onResponse(Call<User> call, Response<User> response) {
                int code = response.code();
                if (response.isSuccessful()) {
-                   userCallback.onUserUpdated(user);
+                   userCallback.onUserUpdated();
+                   System.out.println("is successful");
                } else {
-                   Log.d(TAG, "Error Not Successful: " + code);
-                   userCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                   try{
+                       userCallback.onUserUpdateFailure(new Throwable(response.errorBody().string()));
+                       System.out.println("it is not successful");
+                   }catch (IOException e){
+                       e.printStackTrace();
+                   }
                }
            }
 
            @Override
-           public void onFailure(Call<ResponseBody> call, Throwable t) {
+           public void onFailure(Call<User> call, Throwable t) {
                Log.d(TAG, "Error Failure: " + t.getStackTrace());
-               userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+               userCallback.onUserUpdateFailure(new Throwable("ERROR " + t.getStackTrace()));
+
            }
        });
 

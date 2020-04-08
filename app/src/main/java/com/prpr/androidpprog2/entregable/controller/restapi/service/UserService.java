@@ -33,7 +33,7 @@ public interface UserService {
     Call<ResponseBody> registerUser(@Body UserRegister user);
 
     @PUT("users")
-    Call<ResponseBody> updateUser(@Body User user, @Header("Authorization") String token);
+    Call<User> updateUser(@Body User user, @Header("Authorization") String token);
 
 
 
