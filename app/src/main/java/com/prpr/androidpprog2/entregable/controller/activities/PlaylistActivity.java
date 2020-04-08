@@ -46,6 +46,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorS
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
@@ -89,6 +90,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private int mSorted = -1;
     private boolean isOpen;
     private boolean asc_dsc;
+
+    private User user;
+
 
     private Animation fabOpen, fabClose;
     private final int SORT_AZ = 0;
@@ -198,6 +202,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         if(playlst.getId()!=-5){
             pManager.checkFollowing(playlst.getId(), this);
         }
+        if(getIntent().getSerializableExtra("UserInfo")!=null){
+            user = (User) getIntent().getSerializableExtra("UserInfo");
+        }
         initViews();
         getData();
     }
@@ -218,15 +225,18 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                         Intent intent0 = new Intent(getApplicationContext(), MainActivity.class);
                         intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivityForResult(intent0, Constants.NETWORK.LOGIN_OK);
+                        intent0.putExtra("UserInfo", user);
                         return true;
                     case R.id.buscar:
                         Intent intent1 = new Intent(getApplicationContext(), SearchActivity.class);
                         intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent1.putExtra("UserInfo", user);
                         startActivityForResult(intent1, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
                         Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent2.putExtra("UserInfo", user);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                 }

@@ -75,6 +75,8 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private DatabaseReference mDatabase;
     private StorageTask mUploadTask;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -47,16 +47,15 @@ import java.util.List;
 public class SettingsActivity extends AppCompatActivity implements UserCallback, ServiceCallback {
 
     private EditText etFirstName;
-    private Button btnFirstName;
-
     private EditText etLastName;
-    private Button btnLastName;
-
     private EditText etEmail;
-    private Button btnEmail;
 
     private ImageButton imgBtnUserPic;
-    private Button btnUserPic;
+
+    private Button btnUpdate;
+    private Button btnLogOut;
+
+    private Boolean pictureSelected;
 
     private ScrollView settingsScrollView;
     private User myUser;
@@ -166,7 +165,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
                 serv.resumeMedia();
             }
         });
-
+        pictureSelected = false;
         pause = findViewById(R.id.playPause);
         pause.setEnabled(true);
         pause.bringToFront();
@@ -204,11 +203,13 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
                     case R.id.home:
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent.putExtra("UserInfo", myUser);
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.buscar:
                         Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intent2.putExtra("UserInfo", myUser);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
@@ -218,52 +219,49 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             }
         });
 
+        System.out.println("USER: "+ myUser.getFirstName() + "  " +  myUser.getLastName() +"       " +myUser.getLogin() );
+
         btnBack = findViewById(R.id.back2User);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
                 startActivity(intent);
+                intent.putExtra("UserInfo", myUser);
 
             }
         });
+
 
         etFirstName = (EditText) findViewById(R.id.textview_settings_change_first_name);
 
-
-        btnFirstName =  (Button) findViewById(R.id.update_first_name_button);
-        btnFirstName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               doUpdateFirstName(myUser);
-
-            }
-        });
-
         etLastName = (EditText) findViewById(R.id.textview_settings_change_last_name);
-
-        btnLastName =  (Button) findViewById(R.id.update_last_name_button);
-        btnLastName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doUpdateLastName(myUser);
-
-            }
-        });
 
         etEmail = (EditText) findViewById(R.id.textview_settings_change_email);
 
-        btnEmail =  (Button) findViewById(R.id.update_email_button);
-        btnEmail.setOnClickListener(new View.OnClickListener() {
+        btnUpdate = findViewById(R.id.update_button);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doUpdateEmail(myUser);
+                doUpdateUser();
+            }
+        });
+
+
+        btnLogOut =  (Button) findViewById(R.id.log_out_button);
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
 
             }
         });
 
+
+
+
+
         imgBtnUserPic = findViewById(R.id.userImage);
-        //userManager.getUser(myUser.getLogin(), this);
         if(myUser.getImageUrl()!=null){
             Picasso.get().load(myUser.getImageUrl()).into(imgBtnUserPic);
         }else{
@@ -280,20 +278,27 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     }
 
-    private void doUpdateFirstName(User user){
-        userManager = new UserManager(this);
-        userManager.updateUserFirstName(user, this);
-    }
+    private void doUpdateUser(){
 
-    private void doUpdateLastName(User user){
-        userManager = new UserManager(this);
-        userManager.updateUserLastName(user, this);
-    }
+        if(myUser == null) System.out.println("es null que flipas");
+        System.out.println("viejo" + myUser.getFirstName());
+        if(etFirstName.getText() != null){
+            this.myUser.setFirstName(etFirstName.getText().toString());
+        }
+        if(etLastName.getText() != null){
+            this.myUser.setLastName(etLastName.getText().toString());
+        }
+        if(etEmail.getText() != null){
+            this.myUser.setEmail(etEmail.getText().toString());
+        }
+        System.out.println("nuevo" + myUser.getFirstName());
+        //if(pictureSelected){
+         //   this.myUser.seti
+        //}
+        this.userManager = new UserManager();
+        this.userManager.updateUser(myUser, this);
+        System.out.println("after update" + myUser.getFirstName());
 
-    private void doUpdateEmail(User user){
-        userManager = new UserManager(this);
-        userManager.updateEmail(user, this);
-        System.out.println(user.getEmail());
     }
 
     @Override
@@ -325,20 +330,10 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     }
 
     @Override
-    public void onUserFirstNameUpdated(User user) {
-
-        this.myUser.setFirstName(user.getFirstName());
+    public void onUserUpdated(User user) {
+        this.myUser = user;
     }
 
-    @Override
-    public void onUserLastNameUpdated(User user) {
-        this.myUser.setLastName(user.getLastName());
-    }
-
-    @Override
-    public void onEmailUpdated(User user) {
-        this.myUser.setEmail(user.getEmail());
-    }
 
     @Override
     public void onTopUsersRecieved(List<User> body) {

@@ -87,90 +87,33 @@ public class UserManager {
     }
 
 
-   public synchronized void updateUserFirstName(User user, final UserCallback userCallback){
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
+   public synchronized void updateUser(User user, final UserCallback userCallback){
+       UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<User> call = mService.updateUserFirstName(user, "Bearer " + userToken.getIdToken());
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                int code = response.code();
-                if (response.isSuccessful()) {
-                    userCallback.onUserFirstNameUpdated(response.body());
-                } else {
-                    try{
-                        userCallback.onFailure(new Throwable(response.errorBody().string()));
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
+       Call<ResponseBody> call = mService.updateUser(user, "Bearer " + userToken.getIdToken());
+       call.enqueue(new Callback<ResponseBody>() {
+           @Override
+           public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+               int code = response.code();
+               if (response.isSuccessful()) {
+                   userCallback.onUserUpdated(user);
+               } else {
+                   Log.d(TAG, "Error Not Successful: " + code);
+                   userCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+               }
+           }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.d(TAG, "Error Failure: " + t.getStackTrace());
-                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
-            }
-        });
+           @Override
+           public void onFailure(Call<ResponseBody> call, Throwable t) {
+               Log.d(TAG, "Error Failure: " + t.getStackTrace());
+               userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+           }
+       });
 
     }
 
-    public synchronized void updateUserLastName(User user, final UserCallback userCallback){
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<User> call = mService.updateUserLastName(user, "Bearer " + userToken.getIdToken());
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                int code = response.code();
-                if (response.isSuccessful()) {
-                    userCallback.onUserLastNameUpdated(response.body());
-                } else {
-                    try{
-                        userCallback.onFailure(new Throwable(response.errorBody().string()));
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.d(TAG, "Error Failure: " + t.getStackTrace());
-                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
-            }
-        });
-
-    }
-
-    public synchronized void updateEmail(User user, final UserCallback userCallback){
-
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
-
-        Call<User> call = mService.updateEmail(user, "Bearer " + userToken.getIdToken());
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                int code = response.code();
-                if (response.isSuccessful()) {
-                    userCallback.onEmailUpdated(response.body());
-                } else {
-                    try{
-                        userCallback.onFailure(new Throwable(response.errorBody().string()));
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.d(TAG, "Error Failure: " + t.getStackTrace());
-                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
-            }
-        });
-
-    }
 
     public synchronized void getTopUsers (final UserCallback userCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();

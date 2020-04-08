@@ -280,6 +280,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                        intent.putExtra("UserInfo", user);
                         return true;
                     case R.id.buscar:
                         return true;
@@ -444,18 +445,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
-    public void onUserFirstNameUpdated(User user) {
-
-    }
-
-    @Override
-    public void onUserLastNameUpdated(User user) {
-
-    }
-
-
-    @Override
-    public void onEmailUpdated(User user) {
+    public void onUserUpdated(User user) {
 
     }
 

@@ -137,21 +137,10 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     }
 
     @Override
-    public void onUserFirstNameUpdated(User user) {
+    public void onUserUpdated(User user) {
 
     }
 
-    @Override
-    public void onUserLastNameUpdated(User user) {
-
-    }
-
-
-
-    @Override
-    public void onEmailUpdated(User user) {
-
-    }
 
     @Override
     public void onTopUsersRecieved(List<User> body) {

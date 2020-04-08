@@ -548,19 +548,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
     @Override
-    public void onUserFirstNameUpdated(User user) {
-
-    }
-
-    @Override
-    public void onUserLastNameUpdated(User user) {
-
-    }
-
-
-
-    @Override
-    public void onEmailUpdated(User user) {
+    public void onUserUpdated(User user) {
 
     }
 
