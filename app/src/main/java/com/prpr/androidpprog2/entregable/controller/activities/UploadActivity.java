@@ -83,6 +83,8 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
 
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -373,9 +375,11 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     }
 
     @Override
-    public void onTrackLiked() {
+    public void onTrackLiked(int id) {
 
     }
+
+
 
     @Override
     public void onTrackNotFound(Throwable throwable) {
@@ -460,6 +464,11 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     @Override
     public void onFollowSuccessfull(Follow body) {
+
+    }
+
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
 
     }
 }

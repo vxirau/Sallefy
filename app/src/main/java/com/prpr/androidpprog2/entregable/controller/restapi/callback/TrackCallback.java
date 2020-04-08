@@ -13,6 +13,6 @@ public interface TrackCallback extends FailureCallback {
     void onCreateTrack(Track t);
     void onTopTracksRecieved(List<Track> tracks);
     void onNoTopTracks(Throwable throwable);
-    void onTrackLiked();
+    void onTrackLiked(int id);
     void onTrackNotFound(Throwable throwable);
 }

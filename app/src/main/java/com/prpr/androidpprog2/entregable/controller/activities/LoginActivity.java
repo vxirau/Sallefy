@@ -173,24 +173,19 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
     @Override
-    public void onUserFirstNameUpdated(User user) {
-
-    }
-
-    @Override
-    public void onUserLastNameUpdated(User user) {
+    public void onUserUpdated() {
 
     }
 
 
-
-    @Override
-    public void onEmailUpdated(User user) {
-
-    }
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onUserUpdateFailure(Throwable throwable) {
 
     }
 

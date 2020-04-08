@@ -415,5 +415,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     }
 
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
 
 }

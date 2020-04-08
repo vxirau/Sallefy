@@ -8,4 +8,5 @@ import java.util.ArrayList;
 public interface TrackListCallback {
     void onTrackSelected(int index);
     void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist playlist);
+    void onTrackSelectedLiked(int position);
 }

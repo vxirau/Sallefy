@@ -169,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         if(servidorVinculat){
             serv.setSeekCallback(this);
         }
+        pManager.getAllPlaylists(this);
+        pManager.getTopPlaylists(this);
         pManager.getFollowingPlaylists(this);
     }
 
@@ -521,6 +523,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
@@ -548,21 +555,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
     @Override
-    public void onUserFirstNameUpdated(User user) {
+    public void onUserUpdated() {
 
     }
 
-    @Override
-    public void onUserLastNameUpdated(User user) {
-
-    }
-
-
-
-    @Override
-    public void onEmailUpdated(User user) {
-
-    }
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
@@ -570,6 +566,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         UserAdapter p3 = new UserAdapter(this, this.topUsers);
         p3.setUserCallback(this);
         topUsersReycle.setAdapter(p3);
+    }
+
+    @Override
+    public void onUserUpdateFailure(Throwable throwable) {
+
     }
 
     @Override
