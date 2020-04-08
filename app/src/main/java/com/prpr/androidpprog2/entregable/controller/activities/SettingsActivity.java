@@ -202,18 +202,14 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
                     case R.id.home:
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent.putExtra("UserInfo", myUser);
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.buscar:
                         Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent2.putExtra("UserInfo", myUser);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
-                        Intent intent3 = new Intent(getApplicationContext(), UserMainActivity.class);
-                        intent3.putExtra("UserInfo", myUser);
                         return true;
                 }
                 return false;
