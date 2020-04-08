@@ -2,6 +2,7 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.app.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -30,9 +31,11 @@ import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,6 +71,9 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     private EditText etSearchTracks;
 
     private TrackManager trackManager;
+    public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
+
+
 
     public UserTracksFragment() {
         // Required empty public constructor
@@ -250,9 +256,22 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
         }
     }
 
+    private void playAudio(int audioIndex) {
+
+        PreferenceUtils.saveAllTracks(getActivity(), myTracks);
+        PreferenceUtils.saveTrackIndex(getActivity(), audioIndex);
+        PreferenceUtils.saveTrack(getActivity(), myTracks.get(audioIndex));
+        PreferenceUtils.savePlayID(getActivity(), -5);
+        //yuhu hola adri, ara te cuento
+
+        Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+        getActivity().sendBroadcast(broadcastIntent);
+
+    }
+
     @Override
     public void onTrackSelected(int index) {
-
+        playAudio(index);
     }
 
     @Override
@@ -262,7 +281,7 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     @Override
     public void onTrackSelectedLiked(int position) {
-
+        trackManager.likeTrack(myTracks.get(position).getId(), UserTracksFragment.this);
     }
 
     @Override
@@ -302,9 +321,23 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     }
 
+    private int trackById(int id){
+        int valor = 0;
+        for(int i=0; i<myTracks.size() ;i++){
+            if(myTracks.get(i).getId()==id){
+                valor = i;
+            }
+        }
+        return valor;
+    }
+
     @Override
     public void onTrackLiked(int id) {
-
+        if(myTracks.get(trackById(id)).isLiked()){
+            myTracks.get(trackById(id)).setLiked(false);
+        }else{
+            myTracks.get(trackById(id)).setLiked(true);
+        }
     }
 
 
