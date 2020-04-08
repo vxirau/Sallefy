@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +37,7 @@ import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.util.ArrayList;
@@ -69,6 +72,8 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     private LinearLayout playing;
     private ReproductorService serv;
     private boolean servidorVinculat=false;
+    public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
+
 
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -161,6 +166,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
@@ -170,6 +176,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         pause.setEnabled(true);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
@@ -231,9 +238,36 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     }
 
+
+
+    private void playAudio(int audioIndex) {
+
+        PreferenceUtils.saveAllTracks(getApplicationContext(), artTracks);
+        PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+        PreferenceUtils.saveTrack(getApplicationContext(), artTracks.get(audioIndex));
+        PreferenceUtils.savePlayID(getApplicationContext(), -6);
+
+        if (!servidorVinculat) {
+            Intent playerIntent = new Intent(this, ReproductorService.class);
+            startService(playerIntent);
+            bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            sendBroadcast(broadcastIntent);
+        } else {
+            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            sendBroadcast(broadcastIntent);
+        }
+        trackTitle.setText(artTracks.get(audioIndex).getName());
+        trackAuthor.setText(artTracks.get(audioIndex).getUserLogin());
+    }
+
+
+
     @Override
     public void onTrackSelected(int index) {
-
+        pause.setVisibility(View.VISIBLE);
+        play.setVisibility(View.INVISIBLE);
+        playAudio(index);
     }
 
     @Override

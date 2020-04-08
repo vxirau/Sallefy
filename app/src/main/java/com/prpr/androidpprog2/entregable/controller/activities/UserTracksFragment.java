@@ -262,7 +262,6 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
         PreferenceUtils.saveTrackIndex(getActivity(), audioIndex);
         PreferenceUtils.saveTrack(getActivity(), myTracks.get(audioIndex));
         PreferenceUtils.savePlayID(getActivity(), -5);
-        //yuhu hola adri, ara te cuento
 
         Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
         getActivity().sendBroadcast(broadcastIntent);
