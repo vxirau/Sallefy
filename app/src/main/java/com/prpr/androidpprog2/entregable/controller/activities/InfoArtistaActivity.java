@@ -437,4 +437,9 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     public void onFollowSuccessfull(Follow body) {
 
     }
+
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+
+    }
 }

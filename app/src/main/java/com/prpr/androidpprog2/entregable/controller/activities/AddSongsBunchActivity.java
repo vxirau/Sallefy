@@ -288,4 +288,9 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     public void onFollowSuccessfull(Follow body) {
 
     }
+
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+
+    }
 }

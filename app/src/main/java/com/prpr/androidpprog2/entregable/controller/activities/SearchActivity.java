@@ -417,6 +417,11 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     }
 
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {

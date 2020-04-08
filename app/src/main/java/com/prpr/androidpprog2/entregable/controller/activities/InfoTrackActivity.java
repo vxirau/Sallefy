@@ -55,7 +55,6 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
 
     private TrackManager tManager;
 
-    private boolean liked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -183,12 +182,13 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
 
     @Override
     public void onTrackLiked(int id) {
-        if(liked){
-            Toast.makeText(getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT);
-            liked= false;
+        if(trck.isLiked()){
+            Toast.makeText(getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
+            trck.setLiked(false);
+            System.out.println("hooaoofodwfoiehfowehif");
         }else{
-            Toast.makeText(getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT);
-            liked= true;
+            Toast.makeText(getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
+            trck.setLiked(true);
         }
     }
 

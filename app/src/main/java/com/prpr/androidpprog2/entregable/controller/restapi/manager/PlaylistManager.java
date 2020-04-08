@@ -281,5 +281,28 @@ public class PlaylistManager {
         });
     }
 
+    public synchronized void getPlaylist (int id, final PlaylistCallback playlistCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<Playlist> call = mPlaylistService.getPlaylist("Bearer " + userToken.getIdToken(), id);
+        call.enqueue(new Callback<Playlist>() {
+            @Override
+            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    playlistCallback.onPlaylistRecived(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    playlistCallback.onPlaylistFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Playlist> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                playlistCallback.onPlaylistFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
     }
+}
 
