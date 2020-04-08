@@ -261,6 +261,11 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     }
 
     @Override
+    public void onTrackSelectedLiked(int position) {
+
+    }
+
+    @Override
     public void onTracksReceived(List<Track> tracks) {
 
     }
@@ -298,9 +303,10 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     }
 
     @Override
-    public void onTrackLiked() {
+    public void onTrackLiked(int id) {
 
     }
+
 
     @Override
     public void onTrackNotFound(Throwable throwable) {

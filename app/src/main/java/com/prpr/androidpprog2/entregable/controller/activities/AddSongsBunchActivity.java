@@ -42,14 +42,6 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     private PlaylistManager pManager;
     private PlaylistCallback pCall;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(myTracks!=null){
-            BunchTrackListAdapter adapter = new BunchTrackListAdapter(this, this, (ArrayList) ply.getTracks());
-            llistaCancons.setAdapter(adapter);
-        }
-    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,9 +172,10 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     }
 
     @Override
-    public void onTrackLiked() {
+    public void onTrackLiked(int id) {
 
     }
+
 
     @Override
     public void onTrackNotFound(Throwable throwable) {

@@ -311,8 +311,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
     }
 
     @Override
-    public void onTrackLiked() {
-
+    public void onTrackLiked(int id) {
         if(liked){
             likeTrack.setBackgroundResource(R.drawable.ic_favorite_track);;
             liked=false;
@@ -321,6 +320,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             liked=true;
         }
     }
+
 
     @Override
     public void onTrackNotFound(Throwable throwable) {

@@ -12,7 +12,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:layout_marginTop="5dp">
 
 
         <LinearLayout
@@ -59,23 +60,32 @@
 
             <ImageView
                 android:id="@+id/playlistCover"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_marginTop="10dp"
                 android:scaleType="fitCenter"
                 tools:layout_editor_absoluteX="136dp"
                 tools:layout_editor_absoluteY="32dp" />
 
             <TextView
+            android:id="@+id/followers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/autor_de_la_playlist"
+            android:textColor="@color/colorWhite"
+            android:textSize="13sp" />
+
+            <TextView
                 android:id="@+id/playlistAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="@string/autor_de_la_playlist"
                 android:layout_marginBottom="5dp"
-                android:textColor="@color/colorGrey"
-                android:textSize="10dp" />
+                android:textColor="@color/colorWhite"
+                android:textSize="11sp" />
 
             <Button
                 android:id="@+id/playlistSeguirBoto"
@@ -89,7 +99,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="65dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:gravity="center">

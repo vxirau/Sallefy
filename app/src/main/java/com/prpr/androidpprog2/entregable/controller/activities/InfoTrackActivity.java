@@ -182,7 +182,7 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
     }
 
     @Override
-    public void onTrackLiked() {
+    public void onTrackLiked(int id) {
         if(liked){
             Toast.makeText(getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT);
             liked= false;
@@ -191,6 +191,7 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
             liked= true;
         }
     }
+
 
     @Override
     public void onTrackNotFound(Throwable throwable) {

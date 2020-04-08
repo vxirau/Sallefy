@@ -10,30 +10,26 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Playlist implements Serializable, Comparable<Playlist> {
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("description")
-    @Expose
-    private String description;
     @SerializedName("cover")
-    @Expose
-    private String cover;
-    @SerializedName("thumbnail")
-    @Expose
-    private String thumbnail;
-    @SerializedName("publicAccessible")
-    @Expose
-    private boolean publicAccessible;
+    public String cover;
+    @SerializedName("description")
+    public String description;
+    @SerializedName("followed")
+    public boolean followed;
+    @SerializedName("followers")
+    public int followers;
+    @SerializedName("id")
+    public int id;
+    @SerializedName("name")
+    public String name;
     @SerializedName("owner")
-    @Expose
-    private User owner;
+    public User owner;
+    @SerializedName("publicAccessible")
+    public boolean publicAccessible;
+    @SerializedName("thumbnail")
+    public String thumbnail;
     @SerializedName("tracks")
-    @Expose
-    private List<Track> tracks;
+    public List<Track> tracks = null;
 
 
     public Playlist(String name) {
@@ -56,6 +52,21 @@ public class Playlist implements Serializable, Comparable<Playlist> {
         this.tracks = null;
     }
 
+    public boolean isFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(boolean followed) {
+        this.followed = followed;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
 
     public int getId() {
         return id;

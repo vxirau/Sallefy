@@ -59,7 +59,14 @@
             android:textStyle="bold"
             android:textColor="@color/colorWhite"
             android:fontFamily="@font/gotham_book"/>
+        <Button
+            android:id="@+id/add2Favorite"
+            android:layout_width="23dp"
+            android:layout_height="20dp"
 
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_heart" />
         <Button
             android:id="@+id/addSong"
             android:layout_width="7dp"
