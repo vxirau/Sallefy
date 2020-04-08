@@ -149,4 +149,9 @@ public class NewPlaylistActivity extends Activity implements PlaylistCallback {
 
     }
 
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
 }

@@ -191,6 +191,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         if(serviceBound){
             player.setSeekCallback(this);
         }
+        pManager.getPlaylist(playlst.getId(), this);
     }
 
     @Override
@@ -732,5 +733,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
     }
 
-
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+        playlst = playlist;
+        mTracks = (ArrayList<Track>) playlist.getTracks();
+        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        mRecyclerView.setAdapter(adapter);
+    }
 }

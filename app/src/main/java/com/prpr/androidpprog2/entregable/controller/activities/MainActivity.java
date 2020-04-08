@@ -523,6 +523,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {

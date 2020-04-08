@@ -52,6 +52,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
     private TextView duracioTotal;
     private TextView duracioActual;
 
+    private Track active;
+
     private ImageButton btnBackward;
     private Button btnPlay;
     private Button btnPause;
@@ -101,6 +103,18 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         if(servidorVinculat){
             serv.setSeekCallback(this);
             serv.setShuffleButtonUI();
+            active = serv.getActiveAudio();
+            updateLiked();
+        }
+    }
+
+    private void updateLiked() {
+        if(!active.isLiked()){
+            likeTrack.setBackgroundResource(R.drawable.ic_favorite_track);;
+            liked=true;
+        }else{
+            likeTrack.setBackgroundResource(R.drawable.ic_favorite_true);;
+            liked=false;
         }
     }
 
@@ -120,6 +134,8 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             //serv.setmVisualizer(mVisualizer);
+            active = serv.getActiveAudio();
+            updateLiked();
             serv.setRandomButton(shuffle);
             serv.setShuffleButtonUI();
             serv.setDuracioTotal(duracioTotal);

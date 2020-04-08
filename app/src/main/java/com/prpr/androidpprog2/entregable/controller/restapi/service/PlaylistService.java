@@ -42,5 +42,8 @@ public interface PlaylistService {
     @PUT("playlists/{id}/follow")
     Call<Follow> followPlaylist(@Path("id") String id, @Header("Authorization") String token);
 
+    @GET("playlists/{id}")
+    Call<Playlist> getPlaylist(@Header("Authorization") String token, @Path("id") int id);
+
 
 }

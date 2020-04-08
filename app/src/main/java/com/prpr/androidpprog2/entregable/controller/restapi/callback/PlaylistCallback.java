@@ -23,4 +23,5 @@ public interface PlaylistCallback {
     void onFollowingRecieved(List<Playlist> body);
     void onFollowingChecked(Follow body);
     void onFollowSuccessfull(Follow body);
+    void onPlaylistRecived(Playlist playlist);
 }

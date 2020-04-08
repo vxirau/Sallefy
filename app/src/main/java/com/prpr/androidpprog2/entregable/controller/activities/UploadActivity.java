@@ -449,4 +449,9 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     public void onFollowSuccessfull(Follow body) {
 
     }
+
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+
+    }
 }

@@ -245,6 +245,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     }
 
+    public Track getActiveAudio(){
+        return activeAudio;
+    }
 
     public void setRandomButton(ImageButton shuffle) {
         this.shuffle = shuffle;
