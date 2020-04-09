@@ -311,7 +311,6 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     private void doUpdateUser(){
 
 
-        System.out.println("viejo" + myUser.getFirstName());
         if(!etFirstName.getText().toString().matches("")){
             this.myUser.setFirstName(etFirstName.getText().toString());
         }
@@ -321,14 +320,12 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         if(!etEmail.getText().toString().matches("")){
             this.myUser.setEmail(etEmail.getText().toString());
         }
-        System.out.println("nuevo" + myUser.getId());
         //if(pictureSelected){
          //   this.myUser.seti
         //}
 
         userManager = new UserManager(this);
         userManager.updateUser(this.myUser, this);
-        System.out.println("after update" + this.myUser.getId());
 
     }
 
