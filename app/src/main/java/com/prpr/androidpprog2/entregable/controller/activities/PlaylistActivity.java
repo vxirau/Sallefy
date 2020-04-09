@@ -852,6 +852,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         mseek.setVisibility(View.VISIBLE);
         play.setVisibility(View.VISIBLE);
         pause.setVisibility(View.VISIBLE);
+        accessible.setVisibility(View.VISIBLE);
         if(!newName.getText().toString().matches("")){
             plyName.setText(newName.getText().toString());
         }
@@ -881,6 +882,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         mseek.setVisibility(View.GONE);
         play.setVisibility(View.GONE);
         pause.setVisibility(View.GONE);
+        accessible.setVisibility(View.INVISIBLE);
     }
 
     @Override
