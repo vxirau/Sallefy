@@ -297,12 +297,15 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void pauseMedia() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            buildNotification(PlaybackStatus.PAUSED);
-            resumePosition = mediaPlayer.getCurrentPosition();
+        if(mediaPlayer!=null){
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+                buildNotification(PlaybackStatus.PAUSED);
+                resumePosition = mediaPlayer.getCurrentPosition();
+            }
+            updateUI();
         }
-        updateUI();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
