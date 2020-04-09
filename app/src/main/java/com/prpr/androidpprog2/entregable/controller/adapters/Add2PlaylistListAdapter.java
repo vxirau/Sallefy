@@ -77,7 +77,7 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
 
     private void onPlaylistAdd(Playlist ply, Track trck){
         if(existsInPlaylist(ply.getTracks(), trck)){
-            ErrorDialog.getInstance(mContext).showErrorDialog("Aquesta canço ja està en aquesta playlist!");
+            ErrorDialog.getInstance(mContext).showErrorDialog("This song is already in this playlist!");
         }else{
             ply.getTracks().add(trck);
             pManager.updatePlaylist(ply, this);
@@ -93,7 +93,7 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
         });
         holder.nomPlaylist.setText(playlist.get(position).getName());
         int size = playlist.get(position).getTracks() != null ? playlist.get(position).getTracks().size() : 0 ;
-        holder.totalCancons.setText( size + " cançons");
+        holder.totalCancons.setText( size + " songs");
         if (playlist.get(position).getThumbnail() != null) {
             Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);
         }else{
