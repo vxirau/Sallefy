@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -45,5 +46,6 @@ public interface PlaylistService {
     @GET("playlists/{id}")
     Call<Playlist> getPlaylist(@Header("Authorization") String token, @Path("id") int id);
 
-
+    @DELETE("playlists/{id}")
+    Call<Playlist> deletePlaylist(@Header("Authorization") String token, @Path("id") int id);
 }

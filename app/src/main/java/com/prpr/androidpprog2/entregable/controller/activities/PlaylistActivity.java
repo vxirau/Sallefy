@@ -748,6 +748,17 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
+    public void onPlaylistDeleted(Playlist body) {
+        finish();
+        overridePendingTransition(R.anim.nothing,R.anim.nothing);
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onDelete() {
         dialogEdit.cancelDialog();
         dialogEdit.showConfirmationDialog();
@@ -766,7 +777,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onAccept() {
-        //pManager.deletePlaylist();
+        dialogEdit.cancelDialog();
+        pManager.deletePlaylist(playlst.getId(), this);
     }
 
     @Override
