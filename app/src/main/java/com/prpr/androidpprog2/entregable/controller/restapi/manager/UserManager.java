@@ -94,7 +94,7 @@ public class UserManager {
            public void onResponse(Call<User> call, Response<User> response) {
                int code = response.code();
                if (response.isSuccessful()) {
-                   userCallback.onUserUpdated();
+                   userCallback.onUserUpdated(response.body());
                    System.out.println("is successful");
                } else {
                    try{
