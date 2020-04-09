@@ -1,10 +1,13 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,6 +16,7 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.CursorAnchorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -63,7 +68,8 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     private UserManager userManager;
 
-
+    private LoginActivity LoginActivity;
+    private Context context;
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
     private TextView followingTxt;
@@ -82,6 +88,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
+            context = getApplicationContext();
             //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
@@ -93,6 +100,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             servidorVinculat = false;
         }
     };
+
 
     void doUnbindService() {
         if (servidorVinculat) {
@@ -251,6 +259,16 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             public void onClick(View view) {
 
 
+                new AlertDialog.Builder(SettingsActivity.this)
+                        .setMessage("Do you really want to log out?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                doLogOut();
+
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
             }
         });
 
@@ -274,7 +292,21 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         settingsScrollView = findViewById(R.id.settings_scrollview);
 
     }
+    private void doLogOut(){
 
+        Toast.makeText(SettingsActivity.this, "You logged out succesfully", Toast.LENGTH_SHORT).show();
+        Session.getInstance(this).resetValues();
+        SharedPreferences preferences = getSharedPreferences("RememberMe",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+
+        finish();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.putExtra("LoggedOut", true);
+        startActivity(intent);
+
+    }
     private void doUpdateUser(){
 
 
