@@ -18,6 +18,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallba
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
@@ -53,6 +54,8 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
 
     private ErrorDialog er;
 
+    private User user;
+
     private TrackManager tManager;
 
 
@@ -61,6 +64,9 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_track);
         trck = (Track) getIntent().getSerializableExtra("Trck");
+        if(getIntent().getSerializableExtra("UserInfo")!=null){
+            user = (User) getIntent().getSerializableExtra("UserInfo");
+        }
         initViews();
         tManager = new TrackManager(this);
     }

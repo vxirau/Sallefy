@@ -36,8 +36,7 @@ public class ImageActivity  extends AppCompatActivity {
 
     private ProgressBar pBar;
 
-
-    //private FirebaseStorage mStorage;
+    private FirebaseStorage mStorage;
     private DatabaseReference mDataBase;
     private List<Upload> iUploads;
 
@@ -52,19 +51,17 @@ public class ImageActivity  extends AppCompatActivity {
         rView.setLayoutManager(new LinearLayoutManager(this));
 
         iUploads = new ArrayList<>();
-
-
-        mDataBase = FirebaseDatabase.getInstance().getReference(Session.getUser().getLogin());
-        //mStorage = FirebaseStorage.getInstance();
+        mDataBase = FirebaseDatabase.getInstance().getReference(Session.changeLogin(Session.getUser().getLogin()));
 
         mDataBase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //iUploads.clear();
+
+                iUploads.clear();
 
                 for(DataSnapshot d : dataSnapshot.getChildren()){
                     Upload u = d.getValue(Upload.class);
-                    //u.setmKey(d.getKey());
+                    u.setKey(d.getKey());
                     iUploads.add(u);
                 }
 
@@ -80,7 +77,6 @@ public class ImageActivity  extends AppCompatActivity {
                 pBar.setVisibility(View.INVISIBLE);
             }
         });
+
     }
-
-
 }

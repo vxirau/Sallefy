@@ -182,7 +182,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
     }
 
 
-
     private void initViews() {
 
         likeTrack= findViewById(R.id.addFavorite);

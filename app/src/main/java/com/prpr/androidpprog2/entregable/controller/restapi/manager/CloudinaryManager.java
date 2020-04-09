@@ -51,9 +51,9 @@ public class CloudinaryManager extends AppCompatActivity {
         MediaManager.init(mContext, CloudinaryConfigs.getConfigurations());
     }
 
-    public synchronized void uploadAudioFile(Uri fileUri, String fileName, Genre genre) {
+    public synchronized void uploadAudioFile(Uri fileUri, String fileName, Genre genre, String portada) {
         mGenre = genre;
-        //this.thumbnail = thumbnail;
+        thumbnail = portada;
         mFileName = fileName;
         Map<String, Object> options = new HashMap<>();
         options.put("public_id", fileName);
@@ -121,7 +121,7 @@ public class CloudinaryManager extends AppCompatActivity {
             ArrayList<Genre> genres = new ArrayList<>();
             genres.add(mGenre);
             track.setGenres(genres);
-            //track.setThumbnail(thumbnail);
+            track.setThumbnail(thumbnail);
             TrackManager.getInstance(mContext).createTrack(track, mCallback);
 
         }

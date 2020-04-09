@@ -1,10 +1,13 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,6 +16,7 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.CursorAnchorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -35,9 +40,11 @@ import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,23 +54,23 @@ import java.util.List;
 public class SettingsActivity extends AppCompatActivity implements UserCallback, ServiceCallback {
 
     private EditText etFirstName;
-    private Button btnFirstName;
-
     private EditText etLastName;
-    private Button btnLastName;
-
     private EditText etEmail;
-    private Button btnEmail;
 
     private ImageButton imgBtnUserPic;
-    private Button btnUserPic;
+
+    private Button btnUpdate;
+    private Button btnLogOut;
+
+    private Boolean pictureSelected;
 
     private ScrollView settingsScrollView;
     private User myUser;
 
     private UserManager userManager;
 
-
+    private LoginActivity LoginActivity;
+    private Context context;
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
     private TextView followingTxt;
@@ -82,6 +89,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
+            context = getApplicationContext();
             //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
@@ -93,6 +101,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             servidorVinculat = false;
         }
     };
+
 
     void doUnbindService() {
         if (servidorVinculat) {
@@ -147,9 +156,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        if(getIntent().getSerializableExtra("UserInfo")!=null){
-            myUser = (User) getIntent().getSerializableExtra("UserInfo");
-        }
+        myUser = Session.getUser();
         initViews();
 
     }
@@ -166,7 +173,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
                 serv.resumeMedia();
             }
         });
-
+        pictureSelected = false;
         pause = findViewById(R.id.playPause);
         pause.setEnabled(true);
         pause.bringToFront();
@@ -218,52 +225,59 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             }
         });
 
+
+
         btnBack = findViewById(R.id.back2User);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
                 startActivity(intent);
+                intent.putExtra("UserInfo", myUser);
 
             }
         });
+
 
         etFirstName = (EditText) findViewById(R.id.textview_settings_change_first_name);
 
-
-        btnFirstName =  (Button) findViewById(R.id.update_first_name_button);
-        btnFirstName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               doUpdateFirstName(myUser);
-
-            }
-        });
-
         etLastName = (EditText) findViewById(R.id.textview_settings_change_last_name);
-
-        btnLastName =  (Button) findViewById(R.id.update_last_name_button);
-        btnLastName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doUpdateLastName(myUser);
-
-            }
-        });
 
         etEmail = (EditText) findViewById(R.id.textview_settings_change_email);
 
-        btnEmail =  (Button) findViewById(R.id.update_email_button);
-        btnEmail.setOnClickListener(new View.OnClickListener() {
+        btnUpdate = findViewById(R.id.update_button);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doUpdateEmail(myUser);
-
+                doUpdateUser();
             }
         });
 
+
+        btnLogOut =  (Button) findViewById(R.id.log_out_button);
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                new AlertDialog.Builder(SettingsActivity.this)
+                        .setMessage("Do you really want to log out?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                doLogOut();
+
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
+            }
+        });
+
+
+
+
+
         imgBtnUserPic = findViewById(R.id.userImage);
-        //userManager.getUser(myUser.getLogin(), this);
         if(myUser.getImageUrl()!=null){
             Picasso.get().load(myUser.getImageUrl()).into(imgBtnUserPic);
         }else{
@@ -279,21 +293,43 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         settingsScrollView = findViewById(R.id.settings_scrollview);
 
     }
+    private void doLogOut(){
 
-    private void doUpdateFirstName(User user){
-        userManager = new UserManager(this);
-        userManager.updateUserFirstName(user, this);
+        Toast.makeText(SettingsActivity.this, "You logged out succesfully", Toast.LENGTH_SHORT).show();
+        Session.getInstance(this).resetValues();
+        SharedPreferences preferences = getSharedPreferences("RememberMe",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+
+        finish();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.putExtra("LoggedOut", true);
+        startActivity(intent);
+
     }
+    private void doUpdateUser(){
 
-    private void doUpdateLastName(User user){
-        userManager = new UserManager(this);
-        userManager.updateUserLastName(user, this);
-    }
 
-    private void doUpdateEmail(User user){
+        System.out.println("viejo" + myUser.getFirstName());
+        if(etFirstName.getText().length() > 0 || etFirstName.getText() != null){
+            this.myUser.setFirstName(etFirstName.getText().toString());
+        }
+        if(etLastName.getText().length() > 0 || etLastName.getText() != null){
+            this.myUser.setLastName(etLastName.getText().toString());
+        }
+        if(etEmail.getText().length() > 0 || etEmail.getText() != null){
+            this.myUser.setEmail(etEmail.getText().toString());
+        }
+        System.out.println("nuevo" + myUser.getId());
+        //if(pictureSelected){
+         //   this.myUser.seti
+        //}
+
         userManager = new UserManager(this);
-        userManager.updateEmail(user, this);
-        System.out.println(user.getEmail());
+        userManager.updateUser(myUser, this);
+        System.out.println("after update" + myUser.getId());
+
     }
 
     @Override
@@ -325,23 +361,18 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     }
 
     @Override
-    public void onUserFirstNameUpdated(User user) {
-
-        this.myUser.setFirstName(user.getFirstName());
+    public void onUserUpdated() {
+        finish();
     }
 
-    @Override
-    public void onUserLastNameUpdated(User user) {
-        this.myUser.setLastName(user.getLastName());
-    }
-
-    @Override
-    public void onEmailUpdated(User user) {
-        this.myUser.setEmail(user.getEmail());
-    }
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onUserUpdateFailure(Throwable throwable) {
 
     }
 
@@ -367,6 +398,26 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     @Override
     public void onFollowedUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCheckSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onCheckFailure(Throwable throwable) {
 
     }
 

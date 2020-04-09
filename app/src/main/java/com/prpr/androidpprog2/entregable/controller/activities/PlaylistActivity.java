@@ -47,6 +47,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorS
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
@@ -203,6 +204,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         if(playlst.getId()!=-5){
             pManager.checkFollowing(playlst.getId(), this);
         }
+
         initViews();
         getData();
     }

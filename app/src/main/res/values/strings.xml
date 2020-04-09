@@ -121,12 +121,12 @@
     <string name="settings_change_email">Update Email</string>
     <string name="settings_add_new_username">Tap your new username</string>
     <string name="settings_add_new_email">Tap your new email</string>
+    <string name="log_out">LOG OUT</string>
 
-
-    <string name="settings_change_first_name">Update First Name</string>
-    <string name="settings_change_last_name">Update Last Name</string>
-    <string name="update">Update</string>
-    <string name="settings_change_profile_pic">Update Profile Pic</string>
+    <string name="settings_change_first_name">First Name</string>
+    <string name="settings_change_last_name">Last Name</string>
+    <string name="update">Update Profile</string>
+    <string name="settings_change_profile_pic">Profile Pic</string>
     <string name="settings_add_new_first_name">Tap your First Name</string>
     <string name="settings_add_new_last_name">Tap your Last Name</string>
     <string name="followed_users">Following</string>
