@@ -138,10 +138,9 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
 
     }
-
 
 
     @Override

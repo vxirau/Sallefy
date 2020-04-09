@@ -537,9 +537,10 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
 
     }
+
 
     @Override
     public void onTopUsersRecieved(List<User> body) {

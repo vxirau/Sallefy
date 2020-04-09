@@ -12,7 +12,7 @@ public interface UserCallback extends FailureCallback {
     void onRegisterSuccess() ;
     void onRegisterFailure(Throwable throwable);
     void onUserInfoReceived(User userData);
-    void onUserUpdated();
+    void onUserUpdated(User body);
     void onTopUsersRecieved(List<User> body);
     void onUserUpdateFailure(Throwable throwable);
     void onUserSelected(User user);

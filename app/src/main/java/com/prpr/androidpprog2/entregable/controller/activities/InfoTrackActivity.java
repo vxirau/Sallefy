@@ -137,7 +137,6 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Add2PlaylistActivity.class);
                 intent.putExtra("Trck", trck);
-
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
