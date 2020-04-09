@@ -344,6 +344,16 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
     }
 
     @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

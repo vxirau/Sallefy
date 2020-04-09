@@ -344,6 +344,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

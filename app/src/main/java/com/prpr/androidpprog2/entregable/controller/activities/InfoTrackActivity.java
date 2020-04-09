@@ -98,8 +98,10 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
             @Override
             public void onClick(View view) {
                 if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())){
-                    //Intent intent = new Intent(getApplicationContext(), EditSongActivity.class);
-                    //intent.putExtra("Trck", trck);
+                    Intent intent = new Intent(getApplicationContext(), EditSongActivity.class);
+                    intent.putExtra("Trck", trck);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+
                 }else{
                     er.showErrorDialog("This track is not yours to edit");
                 }
@@ -195,6 +197,16 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
 
     @Override
     public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
 
     }
 
