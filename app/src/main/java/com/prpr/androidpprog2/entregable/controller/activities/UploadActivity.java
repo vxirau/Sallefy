@@ -387,6 +387,16 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     }
 
     @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onPlaylistCreated(Playlist playlist) {
 
     }
