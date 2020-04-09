@@ -37,6 +37,7 @@ import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -47,6 +48,7 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -183,13 +185,20 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
         trackTitle.setSingleLine(true);
         mSeekBar = (SeekBar) findViewById(R.id.dynamic_seekBar);
 
+        ErrorDialog er = new ErrorDialog(this);
+
         playing = findViewById(R.id.reproductor);
         playing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                if(serv!=null){
+                    Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                }else{
+                    er.showErrorDialog("This track is not yours to edit");
+                }
+
             }
         });
 

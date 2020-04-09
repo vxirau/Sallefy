@@ -15,6 +15,13 @@ public class Genre implements Serializable {
     @SerializedName("popularity")
     private Integer popularity;
 
+    public Genre() {
+    }
+
+    public Genre(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

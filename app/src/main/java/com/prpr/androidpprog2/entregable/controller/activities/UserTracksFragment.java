@@ -275,7 +275,10 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     @Override
     public void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist playlist) {
-
+        Intent intent = new Intent(getActivity(), InfoTrackActivity.class);
+        intent.putExtra("Trck", tracks.get(position));
+        intent.putExtra("Playlst", playlist);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
     @Override
@@ -342,6 +345,16 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     @Override
     public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
 
     }
 

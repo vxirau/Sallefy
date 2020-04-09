@@ -182,7 +182,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
     }
 
 
-
     private void initViews() {
 
         likeTrack= findViewById(R.id.addFavorite);
@@ -340,6 +339,16 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
 
     @Override
     public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
 
     }
 
