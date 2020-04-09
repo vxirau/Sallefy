@@ -56,6 +56,8 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     private TextView name;
     private TextView login;
     private TextView topSongs;
+    private boolean prova;
+    private TextView testing;
     private TextView plists;
     private TextView songs;
 
