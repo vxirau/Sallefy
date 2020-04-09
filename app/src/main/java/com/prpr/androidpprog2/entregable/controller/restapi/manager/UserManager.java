@@ -7,6 +7,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserLogin;
@@ -114,9 +115,6 @@ public class UserManager {
        });
 
     }
-
-
-
 
     public synchronized void getTopUsers (final UserCallback userCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
@@ -255,6 +253,52 @@ public class UserManager {
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 userCallback.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void startStopFollowing (String login, final UserCallback userCallback){
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<Follow> call = mService.startStopFollowing(login, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Follow>() {
+            @Override
+            public void onResponse(Call<Follow> call, Response<Follow> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onFollowSuccess(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    userCallback.onFollowFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Follow> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
+    public synchronized void checkFollow(String login, final UserCallback userCallback){
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<Follow> call = mService.checkFollow(login, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Follow>() {
+            @Override
+            public void onResponse(Call<Follow> call, Response<Follow> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onCheckSuccess(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    userCallback.onCheckFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Follow> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
             }
         });
     }

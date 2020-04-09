@@ -202,9 +202,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
         }
 
-        if(getIntent().getSerializableExtra("UserInfo")!=null){
-            user = (User) getIntent().getSerializableExtra("UserInfo");
-        }
         initViews();
         btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();
@@ -232,13 +229,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                     case R.id.buscar:
                         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent.putExtra("UserInfo", user);
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
                         Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent2.putExtra("UserInfo", user);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                 }
@@ -599,6 +594,26 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onFollowedUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCheckSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onCheckFailure(Throwable throwable) {
 
     }
 

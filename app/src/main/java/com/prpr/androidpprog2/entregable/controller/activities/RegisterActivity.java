@@ -20,10 +20,13 @@ import com.cloudinary.utils.ObjectUtils;
 //import com.google.firebase.storage.FirebaseStorage;
 //import com.google.firebase.storage.StorageReference;
 //import com.google.firebase.storage.UploadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -42,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     private EditText etPassword;
     private Button btnRegister;
     private Button btnBack;
-    //private StorageReference mStorage;
+    private StorageReference mStorage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
         //CloudinaryManager.getInstance(this, null).createFolder(userData.getLogin());
 
-        Uri uri = Uri.parse("R.drawable.add_green_button");
+        //Uri uri = Uri.parse("R.drawable.add_green_button");
 
         /*mStorage = FirebaseStorage.getInstance().getReference();
         StorageReference filePath = mStorage.child(etLogin.getText().toString()).child(uri.getLastPathSegment());
@@ -124,7 +127,11 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
                 Toast.makeText(RegisterActivity.this,"exito pelotudo",Toast.LENGTH_SHORT).show();
             }
         });
-*/
+        */
+
+        mStorage = FirebaseStorage.getInstance().getReference();
+        StorageReference filePath = mStorage.child(Session.changeLogin(etLogin.getText().toString()));
+
         doLogin(userData.getLogin(), userData.getPassword());
     }
 
@@ -178,6 +185,26 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
     @Override
     public void onFollowedUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCheckSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onCheckFailure(Throwable throwable) {
 
     }
 

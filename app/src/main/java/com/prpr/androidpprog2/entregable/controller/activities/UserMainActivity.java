@@ -147,9 +147,7 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        if(getIntent().getSerializableExtra("UserInfo")!=null){
-            user = (User) getIntent().getSerializableExtra("UserInfo");
-        }
+
         initGeneralViews();
         initPlaylistViews();
 
@@ -214,13 +212,11 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
                     case R.id.home:
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent.putExtra("UserInfo", user);
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.buscar:
                         Intent intent2 = new Intent(getApplicationContext(), SearchActivity.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intent2.putExtra("UserInfo", user);
                         startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
                         return true;
                     case R.id.perfil:
@@ -268,7 +264,6 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                intent.putExtra("UserInfo", user);
                 startActivity(intent);
             }
         });

@@ -15,7 +15,7 @@ public class Session {
 
     private UserRegister mUserRegister;
     private static User mUser;
-    private UserToken mUserToken;
+    private  UserToken mUserToken;
 
     public static Session getInstance(Context context) {
         Session result = sSession;
@@ -42,6 +42,11 @@ public class Session {
         mUserToken = null;
     }
 
+    public static String changeLogin(String mUser){
+        return mUser.replace("[","").replace("]","").replace(".","")
+                .replace("$","").replace("#","");
+    }
+
     public UserRegister getUserRegister() {
         return mUserRegister;
     }
@@ -58,7 +63,7 @@ public class Session {
         mUser = user;
     }
 
-    public UserToken getUserToken() {
+    public  UserToken getUserToken() {
         return mUserToken;
     }
 

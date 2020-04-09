@@ -66,6 +66,16 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="15dp" />
 
+            <Button
+                android:id="@+id/followUser"
+                android:layout_width="wrap_content"
+                android:layout_height="29dp"
+                android:background="@drawable/rectangle_small_gborder_black"
+                android:text=""
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
@@ -95,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/top_songs"
                 android:textColor="@color/colorWhite"
                 android:textSize="24sp"
@@ -109,7 +119,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/topSongsRecycle"
                     android:layout_width="match_parent"
-                    android:layout_height="205dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:maxHeight="570dp"
                     android:orientation="horizontal" />
@@ -150,7 +160,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/playlistByArtistRecycle"
                     android:layout_width="match_parent"
-                    android:layout_height="210dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:maxHeight="570dp"
                     android:orientation="horizontal" />
@@ -190,7 +200,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/allSongsRecycle"
                     android:layout_width="match_parent"
-                    android:layout_height="377dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:maxHeight="570dp"
                     android:orientation="horizontal" />
