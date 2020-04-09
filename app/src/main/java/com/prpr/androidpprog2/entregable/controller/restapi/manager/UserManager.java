@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserLogin;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
@@ -84,7 +86,6 @@ public class UserManager {
         });
     }
 
-
     public void updateUser(User user, final UserCallback userCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
@@ -95,11 +96,9 @@ public class UserManager {
                int code = response.code();
                if (response.isSuccessful()) {
                    userCallback.onUserUpdated();
-                   System.out.println("is successful");
                } else {
                    try{
                        userCallback.onUserUpdateFailure(new Throwable(response.errorBody().string()));
-                       System.out.println("it is not successful");
                    }catch (IOException e){
                        e.printStackTrace();
                    }

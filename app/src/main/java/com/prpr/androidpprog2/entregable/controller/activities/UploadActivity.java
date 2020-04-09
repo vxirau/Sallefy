@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -281,6 +282,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.STORAGE.SONG_SELECTED && resultCode == RESULT_OK) {
             mFileUri = data.getData();
+
             mFilename.setText(mFileUri.toString());
         } else {
             if(requestCode == chooseRequest && resultCode == RESULT_OK && data != null && data.getData() != null) {
