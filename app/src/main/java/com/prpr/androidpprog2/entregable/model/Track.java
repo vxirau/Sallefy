@@ -15,7 +15,7 @@ public class Track implements Serializable, Comparable<Track> {
     @SerializedName("genres")
     public List<Genre> genres = null;
     @SerializedName("id")
-    public int id;
+    public Integer id;
     @SerializedName("liked")
     public boolean liked;
     @SerializedName("likes")
