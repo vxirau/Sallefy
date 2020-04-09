@@ -53,9 +53,11 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onCreate(Bundle savedInstanceSate) {
+
         super.onCreate(savedInstanceSate);
         setContentView(R.layout.activity_login);
         initViews();
+
     }
 
     private void initViews () {
@@ -75,12 +77,17 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         btnRemember = (CheckBox) findViewById(R.id.checkBox);
 
         final SharedPreferences prefs = getSharedPreferences("RememberMe", Context.MODE_PRIVATE);
+
         String nickname = prefs.getString("nickname", "");
         String pass = prefs.getString("password", "");
         boolean stateSwitch = prefs.getBoolean("stateSwitch", false);
         btnRemember.setChecked(stateSwitch);
         etLogin.setText(nickname);
         etPassword.setText(pass);
+
+        if(btnRemember.isChecked()){
+           doLogin(etLogin.getText().toString(),etPassword.getText().toString());
+        }
 
         btnLogin = (Button) findViewById(R.id.login_btn_action);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
                     editor.putString("password", etPassword.getText().toString());
                     editor.putBoolean("stateSwitch", btnRemember.isChecked());
                     editor.commit();
+
 
                 } else {
 
@@ -174,10 +182,9 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
 
     }
-
 
 
     @Override

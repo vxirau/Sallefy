@@ -23,6 +23,7 @@
     <string name="state_wait">Please wait..</string>
     <string name="state_task_in_progress">Task in progress</string>
     <string name="state_error_connexion">Connection error!</string>
+    <string name="state_logout_accept">Do you really want to log out?</string>
     <string name="state_success_title">Exit</string>
     <string name="state_task_completed">Task successfully completed!</string>
     <string name="state_error_title">Error</string>

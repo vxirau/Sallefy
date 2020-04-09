@@ -444,9 +444,10 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
 
     }
+
 
 
     @Override

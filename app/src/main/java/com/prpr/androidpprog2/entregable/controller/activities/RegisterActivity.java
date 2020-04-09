@@ -149,9 +149,11 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
 
     }
+
+
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
