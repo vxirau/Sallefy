@@ -67,7 +67,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
 
 
         int size = playlist.get(position).getTracks() != null ? playlist.get(position).getTracks().size() : 0 ;
-        holder.totalCancons.setText( size + " cançons");
+        holder.totalCancons.setText( size + " songs");
 
         if (playlist.get(position).getThumbnail() != null) {
             Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);

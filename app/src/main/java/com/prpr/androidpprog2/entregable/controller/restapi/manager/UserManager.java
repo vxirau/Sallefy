@@ -89,28 +89,31 @@ public class UserManager {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
         Call<User> call = mService.updateUser(user, "Bearer " + userToken.getIdToken());
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                int code = response.code();
-                if (response.isSuccessful()) {
-                    userCallback.onUserUpdated(response.body());
-                } else {
-                    try{
-                        userCallback.onUserUpdateFailure(new Throwable(response.errorBody().string()));
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
+       call.enqueue(new Callback<User>() {
+           @Override
+           public void onResponse(Call<User> call, Response<User> response) {
+               int code = response.code();
+               if (response.isSuccessful()) {
+                   userCallback.onUserUpdated();
+                   System.out.println("is successful");
+               } else {
+                   try{
+                       userCallback.onUserUpdateFailure(new Throwable(response.errorBody().string()));
+                       System.out.println("it is not successful");
+                   }catch (IOException e){
+                       e.printStackTrace();
+                   }
+               }
+           }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.d(TAG, "Error Failure: " + t.getStackTrace());
-                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
-            }
+           @Override
+           public void onFailure(Call<User> call, Throwable t) {
+               Log.d(TAG, "Error Failure: " + t.getStackTrace());
+               userCallback.onUserUpdateFailure(new Throwable("ERROR " + t.getStackTrace()));
 
-        });
+           }
+       });
+
     }
 
     public synchronized void getTopUsers (final UserCallback userCallback) {

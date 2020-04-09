@@ -1,7 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,8 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Icon;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -38,30 +35,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.adapters.ImageAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
-import com.prpr.androidpprog2.entregable.controller.dialogs.LogOutDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
-import com.prpr.androidpprog2.entregable.model.Upload;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class SettingsActivity extends AppCompatActivity implements UserCallback, ServiceCallback {
-
-    private static final int PICK_IMAGE = 1;
 
     private EditText etFirstName;
     private EditText etLastName;
@@ -72,7 +62,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     private Button btnUpdate;
     private Button btnLogOut;
 
-    private Boolean pictureUpdated;
+    private Boolean pictureSelected;
 
     private ScrollView settingsScrollView;
     private User myUser;
@@ -171,24 +161,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK){
-            switch (requestCode){
-                case PICK_IMAGE:
-                    Uri selectedImage = data.getData();
-                    imgBtnUserPic.setImageIcon(Icon.createWithContentUri(selectedImage));
-                    pictureUpdated = true;
-            }
-
-        }
-    }
-
-
     void initViews(){
-
-        pictureUpdated = false;
 
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
@@ -200,6 +173,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
                 serv.resumeMedia();
             }
         });
+        pictureSelected = false;
         pause = findViewById(R.id.playPause);
         pause.setEnabled(true);
         pause.bringToFront();
@@ -275,11 +249,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    doUpdateUser();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                doUpdateUser();
             }
         });
 
@@ -316,7 +286,6 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         imgBtnUserPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chooseFile();
 
             }
         });
@@ -339,15 +308,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         startActivity(intent);
 
     }
-
-    private void chooseFile(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE);
-    }
-
-    private void doUpdateUser() throws MalformedURLException {
+    private void doUpdateUser(){
 
 
         System.out.println("viejo" + myUser.getFirstName());
@@ -360,11 +321,6 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         if(etEmail.getText().length() > 0 || etEmail.getText() != null){
             this.myUser.setEmail(etEmail.getText().toString());
         }
-        if(pictureUpdated){
-            myUser.setImageUrl(new URL(imgBtnUserPic.toString()).toString());
-            pictureUpdated = false;
-        }
-
         System.out.println("nuevo" + myUser.getId());
         //if(pictureSelected){
          //   this.myUser.seti
@@ -405,8 +361,8 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     }
 
     @Override
-    public void onUserUpdated(User body) {
-
+    public void onUserUpdated() {
+        finish();
     }
 
 

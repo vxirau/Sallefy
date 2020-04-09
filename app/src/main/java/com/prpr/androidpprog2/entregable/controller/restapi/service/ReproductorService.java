@@ -38,8 +38,10 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
-import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
+import com.chibde.visualizer.CircleBarVisualizer;
+import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
@@ -73,11 +75,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private ArrayList<Track> shuffledAudioList;
 
     private int currentPlaylistID;
-
-    private CircleLineVisualizer mVisualizer;
     private ImageButton shuffle;
-
-
     private int audioIndex = -1;
     private Track activeAudio;
     private NotificationCompat.Builder notification;
@@ -131,13 +129,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     };
 
-    public void setmVisualizer(CircleLineVisualizer mVisualizer) {
-        this.mVisualizer = mVisualizer;
-        int audioSessionId = mediaPlayer.getAudioSessionId();
-        if (audioSessionId != -1) {
-            mVisualizer.setAudioSessionId(audioSessionId);
-        }
-    }
+
 
     public void setShuffleButtonUI(){
         if(!isShuffle){
@@ -288,18 +280,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             int duration = mediaPlayer.getDuration();
             mSeekBar.setMax(duration);
             mSeekBar.postDelayed(mProgressRunner, 1000);
-            int audioSessionId = mediaPlayer.getAudioSessionId();
-            if(mVisualizer!=null){
-                if (audioSessionId != -1) {
-                    mVisualizer.setAudioSessionId(audioSessionId);
-                }
-            }
-
 
         }
         updateUI();
 
     }
+
+
 
     private void stopMedia() {
         if (mediaPlayer == null) return;
