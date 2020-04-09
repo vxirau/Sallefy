@@ -18,7 +18,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="290dp"
+            android:layout_height="300dp"
             android:gravity="center"
             android:orientation="vertical"
             android:layout_alignParentTop="true">
@@ -47,7 +47,21 @@
                     android:gravity="center"
                     android:text="@string/nom_de_la_playlist"
                     android:textColor="@color/colorWhite"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:visibility="visible"/>
+
+                <EditText
+                    android:id="@+id/nomCanvi"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginRight="45dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorWhite"
+                    android:visibility="gone"
+                    android:textSize="20dp"
+                    android:background="@drawable/rectangle_small_gborder_black"/>
 
                 <Button
                     android:id="@+id/infoPlaylist"
@@ -64,6 +78,17 @@
                 android:layout_height="120dp"
                 android:layout_marginTop="10dp"
                 android:scaleType="fitCenter"
+                tools:layout_editor_absoluteX="136dp"
+                tools:layout_editor_absoluteY="32dp" />
+
+            <ImageButton
+                android:id="@+id/imgEdit"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                android:background="@null"
                 tools:layout_editor_absoluteX="136dp"
                 tools:layout_editor_absoluteY="32dp" />
 
@@ -115,6 +140,18 @@
                     android:textAllCaps="false"
                     android:background="@drawable/random_button_highlight"
                     android:text="@string/random" />
+
+                <Button
+                    android:id="@+id/acceptEdit"
+                    android:layout_width="170dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="17sp"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    android:background="@drawable/random_button_highlight"
+                    android:text="@string/action_accept" />
 
                 <Button
                     android:id="@+id/PlaylistAddSongs"

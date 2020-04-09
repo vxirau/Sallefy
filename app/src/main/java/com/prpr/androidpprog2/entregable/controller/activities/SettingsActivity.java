@@ -18,6 +18,7 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.CursorAnchorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -167,6 +168,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         myUser = Session.getUser();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         initViews();
 
     }

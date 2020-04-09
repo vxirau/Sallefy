@@ -351,5 +351,15 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     }
 
+    @Override
+    public void onPlaylistDeleted(Playlist body) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
+
+    }
+
 
 }

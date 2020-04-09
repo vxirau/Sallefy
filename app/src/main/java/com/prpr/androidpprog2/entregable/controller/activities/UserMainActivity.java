@@ -126,6 +126,7 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
         if(servidorVinculat){
             serv.setSeekCallback(this);
         }
+
     }
 
 

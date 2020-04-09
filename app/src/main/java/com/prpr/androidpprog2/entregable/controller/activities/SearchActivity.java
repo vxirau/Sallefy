@@ -274,7 +274,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-
                         return true;
                     case R.id.buscar:
                         return true;
@@ -414,6 +413,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleted(Playlist body) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
 
     }
 

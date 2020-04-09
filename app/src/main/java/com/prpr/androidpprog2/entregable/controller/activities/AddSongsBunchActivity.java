@@ -303,4 +303,14 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     public void onPlaylistRecived(Playlist playlist) {
 
     }
+
+    @Override
+    public void onPlaylistDeleted(Playlist body) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
+
+    }
 }
