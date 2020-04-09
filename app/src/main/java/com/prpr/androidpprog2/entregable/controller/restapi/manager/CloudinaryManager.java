@@ -136,7 +136,6 @@ public class CloudinaryManager extends AppCompatActivity {
             track.setGenres(genres);
             track.setThumbnail(thumbnail);
             TrackManager.getInstance(mContext).createTrack(track, mCallback);
-
         }
         @Override
         public void onError(String requestId, ErrorInfo error) {
