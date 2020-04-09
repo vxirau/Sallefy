@@ -36,6 +36,7 @@ public class ErrorDialog {
         mDialog = new Dialog(mContext);
     }
 
+
     public void showErrorDialog(String message) {
         mDialog.setContentView(R.layout.dialog_error);
         mDialog.setCanceledOnTouchOutside(false);

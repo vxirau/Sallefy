@@ -158,5 +158,8 @@
     <string name="canvi_genere">Gènere</string>
     <string name="canvi_nom">Nom de la canço</string>
     <string name="canvi_durada">Durada</string>
+    <string name="edit_playlist">Edit</string>
+    <string name="delete">delete</string>
+    <string name="message">Do you want to edit or delete this playlist?</string>
 </resources>
 

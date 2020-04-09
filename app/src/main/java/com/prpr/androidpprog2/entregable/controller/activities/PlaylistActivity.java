@@ -37,8 +37,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.OptionDialogCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.OptionDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -56,7 +58,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback, PlaylistCallback, ServiceCallback {
+public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback, PlaylistCallback, ServiceCallback, OptionDialogCallback {
 
     private Playlist playlst;
     private TextView plyName;
@@ -95,6 +97,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private boolean asc_dsc;
 
     private Animation fabOpen, fabClose;
+    private OptionDialog dialogEdit;
     private final int SORT_AZ = 0;
     private final int SORT_TIME = 1;
     private final int SORT_ARTIST = 2;
@@ -358,27 +361,31 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             }
         });
 
-        if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playlst.getOwner().getLogin())){
-            addBunch.setVisibility(View.VISIBLE);
-            follow.setVisibility(View.GONE);
-        }else{
-            addBunch.setVisibility(View.INVISIBLE);
-            follow.setVisibility(View.VISIBLE);
-        }
-        if(playlst.getId()==-5){
-            follow.setVisibility(View.GONE);
-        }
 
         infoPlaylist = findViewById(R.id.infoPlaylist);
         infoPlaylist.setEnabled(true);
         infoPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), InfoPlaylistActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                dialogEdit.showOptionDialog("Edit", "Delete");
             }
         });
+
+        if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playlst.getOwner().getLogin())){
+            addBunch.setVisibility(View.VISIBLE);
+            infoPlaylist.setVisibility(View.VISIBLE);
+            follow.setVisibility(View.GONE);
+        }else{
+            addBunch.setVisibility(View.INVISIBLE);
+            infoPlaylist.setVisibility(View.INVISIBLE);
+            follow.setVisibility(View.VISIBLE);
+        }
+        if(playlst.getId()==-5){
+            follow.setVisibility(View.GONE);
+        }
+        dialogEdit = new OptionDialog(PlaylistActivity.this, PlaylistActivity.this);
+
+
 
 
         back2Main = findViewById(R.id.back2Main);
@@ -392,9 +399,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 }else{
-                    /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);*/
                     finish();
                     overridePendingTransition(R.anim.nothing,R.anim.nothing);
                 }
@@ -741,5 +745,32 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         mTracks = (ArrayList<Track>) playlist.getTracks();
         TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onDelete() {
+        dialogEdit.cancelDialog();
+        dialogEdit.showConfirmationDialog();
+    }
+
+
+    private void updateUIEdit(){
+
+    }
+
+    @Override
+    public void onEdit() {
+        updateUIEdit();
+        dialogEdit.cancelDialog();
+    }
+
+    @Override
+    public void onAccept() {
+        //pManager.deletePlaylist();
+    }
+
+    @Override
+    public void onCancel() {
+        dialogEdit.cancelDialog();
     }
 }

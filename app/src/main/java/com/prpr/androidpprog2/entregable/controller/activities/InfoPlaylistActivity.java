@@ -10,11 +10,11 @@ import com.prpr.androidpprog2.entregable.model.Track;
 public class InfoPlaylistActivity extends AppCompatActivity {
 
 
-    //TODO: TOTA LA ACTIVITY
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info_track);
+        setContentView(R.layout.activity_edit_playlist);
     }
 }
