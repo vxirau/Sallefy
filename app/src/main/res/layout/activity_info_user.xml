@@ -16,16 +16,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:gravity="center"
-            android:orientation="vertical"
-            android:layout_alignParentTop="true">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/back2Main"
@@ -48,182 +48,206 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/userName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/login_username"
-                android:textColor="@color/colorWhite"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/userLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/login_username"
-                android:textColor="@color/colorWhite"
-                android:textSize="15dp" />
-
-            <Button
-                android:id="@+id/followUser"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="29dp"
-                android:background="@drawable/rectangle_small_gborder_black"
-                android:text=""
-                android:textColor="@color/colorWhite"
-                android:textSize="12dp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <View
+                <ImageView
+                    android:id="@+id/profilePic"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#21D760"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="15dp"
-                android:layout_alignParentTop="true"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/login_username"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/userLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/login_username"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="15dp" />
+
+                <Button
+                    android:id="@+id/followUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="29dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rectangle_small_gborder_black"
+                    android:text=""
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="#21D760" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="240dp"
             android:fillViewport="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/topSongs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/top_songs"
-                android:textColor="@color/colorWhite"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/topSongsRecycle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:maxHeight="570dp"
-                    android:orientation="horizontal" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/noTopAvailable"
-                    android:layout_width="match_parent"
+                    android:id="@+id/topSongs"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_centerVertical="true"
-                    android:visibility="invisible"
-                    android:gravity="center"
-                    android:text="@string/noTopAvailable"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/top_songs"
                     android:textColor="@color/colorWhite"
-                    android:textSize="17sp"
+                    android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </RelativeLayout>
-
-
-            <TextView
-                android:id="@+id/playlistsUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/top_playists"
-                android:textColor="@color/colorWhite"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/playlistByArtistRecycle"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:maxHeight="570dp"
-                    android:orientation="horizontal" />
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/topSongsRecycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:maxHeight="570dp"
+                        android:orientation="horizontal" />
+
+                    <TextView
+                        android:id="@+id/noTopAvailable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="@string/noTopAvailable"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </RelativeLayout>
+
 
                 <TextView
-                    android:id="@+id/noPlistAvailable"
-                    android:layout_width="match_parent"
+                    android:id="@+id/playlistsUser"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_centerVertical="true"
-                    android:visibility="invisible"
-                    android:gravity="center"
-                    android:text="@string/noPlistAvailable"
+                    android:text="@string/top_playists"
                     android:textColor="@color/colorWhite"
-                    android:textSize="17sp"
+                    android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/allSongs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/all_songs_by_artist"
-                android:textColor="@color/colorWhite"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/allSongsRecycle"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:maxHeight="570dp"
-                    android:orientation="horizontal" />
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/playlistByArtistRecycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:maxHeight="570dp"
+                        android:orientation="horizontal" />
+
+                    <TextView
+                        android:id="@+id/noPlistAvailable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="@string/noPlistAvailable"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/noSongsAvailable"
+                    android:id="@+id/allSongs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_centerVertical="true"
-                    android:visibility="invisible"
                     android:gravity="center"
-                    android:text="@string/noSongsAvailable"
+                    android:text="@string/all_songs_by_artist"
                     android:textColor="@color/colorWhite"
-                    android:textSize="17sp"
+                    android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-        </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/allSongsRecycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="120dp"
+                        android:maxHeight="570dp"
+                        android:orientation="horizontal" />
 
-    </ScrollView>
+                    <TextView
+                        android:id="@+id/noSongsAvailable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="172dp"
+                        android:gravity="center"
+                        android:text="@string/noSongsAvailable"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
 
         <SeekBar
             android:id="@+id/dynamic_seekBar"
