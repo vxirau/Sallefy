@@ -28,8 +28,10 @@ import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
@@ -43,7 +45,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfoArtistaActivity extends AppCompatActivity implements TrackListCallback, TrackCallback, PlaylistCallback, ServiceCallback {
+public class InfoArtistaActivity extends AppCompatActivity implements TrackListCallback, TrackCallback, PlaylistCallback, ServiceCallback, UserCallback {
 
     private Button back;
     private RecyclerView topSongsRecycle;
@@ -58,6 +60,10 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     private TextView topSongs;
     private TextView plists;
     private TextView songs;
+    private Button follow;
+    private Follow followingInfo;
+    private boolean isFollowing = false;
+    private UserManager umanager;
 
 
 
@@ -148,6 +154,8 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_user);
         artist = (User) getIntent().getSerializableExtra("User");
+        umanager = new UserManager(this);
+        umanager.checkFollow(artist.getLogin(),this);
         initViews();
 
         TrackManager topmanager = new TrackManager(this);
@@ -201,7 +209,6 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         });
 
 
-
         back = findViewById(R.id.back2Main);
         back.setOnClickListener(new View.OnClickListener(){
         @Override
@@ -217,6 +224,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
         login = findViewById(R.id.userLogin);
         login.setText(artist.getLogin());
+
+
+
+        follow = (Button) findViewById(R.id.followUser);
+        follow.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                umanager.startStopFollowing(artist.getLogin(),InfoArtistaActivity.this);
+            }
+        });
 
         topSongsRecycle = (RecyclerView) findViewById(R.id.topSongsRecycle);
         LinearLayoutManager man = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -441,6 +458,109 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     @Override
     public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onLoginSuccess(UserToken userToken) {
+
+    }
+
+    @Override
+    public void onLoginFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+
+    }
+
+    @Override
+    public void onRegisterFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserInfoReceived(User userData) {
+
+    }
+
+    @Override
+    public void onUserUpdated() {
+
+    }
+
+    @Override
+    public void onTopUsersRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onUserUpdateFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onUserSelected(User user) {
+
+    }
+
+    @Override
+    public void onAllUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onFollowedUsersSuccess(List<User> users) {
+
+    }
+
+    @Override
+    public void onAllUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowSuccess(Follow body) {
+        followingInfo = body;
+        if(followingInfo.isFollowing()){
+            follow.setText("Following");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+            isFollowing=false;
+        }else{
+            follow.setText("Follow");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+            isFollowing=true;
+        }
+    }
+
+    @Override
+    public void onFollowFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCheckSuccess(Follow body) {
+        followingInfo = body;
+        if(followingInfo.isFollowing()){
+            follow.setText("Following");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+            isFollowing=false;
+        }else{
+            follow.setText("Follow");
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+            isFollowing=true;
+        }
+    }
+
+    @Override
+    public void onCheckFailure(Throwable throwable) {
 
     }
 }

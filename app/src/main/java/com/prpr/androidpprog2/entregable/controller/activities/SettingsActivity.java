@@ -35,6 +35,7 @@ import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -369,6 +370,26 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     @Override
     public void onFollowedUsersFail(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCheckSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onCheckFailure(Throwable throwable) {
 
     }
 

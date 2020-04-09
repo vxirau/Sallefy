@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
@@ -35,7 +36,11 @@ public interface UserService {
     @PUT("users")
     Call<User> updateUser(@Body User user, @Header("Authorization") String token);
 
+    @PUT("users/{login}/follow")
+    Call<Follow> startStopFollowing(@Path("login") String login, @Header("Authorization") String token);
 
+    @GET("users/{login}/follow")
+    Call<Follow> checkFollow(@Path("login") String login, @Header("Authorization") String token);
 
 }
 

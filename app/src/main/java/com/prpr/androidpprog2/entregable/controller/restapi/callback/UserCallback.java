@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.callback;
 
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 
@@ -19,5 +20,9 @@ public interface UserCallback extends FailureCallback {
     void onFollowedUsersSuccess(List<User> users);
     void onAllUsersFail(Throwable throwable);
     void onFollowedUsersFail(Throwable throwable);
+    void onFollowSuccess(Follow body);
+    void onFollowFailure(Throwable throwable);
+    void onCheckSuccess(Follow body);
+    void onCheckFailure(Throwable throwable);
 
 }
