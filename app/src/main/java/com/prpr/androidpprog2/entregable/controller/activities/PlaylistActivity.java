@@ -84,6 +84,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private Button shuffle;
     private Button acceptEdit;
     private Button follow;
+    private Button accessible;
     private Follow followingInfo;
     private boolean isFollowing = false;
     private Button addBunch;
@@ -318,6 +319,30 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         reproductor= findViewById(R.id.reproductor);
 
+        accessible= findViewById(R.id.privadaPublica);
+        accessible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playlst.setPublicAccessible(!playlst.isPublicAccessible());
+                pManager.updatePlaylist(playlst, PlaylistActivity.this);
+                if(playlst.isPublicAccessible()){
+                    accessible.setText("Public");
+                    accessible.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+                }else{
+                    accessible.setText("Private");
+                    accessible.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+                }
+            }
+        });
+        if(playlst.isPublicAccessible()){
+            accessible.setText("Public");
+            accessible.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+        }else{
+            accessible.setText("Private");
+            accessible.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+        }
+
+
         plyName = findViewById(R.id.playlistName);
         plyName.setVisibility(View.VISIBLE);
         plyAuthor = findViewById(R.id.playlistAuthor);
@@ -418,10 +443,12 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             addBunch.setVisibility(View.VISIBLE);
             infoPlaylist.setVisibility(View.VISIBLE);
             follow.setVisibility(View.GONE);
+            accessible.setVisibility(View.VISIBLE);
         }else{
             addBunch.setVisibility(View.INVISIBLE);
             infoPlaylist.setVisibility(View.INVISIBLE);
             follow.setVisibility(View.VISIBLE);
+            accessible.setVisibility(View.GONE);
         }
         if(playlst.getId()==-5){
             follow.setVisibility(View.GONE);
