@@ -153,74 +153,67 @@
 
                 <ImageButton
                     android:id="@+id/music_backward_btn"
-                    android:layout_width="75dp"
-                    android:layout_height="50dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_skip_previous" />
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="160dp"
-                    android:layout_height="200dp">
-
-                    <com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer
-                        xmlns:custom="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/visualizerC"
-                        android:layout_width="160dp"
-                        android:layout_height="140dp"
-                        custom:avColor="@color/colorVisualizer"
-                        custom:avDensity="0.5"
-                        custom:avType="fill"
-                        custom:avSpeed="medium"
-                        android:layout_centerInParent="true"/>
-
-                    <Button
-                        android:id="@+id/pause"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:scaleType="center"
-                        android:adjustViewBounds="true"
-                        android:layout_centerInParent="true"
-                        android:visibility="invisible"
-                        android:background="@drawable/ic_pause"/>
-
-                    <Button
-                        android:id="@+id/play"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:scaleType="center"
-                        android:adjustViewBounds="true"
-                        android:layout_centerInParent="true"
-                        android:visibility="invisible"
-                        android:background="@drawable/ic_play" />
-                </RelativeLayout>
-
-                <ImageButton
-                    android:id="@+id/music_forward_btn"
-                    android:layout_width="75dp"
-                    android:layout_height="50dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_skip_next" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/shuffleLayout"
-                android:layout_width="70dp"
-                android:layout_height="50dp"
-                android:orientation="vertical"
-                android:layout_marginTop="30dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:clickable="true">
-                <ImageButton
-                    android:id="@+id/botoShuffle"
-                    android:layout_width="50dp"
+                    android:layout_width="95dp"
                     android:layout_height="30dp"
-                    android:scaleType="fitCenter"
-                    android:background="@drawable/no_shuffle"
-                    tools:layout_editor_absoluteY="677dp" />
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_skip_previous"
+                    android:scaleType="fitCenter"/>
 
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp">
 
-</LinearLayout>
+
+                     <Button
+                         android:id="@+id/pause"
+                         android:layout_width="70dp"
+                         android:layout_height="70dp"
+                         android:scaleType="center"
+                         android:adjustViewBounds="true"
+                         android:layout_centerInParent="true"
+                         android:visibility="visible"
+                         android:background="@drawable/ic_pause"/>
+
+                     <Button
+                         android:id="@+id/play"
+                         android:layout_width="70dp"
+                         android:layout_height="70dp"
+                         android:scaleType="center"
+                         android:adjustViewBounds="true"
+                         android:layout_centerInParent="true"
+                         android:visibility="invisible"
+                         android:background="@drawable/ic_play" />
+                 </RelativeLayout>
+
+                 <ImageButton
+                     android:id="@+id/music_forward_btn"
+                     android:layout_width="95dp"
+                     android:layout_height="30dp"
+                     android:background="@android:color/transparent"
+                     android:src="@drawable/ic_skip_next"
+                     android:scaleType="fitCenter"/>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:id="@+id/shuffleLayout"
+                 android:layout_width="70dp"
+                 android:layout_height="60dp"
+                 android:orientation="vertical"
+                 android:layout_marginTop="30dp"
+                 android:layout_gravity="center"
+                 android:gravity="center"
+                 android:clickable="true">
+                 <ImageButton
+                     android:id="@+id/botoShuffle"
+                     android:layout_width="50dp"
+                     android:layout_height="30dp"
+                     android:scaleType="fitCenter"
+                     android:background="@drawable/no_shuffle"
+                     tools:layout_editor_absoluteY="677dp" />
+
+             </LinearLayout>
+         </LinearLayout>
+     </LinearLayout>
+
+ </LinearLayout>

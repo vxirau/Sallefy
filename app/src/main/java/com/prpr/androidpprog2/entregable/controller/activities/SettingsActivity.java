@@ -312,13 +312,13 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
 
         System.out.println("viejo" + myUser.getFirstName());
-        if(etFirstName.getText().length() > 0 || etFirstName.getText() != null){
+        if(!etFirstName.getText().toString().matches("")){
             this.myUser.setFirstName(etFirstName.getText().toString());
         }
-        if(etLastName.getText().length() > 0 || etLastName.getText() != null){
+        if(!etLastName.getText().toString().matches("")){
             this.myUser.setLastName(etLastName.getText().toString());
         }
-        if(etEmail.getText().length() > 0 || etEmail.getText() != null){
+        if(!etEmail.getText().toString().matches("")){
             this.myUser.setEmail(etEmail.getText().toString());
         }
         System.out.println("nuevo" + myUser.getId());
@@ -327,8 +327,8 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         //}
 
         userManager = new UserManager(this);
-        userManager.updateUser(myUser, this);
-        System.out.println("after update" + myUser.getId());
+        userManager.updateUser(this.myUser, this);
+        System.out.println("after update" + this.myUser.getId());
 
     }
 
