@@ -119,10 +119,17 @@ public class EditSongActivity extends Activity implements TrackCallback {
 
     private void initViews()  {
 
-        //Portada1
+        //Portada
         song_cover = findViewById(R.id.SongCover);
         portada1 = findViewById(R.id.portada);
         canvi_portada= findViewById(R.id.cp);
+        portada2 = findViewById(R.id.canvi_portada);
+        image_upload = findViewById(R.id.image_upload);
+        guardar_portada = findViewById(R.id.guardar_portada);
+        cancel_portada = findViewById(R.id.cancel_portada);
+        choose_file = findViewById(R.id.choose_file);
+        upload_file=findViewById(R.id.upload_file);
+        song_cover=findViewById(R.id.SongCover);
 
         if(trck.getThumbnail()!=null){
             Picasso.get().load(trck.getThumbnail()).into(song_cover);
@@ -130,7 +137,6 @@ public class EditSongActivity extends Activity implements TrackCallback {
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(song_cover);
         }
 
-        //Canvi de portada
         canvi_portada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,11 +145,6 @@ public class EditSongActivity extends Activity implements TrackCallback {
             }
         });
 
-        //Portada2
-        portada2 = findViewById(R.id.canvi_portada);
-        image_upload = findViewById(R.id.image_upload);
-
-        choose_file = findViewById(R.id.choose_file);
         choose_file.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -151,12 +152,36 @@ public class EditSongActivity extends Activity implements TrackCallback {
             }
         });
 
+        cancel_portada.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                portada1.setVisibility(View.VISIBLE);
+                portada2.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+        //Song
         upload_file = findViewById(R.id.upload_file);
         song_canviada = findViewById(R.id.nom_canviat);
         guardar_song=findViewById(R.id.guardar_song);
         text_song = findViewById(R.id.text_canco);
         song_name = findViewById(R.id.nom_canco);
         cancel_song = findViewById(R.id.cancel_song);
+
+        song1 = findViewById(R.id.song1);
+        song2 = findViewById(R.id.song2);
+
+        canvi_song= findViewById(R.id.boto_canviar_nom);
+        canvi_song.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                song1.setVisibility(View.INVISIBLE);
+                song2.setVisibility(View.VISIBLE);
+                text_song.setVisibility(View.VISIBLE);
+            }
+        });
+
         guardar_song.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -175,32 +200,6 @@ public class EditSongActivity extends Activity implements TrackCallback {
                 song1.setVisibility(View.VISIBLE);
                 song2.setVisibility(View.INVISIBLE);
                 text_song.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        guardar = findViewById(R.id.guardar);
-        guardar.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                trck.setName(song_name.getText().toString());
-                trck.setDuration(convertSeconds(durada_name.getText().toString()));
-                //trck.setThumbnail("");
-                //Genre g = new Genre((String) genere_name.getText());
-                //trck.getGenres().add(g);
-                tManager.updateTrack(trck, EditSongActivity.this);
-            }
-        });
-
-        song1 = findViewById(R.id.song1);
-        song2 = findViewById(R.id.song2);
-
-        canvi_song= findViewById(R.id.boto_canviar_nom);
-        canvi_song.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                song1.setVisibility(View.INVISIBLE);
-                song2.setVisibility(View.VISIBLE);
-                text_song.setVisibility(View.VISIBLE);
             }
         });
 
@@ -244,6 +243,29 @@ public class EditSongActivity extends Activity implements TrackCallback {
             }
         });
 
+        //Guardar general
+        guardar = findViewById(R.id.guardar);
+        guardar.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                trck.setName(song_name.getText().toString());
+                trck.setDuration(convertSeconds(durada_name.getText().toString()));
+                //trck.setThumbnail("");
+                //Genre g = new Genre((String) genere_name.getText());
+                //trck.getGenres().add(g);
+                tManager.updateTrack(trck, EditSongActivity.this);
+            }
+        });
+
+        //Cancel general
+        cancel = findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.nothing,R.anim.nothing);
+            }
+        });
 
     }
 
