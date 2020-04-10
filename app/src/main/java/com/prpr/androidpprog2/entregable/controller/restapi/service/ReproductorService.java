@@ -46,6 +46,7 @@ import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
@@ -186,6 +187,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             stopSelf();
         }
         mediaPlayer.prepareAsync();
+        TrackManager.getInstance(this).playTrack(activeAudio.getId());
     }
 
     private String duractioActual(){

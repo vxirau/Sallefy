@@ -1,6 +1,7 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
 import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.Position;
 import com.prpr.androidpprog2.entregable.model.Track;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface TrackService {
     @GET("me/tracks")
      Call<List<Track>> getOwnTracks(@Header("Authorization") String token);
 
-    @GET("users/{login}/tracks?popular=true")
+    @GET("users/{login}/tracks")
     Call<List<Track>> getUserTracks(@Path("login") String login, @Header("Authorization") String token);
 
     @POST("tracks")
@@ -36,5 +37,8 @@ public interface TrackService {
 
     @PUT("tracks")
     Call<Track> updateTrack(@Body Track track, @Header("Authorization") String token);
+
+    @PUT("tracks/{id}/play")
+    Call<Track> playTrack(@Path("id") int id, @Body Position pos, @Header("Authorization") String token);
 
 }
