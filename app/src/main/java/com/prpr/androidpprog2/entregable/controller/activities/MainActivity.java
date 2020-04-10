@@ -214,6 +214,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         setContentView(R.layout.activity_main);
         if(getIntent().getSerializableExtra("sameUser")!=null){
             sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
+        }else{
+            sameUser=false;
         }
         initViews();
         btnNewPlaylist.setEnabled(true);
@@ -226,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager.getFollowingPlaylists(this);
         if(sameUser){
             loadPreviousSession();
+            sameUser = false;
         }
     }
 

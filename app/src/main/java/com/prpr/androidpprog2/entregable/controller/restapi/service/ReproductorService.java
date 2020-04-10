@@ -104,6 +104,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     private boolean isShuffle;
 
+    private boolean wasPlaying=false;
+
 
 
 
@@ -772,12 +774,16 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onAudioFocusChange(int focusState) {
         switch (focusState) {
             case AudioManager.AUDIOFOCUS_GAIN:
                 if (mediaPlayer == null) initMediaPlayer();
-                else if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                else if (!mediaPlayer.isPlaying() && wasPlaying) {
+                    mediaPlayer.start();
+                    buildNotification(PlaybackStatus.PLAYING);
+                }
                 mediaPlayer.setVolume(1.0f, 1.0f);
                 break;
             case AudioManager.AUDIOFOCUS_LOSS:
@@ -786,7 +792,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 mediaPlayer = null;
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                if (mediaPlayer.isPlaying()) mediaPlayer.pause();
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                    wasPlaying = true;
+                    buildNotification(PlaybackStatus.PAUSED);
+                }else{
+                    wasPlaying = false;
+                }
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 if (mediaPlayer.isPlaying()) mediaPlayer.setVolume(0.1f, 0.1f);
