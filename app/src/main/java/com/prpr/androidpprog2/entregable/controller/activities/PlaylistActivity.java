@@ -406,8 +406,13 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playAudio(new Random().nextInt(mTracks.size()));
-                player.setShuffle(true);
+                if(mTracks.size()>0){
+                    playAudio(new Random().nextInt(mTracks.size()));
+                    player.setShuffle(true);
+                }else{
+                    ErrorDialog.getInstance(PlaylistActivity.this).showErrorDialog("There is no tracks to play!");
+                }
+
             }
         });
 
