@@ -42,6 +42,7 @@ import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.LogOutCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.LogOutDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
@@ -85,6 +86,10 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     private LoginActivity LoginActivity;
     private Context context;
+    private TextView username;
+    private Button followers;
+
+
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
     private TextView followingTxt;
@@ -260,20 +265,38 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
-                startActivity(intent);
-                intent.putExtra("UserInfo", myUser);
+                finish();
+                overridePendingTransition(R.anim.nothing,R.anim.nothing);
+            }
+        });
 
+
+        username = findViewById(R.id.settings_update_profile_pic);
+        username.setText(myUser.getLogin());
+
+        followers = findViewById(R.id.numFollowers);
+        followers.setText(myUser.getFollowers() +" Followers");
+        followers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ErrorDialog.getInstance(SettingsActivity.this).showErrorDialog("You cannot see your followers yet!");
             }
         });
 
 
         etFirstName = (EditText) findViewById(R.id.textview_settings_change_first_name);
+        if(myUser.getFirstName()!=null){
+            etFirstName.setText(myUser.getFirstName());
+        }
 
         etLastName = (EditText) findViewById(R.id.textview_settings_change_last_name);
-
+        if(myUser.getLastName()!=null){
+            etLastName.setText(myUser.getLastName());
+        }
         etEmail = (EditText) findViewById(R.id.textview_settings_change_email);
-
+        if(myUser.getEmail()!=null){
+            etEmail.setText(myUser.getEmail());
+        }
         btnUpdate = findViewById(R.id.update_button);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
