@@ -187,7 +187,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             stopSelf();
         }
         mediaPlayer.prepareAsync();
-        TrackManager.getInstance(this).playTrack(activeAudio.getId());
+        TrackManager.getInstance(getApplicationContext()).playTrack(activeAudio.getId());
     }
 
     private String duractioActual(){
