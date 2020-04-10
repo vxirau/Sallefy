@@ -66,6 +66,9 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     private Button btnAddNewTrack;
 
+    private FloatingActionButton btnSettings;
+
+
     private TextView tvAddnewTrack;
 
     private EditText etSearchTracks;
@@ -97,12 +100,24 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
             }
         });*/
 
+        btnSettings = (FloatingActionButton)getActivity().findViewById(R.id.configButton);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.userTracksRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         TrackListAdapter adapter = new TrackListAdapter(this, getContext(), myTracks, myPlaylist);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && btnSettings.getVisibility() == View.VISIBLE) {
+                    btnSettings.hide();
+                } else if (dy < 0 && btnSettings.getVisibility() != View.VISIBLE) {
+                    btnSettings.show();
+                }
+            }
+        });
 
         trackManager = new TrackManager(getContext());
         trackManager.getOwnTracks(this);

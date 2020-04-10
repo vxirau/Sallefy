@@ -276,10 +276,6 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
 
         UserPlaylistsFragment userPlaylistsFragment = new UserPlaylistsFragment();
 
-
-
-        //userPlaylistsFragment.setService(serv);
-
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
                 .replace(R.id.relativeUserLayout, userPlaylistsFragment, userPlaylistsFragment.getTag())

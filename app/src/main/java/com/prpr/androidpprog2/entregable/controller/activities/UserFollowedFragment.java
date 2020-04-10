@@ -45,6 +45,9 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     private UserManager userManager;
     private RecyclerView mRecyclerView;
 
+    private FloatingActionButton btnSettings;
+
+
     private FloatingActionButton btnSettingsPlaylists;
 
     public UserFollowedFragment() {
@@ -87,12 +90,26 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
             }
         });
 
+        btnSettings = (FloatingActionButton)getActivity().findViewById(R.id.configButton);
+
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.usersFollowedRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         UserFollowedAdapter adapter = new UserFollowedAdapter(getContext(), null);
         adapter.setUserCallback(this);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && btnSettings.getVisibility() == View.VISIBLE) {
+                    btnSettings.hide();
+                } else if (dy < 0 && btnSettings.getVisibility() != View.VISIBLE) {
+                    btnSettings.show();
+                }
+            }
+        });
 
         userManager = new UserManager(getContext());
         userManager.getFollowedUsers(this);

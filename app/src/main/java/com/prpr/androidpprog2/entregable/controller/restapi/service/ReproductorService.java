@@ -273,7 +273,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-    private void killNotification(){
+    public void killNotification(){
         String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager nMgr = (NotificationManager) getApplicationContext().getSystemService(ns);
         nMgr.cancel(NOTIFICATION_ID);
@@ -301,7 +301,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         if (mediaPlayer == null) return;
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
-            killNotification();
         }
     }
 

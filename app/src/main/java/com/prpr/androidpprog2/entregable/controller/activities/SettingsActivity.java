@@ -321,6 +321,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 Intent intent = new Intent(SettingsActivity.this, ReproductorService.class);
                                 serv.stopMedia();
+                                serv.killNotification();
                                 stopService(intent);
                                 doLogOut();
 

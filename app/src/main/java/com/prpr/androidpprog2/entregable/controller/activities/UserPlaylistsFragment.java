@@ -70,6 +70,7 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     private EditText etSearchPlaylist;
 
     private FloatingActionButton btnSettingsPlaylists;
+    private FloatingActionButton btnSettings;
 
     private ReproductorService servei;
 
@@ -88,17 +89,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
         View view =  inflater.inflate(R.layout.fragment_user_playlists, container, false);
 
-        // Inflate the layout for this fragment
+        //container.get
 
-       /*btnSettingsPlaylists = (FloatingActionButton) view.findViewById(R.id.configPlaylistsButton);
-       btnSettingsPlaylists.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               Intent intent = new Intent(getContext(), SettingsActivity.class);
-               intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-               startActivity(intent);
-           }
-       });*/
+        btnSettings = (FloatingActionButton)getActivity().findViewById(R.id.configButton);
+
 
         btnFilterPlaylists = (Button) view.findViewById(R.id.filter_user_playlists);
         btnFilterPlaylists.setEnabled(true);
@@ -181,6 +175,17 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
         adapter.setPlaylistCallback(this);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && btnSettings.getVisibility() == View.VISIBLE) {
+                    btnSettings.hide();
+                } else if (dy < 0 && btnSettings.getVisibility() != View.VISIBLE) {
+                    btnSettings.show();
+                }
+            }
+        });
 
         playlistManager = new PlaylistManager(getContext());
         playlistManager.getAllMyPlaylists(this);
