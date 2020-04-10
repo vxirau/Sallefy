@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     private CheckBox btnRemember;
     private TextView tvToRegister;
     private UserToken usTkn;
+    private boolean d1=true;
     private String username="";
     private StorageReference mStorage;
 
@@ -93,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                d1 = false;
                 if(btnRemember.isChecked()){
 
                     SharedPreferences.Editor editor = prefs.edit();
@@ -174,10 +175,8 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         Session.getInstance(getApplicationContext()).setUserToken(usTkn);
         Session.getInstance(getApplicationContext()).setUser(userData);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        //prova
-        intent.putExtra("sameUser", false);
+        intent.putExtra("sameUser", d1);
         intent.putExtra("UserInfo", userData);
-        //es pot esborrar, es per veure si la meva part esta bé
         startActivity(intent);
     }
 

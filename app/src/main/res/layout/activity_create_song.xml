@@ -176,7 +176,7 @@
             <Button
                 android:id="@+id/create_song_accept"
                 android:layout_width="290dp"
-                android:layout_height="35dp"
+                android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/rectangle_green_sombra"
                 android:text="@string/action_accept"
@@ -187,7 +187,7 @@
             <Button
                 android:id="@+id/create_song_cancel"
                 android:layout_width="120dp"
-                android:layout_height="35dp"
+                android:layout_height="50dp"
                 android:text="@string/cancelar"
                 android:textColor="#21D760"
                 android:textSize="20sp"

@@ -162,5 +162,6 @@
     <string name="edit_playlist">Edit</string>
     <string name="delete">delete</string>
     <string name="message">Do you want to edit or delete this playlist?</string>
+    <string name="numFollowers">X Followers</string>
 </resources>
 

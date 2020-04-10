@@ -272,12 +272,19 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     }
 
+
+    private void killNotification(){
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager nMgr = (NotificationManager) getApplicationContext().getSystemService(ns);
+        nMgr.cancel(NOTIFICATION_ID);
+    }
+
     public void seekToPosition(int position){
         mediaPlayer.seekTo(position);
     }
 
     private void playMedia() {
-        if (!mediaPlayer.isPlaying() && mediaPlayer!=null) {
+        if (!mediaPlayer.isPlaying() && mediaPlayer!=null && mSeekBar!=null) {
             mediaPlayer.start();
             int duration = mediaPlayer.getDuration();
             mSeekBar.setMax(duration);
@@ -290,10 +297,11 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
 
 
-    private void stopMedia() {
+    public void stopMedia() {
         if (mediaPlayer == null) return;
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
+            killNotification();
         }
     }
 
@@ -636,10 +644,10 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-    private int indexTrack(Track tr){
+    private int indexTrack(Track t){
         int index=-1;
         for(int i=0; i<audioList.size() ;i++){
-            if(tr.getId()==audioList.get(i).getId()){
+            if(t.getId().equals(audioList.get(i).getId()) && t.getName().equals(audioList.get(i).getName()) && t.getUrl().equals(audioList.get(i).getUrl())){
                 return i;
             }
         }

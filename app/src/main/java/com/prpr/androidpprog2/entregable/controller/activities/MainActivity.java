@@ -33,6 +33,7 @@ import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
-            //serv.setmSeekBar(mSeekBar);
+            serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.setSeekCallback(MainActivity.this);
@@ -146,14 +147,27 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }
     }
 
+    private int findInex(Track t){
+        int index=-1;
+        for(int i=0; i<audioList.size() ;i++){
+            if(t.getId().equals(audioList.get(i).getId()) && t.getName().equals(audioList.get(i).getName()) && t.getUrl().equals(audioList.get(i).getUrl())){
+                index = i;
+            }
+        }
+        return index;
+    }
 
     private void loadPreviousSession() {
         audioList = PreferenceUtils.getAllTracks(getApplicationContext());
         Track t = PreferenceUtils.getTrack(getApplicationContext());
-        audioIndex = audioList.indexOf(t);
-        start();
-        Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
-        sendBroadcast(broadcastIntent);
+        audioIndex = findInex(t);
+        if(audioIndex==-1){
+            ErrorDialog.getInstance(this).showErrorDialog("Error loading previous session");
+        }else{
+            start();
+            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            sendBroadcast(broadcastIntent);
+        }
     }
 
     private void start() {
@@ -200,8 +214,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         setContentView(R.layout.activity_main);
         if(getIntent().getSerializableExtra("sameUser")!=null){
             sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
-        }else{
-            sameUser = false;
         }
         initViews();
         btnNewPlaylist.setEnabled(true);
