@@ -185,6 +185,11 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     }
 
+    @Override
+    public void onAccountSaved(User body) {
+
+    }
+
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
@@ -224,6 +229,11 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
 
     }
 

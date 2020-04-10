@@ -40,8 +40,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.LogOutCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
-import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.LogOutDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
@@ -58,7 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SettingsActivity extends AppCompatActivity implements UserCallback, ServiceCallback {
+public class SettingsActivity extends AppCompatActivity implements UserCallback, ServiceCallback, LogOutCallback {
 
 
     private static final int UPLOAD_IMAGE = 1;
@@ -83,9 +85,6 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     private LoginActivity LoginActivity;
     private Context context;
-
-    private Button followers;
-    private TextView username;
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
     private TextView followingTxt;
@@ -232,18 +231,6 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             }
         });
 
-        username = findViewById(R.id.settings_update_profile_pic);
-        username.setText(myUser.getLogin());
-
-        followers = findViewById(R.id.numFollowers);
-        followers.setText(myUser.getFollowers() + " Followers");
-        followers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ErrorDialog.getInstance(SettingsActivity.this).showErrorDialog("You cannot view your followers yet");
-            }
-        });
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.perfil);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -273,26 +260,19 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
+                startActivity(intent);
+                intent.putExtra("UserInfo", myUser);
+
             }
         });
 
 
         etFirstName = (EditText) findViewById(R.id.textview_settings_change_first_name);
-        if(myUser.getFirstName()!=null){
-            etFirstName.setText(myUser.getFirstName());
-        }
 
         etLastName = (EditText) findViewById(R.id.textview_settings_change_last_name);
-        if(myUser.getLastName()!=null){
-            etLastName.setText(myUser.getLastName());
-        }
 
         etEmail = (EditText) findViewById(R.id.textview_settings_change_email);
-        if(myUser.getEmail()!=null){
-            etEmail.setText(myUser.getEmail());
-        }
 
         btnUpdate = findViewById(R.id.update_button);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -312,21 +292,8 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             @Override
             public void onClick(View view) {
 
+                LogOutDialog.getInstance(SettingsActivity.this).showStateDialog();
 
-                new AlertDialog.Builder(SettingsActivity.this)
-                        .setMessage("Do you really want to log out?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Intent intent = new Intent(SettingsActivity.this, ReproductorService.class);
-                                serv.stopMedia();
-                                serv.killNotification();
-                                stopService(intent);
-                                doLogOut();
-
-                            }})
-                        .setNegativeButton(android.R.string.no, null).show();
             }
         });
 
@@ -335,11 +302,13 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
 
         imgBtnUserPic = findViewById(R.id.userImage);
+
         if(myUser.getImageUrl()!=null){
             Picasso.get().load(myUser.getImageUrl()).into(imgBtnUserPic);
         }else{
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(imgBtnUserPic);
         }
+
         imgBtnUserPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -359,21 +328,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         startActivityForResult(intent, UPLOAD_IMAGE);
     }
 
-    private void doLogOut(){
 
-        Toast.makeText(SettingsActivity.this, "You logged out succesfully", Toast.LENGTH_SHORT).show();
-        Session.getInstance(this).resetValues();
-        SharedPreferences preferences = getSharedPreferences("RememberMe",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
-
-        finish();
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.putExtra("LoggedOut", true);
-        startActivity(intent);
-
-    }
     private void doUpdateUser() throws MalformedURLException {
 
 
@@ -393,7 +348,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         }
 
         userManager = new UserManager(this);
-        userManager.updateUser(myUser, this);
+        userManager.saveAccount(myUser, this);
         System.out.println("after update" + myUser.getId());
 
     }
@@ -431,6 +386,10 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         finish();
     }
 
+    @Override
+    public void onAccountSaved(User body) {
+
+    }
 
 
     @Override
@@ -474,6 +433,11 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     }
 
     @Override
+    public void onAccountSavedFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFollowFailure(Throwable throwable) {
 
     }
@@ -492,6 +456,21 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     @Override
     public void onFailure(Throwable throwable) {
 
+    }
+
+    @Override
+    public void doLogOut() {
+        Toast.makeText(SettingsActivity.this, "You logged out succesfully", Toast.LENGTH_SHORT).show();
+        Session.getInstance(this).resetValues();
+        SharedPreferences preferences = getSharedPreferences("RememberMe",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+
+        finish();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.putExtra("LoggedOut", true);
+        startActivity(intent);
     }
 }
 

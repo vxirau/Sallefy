@@ -55,7 +55,7 @@
 
 
             <Button
-            android:id="@+id/dialog_error_button"
+            android:id="@+id/dialog_error_button_accept"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

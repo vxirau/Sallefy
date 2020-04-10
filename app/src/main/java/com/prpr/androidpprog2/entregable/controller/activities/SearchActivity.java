@@ -457,6 +457,10 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     }
 
+    @Override
+    public void onAccountSaved(User body) {
+
+    }
 
 
     @Override
@@ -500,6 +504,11 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
 
     }
 

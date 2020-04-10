@@ -577,6 +577,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
+    @Override
+    public void onAccountSaved(User body) {
+
+    }
+
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
@@ -622,6 +627,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
 
     }
 

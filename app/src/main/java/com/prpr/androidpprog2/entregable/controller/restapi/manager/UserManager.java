@@ -115,6 +115,37 @@ public class UserManager {
        });
 
     }
+    public void saveAccount(User user, final UserCallback userCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+
+        Call<User> call = mService.saveAccount(user,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onAccountSaved(user);
+                    System.out.println("is successful");
+                } else {
+                    try{
+                        userCallback.onAccountSavedFailure(new Throwable(response.errorBody().string()));
+                        System.out.println("it is not successful"+ response.errorBody().string());
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userCallback.onAccountSavedFailure(new Throwable("ERROR " + t.getStackTrace()));
+
+            }
+        });
+
+    }
 
     public synchronized void getTopUsers (final UserCallback userCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();

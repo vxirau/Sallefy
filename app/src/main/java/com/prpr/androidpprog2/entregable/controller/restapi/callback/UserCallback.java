@@ -13,6 +13,7 @@ public interface UserCallback extends FailureCallback {
     void onRegisterFailure(Throwable throwable);
     void onUserInfoReceived(User userData);
     void onUserUpdated(User body);
+    void onAccountSaved(User body);
     void onTopUsersRecieved(List<User> body);
     void onUserUpdateFailure(Throwable throwable);
     void onUserSelected(User user);
@@ -21,6 +22,7 @@ public interface UserCallback extends FailureCallback {
     void onAllUsersFail(Throwable throwable);
     void onFollowedUsersFail(Throwable throwable);
     void onFollowSuccess(Follow body);
+    void onAccountSavedFailure(Throwable throwable);
     void onFollowFailure(Throwable throwable);
     void onCheckSuccess(Follow body);
     void onCheckFailure(Throwable throwable);

@@ -159,6 +159,11 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
 
     }
 
+    @Override
+    public void onAccountSaved(User body) {
+
+    }
+
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
@@ -204,6 +209,11 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
 
     @Override
     public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
 
     }
 

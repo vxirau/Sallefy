@@ -582,6 +582,11 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     }
 
+    @Override
+    public void onAccountSaved(User body) {
+
+    }
+
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
@@ -630,6 +635,11 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
             follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
             isFollowing=true;
         }
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
+
     }
 
     @Override
