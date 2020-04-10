@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     @Override
     public void onResume() {
         super.onResume();
-        if(servidorVinculat){
+        if(servidorVinculat && serv!=null){
             serv.setSeekCallback(this);
         }
         pManager.getAllPlaylists(this);
@@ -200,8 +200,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         setContentView(R.layout.activity_main);
         if(getIntent().getSerializableExtra("sameUser")!=null){
             sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
+        }else{
+            sameUser = false;
         }
-
         initViews();
         btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();
