@@ -45,7 +45,6 @@ import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
-import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
@@ -76,6 +75,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private ArrayList<Track> shuffledAudioList;
 
     private int currentPlaylistID;
+    private TextView textActual;
     private ImageButton shuffle;
     private int audioIndex = -1;
     private Track activeAudio;
@@ -100,7 +100,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private boolean ongoingCall = false;
     private PhoneStateListener phoneStateListener;
     private TelephonyManager telephonyManager;
-    private ServiceCallback scallback;
 
     private boolean isShuffle;
 
@@ -167,9 +166,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mSeekBar = s;
     }
 
-    public void setSeekCallback(ServiceCallback s){
-        scallback = s;
-    }
 
     private void initMediaPlayer() {
         mediaPlayer = new MediaPlayer();
@@ -202,7 +198,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         return time;
     }
 
-    public void setDuracioTotal(TextView txt){
+    public void setDuracioTotal(TextView txt, TextView txtActual){
         int duration = mediaPlayer.getDuration();
         @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(duration),
@@ -210,7 +206,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration))
         );
         txt.setText(time);
+        this.textActual = txtActual;
     }
+
 
 
     public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg){
@@ -223,8 +221,14 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(!fromUser && scallback!=null){
-                    scallback.onSeekBarUpdate(progress, mediaPlayer.getDuration(), mediaPlayer.isPlaying(), duractioActual());
+                if(!fromUser){
+                    if(mediaPlayer.isPlaying()){
+                        mSeekBar.postDelayed(mProgressRunner, 1000);
+                    }
+                    mSeekBar.setProgress(progress);
+                    if(imahen!=null){
+                        textActual.setText(duractioActual());
+                    }
                 }else{
                     mediaPlayer.seekTo(progress);
                 }
@@ -701,6 +705,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
         }
         removeNotification();
+        killNotification();
         unregisterReceiver(becomingNoisyReceiver);
         unregisterReceiver(playNewAudio);
 

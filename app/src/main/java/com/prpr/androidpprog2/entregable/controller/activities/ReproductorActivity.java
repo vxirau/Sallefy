@@ -28,7 +28,6 @@ import androidx.core.content.ContextCompat;
 import com.chibde.visualizer.CircleBarVisualizer;
 import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
@@ -39,7 +38,7 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.List;
 
-public class ReproductorActivity extends Activity implements ServiceCallback, TrackCallback {
+public class ReproductorActivity extends Activity implements TrackCallback {
 
     private static final String TAG = "DynamicPlaybackActivity";
     private static final String PLAY_VIEW = "PlayIcon";
@@ -87,10 +86,9 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.setRandomButton(shuffle);
-            serv.setDuracioTotal(duracioTotal);
+            serv.setDuracioTotal(duracioTotal, duracioActual);
             serv.updateUI();
             serv.setShuffleButtonUI();
-            serv.setSeekCallback(this);
         }
     }
 
@@ -99,7 +97,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
     public void onResume() {
         super.onResume();
         if(servidorVinculat){
-            serv.setSeekCallback(this);
             serv.setShuffleButtonUI();
             active = serv.getActiveAudio();
             updateLiked();
@@ -135,8 +132,7 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             updateLiked();
             serv.setRandomButton(shuffle);
             serv.setShuffleButtonUI();
-            serv.setDuracioTotal(duracioTotal);
-            serv.setSeekCallback(ReproductorActivity.this);
+            serv.setDuracioTotal(duracioTotal, duracioActual);
         }
 
         @Override
@@ -157,16 +153,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
     protected void onDestroy() {
         super.onDestroy();
         doUnbindService();
-    }
-
-
-    @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
-        if(isPlaying){
-            mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
-        }
-        mSeekBar.setProgress(progress);
-        duracioActual.setText(duracio);
     }
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
