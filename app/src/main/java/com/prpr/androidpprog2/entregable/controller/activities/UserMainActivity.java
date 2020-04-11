@@ -23,6 +23,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,7 +66,8 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     private User user;
     private FloatingActionButton btnSettingsStatistics;
     private FloatingActionButton btnSettings;
-
+    private View bigView;
+    private SpringAnimation springAnimation;
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
     private TextView followingTxt;
@@ -203,7 +207,12 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
             }
         });
 
+        bigView = (View) findViewById(R.id.view_big_bar);
 
+        SpringForce springForce = new SpringForce(0).setDampingRatio(SpringForce.DAMPING_RATIO_LOW_BOUNCY)
+                .setStiffness(SpringForce.STIFFNESS_MEDIUM);
+
+        springAnimation = new SpringAnimation(bigView, DynamicAnimation.TRANSLATION_X).setSpring(springForce);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.perfil);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -273,7 +282,7 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     }
 
     void initPlaylistViews(){
-
+        springAnimation.animateToFinalPosition(0);
         UserPlaylistsFragment userPlaylistsFragment = new UserPlaylistsFragment();
 
         FragmentManager manager = getSupportFragmentManager();
@@ -285,6 +294,8 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
 
     }
     void initTracksViews(){
+
+        springAnimation.animateToFinalPosition(238);
 
         UserTracksFragment userTracksFragment = new UserTracksFragment();
 
@@ -298,7 +309,7 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     }
 
     void initStatisticsViews(){
-
+        springAnimation.animateToFinalPosition(500);
         UserStatisticsFragment userStatisticsFragment = new UserStatisticsFragment();
 
         FragmentManager manager = getSupportFragmentManager();
@@ -309,7 +320,7 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
     }
 
     void initMyFollowedViews(){
-
+        springAnimation.animateToFinalPosition(750);
         UserFollowedFragment userFollowedFragment = new UserFollowedFragment();
 
         FragmentManager manager = getSupportFragmentManager();

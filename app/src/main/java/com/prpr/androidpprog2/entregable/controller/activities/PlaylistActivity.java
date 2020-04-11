@@ -272,7 +272,17 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         TrackListAdapter adapter = new TrackListAdapter(this, this, null, playlst);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
-
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && mSorts.getVisibility() == View.VISIBLE) {
+                    mSorts.hide();
+                } else if (dy < 0 && mSorts.getVisibility() != View.VISIBLE) {
+                    mSorts.show();
+                }
+            }
+        });
 
 
         follow = findViewById(R.id.playlistSeguirBoto);

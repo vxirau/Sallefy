@@ -123,6 +123,7 @@ public class UserManager {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 int code = response.code();
+                System.out.println("TOKENSIKO: " + userToken.toString());
                 if (response.isSuccessful()) {
                     userCallback.onAccountSaved(user);
                     System.out.println("is successful");

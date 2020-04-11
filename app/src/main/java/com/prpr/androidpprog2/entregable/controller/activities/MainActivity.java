@@ -308,6 +308,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         adapter2.setPlaylistCallback(this);
         allPlaylistRecycle.setLayoutManager(manager2);
         allPlaylistRecycle.setAdapter(adapter2);
+        
+
 
         topPlaylistsRecycle = (RecyclerView) findViewById(R.id.topPlayedPlaylists);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
