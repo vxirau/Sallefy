@@ -106,6 +106,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     private boolean wasPlaying=false;
 
+    private boolean stopOnStart=false;
+
 
 
 
@@ -206,6 +208,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         this.textActual = txtActual;
     }
 
+    public void stopOnStart(){
+        stopOnStart = true;
+    }
 
 
     public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg){
@@ -216,6 +221,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         pauseB = pause;
         imahen = trackImg;
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(!fromUser){
@@ -226,6 +232,11 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                     if(textActual!=null){
                         textActual.setText(duractioActual());
                     }
+                    if(stopOnStart) {
+                        pauseMedia();
+                        stopOnStart = false;
+                    }
+
                 }else{
                     mediaPlayer.seekTo(progress);
                 }
@@ -706,6 +717,12 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         unregisterReceiver(becomingNoisyReceiver);
         unregisterReceiver(playNewAudio);
 
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent){
+        onDestroy();
+        stopSelf();
     }
 
     @Override

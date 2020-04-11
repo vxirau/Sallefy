@@ -85,8 +85,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private PlaylistManager pManager;
     private UserManager usrManager;
 
-    private User user;
-
     private LinearLayout playing;
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
@@ -105,11 +103,12 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
-            if(sameUser){
-                serv.pauseMedia();
-            }
             boolean shuf = PreferenceUtils.getShuffle(getApplicationContext());
             serv.setShuffle(shuf);
+            if(sameUser){
+                serv.stopOnStart();
+                sameUser=false;
+            }
         }
 
         @Override
@@ -218,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager.getFollowingPlaylists(this);
         if(sameUser){
             loadPreviousSession();
-            sameUser = false;
         }
     }
 
