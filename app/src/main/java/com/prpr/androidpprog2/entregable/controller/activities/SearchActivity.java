@@ -276,6 +276,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
             }
         });
     }
+
     private void searchCall (){
         if (!mSearchText.getText().toString().equals("") && mSearchText.getText().toString().length() > 1) {
             SearchManager.getInstance(this).getSearch(this, mSearchText.getText().toString());
