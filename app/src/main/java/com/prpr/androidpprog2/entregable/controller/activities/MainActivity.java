@@ -32,7 +32,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
-import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
@@ -54,7 +53,7 @@ import java.util.List;
 
 
 
-public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback, ServiceCallback {
+public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback {
 
     private FloatingActionButton mes;
     private FloatingActionButton btnNewPlaylist;
@@ -106,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
-            serv.setSeekCallback(MainActivity.this);
             if(sameUser){
                 serv.pauseMedia();
             }
@@ -143,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
-            serv.setSeekCallback(this);
         }
     }
 
@@ -161,14 +158,19 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private void loadPreviousSession() {
         audioList = PreferenceUtils.getAllTracks(getApplicationContext());
         Track t = PreferenceUtils.getTrack(getApplicationContext());
-        audioIndex = findInex(t);
-        if(audioIndex==-1){
-            ErrorDialog.getInstance(this).showErrorDialog("Error loading previous session");
+        if(t!=null){
+            audioIndex = findInex(t);
+            if(audioIndex==-1){
+                ErrorDialog.getInstance(this).showErrorDialog("Error loading previous session");
+            }else{
+                start();
+                Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+                sendBroadcast(broadcastIntent);
+            }
         }else{
-            start();
-            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
-            sendBroadcast(broadcastIntent);
+            ErrorDialog.getInstance(this).showErrorDialog("Error loading previous session");
         }
+
     }
 
     private void start() {
@@ -182,7 +184,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     public void onResume() {
         super.onResume();
         if(servidorVinculat && serv!=null){
-            serv.setSeekCallback(this);
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
+            serv.updateUI();
         }
         pManager.getAllPlaylists(this);
         pManager.getTopPlaylists(this);
@@ -190,25 +193,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
-        if(!sameUser){
-            if(isPlaying){
-                mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
-            }
-            mSeekBar.setProgress(progress);
-        }else{
-            serv.pauseMedia();
-            sameUser=false;
-        }
-
-    }
-
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

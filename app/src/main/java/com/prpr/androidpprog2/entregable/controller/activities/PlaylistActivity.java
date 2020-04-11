@@ -34,7 +34,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.OptionDialogCallback;
-import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.OptionDialog;
@@ -55,7 +54,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback, PlaylistCallback, ServiceCallback, OptionDialogCallback {
+public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback, PlaylistCallback, OptionDialogCallback {
 
     private Playlist playlst;
     private TextView plyName;
@@ -145,7 +144,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             player = binder.getService();
             player.setmSeekBar(mseek);
-            player.setSeekCallback(PlaylistActivity.this);
             serviceBound = true;
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
         }
@@ -166,14 +164,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
     }
 
-    @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
-        if(isPlaying){
-            mseek.postDelayed(player.getmProgressRunner(), 1000);
-        }
-        mseek.setProgress(progress);
-    }
-
 
     @Override
     public void onStart() {
@@ -185,7 +175,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }else{
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
             player.updateUI();
-            player.setSeekCallback(this);
         }
         pManager.checkFollowing(playlst.getId(), this);
     }
@@ -193,9 +182,15 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     @Override
     protected void onResume() {
         super.onResume();
-        if(serviceBound){
-            player.setSeekCallback(this);
+        if(!serviceBound){
+            saveIdForFuture();
+            Intent intent = new Intent(this, ReproductorService.class);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }else{
+            player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
+            player.updateUI();
         }
+        pManager.checkFollowing(playlst.getId(), this);
         pManager.getPlaylist(playlst.getId(), this);
         orderByPreferenceUtils();
     }

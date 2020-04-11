@@ -38,7 +38,6 @@ import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
-import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
@@ -57,7 +56,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserMainActivity extends AppCompatActivity implements ServiceCallback{
+public class UserMainActivity extends AppCompatActivity{
 
     private TextView tvUserPlaylists;
     private TextView tvUserTracks;
@@ -88,7 +87,6 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
             //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
-            serv.setSeekCallback(UserMainActivity.this);
         }
 
         @Override
@@ -120,28 +118,21 @@ public class UserMainActivity extends AppCompatActivity implements ServiceCallba
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
-            serv.setSeekCallback(this);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(servidorVinculat){
-            serv.setSeekCallback(this);
+        if(!servidorVinculat){
+            Intent intent = new Intent(this, ReproductorService.class);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }else{
+            serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
+            serv.updateUI();
         }
 
     }
-
-
-    @Override
-    public void onSeekBarUpdate(int progress, int duration, boolean isPlaying, String duracio) {
-        if(isPlaying){
-            mSeekBar.postDelayed(serv.getmProgressRunner(), 1000);
-        }
-        mSeekBar.setProgress(progress);
-    }
-
 
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------

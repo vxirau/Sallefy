@@ -20,7 +20,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
