@@ -77,28 +77,27 @@ public class UserFollowedAdapter extends RecyclerView.Adapter<UserFollowedAdapte
         holder.userlogin.setSingleLine(true);
 
         if(users.get(position).getTracks() != null){
-            holder.userTracks.setText(users.get(position).getTracks());
+            holder.userTracks.setText(String.valueOf(users.get(position).getTracks()));
         }else{
-            holder.userTracks.setText("0 tracks by this user");
+            holder.userTracks.setText("N/A tracks by this user");
         }
 
         if(users.get(position).getFollowers() != null) {
-
-            holder.userNumFollowers.setText(users.get(position).getFollowers());
+            holder.userNumFollowers.setText(String.valueOf(users.get(position).getFollowers()));
         }else{
-            holder.userNumFollowers.setText("0 followers");
+            holder.userNumFollowers.setText("N/A followers");
         }
 
         if(users.get(position).getFollowing() != null) {
-            holder.userNumFollowing.setText(users.get(position).getFollowing());
+            holder.userNumFollowing.setText(String.valueOf(users.get(position).getFollowing()));
         }else {
-            holder.userNumFollowing.setText("0 following");
+            holder.userNumFollowing.setText("N/A following");
         }
 
         if(users.get(position).getPlaylists() != null) {
-            holder.userNumPlaylists.setText(users.get(position).getPlaylists());
+            holder.userNumPlaylists.setText(String.valueOf(users.get(position).getPlaylists()));
         }else {
-            holder.userNumPlaylists.setText("0 playlists by this user");
+            holder.userNumPlaylists.setText("N/A playlists by this user");
         }
 
         if (users.get(position).getImageUrl() != null && !users.get(position).getImageUrl().isEmpty()) {

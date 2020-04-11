@@ -26,7 +26,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.chibde.visualizer.CircleBarVisualizer;
-import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
+import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
@@ -66,7 +66,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
     private LinearLayout shuffleLayout;
     private Button atras;
     private SeekBar mSeekBar;
-    private CircleLineVisualizer mVisualizer;
 
     private TrackManager tManager;
 
@@ -88,7 +87,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             serv.setRandomButton(shuffle);
-            //serv.setmVisualizer(mVisualizer);
             serv.setDuracioTotal(duracioTotal);
             serv.updateUI();
             serv.setShuffleButtonUI();
@@ -133,7 +131,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
             serv = binder.getService();
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
-            //serv.setmVisualizer(mVisualizer);
             active = serv.getActiveAudio();
             updateLiked();
             serv.setRandomButton(shuffle);
@@ -205,10 +202,6 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
 
         trackAuthor = findViewById(R.id.music_artist);
         trackImage = findViewById(R.id.track_img);
-
-        mVisualizer = (CircleLineVisualizer) findViewById(R.id.visualizerC);
-        mVisualizer.setDrawLine(true);
-
 
         shuffleLayout = findViewById(R.id.shuffleLayout);
         shuffleLayout.setEnabled(true);
@@ -339,6 +332,16 @@ public class ReproductorActivity extends Activity implements ServiceCallback, Tr
 
     @Override
     public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
 
     }
 

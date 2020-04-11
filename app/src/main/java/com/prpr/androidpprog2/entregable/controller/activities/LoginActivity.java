@@ -47,15 +47,18 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     private CheckBox btnRemember;
     private TextView tvToRegister;
     private UserToken usTkn;
+    private boolean d1=true;
     private String username="";
     private StorageReference mStorage;
 
 
     @Override
     public void onCreate(Bundle savedInstanceSate) {
+
         super.onCreate(savedInstanceSate);
         setContentView(R.layout.activity_login);
         initViews();
+
     }
 
     private void initViews () {
@@ -75,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         btnRemember = (CheckBox) findViewById(R.id.checkBox);
 
         final SharedPreferences prefs = getSharedPreferences("RememberMe", Context.MODE_PRIVATE);
+
         String nickname = prefs.getString("nickname", "");
         String pass = prefs.getString("password", "");
         boolean stateSwitch = prefs.getBoolean("stateSwitch", false);
@@ -82,11 +86,15 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         etLogin.setText(nickname);
         etPassword.setText(pass);
 
+        if(btnRemember.isChecked()){
+           doLogin(etLogin.getText().toString(),etPassword.getText().toString());
+        }
+
         btnLogin = (Button) findViewById(R.id.login_btn_action);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                d1 = false;
                 if(btnRemember.isChecked()){
 
                     SharedPreferences.Editor editor = prefs.edit();
@@ -94,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
                     editor.putString("password", etPassword.getText().toString());
                     editor.putBoolean("stateSwitch", btnRemember.isChecked());
                     editor.commit();
+
 
                 } else {
 
@@ -166,18 +175,20 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         Session.getInstance(getApplicationContext()).setUserToken(usTkn);
         Session.getInstance(getApplicationContext()).setUser(userData);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        //prova
-        intent.putExtra("sameUser", false);
+        intent.putExtra("sameUser", d1);
         intent.putExtra("UserInfo", userData);
-        //es pot esborrar, es per veure si la meva part esta bé
         startActivity(intent);
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
 
     }
 
+    @Override
+    public void onAccountSaved(User body) {
+
+    }
 
 
     @Override
@@ -218,6 +229,11 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
 
     }
 

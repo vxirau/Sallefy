@@ -1,14 +1,9 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
-import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import java.util.*;
@@ -21,6 +16,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -32,13 +29,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.OptionDialogCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.OptionDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -47,8 +46,8 @@ import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorS
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
-import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.KeyboardUtils;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
@@ -56,27 +55,36 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback, PlaylistCallback, ServiceCallback {
+public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback, PlaylistCallback, ServiceCallback, OptionDialogCallback {
 
     private Playlist playlst;
     private TextView plyName;
     private TextView plyAuthor;
     private TextView followers;
     private ImageView plyImg;
+    private ImageButton imgEdit;
 
     private TextView tvTitle;
     private TextView tvAuthor;
     private LinearLayout playing;
+    private LinearLayout actionButtons;
+    private LinearLayout reproductor;
+
+
 
     private Button back2Main;
     private Button infoPlaylist;
     private Button shuffle;
+    private Button acceptEdit;
     private Button follow;
+    private Button accessible;
     private Follow followingInfo;
     private boolean isFollowing = false;
     private Button addBunch;
     private Button play;
     private Button pause;
+
+    private EditText newName;
 
     private RecyclerView mRecyclerView;
     private boolean bunch;
@@ -93,8 +101,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private int mSorted = -1;
     private boolean isOpen;
     private boolean asc_dsc;
+    private BottomNavigationView navigation;
 
     private Animation fabOpen, fabClose;
+    private OptionDialog dialogEdit;
     private final int SORT_AZ = 0;
     private final int SORT_TIME = 1;
     private final int SORT_ARTIST = 2;
@@ -214,7 +224,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     private void initViews() {
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
+        navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.none);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -265,7 +275,17 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         TrackListAdapter adapter = new TrackListAdapter(this, this, null, playlst);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
-
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && mSorts.getVisibility() == View.VISIBLE) {
+                    mSorts.hide();
+                } else if (dy < 0 && mSorts.getVisibility() != View.VISIBLE) {
+                    mSorts.show();
+                }
+            }
+        });
 
 
         follow = findViewById(R.id.playlistSeguirBoto);
@@ -281,9 +301,61 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             follow.setVisibility(View.GONE);
         }
 
+        acceptEdit = findViewById(R.id.acceptEdit);
+        acceptEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideUIEdit();
+                if(!newName.getText().toString().matches("")){
+                    playlst.setName(newName.getText().toString());
+                }
+                pManager.updatePlaylist(playlst, PlaylistActivity.this);
+            }
+        });
+        acceptEdit.setVisibility(View.GONE);
+
+        imgEdit = findViewById(R.id.imgEdit);
+        imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ErrorDialog.getInstance(PlaylistActivity.this).showErrorDialog("Change playlist cover is not yet available");
+            }
+        });
+        imgEdit.setVisibility(View.GONE);
+
+        reproductor= findViewById(R.id.reproductor);
+
+        accessible= findViewById(R.id.privadaPublica);
+        accessible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playlst.setPublicAccessible(!playlst.isPublicAccessible());
+                pManager.updatePlaylist(playlst, PlaylistActivity.this);
+                if(playlst.isPublicAccessible()){
+                    accessible.setText("Public");
+                    accessible.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+                }else{
+                    accessible.setText("Private");
+                    accessible.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+                }
+            }
+        });
+        if(playlst.isPublicAccessible()){
+            accessible.setText("Public");
+            accessible.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
+        }else{
+            accessible.setText("Private");
+            accessible.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
+        }
+
+
         plyName = findViewById(R.id.playlistName);
+        plyName.setVisibility(View.VISIBLE);
         plyAuthor = findViewById(R.id.playlistAuthor);
         plyImg = findViewById(R.id.playlistCover);
+
+        newName = findViewById(R.id.nomCanvi);
+        newName.setVisibility(View.GONE);
 
         plyName.setText(playlst.getName());
         if(playlst.getOwner()!=null){
@@ -324,6 +396,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             }
         });
 
+        actionButtons = findViewById(R.id.actionbuttons);
+
         mseek = findViewById(R.id.dynamic_seekBar);
         mseek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -345,8 +419,13 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playAudio(new Random().nextInt(mTracks.size()));
-                player.setShuffle(true);
+                if(mTracks.size()>0){
+                    playAudio(new Random().nextInt(mTracks.size()));
+                    player.setShuffle(true);
+                }else{
+                    ErrorDialog.getInstance(PlaylistActivity.this).showErrorDialog("There is no tracks to play!");
+                }
+
             }
         });
 
@@ -361,27 +440,33 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             }
         });
 
-        if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playlst.getOwner().getLogin())){
-            addBunch.setVisibility(View.VISIBLE);
-            follow.setVisibility(View.GONE);
-        }else{
-            addBunch.setVisibility(View.INVISIBLE);
-            follow.setVisibility(View.VISIBLE);
-        }
-        if(playlst.getId()==-5){
-            follow.setVisibility(View.GONE);
-        }
 
         infoPlaylist = findViewById(R.id.infoPlaylist);
         infoPlaylist.setEnabled(true);
         infoPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), InfoPlaylistActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                dialogEdit.showOptionDialog("Edit", "Delete");
             }
         });
+
+        if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playlst.getOwner().getLogin())){
+            addBunch.setVisibility(View.VISIBLE);
+            infoPlaylist.setVisibility(View.VISIBLE);
+            follow.setVisibility(View.GONE);
+            accessible.setVisibility(View.VISIBLE);
+        }else{
+            addBunch.setVisibility(View.INVISIBLE);
+            infoPlaylist.setVisibility(View.INVISIBLE);
+            follow.setVisibility(View.VISIBLE);
+            accessible.setVisibility(View.GONE);
+        }
+        if(playlst.getId()==-5){
+            follow.setVisibility(View.GONE);
+        }
+        dialogEdit = new OptionDialog(PlaylistActivity.this, PlaylistActivity.this);
+
+
 
 
         back2Main = findViewById(R.id.back2Main);
@@ -395,9 +480,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 }else{
-                    /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);*/
                     finish();
                     overridePendingTransition(R.anim.nothing,R.anim.nothing);
                 }
@@ -622,6 +704,16 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
@@ -778,5 +870,90 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     private void saveIdForFuture(){
         PreferenceUtils.saveLastPlaylistID(this, playlst.getId());
+    }
+
+    @Override
+    public void onPlaylistDeleted(Playlist body) {
+        finish();
+        overridePendingTransition(R.anim.nothing,R.anim.nothing);
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onDelete() {
+        dialogEdit.cancelDialog();
+        dialogEdit.showConfirmationDialog();
+    }
+
+    private void hideUIEdit(){
+        newName.setVisibility(View.GONE);
+        plyName.setVisibility(View.VISIBLE);
+        plyName.setText(playlst.getName());
+        mRecyclerView.setVisibility(View.VISIBLE);
+        plyImg.setVisibility(View.VISIBLE);
+        back2Main.setVisibility(View.VISIBLE);
+        infoPlaylist.setVisibility(View.VISIBLE);
+        shuffle.setVisibility(View.VISIBLE);
+        addBunch.setVisibility(View.VISIBLE);
+        acceptEdit.setVisibility(View.GONE);
+        imgEdit.setVisibility(View.GONE);
+        navigation.setVisibility(View.VISIBLE);
+        actionButtons.setVisibility(View.VISIBLE);
+        reproductor.setVisibility(View.VISIBLE);
+        mseek.setVisibility(View.VISIBLE);
+        play.setVisibility(View.VISIBLE);
+        pause.setVisibility(View.VISIBLE);
+        accessible.setVisibility(View.VISIBLE);
+        if(!newName.getText().toString().matches("")){
+            plyName.setText(newName.getText().toString());
+        }
+        KeyboardUtils.hideKeyboard(this);
+    }
+
+    private void showUIEdit(){
+        newName.setVisibility(View.VISIBLE);
+        plyName.setVisibility(View.GONE);
+        newName.setText(playlst.getName());
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        plyImg.setVisibility(View.GONE);
+        back2Main.setVisibility(View.INVISIBLE);
+        infoPlaylist.setVisibility(View.INVISIBLE);
+        shuffle.setVisibility(View.GONE);
+        addBunch.setVisibility(View.GONE);
+        acceptEdit.setVisibility(View.VISIBLE);
+        imgEdit.setVisibility(View.VISIBLE);
+        if (playlst.getThumbnail() != null) {
+            Picasso.get().load(playlst.getThumbnail()).into(imgEdit);
+        }else{
+            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(imgEdit);
+        }
+        navigation.setVisibility(View.GONE);
+        actionButtons.setVisibility(View.GONE);
+        reproductor.setVisibility(View.GONE);
+        mseek.setVisibility(View.GONE);
+        play.setVisibility(View.GONE);
+        pause.setVisibility(View.GONE);
+        accessible.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onEdit() {
+        showUIEdit();
+        dialogEdit.cancelDialog();
+    }
+
+    @Override
+    public void onAccept() {
+        dialogEdit.cancelDialog();
+        pManager.deletePlaylist(playlst.getId(), this);
+    }
+
+    @Override
+    public void onCancel() {
+        dialogEdit.cancelDialog();
     }
 }

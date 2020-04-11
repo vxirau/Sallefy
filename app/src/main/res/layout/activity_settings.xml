@@ -64,6 +64,46 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/settings_update_profile_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:textAlignment="center"
+                    android:text="@string/settings_change_profile_pic"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="250dp">
+
+                    <ImageButton
+                        android:id="@+id/userImage"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerCrop" />
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/numFollowers"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:textAllCaps="false"
+                    android:textSize="15sp"
+                    android:background="@android:color/transparent"
+                    android:text="@string/numFollowers"
+                    android:textColor="@color/colorWhite"/>
+
+
+
+                <TextView
                     android:id="@+id/settings_change_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -78,9 +118,12 @@
                     android:layout_width="300dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
                     android:background="@drawable/rectangle_gran_gborder_white"
                     android:hint="@string/settings_add_new_first_name"
-                    android:textColorHint="#70353535"></EditText>
+                    android:textColorHint="#70353535"/>
 
 
                 <TextView
@@ -99,9 +142,12 @@
                     android:layout_width="300dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
                     android:background="@drawable/rectangle_gran_gborder_white"
                     android:hint="@string/settings_add_new_last_name"
-                    android:textColorHint="#70353535"></EditText>
+                    android:textColorHint="#70353535"/>
 
 
                 <TextView
@@ -120,47 +166,28 @@
                     android:layout_width="300dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
+                    android:singleLine="true"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
                     android:background="@drawable/rectangle_gran_gborder_white"
                     android:hint="@string/settings_add_new_email"
-                    android:textColorHint="#70353535"></EditText>
+                    android:textColorHint="#70353535"/>
 
 
 
-                <TextView
-                    android:id="@+id/settings_update_profile_pic"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="55dp"
-                    android:layout_marginTop="15dp"
-                    android:gravity="left"
-                    android:text="@string/settings_change_profile_pic"
-                    android:textColor="#FFFFFF"
-                    android:textSize="20sp" />
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:layout_gravity="center"
-                    app:cardCornerRadius="250dp">
-
-                    <ImageButton
-                        android:id="@+id/userImage"
-                        android:layout_width="140dp"
-                        android:layout_height="140dp"
-                        android:layout_gravity="center"
-                        android:background="@android:color/transparent"
-                        android:scaleType="centerCrop" />
-                </androidx.cardview.widget.CardView>
 
                 <Button
                     android:id="@+id/update_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="210dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/colorWhite"
+                    android:layout_marginTop="35dp"
+                    android:background="@drawable/rectangle_g_nosombra"
                     android:text="@string/update"
-                    android:textColor="@color/colorPrimaryDark">
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite">
 
                 </Button>
 
@@ -170,8 +197,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="40dp"
-                    android:background="@color/colorWhite"
+                    android:background="@android:color/transparent"
                     android:text="@string/log_out"
+                    android:textStyle="bold"
                     android:textSize="20dp"
                     android:textColor="@color/av_red">
 

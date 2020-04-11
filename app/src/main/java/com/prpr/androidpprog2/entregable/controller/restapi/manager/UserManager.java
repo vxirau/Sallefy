@@ -94,7 +94,7 @@ public class UserManager {
            public void onResponse(Call<User> call, Response<User> response) {
                int code = response.code();
                if (response.isSuccessful()) {
-                   userCallback.onUserUpdated();
+                   userCallback.onUserUpdated(response.body());
                    System.out.println("is successful");
                } else {
                    try{
@@ -113,6 +113,33 @@ public class UserManager {
 
            }
        });
+
+    }
+    public void saveAccount(User user, final UserCallback userCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+
+        Call<ResponseBody> call = mService.saveAccount(user,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onAccountSaved(user);
+                } else {
+                    try{
+                        userCallback.onAccountSavedFailure(new Throwable(response.errorBody().string()));
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userCallback.onAccountSavedFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
 
     }
 

@@ -33,8 +33,11 @@ public interface UserService {
     @POST("register")
     Call<ResponseBody> registerUser(@Body UserRegister user);
 
+    @POST("account")
+    Call<ResponseBody> saveAccount(@Body User user, @Header("Authorization") String token);
+
     @PUT("users")
-    Call<User> updateUser(@Body User user, @Header("Authorization") String token);
+    Call<User> updateUser(@Body User userDTO, @Header("Authorization") String token);
 
     @PUT("users/{login}/follow")
     Call<Follow> startStopFollowing(@Path("login") String login, @Header("Authorization") String token);

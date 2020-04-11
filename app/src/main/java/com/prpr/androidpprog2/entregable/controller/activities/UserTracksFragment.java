@@ -66,6 +66,9 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     private Button btnAddNewTrack;
 
+    private FloatingActionButton btnSettings;
+
+
     private TextView tvAddnewTrack;
 
     private EditText etSearchTracks;
@@ -97,12 +100,24 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
             }
         });*/
 
+        btnSettings = (FloatingActionButton)getActivity().findViewById(R.id.configButton);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.userTracksRecyclerview);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         TrackListAdapter adapter = new TrackListAdapter(this, getContext(), myTracks, myPlaylist);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && btnSettings.getVisibility() == View.VISIBLE) {
+                    btnSettings.hide();
+                } else if (dy < 0 && btnSettings.getVisibility() != View.VISIBLE) {
+                    btnSettings.show();
+                }
+            }
+        });
 
         trackManager = new TrackManager(getContext());
         trackManager.getOwnTracks(this);
@@ -275,7 +290,10 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     @Override
     public void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist playlist) {
-
+        Intent intent = new Intent(getActivity(), InfoTrackActivity.class);
+        intent.putExtra("Trck", tracks.get(position));
+        intent.putExtra("Playlst", playlist);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
     @Override
@@ -342,6 +360,16 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     @Override
     public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
 
     }
 

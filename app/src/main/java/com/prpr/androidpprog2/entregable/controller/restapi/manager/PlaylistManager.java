@@ -3,6 +3,7 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.PlaylistService;
 import com.prpr.androidpprog2.entregable.model.Follow;
@@ -294,6 +295,30 @@ public class PlaylistManager {
                 } else {
                     Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
                     playlistCallback.onPlaylistFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Playlist> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                playlistCallback.onPlaylistFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
+    public void deletePlaylist(int id, final PlaylistCallback playlistCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        Call<Playlist> call = mPlaylistService.deletePlaylist("Bearer " + userToken.getIdToken(), id);
+        call.enqueue(new Callback<Playlist>() {
+            @Override
+            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    playlistCallback.onPlaylistDeleted(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    playlistCallback.onPlaylistDeleteFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
                 }
             }
 

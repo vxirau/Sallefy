@@ -1,6 +1,7 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -16,10 +18,12 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.CursorAnchorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -36,7 +40,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
+import com.prpr.androidpprog2.entregable.controller.callbacks.LogOutCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.LoadingDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.LogOutDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
@@ -47,11 +56,18 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SettingsActivity extends AppCompatActivity implements UserCallback, ServiceCallback {
+public class SettingsActivity extends AppCompatActivity implements UserCallback, ServiceCallback, LogOutCallback {
+
+
+    private static final int UPLOAD_IMAGE = 1;
+
+
 
     private EditText etFirstName;
     private EditText etLastName;
@@ -62,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     private Button btnUpdate;
     private Button btnLogOut;
 
-    private Boolean pictureSelected;
+    private Boolean pictureUpdated;
 
     private ScrollView settingsScrollView;
     private User myUser;
@@ -71,6 +87,10 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     private LoginActivity LoginActivity;
     private Context context;
+    private TextView username;
+    private Button followers;
+
+
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
     private TextView followingTxt;
@@ -82,6 +102,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     private ImageView im;
     private LinearLayout playing;
     private ReproductorService serv;
+    private LoadingDialog loading;
     private boolean servidorVinculat=false;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -157,11 +178,28 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         myUser = Session.getUser();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         initViews();
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode,int resultCode,Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK)
+            switch (requestCode) {
+                case UPLOAD_IMAGE:
+                    Uri selectedImage = data.getData();
+                    imgBtnUserPic.setImageURI(selectedImage);
+                    pictureUpdated = true;
+                    break;
+            }
+    }
+
     void initViews(){
+
+        loading = new LoadingDialog(this);
 
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
@@ -173,7 +211,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
                 serv.resumeMedia();
             }
         });
-        pictureSelected = false;
+        pictureUpdated = false;
         pause = findViewById(R.id.playPause);
         pause.setEnabled(true);
         pause.bringToFront();
@@ -231,25 +269,49 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
-                startActivity(intent);
-                intent.putExtra("UserInfo", myUser);
+                finish();
+                overridePendingTransition(R.anim.nothing,R.anim.nothing);
+            }
+        });
 
+
+        username = findViewById(R.id.settings_update_profile_pic);
+        username.setText(myUser.getLogin());
+
+        followers = findViewById(R.id.numFollowers);
+        followers.setText(myUser.getFollowers() +" Followers");
+        followers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ErrorDialog.getInstance(SettingsActivity.this).showErrorDialog("You cannot see your followers yet!");
             }
         });
 
 
         etFirstName = (EditText) findViewById(R.id.textview_settings_change_first_name);
+        if(myUser.getFirstName()!=null){
+            etFirstName.setText(myUser.getFirstName());
+        }
 
         etLastName = (EditText) findViewById(R.id.textview_settings_change_last_name);
-
+        if(myUser.getLastName()!=null){
+            etLastName.setText(myUser.getLastName());
+        }
         etEmail = (EditText) findViewById(R.id.textview_settings_change_email);
-
+        if(myUser.getEmail()!=null){
+            etEmail.setText(myUser.getEmail());
+        }
         btnUpdate = findViewById(R.id.update_button);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doUpdateUser();
+                loading.showLoadingDialog("Updating user");
+                try {
+
+                    doUpdateUser();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -259,17 +321,8 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             @Override
             public void onClick(View view) {
 
+                LogOutDialog.getInstance(SettingsActivity.this).showStateDialog();
 
-                new AlertDialog.Builder(SettingsActivity.this)
-                        .setMessage("Do you really want to log out?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                doLogOut();
-
-                            }})
-                        .setNegativeButton(android.R.string.no, null).show();
             }
         });
 
@@ -278,14 +331,17 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
 
         imgBtnUserPic = findViewById(R.id.userImage);
+
         if(myUser.getImageUrl()!=null){
             Picasso.get().load(myUser.getImageUrl()).into(imgBtnUserPic);
         }else{
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(imgBtnUserPic);
         }
+
         imgBtnUserPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                chooseFile();
 
             }
         });
@@ -293,25 +349,18 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         settingsScrollView = findViewById(R.id.settings_scrollview);
 
     }
-    private void doLogOut(){
 
-        Toast.makeText(SettingsActivity.this, "You logged out succesfully", Toast.LENGTH_SHORT).show();
-        Session.getInstance(this).resetValues();
-        SharedPreferences preferences = getSharedPreferences("RememberMe",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
-
-        finish();
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.putExtra("LoggedOut", true);
-        startActivity(intent);
-
+    private void chooseFile(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, UPLOAD_IMAGE);
     }
-    private void doUpdateUser(){
 
 
-        System.out.println("viejo" + myUser.getFirstName());
+    private void doUpdateUser() throws MalformedURLException {
+
+
         if(etFirstName.getText().length() > 0 || etFirstName.getText() != null){
             this.myUser.setFirstName(etFirstName.getText().toString());
         }
@@ -321,14 +370,12 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         if(etEmail.getText().length() > 0 || etEmail.getText() != null){
             this.myUser.setEmail(etEmail.getText().toString());
         }
-        System.out.println("nuevo" + myUser.getId());
-        //if(pictureSelected){
-         //   this.myUser.seti
-        //}
+        if(pictureUpdated){
+            this.myUser.setImageUrl(imgBtnUserPic.toString());
+        }
 
         userManager = new UserManager(this);
-        userManager.updateUser(myUser, this);
-        System.out.println("after update" + myUser.getId());
+        userManager.saveAccount(myUser, this);
 
     }
 
@@ -361,8 +408,14 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
         finish();
+    }
+
+    @Override
+    public void onAccountSaved(User body) {
+        loading.cancelLoadingDialog();
+        StateDialog.getInstance(this).informTask("Great", "Update succesful!");
     }
 
 
@@ -407,6 +460,11 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     }
 
     @Override
+    public void onAccountSavedFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFollowFailure(Throwable throwable) {
 
     }
@@ -425,6 +483,21 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     @Override
     public void onFailure(Throwable throwable) {
 
+    }
+
+    @Override
+    public void doLogOut() {
+        Toast.makeText(SettingsActivity.this, "You logged out succesfully", Toast.LENGTH_SHORT).show();
+        Session.getInstance(this).resetValues();
+        SharedPreferences preferences = getSharedPreferences("RememberMe",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+
+        finish();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.putExtra("LoggedOut", true);
+        startActivity(intent);
     }
 }
 

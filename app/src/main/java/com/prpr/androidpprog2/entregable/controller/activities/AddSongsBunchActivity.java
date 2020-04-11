@@ -183,6 +183,16 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     }
 
     @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
@@ -291,6 +301,16 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
 
     @Override
     public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleted(Playlist body) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
 
     }
 }

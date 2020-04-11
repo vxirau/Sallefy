@@ -38,12 +38,15 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
-import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
+import com.chibde.visualizer.CircleBarVisualizer;
+import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
@@ -73,11 +76,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private ArrayList<Track> shuffledAudioList;
 
     private int currentPlaylistID;
-
-    private CircleLineVisualizer mVisualizer;
     private ImageButton shuffle;
-
-
     private int audioIndex = -1;
     private Track activeAudio;
     private NotificationCompat.Builder notification;
@@ -105,6 +104,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     private boolean isShuffle;
 
+    private boolean wasPlaying=false;
+
 
 
 
@@ -131,13 +132,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     };
 
-    public void setmVisualizer(CircleLineVisualizer mVisualizer)  {
-        this.mVisualizer = mVisualizer;
-        int audioSessionId = mediaPlayer.getAudioSessionId();
-        if (audioSessionId != -1) {
-            mVisualizer.setAudioSessionId(audioSessionId);
-        }
-    }
+
 
     public void setShuffleButtonUI(){
         if(!isShuffle){
@@ -194,6 +189,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             stopSelf();
         }
         mediaPlayer.prepareAsync();
+        TrackManager.getInstance(getApplicationContext()).playTrack(activeAudio.getId());
     }
 
     private String duractioActual(){
@@ -278,30 +274,32 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     }
 
+
+    public void killNotification(){
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager nMgr = (NotificationManager) getApplicationContext().getSystemService(ns);
+        nMgr.cancel(NOTIFICATION_ID);
+    }
+
     public void seekToPosition(int position){
         mediaPlayer.seekTo(position);
     }
 
     private void playMedia() {
-        if (!mediaPlayer.isPlaying() && mediaPlayer!=null) {
+        if (!mediaPlayer.isPlaying() && mediaPlayer!=null && mSeekBar!=null) {
             mediaPlayer.start();
             int duration = mediaPlayer.getDuration();
             mSeekBar.setMax(duration);
             mSeekBar.postDelayed(mProgressRunner, 1000);
-            int audioSessionId = mediaPlayer.getAudioSessionId();
-            if(mVisualizer!=null){
-                if (audioSessionId != -1) {
-                    mVisualizer.setAudioSessionId(audioSessionId);
-                }
-            }
-
 
         }
         updateUI();
 
     }
 
-    private void stopMedia() {
+
+
+    public void stopMedia() {
         if (mediaPlayer == null) return;
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
@@ -310,12 +308,15 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void pauseMedia() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            buildNotification(PlaybackStatus.PAUSED);
-            resumePosition = mediaPlayer.getCurrentPosition();
+        if(mediaPlayer!=null){
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+                buildNotification(PlaybackStatus.PAUSED);
+                resumePosition = mediaPlayer.getCurrentPosition();
+            }
+            updateUI();
         }
-        updateUI();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -635,12 +636,10 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-    private int indexTrack(Track tr){
+    private int indexTrack(Track t){
         int index=-1;
         for(int i=0; i<audioList.size() ;i++){
-            int trId = tr.getId();
-            int listId = audioList.get(i).getId();
-            if(trId == listId){
+            if(t.getId().equals(audioList.get(i).getId()) && t.getName().equals(audioList.get(i).getName()) && t.getUrl().equals(audioList.get(i).getUrl())){
                 return i;
             }
         }
@@ -766,12 +765,16 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onAudioFocusChange(int focusState) {
         switch (focusState) {
             case AudioManager.AUDIOFOCUS_GAIN:
                 if (mediaPlayer == null) initMediaPlayer();
-                else if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                else if (!mediaPlayer.isPlaying() && wasPlaying) {
+                    mediaPlayer.start();
+                    buildNotification(PlaybackStatus.PLAYING);
+                }
                 mediaPlayer.setVolume(1.0f, 1.0f);
                 break;
             case AudioManager.AUDIOFOCUS_LOSS:
@@ -780,7 +783,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 mediaPlayer = null;
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                if (mediaPlayer.isPlaying()) mediaPlayer.pause();
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                    wasPlaying = true;
+                    buildNotification(PlaybackStatus.PAUSED);
+                }else{
+                    wasPlaying = false;
+                }
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 if (mediaPlayer.isPlaying()) mediaPlayer.setVolume(0.1f, 0.1f);

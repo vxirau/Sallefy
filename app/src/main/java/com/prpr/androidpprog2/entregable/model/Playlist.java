@@ -19,7 +19,7 @@ public class Playlist implements Serializable, Comparable<Playlist> {
     @SerializedName("followers")
     public int followers;
     @SerializedName("id")
-    public int id;
+    public Integer id;
     @SerializedName("name")
     public String name;
     @SerializedName("owner")
@@ -37,6 +37,7 @@ public class Playlist implements Serializable, Comparable<Playlist> {
         //this.thumbnail = "https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1";
         //this.cover = "https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1" ;
         this.cover = null;
+        this.id = null;
         this.thumbnail = null;
         this.publicAccessible = false;
         this.tracks = null;

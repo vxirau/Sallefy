@@ -216,11 +216,9 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         mBothLayout = (ScrollView) findViewById(R.id.search_scroll_all);
         mBothLayout.setVisibility(View.INVISIBLE);
 
-        //Obtenim GENERES LIST
         mGeneres = new ArrayList<>();
         GenreManager.getInstance(this).getAllGenres(this);
 
-        //Recicle views
         mRecyclerViewPlaylist = (RecyclerView) findViewById(R.id.search_dynamic_recyclerView_playlist);
         LinearLayoutManager managerPlaylist = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         PlaylistAdapter adapterPlaylist = new PlaylistAdapter(this, null);
@@ -266,7 +264,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
             }
         });
 
-        //XI - BOTTOM NAVBAR
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.buscar);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -277,7 +274,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-
                         return true;
                     case R.id.buscar:
                         return true;
@@ -420,6 +416,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     }
 
+    @Override
+    public void onPlaylistDeleted(Playlist body) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
@@ -447,7 +453,12 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
+
+    }
+
+    @Override
+    public void onAccountSaved(User body) {
 
     }
 
@@ -493,6 +504,11 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
 
     }
 

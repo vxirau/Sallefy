@@ -4,10 +4,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,11 +18,15 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
@@ -41,6 +48,8 @@ import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +73,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     private Follow followingInfo;
     private boolean isFollowing = false;
     private UserManager umanager;
+    private ImageView profilePic;
 
 
 
@@ -170,6 +180,34 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     private void initViews(){
 
+
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
+        navigation.setSelectedItemId(R.id.none);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        Intent intent0 = new Intent(getApplicationContext(), MainActivity.class);
+                        intent0.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent0, Constants.NETWORK.LOGIN_OK);
+                        return true;
+                    case R.id.buscar:
+                        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                        return true;
+                    case R.id.perfil:
+                        Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
+                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
+                        return true;
+                }
+                return false;
+            }
+        });
+
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
         play.bringToFront();
@@ -224,6 +262,39 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
         login = findViewById(R.id.userLogin);
         login.setText(artist.getLogin());
+
+        profilePic = (ImageView) findViewById(R.id.profilePic);
+        if(artist.getImageUrl() != null && !artist.getImageUrl().isEmpty()){
+            Picasso.get().load(artist.getImageUrl()).into(profilePic, new Callback() {
+                @Override
+                public void onSuccess() {
+                    Bitmap imageBitmap = ((BitmapDrawable) profilePic.getDrawable()).getBitmap();
+                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
+                    imageDrawable.setCircular(true);
+                    imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+                    profilePic.setImageDrawable(imageDrawable);
+                }
+                @Override
+                public void onError(Exception e) {
+                    Picasso.get().load("https://user-images.githubusercontent.com/48185184/77792597-e939a400-7068-11ea-8ade-cd8b4e4ab7c9.png").into(profilePic);
+                }
+            });
+        } else {
+            Picasso.get().load("https://user-images.githubusercontent.com/48185184/77792597-e939a400-7068-11ea-8ade-cd8b4e4ab7c9.png").into(profilePic, new Callback() {
+                @Override
+                public void onSuccess() {
+                    Bitmap imageBitmap = ((BitmapDrawable) profilePic.getDrawable()).getBitmap();
+                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
+                    imageDrawable.setCircular(true);
+                    imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+                    profilePic.setImageDrawable(imageDrawable);
+                }
+                @Override
+                public void onError(Exception e) {
+                    Picasso.get().load("https://user-images.githubusercontent.com/48185184/77792597-e939a400-7068-11ea-8ade-cd8b4e4ab7c9.png").into(profilePic);
+                }
+            });
+        }
 
 
 
@@ -361,6 +432,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
@@ -462,6 +543,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
+    public void onPlaylistDeleted(Playlist body) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onLoginSuccess(UserToken userToken) {
 
     }
@@ -487,9 +578,15 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
 
     }
+
+    @Override
+    public void onAccountSaved(User body) {
+
+    }
+
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
@@ -538,6 +635,11 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
             follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
             isFollowing=true;
         }
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
+
     }
 
     @Override

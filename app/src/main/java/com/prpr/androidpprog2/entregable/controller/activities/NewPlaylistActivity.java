@@ -70,8 +70,8 @@ public class NewPlaylistActivity extends Activity implements PlaylistCallback {
 
     @Override
     public void onPlaylistCreated(Playlist playlist) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+        finish();
+        overridePendingTransition(R.anim.nothing,R.anim.nothing);
     }
 
     @Override
@@ -151,6 +151,16 @@ public class NewPlaylistActivity extends Activity implements PlaylistCallback {
 
     @Override
     public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleted(Playlist body) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
 
     }
 

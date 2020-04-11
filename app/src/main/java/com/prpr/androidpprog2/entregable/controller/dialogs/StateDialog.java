@@ -59,6 +59,26 @@ public class StateDialog {
         mDialog.show();
     }
 
+    public void informTask(String taskName, String taskMessage){
+        mDialog.setContentView(R.layout.dialog_state);
+        mDialog.setCanceledOnTouchOutside(false);
+
+        tvTitle = (TextView) mDialog.findViewById(R.id.dialog_state_title);
+        tvTitle.setText(taskName);
+        tvSubtitle = (TextView) mDialog.findViewById(R.id.dialog_state_subtitle);
+        tvSubtitle.setText(taskMessage);
+        ivIcon = (ImageView) mDialog.findViewById(R.id.dialog_state_icon);
+        btnAccept = (Button) mDialog.findViewById(R.id.dialog_state_button);
+        btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.cancel();
+            }
+        });
+
+        mDialog.show();
+    }
+
 
     private void inProgressTask() {
         tvTitle.setText(R.string.state_wait);

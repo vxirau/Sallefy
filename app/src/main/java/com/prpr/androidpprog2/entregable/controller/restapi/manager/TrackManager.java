@@ -1,15 +1,25 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
+import android.view.View;
+
+import androidx.core.app.ActivityCompat;
 
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.TrackService;
+import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.Position;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +39,7 @@ public class TrackManager {
     private TrackService mTrackService;
 
 
-    public static TrackManager getInstance (Context context) {
+    public static TrackManager getInstance(Context context) {
         if (sTrackManager == null) {
             sTrackManager = new TrackManager(context);
         }
@@ -75,7 +85,7 @@ public class TrackManager {
     public synchronized void getAllTracks(final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<List<Track>> call = mTrackService.getAllTracks( "Bearer " + userToken.getIdToken());
+        Call<List<Track>> call = mTrackService.getAllTracks("Bearer " + userToken.getIdToken());
         call.enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -146,7 +156,7 @@ public class TrackManager {
         });
     }
 
-    public synchronized void getTopTracks(String login, final TrackCallback trackCallback ){
+    public synchronized void getTopTracks(String login, final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
         Call<List<Track>> call = mTrackService.getTopTracks(login, "Bearer " + userToken.getIdToken());
         call.enqueue(new Callback<List<Track>>() {
@@ -155,7 +165,7 @@ public class TrackManager {
 
                 int code = response.code();
                 if (response.isSuccessful()) {
-                    trackCallback.onTopTracksRecieved( (ArrayList<Track>) response.body());
+                    trackCallback.onTopTracksRecieved((ArrayList<Track>) response.body());
                 } else {
                     Log.d(TAG, "Error Not Successful: " + code);
                     trackCallback.onNoTopTracks(new Throwable("ERROR " + code + ", " + response.raw().message()));
@@ -194,4 +204,57 @@ public class TrackManager {
         });
     }
 
+    public void updateTrack(Track trck, final TrackCallback trackCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+
+        Call<Track> call = mTrackService.updateTrack(trck, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Track>() {
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    trackCallback.onTrackUpdated(response.body());
+                } else {
+                    try {
+                        trackCallback.onTrackUpdateFailure(new Throwable(response.errorBody().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                trackCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+
+        });
+
+    }
+
+    public void playTrack(int id) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+
+
+        Position p = new Position(0, 0);
+        Call<Track> call = mTrackService.playTrack(id, p,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Track>() {
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Play Succesful track id " + id);
+                } else {
+                    Log.d(TAG, "Play NOT Succesful track id " + id);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+            }
+
+        });
+    }
 }

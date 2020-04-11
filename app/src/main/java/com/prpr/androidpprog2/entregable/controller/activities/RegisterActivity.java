@@ -149,9 +149,15 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
 
     }
+
+    @Override
+    public void onAccountSaved(User body) {
+
+    }
+
 
     @Override
     public void onTopUsersRecieved(List<User> body) {
@@ -190,6 +196,11 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
     @Override
     public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
 
     }
 

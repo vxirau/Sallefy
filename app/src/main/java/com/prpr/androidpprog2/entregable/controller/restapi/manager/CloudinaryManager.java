@@ -1,6 +1,7 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 
 import android.content.Context;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.widget.ImageButton;
 
@@ -115,15 +116,26 @@ public class CloudinaryManager extends AppCompatActivity {
         @Override
         public void onSuccess(String requestId, Map resultData) {
             Track track = new Track();
+            track.setUser(Session.getUser());
             track.setId(null);
             track.setName(mFileName);
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource((String) resultData.get("url"), new HashMap<String, String>());
+            String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            System.out.println(time);
+            long timeInmillisec = Long.parseLong( time );
+            long duration = timeInmillisec / 1000;
+            long hours = duration / 3600;
+            long minutes = (duration - hours * 3600) / 60;
+            long seconds = duration - (hours * 3600 + minutes * 60);
+
+            track.setDuration((int) (seconds + (minutes*60)));
             track.setUrl((String) resultData.get("url"));
             ArrayList<Genre> genres = new ArrayList<>();
             genres.add(mGenre);
             track.setGenres(genres);
             track.setThumbnail(thumbnail);
             TrackManager.getInstance(mContext).createTrack(track, mCallback);
-
         }
         @Override
         public void onError(String requestId, ErrorInfo error) {

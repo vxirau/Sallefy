@@ -33,6 +33,7 @@ import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
-            //serv.setmSeekBar(mSeekBar);
+            serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.setSeekCallback(MainActivity.this);
@@ -146,14 +147,28 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }
     }
 
+    private int findInex(Track t){
+        int index=-1;
+        for(int i=0; i<audioList.size() ;i++){
+            if(t.getId().equals(audioList.get(i).getId()) && t.getName().equals(audioList.get(i).getName()) && t.getUrl().equals(audioList.get(i).getUrl())){
+                index = i;
+            }
+        }
+        return index;
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void loadPreviousSession() {
         audioList = PreferenceUtils.getAllTracks(getApplicationContext());
         Track t = PreferenceUtils.getTrack(getApplicationContext());
-        audioIndex = audioList.indexOf(t);
-        start();
-        Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
-        sendBroadcast(broadcastIntent);
+        audioIndex = findInex(t);
+        if(audioIndex==-1){
+            ErrorDialog.getInstance(this).showErrorDialog("Error loading previous session");
+        }else{
+            start();
+            Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
+            sendBroadcast(broadcastIntent);
+        }
     }
 
     private void start() {
@@ -166,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     @Override
     public void onResume() {
         super.onResume();
-        if(servidorVinculat){
+        if(servidorVinculat && serv!=null){
             serv.setSeekCallback(this);
         }
         pManager.getAllPlaylists(this);
@@ -200,8 +215,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         setContentView(R.layout.activity_main);
         if(getIntent().getSerializableExtra("sameUser")!=null){
             sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
+        }else{
+            sameUser=false;
         }
-
         initViews();
         btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();
@@ -213,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager.getFollowingPlaylists(this);
         if(sameUser){
             loadPreviousSession();
+            sameUser = false;
         }
     }
 
@@ -292,6 +309,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         adapter2.setPlaylistCallback(this);
         allPlaylistRecycle.setLayoutManager(manager2);
         allPlaylistRecycle.setAdapter(adapter2);
+        
+
 
         topPlaylistsRecycle = (RecyclerView) findViewById(R.id.topPlayedPlaylists);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
@@ -523,6 +542,16 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
+    @Override
+    public void onPlaylistDeleted(Playlist body) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
@@ -550,7 +579,12 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
     @Override
-    public void onUserUpdated() {
+    public void onUserUpdated(User body) {
+
+    }
+
+    @Override
+    public void onAccountSaved(User body) {
 
     }
 
@@ -599,6 +633,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onFollowSuccess(Follow body) {
+
+    }
+
+    @Override
+    public void onAccountSavedFailure(Throwable throwable) {
 
     }
 
