@@ -506,6 +506,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             @Override
             public void onClick(View view) {
                 animateFab();
+                player.novaLlista();
                 sortAZ();
             }
         });
@@ -516,6 +517,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             @Override
             public void onClick(View view) {
                 animateFab();
+                player.novaLlista();
                 sortTime();
             }
         });
@@ -526,6 +528,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             @Override
             public void onClick(View view) {
                 animateFab();
+                player.novaLlista();
                 sortArtist();
 
             }

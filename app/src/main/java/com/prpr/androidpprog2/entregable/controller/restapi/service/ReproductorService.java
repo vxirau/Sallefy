@@ -81,6 +81,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private Track activeAudio;
     private NotificationCompat.Builder notification;
     private SeekBar mSeekBar;
+    private boolean novaLlista;
 
     public static final String ACTION_PLAY = "com.prpr.androidpprog2.entregable.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.prpr.androidpprog2.entregable.ACTION_PAUSE";
@@ -158,10 +159,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-    public Runnable getmProgressRunner(){
-        return mProgressRunner;
-    }
-
     public void setmSeekBar(SeekBar s){
         mSeekBar = s;
     }
@@ -226,7 +223,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                         mSeekBar.postDelayed(mProgressRunner, 1000);
                     }
                     mSeekBar.setProgress(progress);
-                    if(imahen!=null){
+                    if(textActual!=null){
                         textActual.setText(duractioActual());
                     }
                 }else{
@@ -673,7 +670,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         } catch (NullPointerException e) {
             stopSelf();
         }
-
+        novaLlista=false;
         if (requestAudioFocus() == false) {
             stopSelf();
         }
@@ -769,6 +766,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     public void onSeekComplete(MediaPlayer mp) {
 
     }
+    public void novaLlista(){
+        novaLlista = true;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -852,8 +852,16 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 PhoneStateListener.LISTEN_CALL_STATE);
     }
 
+
+
     private void newOrder (){
-        audioList = PreferenceUtils.getAllTracks(getApplicationContext());
-        audioIndex = indexTrack(activeAudio);
+       if(novaLlista && !isShuffle){
+           audioList =  PreferenceUtils.getAllTracks(getApplicationContext());
+           audioIndex = indexTrack(activeAudio);
+           novaLlista=false;
+       }
+       if(novaLlista && isShuffle){
+           novaLlista=false;
+       }
     }
 }

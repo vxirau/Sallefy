@@ -184,6 +184,7 @@ public class ReproductorActivity extends Activity implements TrackCallback {
 
         duracioTotal = findViewById(R.id.totalTime);
         duracioActual = findViewById(R.id.currentTime);
+        duracioActual.setText("--:--");
 
 
         trackAuthor = findViewById(R.id.music_artist);

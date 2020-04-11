@@ -152,7 +152,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     void initViews(){
 
-        //PART REPRODUCCIÓ
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
         play.bringToFront();
