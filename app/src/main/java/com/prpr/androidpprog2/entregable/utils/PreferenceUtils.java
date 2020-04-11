@@ -12,11 +12,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.PrimitiveIterator;
 
 public class PreferenceUtils {
 
     private static String LOGIN_COLLECTION = "userPreferences";
     private static String TRACK_COLLECTION = "trackInformation";
+    private static String PLAYLIST_ORDER = "playlistOrder";
     private static String KEY_USER = "userLogin";
     private static String KEY_PASSWORD = "password";
     private static String KEY_TRACK = "track";
@@ -24,7 +26,8 @@ public class PreferenceUtils {
     private static String KEY_SHUFFLE = "shuffle";
     private static String KEY_CURRENT_TRACK = "activeAudio";
     private static String KEY_ALL_TRACK = "track";
-
+    private static String KEY_PLY_ORD = "order";
+    private static String KEY_LST_PLY_ID = "lastPlaylist";
 
     public PreferenceUtils() {
     }
@@ -86,6 +89,38 @@ public class PreferenceUtils {
     public static int getPlayID(Context context){
         SharedPreferences prefs = context.getSharedPreferences(TRACK_COLLECTION, Context.MODE_PRIVATE);
         return Integer.parseInt(Objects.requireNonNull(prefs.getString(KEY_PLY_ID, null)));
+    }
+
+    public static boolean saveLastPlaylistID(Context context, int index){
+        SharedPreferences prefs = context.getSharedPreferences(PLAYLIST_ORDER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString(KEY_LST_PLY_ID, String.valueOf(index));
+        prefsEditor.apply();
+        return true;
+    }
+
+    public static int getLastPlaylistID(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PLAYLIST_ORDER, Context.MODE_PRIVATE);
+        if (prefs.getString(KEY_LST_PLY_ID, null) == null){
+            return -1;
+        }
+        return Integer.parseInt(Objects.requireNonNull(prefs.getString(KEY_LST_PLY_ID, null)));
+    }
+
+    public static boolean savePlaylistOrder(Context context, int orderType){
+        SharedPreferences prefs = context.getSharedPreferences(PLAYLIST_ORDER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString(KEY_PLY_ORD, String.valueOf(orderType));
+        prefsEditor.apply();
+        return true;
+    }
+
+    public static int getPlaylistOrder(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(PLAYLIST_ORDER, Context.MODE_PRIVATE);
+        if (prefs.getString(KEY_PLY_ORD, null) == null){
+            return -1;
+        }
+        return Integer.parseInt(Objects.requireNonNull(prefs.getString(KEY_PLY_ORD, null)));
     }
 
 

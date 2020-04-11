@@ -131,7 +131,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     };
 
-    public void setmVisualizer(CircleLineVisualizer mVisualizer) {
+    public void setmVisualizer(CircleLineVisualizer mVisualizer)  {
         this.mVisualizer = mVisualizer;
         int audioSessionId = mediaPlayer.getAudioSessionId();
         if (audioSessionId != -1) {
@@ -568,35 +568,25 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         updateUI();
     }
 
-
-    private int newIndex(Track actual){
-        if(isShuffle){
-            return shuffledAudioList.indexOf(actual);
-        }else{
-            return audioList.indexOf(actual);
-        }
-    }
-
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void skipToNext() {
-
+        newOrder();
         if(isShuffle){
-            if (newIndex(activeAudio) == shuffledAudioList.size() - 1) {
+            if (indexTrack(activeAudio) == shuffledAudioList.size() - 1) {
                 activeAudio = shuffledAudioList.get(0);
             } else {
-                int index = newIndex(activeAudio);
+                int index = indexTrack(activeAudio);
                 activeAudio = shuffledAudioList.get(++index);
             }
         }else{
-            if (newIndex(activeAudio) == audioList.size() - 1) {
+            if (indexTrack(activeAudio) == audioList.size() - 1) {
                 activeAudio = audioList.get(0);
             } else {
-                int index = newIndex(activeAudio) +1;
+                int index = indexTrack(activeAudio) +1;
                 activeAudio = audioList.get(index);
             }
         }
-        audioIndex = newIndex(activeAudio);
+        audioIndex = indexTrack(activeAudio);
 
         PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
         PreferenceUtils.saveTrack(getApplicationContext(), activeAudio);
@@ -614,7 +604,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void skipToPrevious() {
-        audioIndex = newIndex(activeAudio);
+        newOrder();
+        audioIndex = indexTrack(activeAudio);
         if(isShuffle){
             if (audioIndex == 0) {
                 audioIndex = shuffledAudioList.size() - 1;
@@ -631,7 +622,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             }
         }
 
-        audioIndex = newIndex(activeAudio);
+        audioIndex = indexTrack(activeAudio);
         PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
         PreferenceUtils.saveTrack(getApplicationContext(), activeAudio);
         PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
@@ -647,7 +638,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private int indexTrack(Track tr){
         int index=-1;
         for(int i=0; i<audioList.size() ;i++){
-            if(tr.getId()==audioList.get(i).getId()){
+            int trId = tr.getId();
+            int listId = audioList.get(i).getId();
+            if(trId == listId){
                 return i;
             }
         }
@@ -845,4 +838,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 PhoneStateListener.LISTEN_CALL_STATE);
     }
 
+    private void newOrder (){
+        audioList = PreferenceUtils.getAllTracks(getApplicationContext());
+        audioIndex = indexTrack(activeAudio);
+    }
 }
