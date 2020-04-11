@@ -43,6 +43,7 @@ import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.LogOutCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.ServiceCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.LoadingDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.LogOutDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
@@ -101,6 +102,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     private ImageView im;
     private LinearLayout playing;
     private ReproductorService serv;
+    private LoadingDialog loading;
     private boolean servidorVinculat=false;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -196,6 +198,8 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     }
 
     void initViews(){
+
+        loading = new LoadingDialog(this);
 
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
@@ -301,7 +305,9 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loading.showLoadingDialog("Updating user");
                 try {
+
                     doUpdateUser();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -355,7 +361,6 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     private void doUpdateUser() throws MalformedURLException {
 
 
-        System.out.println("viejo" + myUser.getFirstName());
         if(etFirstName.getText().length() > 0 || etFirstName.getText() != null){
             this.myUser.setFirstName(etFirstName.getText().toString());
         }
@@ -365,14 +370,12 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         if(etEmail.getText().length() > 0 || etEmail.getText() != null){
             this.myUser.setEmail(etEmail.getText().toString());
         }
-        System.out.println("nuevo" + myUser.getId());
         if(pictureUpdated){
             this.myUser.setImageUrl(imgBtnUserPic.toString());
         }
 
         userManager = new UserManager(this);
         userManager.saveAccount(myUser, this);
-        System.out.println("after update" + myUser.getId());
 
     }
 
@@ -411,7 +414,8 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     @Override
     public void onAccountSaved(User body) {
-
+        loading.cancelLoadingDialog();
+        StateDialog.getInstance(this).informTask("Great", "Update succesful!");
     }
 
 

@@ -34,7 +34,7 @@ public interface UserService {
     Call<ResponseBody> registerUser(@Body UserRegister user);
 
     @POST("account")
-    Call<User> saveAccount(@Body User user, @Header("Authorization") String token);
+    Call<ResponseBody> saveAccount(@Body User user, @Header("Authorization") String token);
 
     @PUT("users")
     Call<User> updateUser(@Body User userDTO, @Header("Authorization") String token);

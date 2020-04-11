@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         return index;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void loadPreviousSession() {
         audioList = PreferenceUtils.getAllTracks(getApplicationContext());
         Track t = PreferenceUtils.getTrack(getApplicationContext());

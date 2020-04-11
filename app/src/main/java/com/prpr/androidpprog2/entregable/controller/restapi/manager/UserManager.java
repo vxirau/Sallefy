@@ -118,19 +118,16 @@ public class UserManager {
     public void saveAccount(User user, final UserCallback userCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<User> call = mService.saveAccount(user,"Bearer " + userToken.getIdToken());
-        call.enqueue(new Callback<User>() {
+        Call<ResponseBody> call = mService.saveAccount(user,"Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 int code = response.code();
-                System.out.println("TOKENSIKO: " + userToken.toString());
                 if (response.isSuccessful()) {
                     userCallback.onAccountSaved(user);
-                    System.out.println("is successful");
                 } else {
                     try{
                         userCallback.onAccountSavedFailure(new Throwable(response.errorBody().string()));
-                        System.out.println("it is not successful"+ response.errorBody().string());
                     }catch (IOException e){
                         e.printStackTrace();
                     }
@@ -138,11 +135,9 @@ public class UserManager {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.d(TAG, "Error Failure: " + t.getStackTrace());
                 userCallback.onAccountSavedFailure(new Throwable("ERROR " + t.getStackTrace()));
-
             }
         });
 
