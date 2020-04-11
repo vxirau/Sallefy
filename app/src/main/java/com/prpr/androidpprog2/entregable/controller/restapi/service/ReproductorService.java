@@ -639,7 +639,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private int indexTrack(Track t){
         int index=-1;
         for(int i=0; i<audioList.size() ;i++){
-            if(t.getId().equals(audioList.get(i).getId()) && t.getName().equals(audioList.get(i).getName()) && t.getUrl().equals(audioList.get(i).getUrl())){
+            if(t.equals(audioList.get(i))){
                 return i;
             }
         }

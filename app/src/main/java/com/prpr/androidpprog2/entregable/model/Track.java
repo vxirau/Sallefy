@@ -273,10 +273,18 @@ public class Track implements Serializable, Comparable<Track> {
 
         //ascending order
         return this.duration - compareDuration;
-
-
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Track track = (Track) o;
+
+        if (!id.equals(track.id)) return false;
+        if (!name.equals(track.name)) return false;
+        return url.equals(track.url);
+    }
 
 }
