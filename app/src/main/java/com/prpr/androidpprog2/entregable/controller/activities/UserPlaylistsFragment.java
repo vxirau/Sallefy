@@ -292,8 +292,10 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
+
+
     @Override
-    public void onTrackAdded(Playlist body) {
+    public void onPlaylistToUpdated(Playlist body) {
 
     }
 

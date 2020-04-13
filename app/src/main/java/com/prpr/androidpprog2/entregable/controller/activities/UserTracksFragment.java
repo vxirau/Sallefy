@@ -374,6 +374,16 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     }
 
     @Override
+    public void onTrackDeleted(int id) {
+
+    }
+
+    @Override
+    public void onTrackReceived(Track track) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

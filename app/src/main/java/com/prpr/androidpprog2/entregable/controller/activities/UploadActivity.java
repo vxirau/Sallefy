@@ -327,7 +327,6 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     }
 
-
     @Override
     public void onFailure(Throwable throwable) {
 
@@ -382,7 +381,6 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     }
 
 
-
     @Override
     public void onTrackNotFound(Throwable throwable) {
 
@@ -395,6 +393,16 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     @Override
     public void onTrackUpdateFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackDeleted(int id) {
+
+    }
+
+    @Override
+    public void onTrackReceived(Track track) {
 
     }
 
@@ -424,10 +432,12 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     }
 
     @Override
-    public void onTrackAdded(Playlist body) {
+    public void onPlaylistToUpdated(Playlist body) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
+
+
 
     @Override
     public void onTrackAddFailure(Throwable throwable) {

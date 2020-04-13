@@ -180,11 +180,42 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layoutEliminar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:clickable="true"
+        android:layout_marginTop="15dp">
+
+
+        <ImageButton
+            android:id="@+id/eliminar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/delete_track"
+            android:scaleType="fitCenter"/>
+
+
+        <TextView
+            android:id="@+id/text_eliminar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="20dp"
+            android:textSize="15sp"
+            android:text="@string/eliminar"
+            android:textAlignment="textStart"
+            android:gravity="start"/>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/cancel"
         android:layout_width="170dp"
         android:layout_height="50dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="100dp"
         android:textColor="#18AB4B"
         android:textSize="24sp"
         android:textAllCaps="false"

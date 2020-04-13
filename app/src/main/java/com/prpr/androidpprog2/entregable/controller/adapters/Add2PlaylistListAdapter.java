@@ -132,8 +132,10 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
 
     }
 
+
+
     @Override
-    public void onTrackAdded(Playlist body) {
+    public void onPlaylistToUpdated(Playlist body) {
         Intent intent = new Intent(mContext.getApplicationContext(), PlaylistActivity.class);
         intent.putExtra("Playlst", body);
         mContext.startActivity(intent);

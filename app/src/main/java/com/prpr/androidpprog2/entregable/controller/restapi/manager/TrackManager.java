@@ -230,8 +230,58 @@ public class TrackManager {
             }
 
         });
-
     }
+
+        public synchronized void removeTrack(int id, final TrackCallback trackCallback) {
+            UserToken userToken = Session.getInstance(mContext).getUserToken();
+
+            Call<ResponseBody> call = mTrackService.removeTrack(id, "Bearer " + userToken.getIdToken());
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    int code = response.code();
+                    if (response.isSuccessful()) {
+                        trackCallback.onTrackDeleted(id);
+                    } else {
+                        Log.d(TAG, "Error Not Successful: " + code);
+                        trackCallback.onTrackNotFound(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                    trackCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+                }
+            });
+        }
+
+    public synchronized void getTrack(int id, final TrackCallback trackCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+
+        Call<Track> call = mTrackService.getTrack( id, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Track>() {
+            @Override
+            public void onResponse(Call<Track> call, Response<Track> response) {
+                int code = response.code();
+
+                if (response.isSuccessful()) {
+                    trackCallback.onTrackReceived(response.body());
+                } else {
+                    Log.d(TAG, "Error Not Successful: " + code);
+                    trackCallback.onNoTracks(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+            @Override
+            public void onFailure(Call<Track> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                trackCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
+
+
+
 
     public void playTrack(int id) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
@@ -256,5 +306,8 @@ public class TrackManager {
             }
 
         });
+
     }
+
 }
+

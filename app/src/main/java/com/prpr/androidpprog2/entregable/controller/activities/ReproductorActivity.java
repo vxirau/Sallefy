@@ -333,6 +333,16 @@ public class ReproductorActivity extends Activity implements TrackCallback {
     }
 
     @Override
+    public void onTrackDeleted(int id) {
+
+    }
+
+    @Override
+    public void onTrackReceived(Track track) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

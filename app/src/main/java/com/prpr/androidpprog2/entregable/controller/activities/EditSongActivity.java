@@ -1,28 +1,46 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.adapters.ImageAdapter;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.Upload;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
@@ -31,8 +49,17 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public class EditSongActivity extends Activity implements TrackCallback {
+public class EditSongActivity extends Activity implements TrackCallback, GenreCallback {
+
+    private static final int chooseRequest = 1;
+    private Uri mFileUri, mPhotoUri;
+    private String coverPas, downloadUri;
+    private Task<Uri> mUploadTask;
+    private StorageReference mStorage;
+    private DatabaseReference mDatabase;
+
     //Portada
     private LinearLayout portada1;
     private LinearLayout portada2;
@@ -56,14 +83,13 @@ public class EditSongActivity extends Activity implements TrackCallback {
 
 
     //Genere
-    private TextView text_genere;
-    private TextView genere_name;
-    private LinearLayout genere1;
+    private Button genere1;
     private LinearLayout genere2;
     private Button canviar_genere;
     private Spinner genere_canviat;
-    private Button guardar_genere;
-    private Button cancel_genere;
+    private Spinner genere_total;
+    private ArrayList<Genre> mGenresObjs;
+    private ArrayList<String> mGenres;
 
 
     //Durada
@@ -86,13 +112,17 @@ public class EditSongActivity extends Activity implements TrackCallback {
     private Context context;
     private TrackManager tManager;
 
+    private Button eliminar;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_song);
         trck = (Track) getIntent().getSerializableExtra("Trck");
         initViews();
+        getData();
+        getTrackData();
         tManager = new TrackManager(this);
         omplir();
     }
@@ -100,16 +130,17 @@ public class EditSongActivity extends Activity implements TrackCallback {
     private void omplir() {
         song_name.setText(trck.getName());
         song_canviada.setText(trck.getName());
+        Picasso.get().load(trck.getThumbnail()).into(song_cover);
         String segons = "";
-        if(trck.getDuration()!=null || trck.getDuration()==0){
-            if(trck.getDuration()%60<10){
-                segons = "0" + trck.getDuration()%60;
-            }else{
-                segons = String.valueOf(trck.getDuration()%60);
+        if (trck.getDuration() != null || trck.getDuration() == 0) {
+            if (trck.getDuration() % 60 < 10) {
+                segons = "0" + trck.getDuration() % 60;
+            } else {
+                segons = String.valueOf(trck.getDuration() % 60);
             }
-            durada_name.setText(trck.getDuration()/60 + ":" + segons);
-            durada_canviada.setText(trck.getDuration()/60 + ":" + segons);
-        }else{
+            durada_name.setText(trck.getDuration() / 60 + ":" + segons);
+            durada_canviada.setText(trck.getDuration() / 60 + ":" + segons);
+        } else {
             durada_name.setText("00:00");
             durada_canviada.setText("00:00");
 
@@ -117,25 +148,25 @@ public class EditSongActivity extends Activity implements TrackCallback {
     }
 
 
-    private void initViews()  {
+    private void initViews() {
 
         //Portada
         song_cover = findViewById(R.id.SongCover);
         portada1 = findViewById(R.id.portada);
-        canvi_portada= findViewById(R.id.cp);
+        canvi_portada = findViewById(R.id.cp);
         portada2 = findViewById(R.id.canvi_portada);
         image_upload = findViewById(R.id.image_upload);
         guardar_portada = findViewById(R.id.guardar_portada);
         cancel_portada = findViewById(R.id.cancel_portada);
         choose_file = findViewById(R.id.choose_file);
-        upload_file=findViewById(R.id.upload_file);
-        song_cover=findViewById(R.id.SongCover);
+        upload_file = findViewById(R.id.upload_file);
+        song_cover = findViewById(R.id.SongCover);
 
-        if(trck.getThumbnail()!=null){
-            Picasso.get().load(trck.getThumbnail()).into(song_cover);
+        /*if(trck.getThumbnail()!=null){
+
         }else{
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(song_cover);
-        }
+        }*/
 
         canvi_portada.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,14 +176,35 @@ public class EditSongActivity extends Activity implements TrackCallback {
             }
         });
 
-        choose_file.setOnClickListener(new View.OnClickListener(){
+        choose_file.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //chooseFile();
+                chooseFile();
             }
         });
 
-        cancel_portada.setOnClickListener(new View.OnClickListener(){
+        upload_file = findViewById(R.id.upload_file);
+        upload_file.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mUploadTask != null) {
+                    Toast.makeText(EditSongActivity.this, "Upload already in progress", Toast.LENGTH_SHORT).show();
+                } else {
+                    uploadFile();
+                }
+            }
+        });
+
+        guardar_portada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                portada1.setVisibility(View.VISIBLE);
+                portada2.setVisibility(View.INVISIBLE);
+
+            }
+        });
+
+        cancel_portada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 portada1.setVisibility(View.VISIBLE);
@@ -164,7 +216,7 @@ public class EditSongActivity extends Activity implements TrackCallback {
         //Song
         upload_file = findViewById(R.id.upload_file);
         song_canviada = findViewById(R.id.nom_canviat);
-        guardar_song=findViewById(R.id.guardar_song);
+        guardar_song = findViewById(R.id.guardar_song);
         text_song = findViewById(R.id.text_canco);
         song_name = findViewById(R.id.nom_canco);
         cancel_song = findViewById(R.id.cancel_song);
@@ -172,8 +224,8 @@ public class EditSongActivity extends Activity implements TrackCallback {
         song1 = findViewById(R.id.song1);
         song2 = findViewById(R.id.song2);
 
-        canvi_song= findViewById(R.id.boto_canviar_nom);
-        canvi_song.setOnClickListener(new View.OnClickListener(){
+        canvi_song = findViewById(R.id.boto_canviar_nom);
+        canvi_song.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 song1.setVisibility(View.INVISIBLE);
@@ -182,19 +234,19 @@ public class EditSongActivity extends Activity implements TrackCallback {
             }
         });
 
-        guardar_song.setOnClickListener(new View.OnClickListener(){
+        guardar_song.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 song1.setVisibility(View.VISIBLE);
                 song2.setVisibility(View.INVISIBLE);
-                if(song_canviada.getText().length()!=0) {
+                if (song_canviada.getText().length() != 0) {
                     song_name.setText(song_canviada.getText());
                 }
                 text_song.setVisibility(View.INVISIBLE);
             }
         });
 
-        cancel_song.setOnClickListener(new View.OnClickListener(){
+        cancel_song.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 song1.setVisibility(View.VISIBLE);
@@ -204,7 +256,7 @@ public class EditSongActivity extends Activity implements TrackCallback {
         });
 
         //Durada
-        durada_name= findViewById(R.id.durada);
+        durada_name = findViewById(R.id.durada);
         text_durada = findViewById(R.id.text_durada);
         durada1 = findViewById(R.id.durada1);
         durada2 = findViewById(R.id.durada2);
@@ -213,7 +265,7 @@ public class EditSongActivity extends Activity implements TrackCallback {
         guardar_durada = findViewById(R.id.guardar_durada);
         cancel_durada = findViewById(R.id.cancel_durada);
 
-        canvi_durada.setOnClickListener(new View.OnClickListener(){
+        canvi_durada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 durada1.setVisibility(View.INVISIBLE);
@@ -222,19 +274,19 @@ public class EditSongActivity extends Activity implements TrackCallback {
             }
         });
 
-        guardar_durada.setOnClickListener(new View.OnClickListener(){
+        guardar_durada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 durada1.setVisibility(View.VISIBLE);
                 durada2.setVisibility(View.INVISIBLE);
-                if(durada_canviada.getText().length()!=0) {
+                if (durada_canviada.getText().length() != 0) {
                     durada_name.setText(durada_canviada.getText());
                 }
                 text_durada.setVisibility(View.INVISIBLE);
             }
         });
 
-        cancel_durada.setOnClickListener(new View.OnClickListener(){
+        cancel_durada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 durada1.setVisibility(View.VISIBLE);
@@ -243,9 +295,33 @@ public class EditSongActivity extends Activity implements TrackCallback {
             }
         });
 
+        //Genere
+        genere1 = findViewById(R.id.genere1);
+        genere2 = findViewById(R.id.genere2);
+        genere_canviat = findViewById(R.id.genere_canviat);
+        genere_total = findViewById(R.id.genere_total);
+
+        genere1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                genere1.setVisibility(View.INVISIBLE);
+                genere2.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        //ELiminar canco
+        eliminar = findViewById(R.id.eliminar);
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tManager.removeTrack(trck.getId(), EditSongActivity.this);
+            }
+        });
+
         //Guardar general
         guardar = findViewById(R.id.guardar);
-        guardar.setOnClickListener(new View.OnClickListener(){
+        guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 trck.setName(song_name.getText().toString());
@@ -254,27 +330,79 @@ public class EditSongActivity extends Activity implements TrackCallback {
                 //Genre g = new Genre((String) genere_name.getText());
                 //trck.getGenres().add(g);
                 tManager.updateTrack(trck, EditSongActivity.this);
+                //trck.setThumbnail(coverPas);
             }
         });
 
         //Cancel general
         cancel = findViewById(R.id.cancel);
-        cancel.setOnClickListener(new View.OnClickListener(){
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
-                overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                overridePendingTransition(R.anim.nothing, R.anim.nothing);
             }
         });
 
     }
 
-    private int convertSeconds(String d){
+    private void getData() {
+        GenreManager.getInstance(this).getAllGenres(EditSongActivity.this);
+    }
+
+    private void getTrackData() {
+        TrackManager.getInstance(this).getTrack(trck.getId(), EditSongActivity.this);
+    }
+
+    private int convertSeconds(String d) {
         String[] s;
         s = d.split(":");
         int minuts = Integer.parseInt(s[0]);
         int segons = Integer.parseInt(s[1]);
-        return segons + (minuts*60);
+        return segons + (minuts * 60);
+    }
+
+    private void chooseFile() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, chooseRequest);
+    }
+
+    private String getExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mTm = MimeTypeMap.getSingleton();
+        return mTm.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile() {
+        if (mPhotoUri != null) {
+            StorageReference fileRef = mStorage.child("file" + System.currentTimeMillis() + "." + getExtension(mPhotoUri));
+            mUploadTask = fileRef.putFile(mPhotoUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(EditSongActivity.this, "Upload Successful", Toast.LENGTH_SHORT).show();
+                        downloadUri = task.getResult().toString();
+                        Upload upload = new Upload(downloadUri);
+                        String id = mDatabase.push().getKey();
+                        mDatabase.child(id).setValue(upload);
+                    } else {
+                        Toast.makeText(EditSongActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "You have to choose a file", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -334,7 +462,60 @@ public class EditSongActivity extends Activity implements TrackCallback {
     }
 
     @Override
+    public void onTrackDeleted(int id) {
+        Toast.makeText(this, "Eliminat correctament", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onTrackReceived(Track track) {
+        putSpinner(track);
+        trck = track;
+    }
+
+    private void putSpinner(Track track) {
+        mGenres = (ArrayList<String>) track.getGenres().stream().map(Genre -> Genre.getName()).collect(Collectors.toList());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(EditSongActivity.this, R.layout.support_simple_spinner_dropdown_item, mGenres);
+        genere_canviat.setAdapter(adapter);
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
+
+    //Generes tots
+    @Override
+    public void onGenresReceive(ArrayList<Genre> genres) {
+        mGenresObjs = genres;
+        mGenres = (ArrayList<String>) genres.stream().map(Genre -> Genre.getName()).collect(Collectors.toList());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(EditSongActivity.this, R.layout.support_simple_spinner_dropdown_item, mGenres);
+        genere_total.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onTracksByGenre(ArrayList<Track> tracks) {
+
+    }
+
+    @Override
+    public void onGenreSelected(Genre genere) {
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == chooseRequest && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mPhotoUri = data.getData();
+            Upload u = new Upload(mPhotoUri.toString());
+            coverPas = u.getImageUrl();
+            Picasso.get().load(mPhotoUri).fit().centerCrop().into(image_upload);
+        }
+    }
 }
+
+
+
+

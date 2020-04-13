@@ -14,8 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
@@ -26,7 +29,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-public class InfoTrackActivity extends AppCompatActivity implements TrackCallback {
+public class InfoTrackActivity extends AppCompatActivity implements TrackCallback, PlaylistCallback {
 
     private ImageView songCover;
     private TextView songName;
@@ -48,6 +51,10 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
     private TextView text_playlist;
     private LinearLayout layoutPlaylist;
 
+    private ImageButton eliminar_icono;
+    private TextView eliminar_text;
+    private LinearLayout layouteliminar;
+
     private Button cancel;
 
     private Track trck;
@@ -58,17 +65,22 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
 
     private TrackManager tManager;
 
+    private PlaylistManager pManager;
+
+    private Playlist playl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_track);
         trck = (Track) getIntent().getSerializableExtra("Trck");
+        playl=(Playlist) getIntent().getSerializableExtra("Playlst");
         if(getIntent().getSerializableExtra("UserInfo")!=null){
             user = (User) getIntent().getSerializableExtra("UserInfo");
         }
         initViews();
         tManager = new TrackManager(this);
+        pManager = new PlaylistManager(this);
     }
 
     private void initViews(){
@@ -140,6 +152,23 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
+
+        eliminar_icono = (ImageButton) findViewById(R.id.eliminar);
+        eliminar_text = findViewById(R.id.text_eliminar);
+        layouteliminar = findViewById(R.id.layoutEliminar);
+        layouteliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
+                    playl.getTracks().remove(trck);
+                    pManager.updatePlaylist(playl, InfoTrackActivity.this);
+                    Toast.makeText(InfoTrackActivity.this, "Eliminada correctament", Toast.LENGTH_SHORT).show();
+                }else{
+                    er.showErrorDialog("This track is not yours to edit");
+                }
+            }
+        });
+
 
         cancel= findViewById(R.id.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +245,112 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
     }
 
     @Override
+    public void onTrackDeleted(int id) {
+
+    }
+
+    @Override
+    public void onTrackReceived(Track track) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistCreated(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistRecieved(List<Playlist> playlists) {
+
+    }
+
+    @Override
+    public void onNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPlaylistSelected(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistToUpdated(Playlist body) {
+
+    }
+
+    @Override
+    public void onTrackAddFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onAllNoPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopRecieved(List<Playlist> topPlaylists) {
+
+    }
+
+    @Override
+    public void onNoTopPlaylists(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopPlaylistsFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingRecieved(List<Playlist> body) {
+
+    }
+
+    @Override
+    public void onFollowingChecked(Follow body) {
+
+    }
+
+    @Override
+    public void onFollowSuccessfull(Follow body) {
+
+    }
+
+    @Override
+    public void onPlaylistRecived(Playlist playlist) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleted(Playlist body) {
+
+    }
+
+    @Override
+    public void onPlaylistDeleteFailure(Throwable throwable) {
 
     }
 }

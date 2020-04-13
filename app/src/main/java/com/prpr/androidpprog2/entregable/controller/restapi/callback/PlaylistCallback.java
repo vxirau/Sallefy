@@ -12,7 +12,7 @@ public interface PlaylistCallback {
     void onPlaylistRecieved(List<Playlist> playlists);
     void onNoPlaylists(Throwable throwable);
     void onPlaylistSelected(Playlist playlist);
-    void onTrackAdded(Playlist body);
+    void onPlaylistToUpdated(Playlist body);
     void onTrackAddFailure(Throwable throwable);
     void onAllPlaylistRecieved(List<Playlist> body);
     void onAllNoPlaylists(Throwable throwable);

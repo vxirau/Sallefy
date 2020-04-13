@@ -167,7 +167,7 @@ public class PlaylistManager {
             public void onResponse(Call<Playlist> call, Response<Playlist> response) {
                 int code = response.code();
                 if (response.isSuccessful()) {
-                    playlistCallback.onTrackAdded(response.body());
+                    playlistCallback.onPlaylistToUpdated(response.body());
                 } else {
                     try{
                         playlistCallback.onTrackAddFailure(new Throwable(response.errorBody().string()));
@@ -184,7 +184,6 @@ public class PlaylistManager {
             }
 
         });
-
     }
 
     public synchronized void getFollowingPlaylists (final PlaylistCallback playlistCallback) {

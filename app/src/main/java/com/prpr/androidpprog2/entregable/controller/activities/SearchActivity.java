@@ -317,6 +317,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         GenreManager.getInstance(this).getTracksByGenre(genere.getId(), this);
     }
 
+
     @Override
     public void onPlaylistCreated(Playlist playlist) {
 
@@ -346,9 +347,11 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
-    public void onTrackAdded(Playlist body) {
+    public void onPlaylistToUpdated(Playlist body) {
 
     }
+
+
 
     @Override
     public void onTrackAddFailure(Throwable throwable) {

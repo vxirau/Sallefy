@@ -144,9 +144,11 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
     }
 
     @Override
-    public void onTrackAdded(Playlist body) {
+    public void onPlaylistToUpdated(Playlist body) {
 
     }
+
+
 
     @Override
     public void onTrackAddFailure(Throwable throwable) {

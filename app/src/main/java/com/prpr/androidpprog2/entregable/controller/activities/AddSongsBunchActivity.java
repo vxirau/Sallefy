@@ -193,6 +193,16 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     }
 
     @Override
+    public void onTrackDeleted(int id) {
+
+    }
+
+    @Override
+    public void onTrackReceived(Track track) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
@@ -241,13 +251,14 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
     }
 
     @Override
-    public void onTrackAdded(Playlist body) {
+    public void onPlaylistToUpdated(Playlist body) {
         Intent intent = new Intent(getApplicationContext(), PlaylistActivity.class);
         intent.putExtra("Playlst", ply);
         intent.putExtra("bunch", true);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
+
 
     @Override
     public void onTrackAddFailure(Throwable throwable) {
