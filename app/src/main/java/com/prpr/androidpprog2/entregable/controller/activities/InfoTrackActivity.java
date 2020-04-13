@@ -134,9 +134,13 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
         layoutArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
-                intent.putExtra("User", trck.getUserLogin());
-                startActivity(intent);
+                if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())) {
+                    er.showErrorDialog("You cannot check yourself out!");
+                }else{
+                    Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
+                    intent.putExtra("User", trck.getUser());
+                    startActivity(intent);
+                }
             }
         });
 
@@ -169,6 +173,9 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
             }
         });
 
+        if(playl==null){
+            layouteliminar.setVisibility(View.INVISIBLE);
+        }
 
         cancel= findViewById(R.id.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {

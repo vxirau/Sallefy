@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +39,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.Genre;
+import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.Upload;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -90,7 +92,8 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
     private Spinner genere_total;
     private ArrayList<Genre> mGenresObjs;
     private ArrayList<String> mGenres;
-
+    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter2;
 
     //Durada
     private TextView text_durada;
@@ -104,6 +107,7 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
 
     //Canco a editar
     private Track trck;
+    private Playlist plyl;
 
     //Botons generals
     private Button guardar;
@@ -114,12 +118,15 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
 
     private Button eliminar;
 
+    private boolean spinner_in;
+    private boolean spinner_in2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_song);
         trck = (Track) getIntent().getSerializableExtra("Trck");
+        plyl = (Playlist) getIntent().getSerializableExtra("Playlst");
         initViews();
         getData();
         getTrackData();
@@ -310,6 +317,49 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
             }
         });
 
+        spinner_in = false;
+        genere_total.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!spinner_in){
+                    spinner_in = true;
+                    return;
+                } else {
+                    String item = adapterView.getItemAtPosition(i).toString();
+                    adapter2.add(item);
+                    adapter2.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinner_in2 = false;
+        genere_canviat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(!spinner_in2){
+                    spinner_in2 = true;
+                    return;
+                } else {
+                    if(adapter2.getCount()>1) {
+                        String item = adapterView.getItemAtPosition(i).toString();
+                        adapter2.remove(item);
+                        adapter2.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         //ELiminar canco
         eliminar = findViewById(R.id.eliminar);
         eliminar.setOnClickListener(new View.OnClickListener() {
@@ -327,8 +377,7 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
                 trck.setName(song_name.getText().toString());
                 trck.setDuration(convertSeconds(durada_name.getText().toString()));
                 //trck.setThumbnail("");
-                //Genre g = new Genre((String) genere_name.getText());
-                //trck.getGenres().add(g);
+                afegirGenere();
                 tManager.updateTrack(trck, EditSongActivity.this);
                 //trck.setThumbnail(coverPas);
             }
@@ -373,6 +422,25 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
         ContentResolver cR = getContentResolver();
         MimeTypeMap mTm = MimeTypeMap.getSingleton();
         return mTm.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private Genre getGenre(String nom){
+        Genre ger = null;
+        for (Genre g: mGenresObjs){
+            if(g.getName().equals(nom)){
+                ger = g;
+            }
+        }
+        return ger;
+    }
+
+    private void afegirGenere(){
+        int c = adapter2.getCount();
+        List<Genre> gen = new ArrayList<>();
+        for(int i=0; i<c; i++){
+            gen.add(getGenre(adapter2.getItem(i)));
+        }
+        trck.setGenres(gen);
     }
 
     private void uploadFile() {
@@ -464,19 +532,22 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
     @Override
     public void onTrackDeleted(int id) {
         Toast.makeText(this, "Eliminat correctament", Toast.LENGTH_SHORT).show();
-        finish();
+
+        if (plyl == null) {
+            Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
+            startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+        } else {
+            Intent intent2 = new Intent(getApplicationContext(), PlaylistActivity.class);
+            intent2.putExtra("Playlst", plyl);
+            startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
+        }
     }
 
     @Override
     public void onTrackReceived(Track track) {
-        putSpinner(track);
-        trck = track;
-    }
-
-    private void putSpinner(Track track) {
         mGenres = (ArrayList<String>) track.getGenres().stream().map(Genre -> Genre.getName()).collect(Collectors.toList());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(EditSongActivity.this, R.layout.support_simple_spinner_dropdown_item, mGenres);
-        genere_canviat.setAdapter(adapter);
+        adapter2 = new ArrayAdapter<>(EditSongActivity.this, R.layout.support_simple_spinner_dropdown_item, mGenres);
+        genere_canviat.setAdapter(adapter2);
     }
 
     @Override
@@ -489,7 +560,7 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
     public void onGenresReceive(ArrayList<Genre> genres) {
         mGenresObjs = genres;
         mGenres = (ArrayList<String>) genres.stream().map(Genre -> Genre.getName()).collect(Collectors.toList());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(EditSongActivity.this, R.layout.support_simple_spinner_dropdown_item, mGenres);
+        adapter = new ArrayAdapter<>(EditSongActivity.this, R.layout.support_simple_spinner_dropdown_item, mGenres);
         genere_total.setAdapter(adapter);
     }
 
