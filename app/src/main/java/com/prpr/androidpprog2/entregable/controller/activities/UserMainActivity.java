@@ -4,11 +4,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -67,6 +69,8 @@ public class UserMainActivity extends AppCompatActivity{
     private FloatingActionButton btnSettings;
     private View bigView;
     private SpringAnimation springAnimation;
+    private int width;
+    private int height;
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
     private TextView followingTxt;
@@ -143,7 +147,7 @@ public class UserMainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-
+        getScreenSize();
         initGeneralViews();
         initPlaylistViews();
 
@@ -272,7 +276,17 @@ public class UserMainActivity extends AppCompatActivity{
 
     }
 
+    void getScreenSize(){
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        this.width = size.x;
+        this.height = size.y;
+    }
+
     void initPlaylistViews(){
+
+
         springAnimation.animateToFinalPosition(0);
         UserPlaylistsFragment userPlaylistsFragment = new UserPlaylistsFragment();
 
@@ -286,8 +300,8 @@ public class UserMainActivity extends AppCompatActivity{
     }
     void initTracksViews(){
 
-        springAnimation.animateToFinalPosition(238);
-
+        springAnimation.animateToFinalPosition(((this.width/4))- 30);
+        System.out.println(((this.width/4)));
         UserTracksFragment userTracksFragment = new UserTracksFragment();
 
         FragmentManager manager = getSupportFragmentManager();
@@ -300,7 +314,8 @@ public class UserMainActivity extends AppCompatActivity{
     }
 
     void initStatisticsViews(){
-        springAnimation.animateToFinalPosition(500);
+        springAnimation.animateToFinalPosition(((this.width/4)*2) - 45);
+        System.out.println(((this.width/4)*2) - 20);
         UserStatisticsFragment userStatisticsFragment = new UserStatisticsFragment();
 
         FragmentManager manager = getSupportFragmentManager();
@@ -311,7 +326,8 @@ public class UserMainActivity extends AppCompatActivity{
     }
 
     void initMyFollowedViews(){
-        springAnimation.animateToFinalPosition(750);
+        springAnimation.animateToFinalPosition(((this.width/4)*3)- 55);
+        System.out.println(((this.width/4)*3)- 20);
         UserFollowedFragment userFollowedFragment = new UserFollowedFragment();
 
         FragmentManager manager = getSupportFragmentManager();

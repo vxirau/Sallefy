@@ -455,7 +455,8 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     @Override
     public void onAccountSavedFailure(Throwable throwable) {
-
+        loading.cancelLoadingDialog();
+        StateDialog.getInstance(this).informTask("Warning", "There has been a problem updating user");
     }
 
     @Override
