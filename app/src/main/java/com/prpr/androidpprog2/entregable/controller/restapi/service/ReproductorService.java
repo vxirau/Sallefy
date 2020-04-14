@@ -257,6 +257,50 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         return activeAudio;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void removeTrack(){
+        int oldI= indexTrack(activeAudio);
+
+        for(int i=0; i<audioList.size() ;i++){
+            if(activeAudio.getName().equals(audioList.get(i).getName()) && activeAudio.getUserLogin().equals(audioList.get(i).getUserLogin())){
+                audioList.remove(i);
+            }
+        }
+        for(int i=0; i<shuffledAudioList.size() ;i++){
+            if(activeAudio.getName().equals(shuffledAudioList.get(i).getName()) && activeAudio.getUserLogin().equals(shuffledAudioList.get(i).getUserLogin())){
+                shuffledAudioList.remove(i);
+            }
+        }
+
+        if (isShuffle){
+            if(oldI == audioList.size()-1){
+                activeAudio = shuffledAudioList.get(0);
+            }else{
+                activeAudio = shuffledAudioList.get(oldI);
+            }
+        }else{
+            if(oldI == audioList.size() || oldI == audioList.size()-1){
+                activeAudio = audioList.get(0);
+            }else{
+                activeAudio = audioList.get(oldI);
+            }
+        }
+
+        audioIndex = indexTrack(activeAudio);
+
+        PreferenceUtils.saveAllTracks(getApplicationContext(), audioList);
+        PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
+        PreferenceUtils.saveTrack(getApplicationContext(), activeAudio);
+        PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
+        stopMedia();
+        mediaPlayer.reset();
+        initMediaPlayer();
+        updateUI();
+        updateMetaData();
+        buildNotification(PlaybackStatus.PLAYING);
+
+    }
+
     public void setRandomButton(ImageButton shuffle) {
         this.shuffle = shuffle;
     }
@@ -650,11 +694,20 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     private int indexTrack(Track t){
         int index=-1;
-        for(int i=0; i<audioList.size() ;i++){
-            if(t.equals(audioList.get(i))){
-                return i;
+        if(isShuffle){
+            for(int i=0; i<shuffledAudioList.size() ;i++){
+                if(t.equals(shuffledAudioList.get(i))){
+                    return i;
+                }
+            }
+        }else{
+            for(int i=0; i<audioList.size() ;i++){
+                if(t.equals(audioList.get(i))){
+                    return i;
+                }
             }
         }
+
         return index;
     }
 
