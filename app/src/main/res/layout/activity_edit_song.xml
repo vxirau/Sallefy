@@ -66,7 +66,7 @@
                         android:layout_marginRight="50dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/rectangle_canvi_edit"
-                        android:text="Canviar portada"
+                        android:text="Change cover"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
                         android:textSize="12dp" />
@@ -139,7 +139,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:background="@drawable/rectangle_canvi_edit"
-                            android:text="Guardar"
+                            android:text="Save"
                             android:textAllCaps="false"
                             android:textColor="@color/colorWhite"
                             android:textSize="12dp" />
@@ -204,7 +204,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/boto_canviar"
-                        android:text="Canviar nom"
+                        android:text="Change name"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
                         android:textSize="12dp" />
@@ -244,7 +244,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:background="@drawable/rectangle_canvi_edit"
-                            android:text="Guardar"
+                            android:text="Save"
                             android:textAllCaps="false"
                             android:textColor="@color/colorWhite"
                             android:textSize="10dp" />
@@ -307,7 +307,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/boto_canviar"
-                        android:text="Canviar durada"
+                        android:text="Change duration"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
                         android:textSize="12dp" />
@@ -347,7 +347,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:background="@drawable/rectangle_canvi_edit"
-                            android:text="Guardar"
+                            android:text="Save"
                             android:textAllCaps="false"
                             android:textColor="@color/colorWhite"
                             android:textSize="10dp" />
@@ -368,30 +368,33 @@
             </RelativeLayout>
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="325dp"
-                    android:layout_height="65dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center">
+                    android:layout_height="80dp"
+                    android:layout_marginTop="20dp">
+
 
                     <Button
                         android:id="@+id/genere1"
                         android:layout_width="160dp"
                         android:layout_height="35dp"
                         android:background="@drawable/boto_canviar"
-                        android:text="Afegir genere"
+                        android:text="Add genre"
+                        android:layout_marginLeft="82dp"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
                         android:textSize="20dp"
+                        android:layout_marginBottom="10dp"
                         android:visibility="visible"/>
 
                     <LinearLayout
                         android:id="@+id/genere2"
                         android:layout_width="325dp"
-                        android:layout_height="100dp"
+                        android:layout_height="80dp"
                         android:background="@drawable/rectangle_edit_canco"
                         android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:layout_marginBottom="30dp"
+                        android:visibility="invisible">
 
 
                         <LinearLayout
@@ -404,16 +407,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="55dp"
                                 android:text="@string/tots_generes"
-                                android:layout_marginTop="5dp"
+                                android:layout_marginTop="3dp"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="12dp"/>
 
                             <Spinner
                                 android:id="@+id/genere_total"
                                 android:layout_width="100dp"
-                                android:layout_height="30dp"
-                                android:layout_marginTop="5dp"
+                                android:layout_height="20dp"
                                 android:layout_marginLeft="20dp"
+                                android:layout_marginTop="3dp"
                                 android:background="@drawable/rectangle_edit" />
 
                         </LinearLayout>
@@ -421,7 +424,7 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="40dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:background="@drawable/arrow_edit"/>
 
                         <LinearLayout
@@ -433,23 +436,23 @@
                                 android:layout_width="150dp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/generes_actuals"
-                                android:layout_marginLeft="25dp"
+                                android:layout_marginLeft="35dp"
                                 android:textColor="@color/colorWhite"
-                                android:layout_marginTop="5dp"
+                                android:layout_marginTop="3dp"
                                 android:textSize="12dp"/>
 
                             <Spinner
                                 android:id="@+id/genere_canviat"
                                 android:layout_width="100dp"
-                                android:layout_height="30dp"
-                                android:layout_marginTop="5dp"
+                                android:layout_height="20dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginLeft="9dp"
                                 android:background="@drawable/rectangle_edit" />
 
                         </LinearLayout>
 
-
                     </LinearLayout>
-                </LinearLayout>
+                </RelativeLayout>
 
 
 
@@ -458,11 +461,9 @@
                 android:id="@+id/eliminar"
                 android:layout_width="160dp"
                 android:layout_height="35dp"
-                android:layout_marginRight="10dp"
                 android:background="@drawable/boto_canviar"
-                android:text="Eliminar canço"
+                android:text="Remove song"
                 android:textAllCaps="false"
-                android:layout_marginTop="10dp"
                 android:textColor="@color/colorWhite"
                 android:gravity="center"
                 android:textSize="20dp" />
@@ -481,7 +482,7 @@
         android:layout_width="120dp"
         android:layout_height="40dp"
         android:background="@drawable/guardar_edit"
-        android:text="Guardar"
+        android:text="Save"
         android:textAllCaps="false"
         android:layout_marginBottom="5dp"
         android:textColor="@color/colorWhite"

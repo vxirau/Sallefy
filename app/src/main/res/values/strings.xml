@@ -157,8 +157,8 @@
     <string name="nom_canco">nom_canco</string>
     <string name="boto_canviar_genere">canviar genere</string>
     <string name="canvi_genere">Gènere</string>
-    <string name="canvi_nom">Nom de la canço</string>
-    <string name="canvi_durada">Durada</string>
+    <string name="canvi_nom">Name of the song</string>
+    <string name="canvi_durada">Duration</string>
     <string name="eliminar">Remove from playlist</string>
     <string name="tots_generes">ALL</string>
     <string name="generes_actuals">ACTUAL</string>
