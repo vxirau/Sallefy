@@ -418,11 +418,7 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
         startActivityForResult(intent, chooseRequest);
     }
 
-    private String getExtension(Uri uri) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mTm = MimeTypeMap.getSingleton();
-        return mTm.getExtensionFromMimeType(cR.getType(uri));
-    }
+
 
     private Genre getGenre(String nom){
         Genre ger = null;
@@ -441,6 +437,12 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
             gen.add(getGenre(adapter2.getItem(i)));
         }
         trck.setGenres(gen);
+    }
+
+    private String getExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mTm = MimeTypeMap.getSingleton();
+        return mTm.getExtensionFromMimeType(cR.getType(uri));
     }
 
     private void uploadFile() {

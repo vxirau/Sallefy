@@ -101,10 +101,10 @@
     <string name="genere_alternativerock">ALTERNATIVE ROCK</string>
     <string name="genere_rhythmandblues">RHYTHM AND BLUES</string>
     <string name="nom_artista">nom_artista</string>
-    <string name="favoritos">Añadir a favoritos</string>
+    <string name="favoritos">Add to favorites</string>
     <string name="edit">"Edit song"</string>
-    <string name="user">Ver artista</string>
-    <string name="playlist">Añadir a playlist</string>
+    <string name="user">"See artist"</string>
+    <string name="playlist">Add to playlist</string>
     <string name="cancel">Cancel</string>
     <string name="playlist_">Playlists</string>
     <string name="songs_">Songs</string>
