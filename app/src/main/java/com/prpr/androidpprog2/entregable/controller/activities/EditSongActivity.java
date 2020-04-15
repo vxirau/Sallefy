@@ -1,11 +1,15 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
@@ -19,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,11 +43,13 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryMa
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.Upload;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
@@ -120,6 +127,53 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
 
     private boolean spinner_in;
     private boolean spinner_in2;
+
+
+    //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
+    private ReproductorService serv;
+    private boolean servidorVinculat=false;
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
+            serv = binder.getService();
+            servidorVinculat = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            servidorVinculat = false;
+        }
+    };
+
+    void doUnbindService() {
+        if (servidorVinculat) {
+            unbindService(serviceConnection);
+            servidorVinculat = false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        doUnbindService();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!servidorVinculat){
+            Intent intent = new Intent(this, ReproductorService.class);
+            bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -363,8 +417,13 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
         //ELiminar canco
         eliminar = findViewById(R.id.eliminar);
         eliminar.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
+                Track playing = serv.getActiveAudio();
+                if(playing.getName().equals(trck.getName()) && playing.getUserLogin().equals(trck.getUserLogin())){
+                    serv.removeTrack();
+                }
                 tManager.removeTrack(trck.getId(), EditSongActivity.this);
             }
         });
