@@ -285,6 +285,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         });
 
         trackAuthor = findViewById(R.id.dynamic_artist);
+        trackAuthor.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        trackAuthor.setSelected(true);
+        trackAuthor.setSingleLine(true);
         trackTitle = findViewById(R.id.dynamic_title);
         trackTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         trackTitle.setSelected(true);

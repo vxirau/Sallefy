@@ -202,6 +202,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         if(getIntent().getSerializableExtra("Playlst")!=null){
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
         }
+        if(getIntent().getSerializableExtra("bunch")!=null){
+            bunch = (boolean) getIntent().getSerializableExtra("bunch");
+        }
         pManager = new PlaylistManager(this);
         trackManager = new TrackManager(this);
         if(playlst.getId()!=-5){
@@ -467,7 +470,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         back2Main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //player.savePosition();
                 if(bunch){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -481,6 +483,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         });
 
         tvAuthor = findViewById(R.id.dynamic_artist);
+        tvAuthor.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        tvAuthor.setSelected(true);
+        tvAuthor.setSingleLine(true);
         tvTitle = findViewById(R.id.dynamic_title);
         tvTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         tvTitle.setSelected(true);

@@ -225,21 +225,34 @@
 
             <TextView
                 android:id="@+id/dynamic_title"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp" />
-
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:maxWidth="300dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"/>
             <TextView
                 android:id="@+id/dynamic_artist"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:alpha=".56"
                 android:gravity="center"
-                android:paddingBottom="12dp"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:maxWidth="300dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textAlignment="center"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:alpha = ".56"
+                android:paddingBottom="12dp"/>
 
         </LinearLayout>
 

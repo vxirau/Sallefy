@@ -179,6 +179,9 @@ public class UserMainActivity extends AppCompatActivity{
         });
 
         trackAuthor = findViewById(R.id.dynamic_artist);
+        trackAuthor.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        trackAuthor.setSelected(true);
+        trackAuthor.setSingleLine(true);
         trackTitle = findViewById(R.id.dynamic_title);
         trackTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         trackTitle.setSelected(true);

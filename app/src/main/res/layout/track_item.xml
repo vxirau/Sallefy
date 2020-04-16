@@ -20,7 +20,7 @@
             />
 
         <LinearLayout
-            android:layout_width="211dp"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="15dp"
@@ -30,7 +30,7 @@
             <TextView
                 android:id="@+id/track_title"
                 style="@style/SongTitleTheme"
-                android:layout_width="match_parent"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:text="@string/default_track_title"
                 android:marqueeRepeatLimit="marquee_forever"
@@ -41,7 +41,7 @@
             <TextView
                 android:id="@+id/track_author"
                 style="@style/SongArtistTheme"
-                android:layout_width="match_parent"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:text="@string/default_track_author" />
 
@@ -69,11 +69,13 @@
             android:background="@drawable/ic_heart" />
         <Button
             android:id="@+id/addSong"
-            android:layout_width="7dp"
-            android:layout_height="23dp"
-            android:layout_marginLeft="5dp"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/ic_track_info" />
+            android:paddingBottom="10dp"
+            android:background="@android:color/transparent"
+            android:drawableBottom="@drawable/ic_track_info"
+            />
 
 
 

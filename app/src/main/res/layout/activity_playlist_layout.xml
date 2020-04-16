@@ -32,16 +32,19 @@
 
                 <Button
                     android:id="@+id/back2Main"
-                    android:layout_width="20dp"
-                    android:layout_height="15dp"
-                    android:layout_marginLeft="25dp"
-                    android:background="@drawable/ic_back_down"
-                    android:rotation="90" />
+                    android:layout_width="60dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="35dp"
+                    android:paddingBottom="15dp"
+                    android:background="@android:color/transparent"
+                    android:drawableBottom="@drawable/ic_back_down"
+                    android:rotation="90"
+                    />
 
                 <TextView
                     android:id="@+id/playlistName"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="25dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="25dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -65,10 +68,13 @@
 
                 <Button
                     android:id="@+id/infoPlaylist"
-                    android:layout_width="5dp"
-                    android:layout_height="21dp"
-                    android:layout_marginRight="35dp"
-                    android:background="@drawable/ic_playlist_info"/>
+                    android:layout_width="30dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="35dp"
+                    android:paddingBottom="10dp"
+                    android:background="@android:color/transparent"
+                    android:drawableBottom="@drawable/ic_playlist_info"
+                    />
 
             </LinearLayout>
 
@@ -137,7 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center">
 
                 <Button
@@ -297,16 +303,30 @@
             android:gravity="center">
             <TextView
                 android:id="@+id/dynamic_title"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:maxWidth="300dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textAlignment="center"
                 android:textSize="18sp"
                 android:textColor="@color/colorWhite"/>
             <TextView
                 android:id="@+id/dynamic_artist"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:maxWidth="300dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textSize="14dp"
                 android:alpha = ".56"
