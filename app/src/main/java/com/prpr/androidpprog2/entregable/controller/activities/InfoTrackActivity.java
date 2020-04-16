@@ -187,8 +187,9 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
             }
         });
 

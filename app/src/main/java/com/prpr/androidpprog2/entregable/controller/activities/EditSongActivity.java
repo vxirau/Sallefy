@@ -193,7 +193,14 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
     private void omplir() {
         song_name.setText(trck.getName());
         song_canviada.setText(trck.getName());
-        Picasso.get().load(trck.getThumbnail()).into(song_cover);
+        if (trck.getThumbnail() != null && !trck.getThumbnail().equals("")) {
+            Picasso.get().load(trck.getThumbnail()).into(song_cover);
+            Picasso.get().load(trck.getThumbnail()).into(image_upload);
+        }else{
+            Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(song_cover);
+            Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(image_upload);
+        }
+
         String segons = "";
         if (trck.getDuration() != null || trck.getDuration() == 0) {
             if (trck.getDuration() % 60 < 10) {
@@ -599,9 +606,14 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
 
     }
 
+
     @Override
     public void onTrackUpdated(Track body) {
-        finish();
+        Intent intent = new Intent(getApplicationContext(), InfoTrackActivity.class);
+        intent.putExtra("Trck", body);
+        intent.putExtra("Playlst", plyl);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
     @Override

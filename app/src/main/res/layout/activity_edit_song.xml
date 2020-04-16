@@ -46,7 +46,7 @@
                     android:background="@drawable/quadrat_songcover"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="invisible">
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/SongCover"
@@ -81,7 +81,7 @@
                     android:background="@drawable/rectangle_edit_song"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="invisible">
 
 
                     <LinearLayout
@@ -97,11 +97,12 @@
                             android:background="@drawable/default_cover" />
 
                         <LinearLayout
-                            android:layout_width="100dp"
+                            android:layout_width="120dp"
                             android:layout_height="100dp"
                             android:layout_marginLeft="30dp"
                             android:layout_marginTop="30dp"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:gravity="center">
 
                             <Button
                                 android:id="@+id/choose_file"
@@ -125,7 +126,7 @@
 
                             <Button
                                 android:id="@+id/show_results"
-                                android:layout_width="80dp"
+                                android:layout_width="120dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/rectangle_file"
                                 android:text="@string/show"
