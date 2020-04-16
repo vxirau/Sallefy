@@ -32,6 +32,8 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
@@ -59,10 +61,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class EditSongActivity extends Activity implements TrackCallback, GenreCallback {
+public class EditSongActivity extends AppCompatActivity implements TrackCallback, GenreCallback {
 
     private static final int chooseRequest = 1;
-    private Uri mFileUri, mPhotoUri;
+    private Uri mPhotoUri;
     private String coverPas, downloadUri;
     private Task<Uri> mUploadTask;
     private StorageReference mStorage;
@@ -78,6 +80,7 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
     private ImageView song_cover;
     private Button guardar_portada;
     private Button cancel_portada;
+    private Button show_uploads;
 
     //Nom
     private TextView text_song; //Titol: Nom de la canco
@@ -210,6 +213,10 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
 
     private void initViews() {
 
+        mStorage = FirebaseStorage.getInstance().getReference(Session.changeLogin(Session.getUser().getLogin()));
+        mDatabase = FirebaseDatabase.getInstance().getReference(Session.changeLogin(Session.getUser().getLogin()));
+
+
         //Portada
         song_cover = findViewById(R.id.SongCover);
         portada1 = findViewById(R.id.portada);
@@ -221,12 +228,13 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
         choose_file = findViewById(R.id.choose_file);
         upload_file = findViewById(R.id.upload_file);
         song_cover = findViewById(R.id.SongCover);
+        show_uploads = findViewById(R.id.show_results);
 
-        /*if(trck.getThumbnail()!=null){
+        if(ImageAdapter.upload != null){
+            Picasso.get().load(ImageAdapter.upload.getImageUrl()).fit().centerCrop().into(song_cover);
+            coverPas = ImageAdapter.upload.getImageUrl();
+        }
 
-        }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(song_cover);
-        }*/
 
         canvi_portada.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,12 +263,20 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
             }
         });
 
+        show_uploads.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                openImages();
+            }
+        });
+
+
         guardar_portada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 portada1.setVisibility(View.VISIBLE);
                 portada2.setVisibility(View.INVISIBLE);
-
+                Picasso.get().load(coverPas).fit().centerCrop().into(song_cover);
             }
         });
 
@@ -434,10 +450,10 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
             public void onClick(View view) {
                 trck.setName(song_name.getText().toString());
                 trck.setDuration(convertSeconds(durada_name.getText().toString()));
-                //trck.setThumbnail("");
+                trck.setThumbnail(coverPas);
                 afegirGenere();
                 tManager.updateTrack(trck, EditSongActivity.this);
-                //trck.setThumbnail(coverPas);
+                //
             }
         });
 
@@ -451,6 +467,11 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
             }
         });
 
+    }
+
+    private void openImages(){
+        Intent intent = new Intent(this, ImageActivity.class);
+        startActivityForResult(intent,2);
     }
 
     private void getData() {
@@ -643,6 +664,11 @@ public class EditSongActivity extends Activity implements TrackCallback, GenreCa
             Upload u = new Upload(mPhotoUri.toString());
             coverPas = u.getImageUrl();
             Picasso.get().load(mPhotoUri).fit().centerCrop().into(image_upload);
+        } else {
+            if(requestCode == 2 && ImageAdapter.upload != null){
+                Picasso.get().load(ImageAdapter.upload.getImageUrl()).fit().centerCrop().into(image_upload);
+                coverPas = ImageAdapter.upload.getImageUrl();
+            }
         }
     }
 }

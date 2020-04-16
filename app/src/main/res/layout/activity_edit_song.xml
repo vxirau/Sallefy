@@ -46,7 +46,7 @@
                     android:background="@drawable/quadrat_songcover"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="invisible">
 
                     <ImageView
                         android:id="@+id/SongCover"
@@ -81,7 +81,7 @@
                     android:background="@drawable/rectangle_edit_song"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="invisible">
+                    android:visibility="visible">
 
 
                     <LinearLayout
@@ -98,16 +98,16 @@
 
                         <LinearLayout
                             android:layout_width="100dp"
-                            android:layout_height="80dp"
+                            android:layout_height="100dp"
                             android:layout_marginLeft="30dp"
-                            android:layout_marginTop="48dp"
+                            android:layout_marginTop="30dp"
                             android:orientation="vertical">
 
                             <Button
                                 android:id="@+id/choose_file"
                                 android:layout_width="80dp"
                                 android:layout_height="20dp"
-                                android:layout_marginBottom="20dp"
+                                android:layout_marginBottom="15dp"
                                 android:background="@drawable/rectangle_file"
                                 android:text="@string/crear"
                                 android:textAllCaps="false"
@@ -119,6 +119,16 @@
                                 android:layout_height="20dp"
                                 android:background="@drawable/rectangle_file"
                                 android:text="@string/upload"
+                                android:textAllCaps="false"
+                                android:layout_marginBottom="15dp"
+                                android:textSize="12dp" />
+
+                            <Button
+                                android:id="@+id/show_results"
+                                android:layout_width="80dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/rectangle_file"
+                                android:text="@string/show"
                                 android:textAllCaps="false"
                                 android:textSize="12dp" />
 

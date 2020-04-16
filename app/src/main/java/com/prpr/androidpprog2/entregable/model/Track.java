@@ -1,5 +1,7 @@
 package com.prpr.androidpprog2.entregable.model;
 
+import android.widget.ImageView;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;

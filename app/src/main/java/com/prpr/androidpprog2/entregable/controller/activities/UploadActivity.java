@@ -101,8 +101,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
         pManager = new PlaylistManager(mContext);
 
-        mStorage = FirebaseStorage.getInstance().getReference(Session.changeLogin(Session.getUser().getLogin()));
-        mDatabase = FirebaseDatabase.getInstance().getReference(Session.changeLogin(Session.getUser().getLogin()));
+
 
 
         etTitle = (EditText) findViewById(R.id.create_song_title);

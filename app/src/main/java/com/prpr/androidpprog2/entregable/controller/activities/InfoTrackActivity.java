@@ -70,6 +70,12 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
     private Playlist playl;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_track);
