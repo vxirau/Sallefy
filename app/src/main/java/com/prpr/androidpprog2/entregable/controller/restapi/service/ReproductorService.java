@@ -289,9 +289,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         audioIndex = indexTrack(activeAudio);
 
         PreferenceUtils.saveAllTracks(getApplicationContext(), audioList);
-        PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
         PreferenceUtils.saveTrack(getApplicationContext(), activeAudio);
-        PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
+
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
@@ -403,9 +402,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 audioList = PreferenceUtils.getAllTracks(getApplicationContext());
                 makeShuffled();
             }
-            audioIndex = PreferenceUtils.getTrackIndex(getApplicationContext());
+            audioIndex = indexTrack(PreferenceUtils.getTrack(getApplicationContext()));
             if (audioIndex != -1 && audioIndex < audioList.size()) {
-                activeAudio = audioList.get(audioIndex);
+                if(isShuffle){
+                    activeAudio = shuffledAudioList.get(audioIndex);
+                }else{
+                    activeAudio = audioList.get(audioIndex);
+                }
             } else {
                 stopSelf();
             }
@@ -627,7 +630,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void skipToNext() {
-        newOrder();
         if(isShuffle){
             if (indexTrack(activeAudio) == shuffledAudioList.size() - 1) {
                 activeAudio = shuffledAudioList.get(0);
@@ -645,9 +647,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
         audioIndex = indexTrack(activeAudio);
 
-        PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
         PreferenceUtils.saveTrack(getApplicationContext(), activeAudio);
-        PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
 
         stopMedia();
         mediaPlayer.reset();
@@ -661,7 +661,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void skipToPrevious() {
-        newOrder();
         audioIndex = indexTrack(activeAudio);
         if(isShuffle){
             if (audioIndex == 0) {
@@ -680,9 +679,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
 
         audioIndex = indexTrack(activeAudio);
-        PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
         PreferenceUtils.saveTrack(getApplicationContext(), activeAudio);
-        PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
+
         stopMedia();
         mediaPlayer.reset();
         initMediaPlayer();
@@ -838,6 +836,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
     public void novaLlista(){
         novaLlista = true;
+        newOrder();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

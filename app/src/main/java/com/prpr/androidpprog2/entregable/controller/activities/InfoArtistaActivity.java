@@ -324,7 +324,6 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     private void playAudio(int audioIndex) {
 
         PreferenceUtils.saveAllTracks(getApplicationContext(), artTracks);
-        PreferenceUtils.saveTrackIndex(getApplicationContext(), audioIndex);
         PreferenceUtils.saveTrack(getApplicationContext(), artTracks.get(audioIndex));
         PreferenceUtils.savePlayID(getApplicationContext(), -6);
 

@@ -130,8 +130,11 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:backgroundTint="@color/colorWhite"
-                    android:progressBackgroundTint="@color/colorWhite" />
+                    android:backgroundTint="#21D760"
+                    android:thumb="@drawable/seek_thumb"
+                    android:progressTint="@color/colorWhite"
+                    android:colorControlActivated="@drawable/ic_seekbar_scrubber"
+                    android:progressBackgroundTint="#21D760" />
 
                 <TextView
                     android:id="@+id/totalTime"
