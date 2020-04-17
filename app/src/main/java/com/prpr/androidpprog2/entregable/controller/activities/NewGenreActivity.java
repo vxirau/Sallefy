@@ -65,7 +65,7 @@ public class NewGenreActivity extends Activity implements GenreCallback {
             @Override
             public void onClick(View v) {
                 loadingDialog.showLoadingDialog("Creating genre");
-                doCreateGenre(new Genre(nomGenre.getText().toString()));
+                doCreateGenre(new Genre(nomGenre.getText().toString().toUpperCase()));
             }
         });
     }
