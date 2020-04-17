@@ -174,10 +174,18 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
                     pManager.updatePlaylist(playl, InfoTrackActivity.this);
                     Toast.makeText(InfoTrackActivity.this, "Eliminada correctament", Toast.LENGTH_SHORT).show();
                 }else{
-                    er.showErrorDialog("This track is not yours to edit");
+                    er.showErrorDialog("This playlist is not yours to edit");
                 }
             }
         });
+
+        if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
+            layouteliminar.setVisibility(View.VISIBLE);
+            layoutedit.setAlpha((float) 1.0);
+        }else{
+            layouteliminar.setVisibility(View.INVISIBLE);
+            layoutedit.setAlpha((float) 0.60);
+        }
 
         if(playl==null){
             layouteliminar.setVisibility(View.INVISIBLE);
