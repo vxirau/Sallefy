@@ -132,7 +132,9 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
         mStorage = FirebaseStorage.getInstance().getReference();
         StorageReference filePath = mStorage.child(Session.changeLogin(etLogin.getText().toString()));
 
-        doLogin(userData.getLogin(), userData.getPassword());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition();
+        }else finish();
     }
 
     @Override
