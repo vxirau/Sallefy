@@ -79,7 +79,12 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
         this.myPlaylists = new ArrayList<>();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        playlistManager.getAllMyPlaylists(this);
 
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

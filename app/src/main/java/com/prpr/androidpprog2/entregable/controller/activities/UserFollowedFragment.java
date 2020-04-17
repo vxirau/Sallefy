@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import com.prpr.androidpprog2.entregable.controller.adapters.UserFollowedAdapter
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
@@ -54,7 +56,12 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
         // Required empty public constructor
         this.followedUsers = new ArrayList<>();
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        userManager.getFollowedUsers(this);
 
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

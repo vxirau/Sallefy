@@ -81,7 +81,12 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     public UserTracksFragment() {
         // Required empty public constructor
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        trackManager.getOwnTracks(this);
 
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
