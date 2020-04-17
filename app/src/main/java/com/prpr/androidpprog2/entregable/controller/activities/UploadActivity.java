@@ -327,6 +327,16 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     }
 
     @Override
+    public void onGenreCreated(Genre data) {
+
+    }
+
+    @Override
+    public void onGenreCreateFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

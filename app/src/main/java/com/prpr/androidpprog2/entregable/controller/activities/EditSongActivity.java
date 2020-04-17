@@ -669,6 +669,16 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
+    public void onGenreCreated(Genre data) {
+
+    }
+
+    @Override
+    public void onGenreCreateFailure(Throwable throwable) {
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == chooseRequest && resultCode == RESULT_OK && data != null && data.getData() != null) {

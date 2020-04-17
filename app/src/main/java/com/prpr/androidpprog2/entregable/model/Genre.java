@@ -20,6 +20,7 @@ public class Genre implements Serializable {
 
     public Genre(String name) {
         this.name = name;
+        this.id = null;
     }
 
     public Integer getId() {

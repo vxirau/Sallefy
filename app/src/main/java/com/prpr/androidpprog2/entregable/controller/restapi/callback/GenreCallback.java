@@ -10,5 +10,6 @@ public interface GenreCallback extends FailureCallback {
     void onGenresReceive(ArrayList<Genre> genres);
     void onTracksByGenre(ArrayList<Track> tracks);
     void onGenreSelected(Genre genere);
-
+    void onGenreCreated(Genre data);
+    void onGenreCreateFailure(Throwable throwable);
 }

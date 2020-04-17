@@ -36,7 +36,7 @@ public class GenreManager {
         return sGenreManager;
     }
 
-    private GenreManager(Context cntxt) {
+    public GenreManager(Context cntxt) {
         mContext = cntxt;
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(Constants.NETWORK.BASE_URL)
@@ -94,6 +94,34 @@ public class GenreManager {
 
             @Override
             public void onFailure(Call<List<Track>> call, Throwable t) {
+                Log.d(TAG, "Error: " + t);
+                genreCallback.onFailure(new Throwable("ERROR " + t.getMessage() ));
+            }
+        });
+
+    }
+
+    public synchronized void createNewGenre(Genre g, final GenreCallback genreCallback) {
+        UserToken userToken = Session.getInstance(mContext).getUserToken();
+
+        Call<Genre> call = mService.createGenre( g, "Bearer " + userToken.getIdToken());
+        call.enqueue(new Callback<Genre>() {
+            @Override
+            public void onResponse(Call<Genre> call, Response<Genre> response) {
+                int code = response.code();
+                Genre data = (Genre) response.body();
+
+                if (response.isSuccessful()) {
+                    genreCallback.onGenreCreated(data);
+
+                } else {
+                    Log.d(TAG, "Error: " + code);
+                    genreCallback.onGenreCreateFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Genre> call, Throwable t) {
                 Log.d(TAG, "Error: " + t);
                 genreCallback.onFailure(new Throwable("ERROR " + t.getMessage() ));
             }

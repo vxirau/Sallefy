@@ -148,12 +148,23 @@
             <LinearLayout
                 android:id="@+id/actionbuttons"
                 android:layout_width="70dp"
-                android:layout_height="200dp"
+                android:layout_height="260dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="100dp"
                 android:orientation="vertical">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/creaGenere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#21D760"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="invisible"
+                    android:elevation="10dp"
+                    app:borderWidth="0dp"
+                    android:src="@drawable/ic_genre" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/pujarCanco"

@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private FloatingActionButton mes;
     private FloatingActionButton btnNewPlaylist;
     private FloatingActionButton pujarCanco;
+    private FloatingActionButton nouGenere;
     Animation fabOpen, fabClose, rotateForward, rotateBackward;
     boolean isOpen = false;
     private TextView trackTitle;
@@ -361,6 +362,17 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             }
         });
 
+        nouGenere= findViewById(R.id.creaGenere);
+        nouGenere.setEnabled(false);
+        nouGenere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateFab();
+                Intent intent = new Intent(getApplicationContext(), NewGenreActivity.class);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+            }
+        });
+
 
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         fabClose = AnimationUtils.loadAnimation(this, R.anim.fab_close);
@@ -376,18 +388,22 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         if(isOpen){
             btnNewPlaylist.startAnimation(fabClose);
             pujarCanco.startAnimation(fabClose);
+            nouGenere.startAnimation(fabClose);
             btnNewPlaylist.setClickable(false);
             pujarCanco.setClickable(false);
             btnNewPlaylist.setEnabled(false);
             pujarCanco.setEnabled(false);
+            nouGenere.setEnabled(false);
             isOpen=false;
         }else{
             btnNewPlaylist.startAnimation(fabOpen);
             pujarCanco.startAnimation(fabOpen);
+            nouGenere.startAnimation(fabOpen);
             btnNewPlaylist.setClickable(true);
             pujarCanco.setClickable(true);
             btnNewPlaylist.setEnabled(true);
             pujarCanco.setEnabled(true);
+            nouGenere.setEnabled(true);
             isOpen=true;
         }
     }

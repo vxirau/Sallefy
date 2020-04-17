@@ -320,6 +320,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         GenreManager.getInstance(this).getTracksByGenre(genere.getId(), this);
     }
 
+    @Override
+    public void onGenreCreated(Genre data) {
+
+    }
+
+    @Override
+    public void onGenreCreateFailure(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onPlaylistCreated(Playlist playlist) {
