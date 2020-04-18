@@ -4,6 +4,8 @@ Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacio
 
 **Para la mejor visualización con el emulador el proyecto lo he compilado con un Pixel 3a XL.**
 
+**Juntamente con compilar con un Pixel 3a XL, recomendamos asignar a la maquina virtual una cantidad de RAM i de VM Heap superior a la que viene por defecto ya que nuestra app tiene mucho contenido y en caso que la maquina virtual no disponga de la RAM necesaria, el rendimiento es horroroso. Intentaremos mejorar esto para la tercera entrega**
+
 -------------
 
 ![App Design](https://user-images.githubusercontent.com/48185184/77230548-47f8ac80-6b95-11ea-995f-fb809f6d74b1.png)
