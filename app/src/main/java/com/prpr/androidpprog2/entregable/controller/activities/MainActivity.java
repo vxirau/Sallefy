@@ -279,9 +279,13 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         playing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                if(serv!=null&& !trackTitle.getText().toString().equals("")){
+                    Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                }else{
+                    ErrorDialog.getInstance(MainActivity.this).showErrorDialog("You haven't selected a song yet!");
+                }
             }
         });
 

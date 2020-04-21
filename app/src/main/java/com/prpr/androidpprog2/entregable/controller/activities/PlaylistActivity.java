@@ -37,6 +37,7 @@ import com.prpr.androidpprog2.entregable.controller.callbacks.OptionDialogCallba
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.OptionDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -190,7 +191,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             player.updateUI();
         }
         pManager.checkFollowing(playlst.getId(), this);
-        //pManager.getPlaylist(playlst.getId(), this);
+        pManager.getPlaylist(playlst.getId(), this);
         orderByPreferenceUtils();
     }
 
@@ -259,10 +260,15 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         playing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveIdForFuture();
-                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                if(player!=null && !tvTitle.getText().toString().equals("")){
+                    saveIdForFuture();
+                    Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                }else{
+                    ErrorDialog.getInstance(PlaylistActivity.this).showErrorDialog("You haven't selected a song yet!");
+                }
+
             }
         });
 
@@ -923,8 +929,12 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         actionButtons.setVisibility(View.VISIBLE);
         reproductor.setVisibility(View.VISIBLE);
         mseek.setVisibility(View.VISIBLE);
-        play.setVisibility(View.VISIBLE);
-        pause.setVisibility(View.VISIBLE);
+        if(player!=null){
+            player.updateUI();
+        }else{
+            play.setVisibility(View.VISIBLE);
+            pause.setVisibility(View.INVISIBLE);
+        }
         accessible.setVisibility(View.VISIBLE);
         if(!newName.getText().toString().matches("")){
             plyName.setText(newName.getText().toString());

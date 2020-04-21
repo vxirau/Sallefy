@@ -35,6 +35,7 @@ import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallback;
@@ -188,9 +189,13 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         playing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
-                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
-                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                if(serv!=null && !trackTitle.getText().toString().equals("")){
+                    Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
+                    startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                }else{
+                    ErrorDialog.getInstance(SearchActivity.this).showErrorDialog("You haven't selected a song yet!");
+                }
             }
         });
 

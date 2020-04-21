@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:116780264700:android:e82f77042a395c143e3b79",
         "android_client_info": {
-          "package_name": "salle.android.projects.service_test"
+          "package_name": "salle.android.projects.sallefy"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "116780264700-si21aoi0l7e5am4th8pebpo7arc5j4mf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "salle.android.projects.service_test",
+            "package_name": "salle.android.projects.sallefy",
             "certificate_hash": "9e6d20336f03657dbb9297fc32fa51578bc4efc0"
           }
         },
