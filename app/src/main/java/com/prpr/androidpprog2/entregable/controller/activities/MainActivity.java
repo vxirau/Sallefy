@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             serv = binder.getService();
             serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
+            serv.setCurrentActivity(MainActivity.this);
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             boolean shuf = PreferenceUtils.getShuffle(getApplicationContext());
             serv.setShuffle(shuf);
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }else{
+            serv.setCurrentActivity(MainActivity.this);
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
         }
@@ -184,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     public void onResume() {
         super.onResume();
         if(servidorVinculat && serv!=null){
+            serv.setCurrentActivity(MainActivity.this);
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
         }

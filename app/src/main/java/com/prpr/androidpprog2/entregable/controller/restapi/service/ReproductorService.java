@@ -1,6 +1,7 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -83,6 +84,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private SeekBar mSeekBar;
     private boolean novaLlista;
 
+    private Activity currentActivity;
+
     public static final String ACTION_PLAY = "com.prpr.androidpprog2.entregable.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.prpr.androidpprog2.entregable.ACTION_PAUSE";
     public static final String ACTION_PREVIOUS = "com.prpr.androidpprog2.entregable.ACTION_PREVIOUS";
@@ -109,7 +112,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private boolean stopOnStart=false;
 
 
-
+    public void setCurrentActivity(Activity currentActivity) {
+        this.currentActivity = currentActivity;
+    }
 
     @Override
     public void onCreate() {
@@ -166,6 +171,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
+
     private void initMediaPlayer() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(this);
@@ -184,7 +190,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             stopSelf();
         }
         mediaPlayer.prepareAsync();
-        TrackManager.getInstance(getApplicationContext()).playTrack(activeAudio.getId());
+        //TrackManager.getInstance(getApplicationContext()).playTrack(activeAudio.getId(), currentActivity);
     }
 
     private String duractioActual(){
@@ -798,10 +804,12 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCompletion(MediaPlayer mp) {
-        stopMedia();
-        stopSelf();
+        if(mp.getCurrentPosition()!=0){
+            skipToNext();
+        }
     }
 
     @Override
