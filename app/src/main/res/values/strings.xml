@@ -147,6 +147,10 @@
     <string name="remember">Remember Me</string>
 
 
+    <string name="top_listened_genres_user">Top listened genres</string>
+
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

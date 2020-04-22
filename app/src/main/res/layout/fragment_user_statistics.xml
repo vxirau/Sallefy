@@ -1,27 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserStatisticsFragment"
     android:background="@drawable/fons_app">
 
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/settings_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom">
+        android:layout_height="560dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chartViewTitle"
+                    android:text="@string/top_listened_genres_user"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="10dp"
+                    android:textSize="30sp"
+                    />
+
+                <com.github.mikephil.charting.charts.RadarChart
+                    android:id="@+id/radarChart"
+                    android:layout_width="370dp"
+                    android:layout_height="380dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="20dp"
+
+                    >
+
+                </com.github.mikephil.charting.charts.RadarChart>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#21D760"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="500dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_alignParentTop="true"
+                    />
 
 
 
+        </LinearLayout>
+    </ScrollView>
 
 
-
-
-    </RelativeLayout>
-
-
-</FrameLayout>
+</RelativeLayout>
