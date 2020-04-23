@@ -21,10 +21,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SearchManager {
+public class SearchManager extends MainManager{
     private static final String TAG = "genreManager";
     private static SearchManager sSearchManager;
-    private Retrofit mRetrofit;
     private Context mContext;
 
     private SearchService mService;
@@ -38,18 +37,13 @@ public class SearchManager {
 
     private SearchManager(Context cntxt) {
         mContext = cntxt;
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl(Constants.NETWORK.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        mService = mRetrofit.create(SearchService.class);
+        mService = mainRetrofit.create(SearchService.class);
     }
 
     public synchronized void getSearch (final SearchCallback searchCallback, String text){
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        
 
-        Call<Search> call = mService.getSearch("Bearer " + userToken.getIdToken(), text);
+        Call<Search> call = mService.getSearch(text);
         call.enqueue(new Callback<Search>() {
             @Override
             public void onResponse(Call<Search> call, Response<Search> response) {

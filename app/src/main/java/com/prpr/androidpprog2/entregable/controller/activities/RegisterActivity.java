@@ -24,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.AccountManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.model.Follow;
@@ -92,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     }
 
     private void doLogin(String username, String userpassword) {
-        UserManager.getInstance(getApplicationContext())
+        AccountManager.getInstance(getApplicationContext())
                 .loginAttempt(username, userpassword, RegisterActivity.this);
     }
 

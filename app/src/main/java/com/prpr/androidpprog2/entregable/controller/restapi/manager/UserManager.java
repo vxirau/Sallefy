@@ -26,16 +26,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class UserManager {
+public class UserManager extends MainManager{
 
     private static final String TAG = "UserManager";
 
     private static UserManager sUserManager;
-    private Retrofit mRetrofit;
     private Context mContext;
-
     private UserService mService;
-    private UserTokenService mTokenService;
 
 
     public static UserManager getInstance(Context context) {
@@ -47,48 +44,13 @@ public class UserManager {
 
     public UserManager(Context cntxt) {
         mContext = cntxt;
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl(Constants.NETWORK.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        mService = mRetrofit.create(UserService.class);
-        mTokenService = mRetrofit.create(UserTokenService.class);
+        mService = mainRetrofit.create(UserService.class);
     }
-
-
-    public synchronized void loginAttempt (String username, String password, final UserCallback userCallback) {
-
-        Call<UserToken> call = mTokenService.loginUser(new UserLogin(username, password, true));
-
-        call.enqueue(new Callback<UserToken>() {
-            @Override
-            public void onResponse(Call<UserToken> call, Response<UserToken> response) {
-
-                int code = response.code();
-                UserToken userToken = response.body();
-
-                if (response.isSuccessful()) {
-                    userCallback.onLoginSuccess(userToken);
-                } else {
-                    Log.d(TAG, "Error: " + code);
-                    userCallback.onLoginFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserToken> call, Throwable t) {
-                Log.d(TAG, "Error: " + t.getMessage());
-                userCallback.onFailure(t);
-            }
-        });
-    }
-
 
     public void updateUser(User user, final UserCallback userCallback) {
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
+          
 
-        Call<User> call = mService.updateUser(user, "Bearer " + userToken.getIdToken());
+        Call<User> call = mService.updateUser(user);
        call.enqueue(new Callback<User>() {
            @Override
            public void onResponse(Call<User> call, Response<User> response) {
@@ -116,9 +78,9 @@ public class UserManager {
 
     }
     public void saveAccount(User user, final UserCallback userCallback) {
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
+          
 
-        Call<ResponseBody> call = mService.saveAccount(user,"Bearer " + userToken.getIdToken());
+        Call<ResponseBody> call = mService.saveAccount(user);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -144,8 +106,8 @@ public class UserManager {
     }
 
     public synchronized void getTopUsers (final UserCallback userCallback) {
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<List<User>> call = mService.getTopUsers( "Bearer " + userToken.getIdToken());
+          
+        Call<List<User>> call = mService.getTopUsers(   );
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -167,8 +129,8 @@ public class UserManager {
         });
     }
     public synchronized void getFollowedUsers(final UserCallback userCallback){
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<List<User>> call = mService.getFollowedUsers("Bearer " + userToken.getIdToken());
+          
+        Call<List<User>> call = mService.getFollowedUsers(  );
 
         call.enqueue(new Callback<List<User>>() {
             @Override
@@ -215,8 +177,8 @@ public class UserManager {
     }
 
     public synchronized void getUserData (String login, final UserCallback userCallback, UserToken userToken) {
-        //UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<User> call = mService.getUserById(login, "Bearer " + userToken.getIdToken());
+        //  
+        Call<User> call = mService.getUserById(login);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -238,8 +200,8 @@ public class UserManager {
         });
     }
     public synchronized void getUser (String login, final UserCallback userCallback) {
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<User> call = mService.getUserById(login, "Bearer " + userToken.getIdToken());
+          
+        Call<User> call = mService.getUserById(login);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -262,8 +224,8 @@ public class UserManager {
     }
     public synchronized void getAllUsers (final UserCallback userCallback) {
 
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<List<User>> call = mService.getAllUsers("Bearer " + userToken.getIdToken());
+          
+        Call<List<User>> call = mService.getAllUsers(  );
 
         call.enqueue(new Callback<List<User>>() {
             @Override
@@ -285,8 +247,8 @@ public class UserManager {
     }
 
     public synchronized void startStopFollowing (String login, final UserCallback userCallback){
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<Follow> call = mService.startStopFollowing(login, "Bearer " + userToken.getIdToken());
+          
+        Call<Follow> call = mService.startStopFollowing(login);
         call.enqueue(new Callback<Follow>() {
             @Override
             public void onResponse(Call<Follow> call, Response<Follow> response) {
@@ -308,8 +270,8 @@ public class UserManager {
     }
 
     public synchronized void checkFollow(String login, final UserCallback userCallback){
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<Follow> call = mService.checkFollow(login, "Bearer " + userToken.getIdToken());
+          
+        Call<Follow> call = mService.checkFollow(login);
         call.enqueue(new Callback<Follow>() {
             @Override
             public void onResponse(Call<Follow> call, Response<Follow> response) {

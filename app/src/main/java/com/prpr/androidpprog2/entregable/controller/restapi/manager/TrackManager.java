@@ -40,14 +40,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class TrackManager implements LocationListener {
+public class TrackManager extends MainManager{
 
     private static final String TAG = "TrackManager";
     private Context mContext;
     private static TrackManager sTrackManager;
-    private Retrofit mRetrofit;
     private TrackService mTrackService;
-    private final int REQUEST_FINE_LOCATION = 1234;
 
     public static TrackManager getInstance(Context context) {
         if (sTrackManager == null) {
@@ -59,18 +57,13 @@ public class TrackManager implements LocationListener {
 
     public TrackManager(Context context) {
         mContext = context;
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl(Constants.NETWORK.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        mTrackService = mRetrofit.create(TrackService.class);
+        mTrackService = mainRetrofit.create(TrackService.class);
     }
 
     public synchronized void createTrack(Track track, final TrackCallback trackCallback) {
-        UserToken userToken = Session.getInstance(mContext).getUserToken();
+        
 
-        Call<ResponseBody> call = mTrackService.createTrack(track, "Bearer " + userToken.getIdToken());
+        Call<ResponseBody> call = mTrackService.createTrack(track);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -95,7 +88,7 @@ public class TrackManager implements LocationListener {
     public synchronized void getAllTracks(final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<List<Track>> call = mTrackService.getAllTracks("Bearer " + userToken.getIdToken());
+        Call<List<Track>> call = mTrackService.getAllTracks();
         call.enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -120,7 +113,7 @@ public class TrackManager implements LocationListener {
     public synchronized void getUserTracks(String login, final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<List<Track>> call = mTrackService.getUserTracks(login, "Bearer " + userToken.getIdToken());
+        Call<List<Track>> call = mTrackService.getUserTracks(login);
         call.enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -144,7 +137,7 @@ public class TrackManager implements LocationListener {
 
     public synchronized void getOwnTracks(final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<List<Track>> call = mTrackService.getOwnTracks("Bearer " + userToken.getIdToken());
+        Call<List<Track>> call = mTrackService.getOwnTracks();
         call.enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -168,7 +161,7 @@ public class TrackManager implements LocationListener {
 
     public synchronized void getTopTracks(String login, final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<List<Track>> call = mTrackService.getTopTracks(login, "Bearer " + userToken.getIdToken());
+        Call<List<Track>> call = mTrackService.getTopTracks(login);
         call.enqueue(new Callback<List<Track>>() {
             @Override
             public void onResponse(Call<List<Track>> call, Response<List<Track>> response) {
@@ -192,7 +185,7 @@ public class TrackManager implements LocationListener {
 
     public synchronized void likeTrack(int id, final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
-        Call<ResponseBody> call = mTrackService.likeTrack(id, "Bearer " + userToken.getIdToken());
+        Call<ResponseBody> call = mTrackService.likeTrack(id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -217,7 +210,7 @@ public class TrackManager implements LocationListener {
     public void updateTrack(Track trck, final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<Track> call = mTrackService.updateTrack(trck, "Bearer " + userToken.getIdToken());
+        Call<Track> call = mTrackService.updateTrack(trck);
         call.enqueue(new Callback<Track>() {
             @Override
             public void onResponse(Call<Track> call, Response<Track> response) {
@@ -245,7 +238,7 @@ public class TrackManager implements LocationListener {
     public synchronized void removeTrack(int id, final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<ResponseBody> call = mTrackService.removeTrack(id, "Bearer " + userToken.getIdToken());
+        Call<ResponseBody> call = mTrackService.removeTrack(id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -269,7 +262,7 @@ public class TrackManager implements LocationListener {
     public synchronized void getTrack(int id, final TrackCallback trackCallback) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
 
-        Call<Track> call = mTrackService.getTrack(id, "Bearer " + userToken.getIdToken());
+        Call<Track> call = mTrackService.getTrack(id);
         call.enqueue(new Callback<Track>() {
             @Override
             public void onResponse(Call<Track> call, Response<Track> response) {
@@ -292,15 +285,10 @@ public class TrackManager implements LocationListener {
     }
 
 
-    public void playTrack(int id, Activity current) {
+    public void playTrack(int id, Position p) {
         UserToken userToken = Session.getInstance(mContext).getUserToken();
-        LocationManager locationManager;
-        boolean correct = true;
-        Double lon=0.0;
-        Double lat=0.0;
 
-        Position p = new Position(lon, lat);
-        Call<Track> call = mTrackService.playTrack(id, p,"Bearer " + userToken.getIdToken());
+        Call<Track> call = mTrackService.playTrack(id, p);
         call.enqueue(new Callback<Track>() {
             @Override
             public void onResponse(Call<Track> call, Response<Track> response) {
@@ -321,26 +309,5 @@ public class TrackManager implements LocationListener {
 
     }
 
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.d("Latitude","" + location.getLatitude());
-        Log.d("Longitude","" + location.getLongitude());
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Log.d("Latitude","disable");
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.d("Latitude","enable");
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("Latitude","status");
-    }
 }
 

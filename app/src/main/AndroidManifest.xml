@@ -45,7 +45,7 @@
         <activity android:name=".controller.activities.NewGenreActivity"/>
         <activity android:name=".controller.activities.ImageActivity"/>
         <activity android:name=".controller.activities.EditSongActivity"/>
-        <service android:name=".controller.restapi.service.ReproductorService"/>
+        <service android:name=".controller.music.ReproductorService"/>
 
 
     </application>

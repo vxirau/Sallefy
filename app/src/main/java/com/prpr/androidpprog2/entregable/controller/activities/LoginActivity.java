@@ -27,6 +27,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.AccountManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.model.Follow;
@@ -122,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     private void doLogin(String username, String userpassword) {
         this.username = username;
-        UserManager.getInstance(getApplicationContext()).loginAttempt(username, userpassword, LoginActivity.this);
+        AccountManager.getInstance(getApplicationContext()).loginAttempt(username, userpassword, LoginActivity.this);
     }
 
     @Override
@@ -152,6 +153,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         */
 
         usTkn = userToken;
+        Session.getInstance(getApplicationContext()).setUserToken(usTkn);
         UserManager.getInstance(getApplicationContext()).getUserData(username, LoginActivity.this, userToken);
     }
 
@@ -172,7 +174,6 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onUserInfoReceived(User userData) {
-        Session.getInstance(getApplicationContext()).setUserToken(usTkn);
         Session.getInstance(getApplicationContext()).setUser(userData);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("sameUser", d1);

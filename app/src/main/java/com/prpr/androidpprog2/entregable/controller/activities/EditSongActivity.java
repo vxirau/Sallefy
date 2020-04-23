@@ -1,6 +1,5 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -25,8 +24,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,24 +38,20 @@ import com.prpr.androidpprog2.entregable.controller.adapters.ImageAdapter;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.Upload;
 import com.prpr.androidpprog2.entregable.utils.Constants;
-import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class EditSongActivity extends AppCompatActivity implements TrackCallback, GenreCallback {

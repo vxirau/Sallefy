@@ -19,31 +19,31 @@ import retrofit2.http.Path;
 public interface UserService {
 
     @GET("users/{login}")
-    Call<User> getUserById(@Path("login") String login, @Header("Authorization") String token);
+    Call<User> getUserById(@Path("login") String login);
 
     @GET("users")
-    Call<List<User>> getAllUsers(@Header("Authorization") String token);
+    Call<List<User>> getAllUsers();
 
     @GET("users?notFollowing=true&popular=true&size=10")
-    Call<List<User>> getTopUsers(@Header("Authorization") String token);
+    Call<List<User>> getTopUsers();
 
     @GET("me/followings")
-    Call<List<User>> getFollowedUsers(@Header("Authorization") String token);
+    Call<List<User>> getFollowedUsers();
 
     @POST("register")
     Call<ResponseBody> registerUser(@Body UserRegister user);
 
     @POST("account")
-    Call<ResponseBody> saveAccount(@Body User user, @Header("Authorization") String token);
+    Call<ResponseBody> saveAccount(@Body User user);
 
     @PUT("users")
-    Call<User> updateUser(@Body User userDTO, @Header("Authorization") String token);
+    Call<User> updateUser(@Body User userDTO);
 
     @PUT("users/{login}/follow")
-    Call<Follow> startStopFollowing(@Path("login") String login, @Header("Authorization") String token);
+    Call<Follow> startStopFollowing(@Path("login") String login);
 
     @GET("users/{login}/follow")
-    Call<Follow> checkFollow(@Path("login") String login, @Header("Authorization") String token);
+    Call<Follow> checkFollow(@Path("login") String login);
 
 }
 

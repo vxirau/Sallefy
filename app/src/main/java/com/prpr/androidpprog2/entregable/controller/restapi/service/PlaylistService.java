@@ -17,35 +17,35 @@ import retrofit2.http.Path;
 public interface PlaylistService {
 
     @POST("playlists")
-    Call<Playlist> createPlaylist(@Body Playlist playlist, @Header("Authorization") String token);
+    Call<Playlist> createPlaylist(@Body Playlist playlist );
 
     @GET("me/playlists")
-    Call<List<Playlist>> getAllMyPlaylists(@Header("Authorization") String token);
+    Call<List<Playlist>> getAllMyPlaylists( );
 
     @GET("playlists")
-    Call<List<Playlist>> getAllPlaylists(@Header("Authorization") String token);
+    Call<List<Playlist>> getAllPlaylists( );
 
     @GET("playlists?popular=true&size=10")
-    Call<List<Playlist>> getTopPlaylists(@Header("Authorization") String token);
+    Call<List<Playlist>> getTopPlaylists( );
 
     @PUT("playlists")
-    Call<Playlist> addTrackPlaylist(@Body Playlist playlist, @Header("Authorization") String token);
+    Call<Playlist> addTrackPlaylist(@Body Playlist playlist  );
 
     @GET("me/playlists/following")
-    Call<List<Playlist>> getFollowedPlaylists(@Header("Authorization") String token);
+    Call<List<Playlist>> getFollowedPlaylists( );
 
     @GET("users/{login}/playlists")
-    Call<List<Playlist>> showUserPlaylist(@Path("login") String login, @Header("Authorization") String token);
+    Call<List<Playlist>> showUserPlaylist(@Path("login") String login  );
 
     @GET("playlists/{id}/follow")
-    Call<Follow> checkFollow(@Path("id") String id, @Header("Authorization") String token);
+    Call<Follow> checkFollow(@Path("id") String id  );
 
     @PUT("playlists/{id}/follow")
-    Call<Follow> followPlaylist(@Path("id") String id, @Header("Authorization") String token);
+    Call<Follow> followPlaylist(@Path("id") String id  );
 
     @GET("playlists/{id}")
-    Call<Playlist> getPlaylist(@Header("Authorization") String token, @Path("id") int id);
+    Call<Playlist> getPlaylist(@Path("id") int id);
 
     @DELETE("playlists/{id}")
-    Call<Playlist> deletePlaylist(@Header("Authorization") String token, @Path("id") int id);
+    Call<Playlist> deletePlaylist(@Path("id") int id);
 }

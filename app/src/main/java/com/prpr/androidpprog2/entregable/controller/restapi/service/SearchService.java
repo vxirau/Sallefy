@@ -9,5 +9,5 @@ import retrofit2.http.Query;
 
 public interface SearchService {
     @GET("search")
-    Call<Search> getSearch (@Header("Authorization") String token, @Query("keyword") String searchText);
+    Call<Search> getSearch (@Query("keyword") String searchText);
 }

@@ -30,7 +30,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
-import com.prpr.androidpprog2.entregable.controller.callbacks.PlaylistListCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
@@ -39,7 +38,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallbac
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -47,7 +46,6 @@ import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
-import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

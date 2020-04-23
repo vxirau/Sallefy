@@ -19,33 +19,33 @@ import retrofit2.http.Path;
 public interface TrackService {
 
     @GET("tracks")
-    Call<List<Track>> getAllTracks(@Header("Authorization") String token);
+    Call<List<Track>> getAllTracks();
 
     @GET("me/tracks")
-     Call<List<Track>> getOwnTracks(@Header("Authorization") String token);
+     Call<List<Track>> getOwnTracks();
 
     @GET("users/{login}/tracks?popular=true")
-    Call<List<Track>> getUserTracks(@Path("login") String login, @Header("Authorization") String token);
+    Call<List<Track>> getUserTracks(@Path("login") String login);
 
     @POST("tracks")
-    Call<ResponseBody> createTrack(@Body Track track, @Header("Authorization") String token);
+    Call<ResponseBody> createTrack(@Body Track track);
 
     @PUT("tracks/{id}/like")
-    Call<ResponseBody> likeTrack(@Path("id") int id, @Header("Authorization") String token);
+    Call<ResponseBody> likeTrack(@Path("id") int id);
 
     @GET("users/{login}/tracks?popular=true&size=5")
-    Call<List<Track>> getTopTracks(@Path("login") String login, @Header("Authorization") String token);
+    Call<List<Track>> getTopTracks(@Path("login") String login);
 
     @PUT("tracks")
-    Call<Track> updateTrack(@Body Track track, @Header("Authorization") String token);
+    Call<Track> updateTrack(@Body Track track);
 
     @PUT("tracks/{id}/play")
-    Call<Track> playTrack(@Path("id") int id, @Body Position pos, @Header("Authorization") String token);
+    Call<Track> playTrack(@Path("id") int id, @Body Position pos);
 
     @DELETE("tracks/{id}")
-    Call <ResponseBody> removeTrack(@Path("id") int id, @Header("Authorization") String token);
+    Call <ResponseBody> removeTrack(@Path("id") int id);
 
     @GET("tracks/{id}")
-    Call<Track> getTrack(@Path("id") int id, @Header("Authorization") String token);
+    Call<Track> getTrack(@Path("id") int id);
 
 }

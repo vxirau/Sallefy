@@ -2,47 +2,32 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 
 
 import android.os.Bundle;
-import android.content.Context;
 import android.content.Intent;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
-import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
-import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.SearchManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
-import com.prpr.androidpprog2.entregable.model.Track;
-import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

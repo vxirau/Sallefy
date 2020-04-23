@@ -1,8 +1,6 @@
-package com.prpr.androidpprog2.entregable.controller.restapi.service;
+package com.prpr.androidpprog2.entregable.controller.music;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSession;
@@ -32,37 +29,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 
-import com.chibde.visualizer.CircleBarVisualizer;
-import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.Position;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
-import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 
-public class ReproductorService extends Service implements MediaPlayer.OnCompletionListener,MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener,
+public class ReproductorService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener,
         MediaPlayer.OnInfoListener, MediaPlayer.OnBufferingUpdateListener, AudioManager.OnAudioFocusChangeListener {
+
 
     private MediaPlayer mediaPlayer;
     private int resumePosition;
@@ -83,8 +74,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private NotificationCompat.Builder notification;
     private SeekBar mSeekBar;
     private boolean novaLlista;
-
-    private Activity currentActivity;
 
     public static final String ACTION_PLAY = "com.prpr.androidpprog2.entregable.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.prpr.androidpprog2.entregable.ACTION_PAUSE";
@@ -107,14 +96,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     private boolean isShuffle;
 
-    private boolean wasPlaying=false;
+    private boolean wasPlaying = false;
 
-    private boolean stopOnStart=false;
-
-
-    public void setCurrentActivity(Activity currentActivity) {
-        this.currentActivity = currentActivity;
-    }
+    private boolean stopOnStart = false;
 
     @Override
     public void onCreate() {
@@ -130,46 +114,48 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             if (mSeekBar != null) {
                 mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
 
-                if(mediaPlayer.isPlaying()) {
+                if (mediaPlayer.isPlaying()) {
                     mSeekBar.postDelayed(mProgressRunner, 1000);
                 }
-            }else{
-                Toast.makeText(getApplicationContext(),"Error seekbar", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Error seekbar", Toast.LENGTH_SHORT).show();
             }
         }
     };
 
 
-
-    public void setShuffleButtonUI(){
-        if(!isShuffle){
-            shuffle.setBackgroundResource(R.drawable.no_shuffle);;
-        }else{
-            shuffle.setBackgroundResource(R.drawable.si_shuffle);;
+    public void setShuffleButtonUI() {
+        if (!isShuffle) {
+            shuffle.setBackgroundResource(R.drawable.no_shuffle);
+            ;
+        } else {
+            shuffle.setBackgroundResource(R.drawable.si_shuffle);
+            ;
         }
     }
 
-    public void setShuffle(boolean valor){
+    public void setShuffle(boolean valor) {
         isShuffle = valor;
         PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
     }
 
-    public void toggleShuffle(){
-        if(isShuffle){
-            isShuffle=false;
-            shuffle.setBackgroundResource(R.drawable.no_shuffle);;
-        }else{
-            isShuffle=true;
-            shuffle.setBackgroundResource(R.drawable.si_shuffle);;
+    public void toggleShuffle() {
+        if (isShuffle) {
+            isShuffle = false;
+            shuffle.setBackgroundResource(R.drawable.no_shuffle);
+            ;
+        } else {
+            isShuffle = true;
+            shuffle.setBackgroundResource(R.drawable.si_shuffle);
+            ;
         }
         PreferenceUtils.saveShuffle(getApplicationContext(), isShuffle);
     }
 
 
-    public void setmSeekBar(SeekBar s){
+    public void setmSeekBar(SeekBar s) {
         mSeekBar = s;
     }
-
 
 
     private void initMediaPlayer() {
@@ -190,10 +176,12 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             stopSelf();
         }
         mediaPlayer.prepareAsync();
-        //TrackManager.getInstance(getApplicationContext()).playTrack(activeAudio.getId(), currentActivity);
+
+
+        TrackManager.getInstance(getApplicationContext()).playTrack(activeAudio.getId(), new Position(0,0));
     }
 
-    private String duractioActual(){
+    private String duractioActual() {
         int duration = mediaPlayer.getCurrentPosition();
         @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(duration),
@@ -203,7 +191,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         return time;
     }
 
-    public void setDuracioTotal(TextView txt, TextView txtActual){
+    public void setDuracioTotal(TextView txt, TextView txtActual) {
         int duration = mediaPlayer.getDuration();
         @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(duration),
@@ -214,12 +202,12 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         this.textActual = txtActual;
     }
 
-    public void stopOnStart(){
+    public void stopOnStart() {
         stopOnStart = true;
     }
 
 
-    public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg){
+    public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg) {
         mSeekBar = seekBar;
         title = titol;
         artist = autor;
@@ -230,64 +218,66 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(!fromUser){
-                    if(mediaPlayer.isPlaying()){
+                if (!fromUser) {
+                    if (mediaPlayer.isPlaying()) {
                         mSeekBar.postDelayed(mProgressRunner, 1000);
                     }
                     mSeekBar.setProgress(progress);
-                    if(textActual!=null){
+                    if (textActual != null) {
                         textActual.setText(duractioActual());
                     }
-                    if(stopOnStart) {
+                    if (stopOnStart) {
                         pauseMedia();
                         stopOnStart = false;
                     }
 
-                }else{
+                } else {
                     mediaPlayer.seekTo(progress);
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
-        if(mediaPlayer!=null){
+        if (mediaPlayer != null) {
             updateUI();
         }
     }
 
-    public Track getActiveAudio(){
+    public Track getActiveAudio() {
         return activeAudio;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void removeTrack(){
-        int oldI= indexTrack(activeAudio);
+    public void removeTrack() {
+        int oldI = indexTrack(activeAudio);
 
-        for(int i=0; i<audioList.size() ;i++){
-            if(activeAudio.getName().equals(audioList.get(i).getName()) && activeAudio.getUserLogin().equals(audioList.get(i).getUserLogin())){
+        for (int i = 0; i < audioList.size(); i++) {
+            if (activeAudio.getName().equals(audioList.get(i).getName()) && activeAudio.getUserLogin().equals(audioList.get(i).getUserLogin())) {
                 audioList.remove(i);
             }
         }
-        for(int i=0; i<shuffledAudioList.size() ;i++){
-            if(activeAudio.getName().equals(shuffledAudioList.get(i).getName()) && activeAudio.getUserLogin().equals(shuffledAudioList.get(i).getUserLogin())){
+        for (int i = 0; i < shuffledAudioList.size(); i++) {
+            if (activeAudio.getName().equals(shuffledAudioList.get(i).getName()) && activeAudio.getUserLogin().equals(shuffledAudioList.get(i).getUserLogin())) {
                 shuffledAudioList.remove(i);
             }
         }
 
-        if (isShuffle){
-            if(oldI == audioList.size()-1){
+        if (isShuffle) {
+            if (oldI == audioList.size() - 1) {
                 activeAudio = shuffledAudioList.get(0);
-            }else{
+            } else {
                 activeAudio = shuffledAudioList.get(oldI);
             }
-        }else{
-            if(oldI == audioList.size() || oldI == audioList.size()-1){
+        } else {
+            if (oldI == audioList.size() || oldI == audioList.size() - 1) {
                 activeAudio = audioList.get(0);
-            }else{
+            } else {
                 activeAudio = audioList.get(oldI);
             }
         }
@@ -310,24 +300,24 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         this.shuffle = shuffle;
     }
 
-    public void updateUI(){
-        if(mediaPlayer != null && title!=null && artist!=null){
+    public void updateUI() {
+        if (mediaPlayer != null && title != null && artist != null) {
             title.setText(activeAudio.getName());
             artist.setText(activeAudio.getUserLogin());
             mProgressRunner.run();
             mSeekBar.setMax(mediaPlayer.getDuration());
             mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
-            if(mediaPlayer.isPlaying()){
+            if (mediaPlayer.isPlaying()) {
                 pauseB.setVisibility(View.VISIBLE);
                 playB.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 pauseB.setVisibility(View.INVISIBLE);
                 playB.setVisibility(View.VISIBLE);
             }
-            if(imahen!=null){
+            if (imahen != null) {
                 if (activeAudio.getThumbnail() != null && !activeAudio.getThumbnail().equals("")) {
                     Picasso.get().load(activeAudio.getThumbnail()).into(imahen);
-                }else{
+                } else {
                     Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(imahen);
                 }
             }
@@ -336,18 +326,18 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-    public void killNotification(){
+    public void killNotification() {
         String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager nMgr = (NotificationManager) getApplicationContext().getSystemService(ns);
         nMgr.cancel(NOTIFICATION_ID);
     }
 
-    public void seekToPosition(int position){
+    public void seekToPosition(int position) {
         mediaPlayer.seekTo(position);
     }
 
     private void playMedia() {
-        if (!mediaPlayer.isPlaying() && mediaPlayer!=null && mSeekBar!=null) {
+        if (!mediaPlayer.isPlaying() && mediaPlayer != null && mSeekBar != null) {
             mediaPlayer.start();
             int duration = mediaPlayer.getDuration();
             mSeekBar.setMax(duration);
@@ -359,7 +349,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-
     public void stopMedia() {
         if (mediaPlayer == null) return;
         if (mediaPlayer.isPlaying()) {
@@ -369,7 +358,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void pauseMedia() {
-        if(mediaPlayer!=null){
+        if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
                 buildNotification(PlaybackStatus.PAUSED);
@@ -391,7 +380,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         updateUI();
     }
 
-    private void makeShuffled(){
+    private void makeShuffled() {
         shuffledAudioList = new ArrayList<>();
         shuffledAudioList.addAll(audioList);
         Collections.shuffle(shuffledAudioList);
@@ -403,22 +392,22 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         public void onReceive(Context context, Intent intent) {
 
             int index = PreferenceUtils.getPlayID(getApplicationContext());
-            isShuffle= PreferenceUtils.getShuffle(getApplicationContext());
-            if(currentPlaylistID!=index || shuffledAudioList==null){
+            isShuffle = PreferenceUtils.getShuffle(getApplicationContext());
+            if (currentPlaylistID != index || shuffledAudioList == null) {
                 audioList = PreferenceUtils.getAllTracks(getApplicationContext());
                 makeShuffled();
             }
             audioIndex = indexTrack(PreferenceUtils.getTrack(getApplicationContext()));
             if (audioIndex != -1 && audioIndex < audioList.size()) {
-                if(isShuffle){
+                if (isShuffle) {
                     activeAudio = shuffledAudioList.get(audioIndex);
-                }else{
+                } else {
                     activeAudio = audioList.get(audioIndex);
                 }
             } else {
                 stopSelf();
             }
-            if(mediaSessionManager == null){
+            if (mediaSessionManager == null) {
                 try {
                     initMediaSession();
                     initMediaPlayer();
@@ -436,7 +425,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             buildNotification(PlaybackStatus.PLAYING);
         }
     };
-
 
 
     private void register_playNewAudio() {
@@ -485,7 +473,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
                 skipToPrevious();
-               // updateMetaData();
+                // updateMetaData();
                 //buildNotification(PlaybackStatus.PLAYING);
             }
 
@@ -503,7 +491,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         });
     }
 
-    public Track getCurrentTrack(){
+    public Track getCurrentTrack() {
         return activeAudio;
     }
 
@@ -512,9 +500,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
         Bitmap albumArt;
         String urlString;
-        if(activeAudio!=null && activeAudio.getThumbnail()!=null){
+        if (activeAudio != null && activeAudio.getThumbnail() != null) {
             urlString = activeAudio.getThumbnail();
-        }else{
+        } else {
             urlString = " https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1";
         }
 
@@ -542,16 +530,16 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             notificationAction = R.drawable.ic_pause_white;
             play_pauseAction = playbackAction(1);
         } else if (playbackStatus == PlaybackStatus.PAUSED) {
-            ongoing=false;
+            ongoing = false;
             notificationAction = R.drawable.ic_play_white;
             play_pauseAction = playbackAction(0);
         }
 
         Bitmap largeIcon;
         String urlString;
-        if(activeAudio.getThumbnail()!=null){
+        if (activeAudio.getThumbnail() != null) {
             urlString = activeAudio.getThumbnail();
-        }else{
+        } else {
             urlString = " https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1";
         }
         try {
@@ -583,7 +571,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 .setContentText(activeAudio.getUserLogin())
                 .setLargeIcon(largeIcon)
                 .setOngoing(ongoing);
-
 
 
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notification.build());
@@ -636,18 +623,18 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void skipToNext() {
-        if(isShuffle){
+        if (isShuffle) {
             if (indexTrack(activeAudio) == shuffledAudioList.size() - 1) {
                 activeAudio = shuffledAudioList.get(0);
             } else {
                 int index = indexTrack(activeAudio);
                 activeAudio = shuffledAudioList.get(++index);
             }
-        }else{
+        } else {
             if (indexTrack(activeAudio) == audioList.size() - 1) {
                 activeAudio = audioList.get(0);
             } else {
-                int index = indexTrack(activeAudio) +1;
+                int index = indexTrack(activeAudio) + 1;
                 activeAudio = audioList.get(index);
             }
         }
@@ -664,18 +651,17 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void skipToPrevious() {
         audioIndex = indexTrack(activeAudio);
-        if(isShuffle){
+        if (isShuffle) {
             if (audioIndex == 0) {
                 audioIndex = shuffledAudioList.size() - 1;
                 activeAudio = shuffledAudioList.get(audioIndex);
             } else {
                 activeAudio = shuffledAudioList.get(--audioIndex);
             }
-        }else{
+        } else {
             if (audioIndex == 0) {
                 audioIndex = audioList.size() - 1;
                 activeAudio = audioList.get(audioIndex);
@@ -696,17 +682,17 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-    private int indexTrack(Track t){
-        int index=-1;
-        if(isShuffle){
-            for(int i=0; i<shuffledAudioList.size() ;i++){
-                if(t.equals(shuffledAudioList.get(i))){
+    private int indexTrack(Track t) {
+        int index = -1;
+        if (isShuffle) {
+            for (int i = 0; i < shuffledAudioList.size(); i++) {
+                if (t.equals(shuffledAudioList.get(i))) {
                     return i;
                 }
             }
-        }else{
-            for(int i=0; i<audioList.size() ;i++){
-                if(t.equals(audioList.get(i))){
+        } else {
+            for (int i = 0; i < audioList.size(); i++) {
+                if (t.equals(audioList.get(i))) {
                     return i;
                 }
             }
@@ -715,6 +701,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         return index;
     }
 
+
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -723,13 +711,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             Track t = PreferenceUtils.getTrack(getApplicationContext());
             audioIndex = indexTrack(t);
             isShuffle = PreferenceUtils.getShuffle(getApplicationContext());
-            currentPlaylistID=PreferenceUtils.getPlayID(getApplicationContext());
+            currentPlaylistID = PreferenceUtils.getPlayID(getApplicationContext());
 
             if (audioIndex != -1 && audioIndex < audioList.size()) {
-                if(t!=null){
-                    activeAudio=t;
+                if (t != null) {
+                    activeAudio = t;
                     makeShuffled();
-                }else{
+                } else {
                     activeAudio = audioList.get(audioIndex);
                 }
             } else {
@@ -738,7 +726,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         } catch (NullPointerException e) {
             stopSelf();
         }
-        novaLlista=false;
+        novaLlista = false;
         if (requestAudioFocus() == false) {
             stopSelf();
         }
@@ -773,11 +761,10 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         killNotification();
         unregisterReceiver(becomingNoisyReceiver);
         unregisterReceiver(playNewAudio);
-
     }
 
     @Override
-    public void onTaskRemoved(Intent rootIntent){
+    public void onTaskRemoved(Intent rootIntent) {
         onDestroy();
         stopSelf();
     }
@@ -786,6 +773,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     public IBinder onBind(Intent intent) {
         return iBinder;
     }
+
     private BroadcastReceiver becomingNoisyReceiver = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -799,6 +787,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         registerReceiver(becomingNoisyReceiver, intentFilter);
     }
+
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
 
@@ -807,7 +796,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCompletion(MediaPlayer mp) {
-        if(mp.getCurrentPosition()!=0){
+        if (mp.getCurrentPosition() != 0) {
             skipToNext();
         }
     }
@@ -842,7 +831,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     public void onSeekComplete(MediaPlayer mp) {
 
     }
-    public void novaLlista(){
+
+    public void novaLlista() {
         novaLlista = true;
         newOrder();
     }
@@ -869,7 +859,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                     mediaPlayer.pause();
                     wasPlaying = true;
                     buildNotification(PlaybackStatus.PAUSED);
-                }else{
+                } else {
                     wasPlaying = false;
                 }
                 break;
@@ -892,6 +882,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
                 audioManager.abandonAudioFocus(this);
     }
+
+
 
 
     public class LocalBinder extends Binder {
@@ -930,15 +922,14 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
-
-    private void newOrder (){
-       if(novaLlista && !isShuffle){
-           audioList =  PreferenceUtils.getAllTracks(getApplicationContext());
-           audioIndex = indexTrack(activeAudio);
-           novaLlista=false;
-       }
-       if(novaLlista && isShuffle){
-           novaLlista=false;
-       }
+    private void newOrder() {
+        if (novaLlista && !isShuffle) {
+            audioList = PreferenceUtils.getAllTracks(getApplicationContext());
+            audioIndex = indexTrack(activeAudio);
+            novaLlista = false;
+        }
+        if (novaLlista && isShuffle) {
+            novaLlista = false;
+        }
     }
 }

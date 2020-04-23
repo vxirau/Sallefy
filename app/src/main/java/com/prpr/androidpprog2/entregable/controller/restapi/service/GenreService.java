@@ -15,14 +15,14 @@ import retrofit2.http.Path;
 public interface GenreService {
 
     @GET("genres/{id}")
-    Call<Genre> getGenreById(@Path("id") Integer id, @Header("Authorization") String token);
+    Call<Genre> getGenreById(@Path("id") Integer id );
 
     @GET("genres")
-    Call<List<Genre>> getAllGenres(@Header("Authorization") String token);
+    Call<List<Genre>> getAllGenres();
 
     @GET("genres/{id}/tracks")
-    Call<List<Track>> getTracksByGenre(@Path("id") Integer id, @Header("Authorization") String token);
+    Call<List<Track>> getTracksByGenre(@Path("id") Integer id );
 
     @POST("genres")
-    Call<Genre> createGenre(@Body Genre g, @Header("Authorization") String token);
+    Call<Genre> createGenre(@Body Genre g );
 }

@@ -2,10 +2,8 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -19,11 +17,9 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.CursorAnchorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -39,7 +35,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.LogOutCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.LoadingDialog;
@@ -47,7 +42,7 @@ import com.prpr.androidpprog2.entregable.controller.dialogs.LogOutDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -56,8 +51,6 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 

@@ -5,12 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,22 +16,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
-import com.chibde.visualizer.CircleBarVisualizer;
-import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Track;
-import com.prpr.androidpprog2.entregable.utils.Constants;
-import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.List;
 
 public class ReproductorActivity extends Activity implements TrackCallback {

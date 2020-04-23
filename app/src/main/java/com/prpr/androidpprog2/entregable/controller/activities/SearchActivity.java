@@ -41,7 +41,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
+import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.SearchManager;
 import com.prpr.androidpprog2.entregable.model.Genre;

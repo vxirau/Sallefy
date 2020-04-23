@@ -1,10 +1,8 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,23 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
-import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserFollowedAdapter;
-import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Follow;
-import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;

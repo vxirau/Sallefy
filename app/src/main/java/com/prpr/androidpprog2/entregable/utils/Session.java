@@ -17,6 +17,18 @@ public class Session {
     private static User mUser;
     private  UserToken mUserToken;
 
+    public static Session getInstance() {
+        Session result = sSession;
+        if (result == null) {
+            synchronized (mutex) {
+                result = sSession;
+                if (result == null)
+                    sSession = result = new Session();
+            }
+        }
+        return result;
+    }
+
     public static Session getInstance(Context context) {
         Session result = sSession;
         if (result == null) {

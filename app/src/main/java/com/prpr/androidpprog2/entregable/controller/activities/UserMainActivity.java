@@ -8,13 +8,11 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -29,34 +27,15 @@ import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
-import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
-import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
-import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
-import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
-import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
-import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.ReproductorService;
-import com.prpr.androidpprog2.entregable.model.Follow;
-import com.prpr.androidpprog2.entregable.model.Playlist;
-import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
-import com.prpr.androidpprog2.entregable.utils.Session;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserMainActivity extends AppCompatActivity{
 
