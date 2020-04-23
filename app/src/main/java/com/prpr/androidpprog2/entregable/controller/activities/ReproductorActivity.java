@@ -275,6 +275,11 @@ public class ReproductorActivity extends Activity implements TrackCallback {
     }
 
     @Override
+    public void onPersonalLikedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
     public void onUserTracksReceived(List<Track> tracks) {
 
     }

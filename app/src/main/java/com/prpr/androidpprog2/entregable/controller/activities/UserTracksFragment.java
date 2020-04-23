@@ -313,6 +313,11 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     }
 
     @Override
+    public void onPersonalLikedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
     public void onUserTracksReceived(List<Track> tracks) {
 
     }

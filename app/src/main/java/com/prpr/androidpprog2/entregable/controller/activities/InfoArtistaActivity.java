@@ -385,6 +385,11 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
+    public void onPersonalLikedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
     public void onUserTracksReceived(List<Track> tracks) {
         this.artTracks = (ArrayList) tracks;
         if(tracks.size()==0){

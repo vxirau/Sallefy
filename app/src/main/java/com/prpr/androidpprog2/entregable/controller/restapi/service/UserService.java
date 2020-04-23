@@ -1,7 +1,7 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
 import com.prpr.androidpprog2.entregable.model.Follow;
-import com.prpr.androidpprog2.entregable.model.Playlist;
+
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
 
@@ -35,6 +35,7 @@ public interface UserService {
 
     @POST("account")
     Call<ResponseBody> saveAccount(@Body User user);
+
 
     @PUT("users")
     Call<User> updateUser(@Body User userDTO);
