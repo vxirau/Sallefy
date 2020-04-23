@@ -678,6 +678,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
+    public void onPersonalLikedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
     public void onUserTracksReceived(List<Track> tracks) {
 
     }

@@ -219,6 +219,11 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
     }
 
     @Override
+    public void onPersonalLikedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
     public void onUserTracksReceived(List<Track> tracks) {
 
     }

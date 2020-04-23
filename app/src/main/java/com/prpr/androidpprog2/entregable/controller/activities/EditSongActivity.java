@@ -570,6 +570,11 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
+    public void onPersonalLikedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
     public void onUserTracksReceived(List<Track> tracks) {
 
     }
