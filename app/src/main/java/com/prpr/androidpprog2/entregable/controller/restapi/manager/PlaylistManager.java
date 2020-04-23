@@ -24,7 +24,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PlaylistManager extends MainManager{
 
     private static final String TAG = PlaylistManager.class.getName();
-    private Context mContext;
     private PlaylistService mPlaylistService;
     private static PlaylistManager sPlaylistManager;
 
@@ -38,6 +37,11 @@ public class PlaylistManager extends MainManager{
 
     public PlaylistManager(Context context) {
         mContext = context;
+        /*if (isConnected(context)){
+            mPlaylistService = mainRetrofit.create(PlaylistService.class);
+        }else{
+            mPlaylistService = getCachedRetrofit(context).create(PlaylistService.class);
+        }*/
         mPlaylistService = mainRetrofit.create(PlaylistService.class);
     }
 

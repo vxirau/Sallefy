@@ -31,7 +31,6 @@ public class UserManager extends MainManager{
     private static final String TAG = "UserManager";
 
     private static UserManager sUserManager;
-    private Context mContext;
     private UserService mService;
 
 

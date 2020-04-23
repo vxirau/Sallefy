@@ -26,6 +26,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +51,8 @@ import com.prpr.androidpprog2.entregable.utils.KeyboardUtils;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -447,7 +450,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         infoPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogEdit.showOptionDialog("Edit", "Delete");
+                InfoPlaylistFragment bottomSheetDialog = new InfoPlaylistFragment(playlst);
+                bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+                bottomSheetDialog.show(getSupportFragmentManager(), "playlist_info");
             }
         });
 
@@ -941,7 +946,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         KeyboardUtils.hideKeyboard(this);
     }
 
-    private void showUIEdit(){
+    void showUIEdit(){
         newName.setVisibility(View.VISIBLE);
         plyName.setVisibility(View.GONE);
         newName.setText(playlst.getName());

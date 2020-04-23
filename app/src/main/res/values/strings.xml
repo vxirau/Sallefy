@@ -171,5 +171,7 @@
     <string name="delete">delete</string>
     <string name="message">Do you want to edit or delete this playlist?</string>
     <string name="numFollowers">X Followers</string>
+    <string name="deletePlaylist">Delete playlist</string>
+    <string name="download">Download playlist</string>
 </resources>
 

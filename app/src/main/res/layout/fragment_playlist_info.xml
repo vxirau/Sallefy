@@ -6,22 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@drawable/fons_app">
+    android:background="@drawable/fons_rounded_corners">
 
 
     <ImageView
-        android:id="@+id/SongCover"
+        android:id="@+id/playlist_img"
         android:layout_width="155dp"
         android:layout_height="148dp"
         android:layout_marginTop="32dp"
         android:scaleType="fitCenter"/>
 
     <TextView
-        android:id="@+id/SongName"
+        android:id="@+id/playlistName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/nom_de_la_canco"
+        android:text="@string/nom_de_la_playlist"
         android:textColor="@color/colorWhite"
         android:textSize="20dp" />
 
@@ -47,36 +47,31 @@
         android:layout_alignParentTop="true"
         />
 
-
     <LinearLayout
-        android:id="@+id/layoutFavoritos"
+        android:id="@+id/layoutDownload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="20dp"
         android:clickable="true"
-        android:orientation="horizontal">
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="38dp"
+        android:layout_marginTop="15dp">
 
-
-        <ImageButton
-            android:id="@+id/favoritos"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_heart" />
+        <Switch
+            android:id="@+id/simpleSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 
         <TextView
-            android:id="@+id/text_favoritos"
+            android:id="@+id/textDownload"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="20dp"
             android:textSize="15sp"
-            android:text="@string/favoritos"
+            android:text="@string/download"
             android:textAlignment="textStart"
             android:gravity="start"/>
 
@@ -94,6 +89,8 @@
         android:layout_marginTop="15dp">
 
 
+
+
         <ImageButton
             android:id="@+id/edit"
             android:layout_width="30dp"
@@ -108,7 +105,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="@string/edit"
+            android:text="@string/edit_playlist"
             android:textColor="@color/colorWhite"
             android:textSize="15sp"
             android:textAlignment="textStart"
@@ -149,40 +146,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutPlaylist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:clickable="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="15dp">
-
-
-        <ImageButton
-            android:id="@+id/playlist"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_new_playlist" />
-
-
-        <TextView
-            android:id="@+id/text_playlist"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:layout_marginLeft="20dp"
-            android:textSize="15sp"
-            android:text="@string/playlist"
-            android:textAlignment="textStart"
-            android:gravity="start"/>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/layoutEliminar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -209,23 +172,19 @@
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="20dp"
             android:textSize="15sp"
-            android:text="@string/eliminar"
+            android:text="@string/deletePlaylist"
             android:textAlignment="textStart"
             android:gravity="start"/>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="170dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="100dp"
-        android:textColor="#18AB4B"
-        android:textSize="24sp"
-        android:textAllCaps="false"
-        android:paddingBottom="5dp"
-        android:background="@drawable/rectangle_blanc_small"
+    <LinearLayout
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:text="@string/cancel" />
+        android:clickable="true"
+        android:layout_marginTop="15dp"/>
 
 </LinearLayout>
