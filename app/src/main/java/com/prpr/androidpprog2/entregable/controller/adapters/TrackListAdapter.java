@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.AddSongsBunchActivity;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.squareup.picasso.Picasso;
@@ -91,6 +92,11 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
             holder.trackLength.setText("00:00");
         }
 
+        if(UtilFunctions.trackExistsInDatabase(mTracks.get(position))){
+            holder.downloaded.setVisibility(View.VISIBLE);
+        }else{
+            holder.downloaded.setVisibility(View.INVISIBLE);
+        }
 
         if (mTracks.get(position).getThumbnail() != null && !mTracks.get(position).getThumbnail().equals("")) {
             Picasso.get().load(mTracks.get(position).getThumbnail()).into(holder.ivPicture);
@@ -118,6 +124,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         TextView tvAuthor;
         TextView trackLength;
         ImageView ivPicture;
+        ImageView downloaded;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -128,6 +135,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
             tvTitle = (TextView) itemView.findViewById(R.id.track_title);
             tvAuthor = (TextView) itemView.findViewById(R.id.track_author);
             ivPicture = (ImageView) itemView.findViewById(R.id.track_img);
+            downloaded = itemView.findViewById(R.id.downloaded);
         }
     }
 }

@@ -43,6 +43,9 @@ import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
+import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -301,7 +304,6 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             public void onClick(View view) {
                 loading.showLoadingDialog("Updating user");
                 try {
-
                     doUpdateUser();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -484,6 +486,9 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     public void doLogOut() {
         Toast.makeText(SettingsActivity.this, "You logged out succesfully", Toast.LENGTH_SHORT).show();
         Session.getInstance(this).resetValues();
+        ObjectBox.get().boxFor(SavedTrack.class).removeAll();
+        ObjectBox.get().boxFor(SavedPlaylist.class).removeAll();
+
         SharedPreferences preferences = getSharedPreferences("RememberMe",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();

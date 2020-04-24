@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     implementation 'com.google.firebase:firebase-auth:19.3.0'
 
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
 
     implementation 'com.android.support:recyclerview-v7:28.5'
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -77,6 +78,10 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.android.support:multidex:1.0.3'
-}
 
+    //---Eliminar per una entrega final----//
+    debugImplementation "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
+    releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
+}
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.objectbox'

@@ -106,7 +106,6 @@ public class MainManager {
                 Log.e(TAG, "Could not create Cache!");
             }
         }
-
         return mCache;
     }
 

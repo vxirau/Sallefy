@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +66,11 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
 
         holder.nomPlaylist.setText(playlist.get(position).getName());
 
-
+        if(UtilFunctions.playlistExistsInDatabase(playlist.get(position))){
+            holder.downloaded.setVisibility(View.VISIBLE);
+        }else{
+            holder.downloaded.setVisibility(View.INVISIBLE);
+        }
 
         int size = playlist.get(position).getTracks() != null ? playlist.get(position).getTracks().size() : 0 ;
         holder.totalCancons.setText( size + " songs");
@@ -87,6 +93,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
         TextView nomPlaylist;
         TextView totalCancons;
         ImageButton ivPicture;
+        ImageView downloaded;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,6 +102,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
             nomPlaylist = (TextView) itemView.findViewById(R.id.playlist_title);
             totalCancons = (TextView) itemView.findViewById(R.id.totalSongs);
             ivPicture = (ImageButton) itemView.findViewById(R.id.playlistImatge);
+            downloaded = itemView.findViewById(R.id.downloaded);
         }
     }
 }

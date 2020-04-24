@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -27,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.downloader.PRDownloader;
+import com.downloader.PRDownloaderConfig;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
@@ -38,6 +41,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallbac
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -51,6 +55,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.objectbox.BoxStore;
+import io.objectbox.android.AndroidObjectBrowser;
+import io.objectbox.android.BuildConfig;
 
 
 public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback {
@@ -195,13 +202,26 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
-
+    private static BoxStore boxStore;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //----------------------------------------- NO TOCAR -- BASE DE DADES TESTING -----------------------------------------
+        PRDownloaderConfig config = PRDownloaderConfig.newBuilder().build();
+        PRDownloader.initialize(getApplicationContext(), config);
+        ObjectBox.init(this);
+        //if (BuildConfig.DEBUG) {
+        boolean started = new AndroidObjectBrowser(ObjectBox.get()).start(this);
+        Log.i("ObjectBrowser", "Started: " + started);
+        //}
+        //---------------------------------------------------------------------------------------------------------------------
+
+
+
         if(getIntent().getSerializableExtra("sameUser")!=null){
             sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
         }else{
