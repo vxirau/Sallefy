@@ -79,7 +79,7 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-        View view =  inflater.inflate(R.layout.activity_info_track, container, false);
+        View view =  inflater.inflate(R.layout.fragment_info_track, container, false);
         initViews(view);
         tManager = new TrackManager(getContext());
         pManager = new PlaylistManager(getContext());
@@ -188,15 +188,6 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
             layouteliminar.setVisibility(View.INVISIBLE);
         }
 
-        cancel= view.findViewById(R.id.cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent2 = new Intent(getContext().getApplicationContext(), UserMainActivity.class);
-                intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
-            }
-        });
 
     }
 

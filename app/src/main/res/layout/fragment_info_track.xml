@@ -215,17 +215,13 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="170dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="100dp"
-        android:textColor="#18AB4B"
-        android:textSize="24sp"
-        android:textAllCaps="false"
-        android:paddingBottom="5dp"
-        android:background="@drawable/rectangle_blanc_small"
+    <LinearLayout
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:text="@string/cancel" />
+        android:clickable="true"
+        android:layout_marginTop="15dp"/>
 
 </LinearLayout>
