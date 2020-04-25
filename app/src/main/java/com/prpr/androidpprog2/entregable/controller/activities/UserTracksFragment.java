@@ -3,7 +3,9 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -285,14 +287,15 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     @Override
     public void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist playlist) {
-        Intent intent = new Intent(getActivity(), InfoTrackActivity.class);
-        intent.putExtra("Trck", tracks.get(position));
+        Playlist pl;
         if(playlist!=null){
-            intent.putExtra("Playlst", playlist);
+            pl =  playlist;
         }else{
-            intent.putExtra("Playlst", new Playlist("UserPlaylist", Session.getUser()));
+            pl = new Playlist("UserPlaylist", Session.getUser());
         }
-        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+        InfoTrackFragment bottomSheetDialog = new InfoTrackFragment(tracks.get(position), pl, Session.getUser());
+        bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.show(getFragmentManager(), "track_info");
     }
 
     @Override

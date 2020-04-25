@@ -51,7 +51,6 @@ import com.prpr.androidpprog2.entregable.utils.KeyboardUtils;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
 import java.util.ArrayList;
@@ -762,10 +761,15 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     @Override
     public void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist p) {
         saveIdForFuture();
-        Intent intent = new Intent(getApplicationContext(), InfoTrackActivity.class);
-        intent.putExtra("Trck", tracks.get(position));
-        intent.putExtra("Playlst", p);
-        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+        Playlist pl;
+        if(p!=null){
+            pl =  p;
+        }else{
+            pl = new Playlist("UserPlaylist", Session.getUser());
+        }
+        InfoTrackFragment bottomSheetDialog = new InfoTrackFragment(tracks.get(position), pl, Session.getUser());
+        bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.show(getSupportFragmentManager(), "track_info");
     }
 
     @Override

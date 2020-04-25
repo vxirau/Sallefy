@@ -358,7 +358,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     @Override
     public void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist playlist) {
-        Intent intent = new Intent(getApplicationContext(), InfoTrackActivity.class);
+        Intent intent = new Intent(getApplicationContext(), InfoTrackFragment.class);
         intent.putExtra("Trck", tracks.get(position));
         intent.putExtra("Playlst", playlist);
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);

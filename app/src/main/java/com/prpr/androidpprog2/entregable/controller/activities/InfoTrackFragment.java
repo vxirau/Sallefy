@@ -1,7 +1,9 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -10,8 +12,7 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
@@ -29,7 +30,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-public class InfoTrackActivity extends AppCompatActivity implements TrackCallback, PlaylistCallback {
+public class InfoTrackFragment extends BottomSheetDialogFragment implements TrackCallback, PlaylistCallback {
 
     private ImageView songCover;
     private TextView songName;
@@ -69,31 +70,27 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
 
     private Playlist playl;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
+    public InfoTrackFragment(Track track, Playlist p, User u) {
+        playl = p;
+        trck = track;
+        user = u;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info_track);
-        trck = (Track) getIntent().getSerializableExtra("Trck");
-        playl=(Playlist) getIntent().getSerializableExtra("Playlst");
-        if(getIntent().getSerializableExtra("UserInfo")!=null){
-            user = (User) getIntent().getSerializableExtra("UserInfo");
-        }
-        initViews();
-        tManager = new TrackManager(this);
-        pManager = new PlaylistManager(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
+        View view =  inflater.inflate(R.layout.activity_info_track, container, false);
+        initViews(view);
+        tManager = new TrackManager(getContext());
+        pManager = new PlaylistManager(getContext());
+        return view;
     }
 
-    private void initViews(){
-        er = new ErrorDialog(this);
-        songCover = (ImageView) findViewById(R.id.SongCover);
-        songName = (TextView) findViewById(R.id.SongName);
-        nomArtista = (TextView) findViewById(R.id.ArtistName);
+    private void initViews(View view){
+        er = new ErrorDialog(getContext());
+        songCover = (ImageView) view.findViewById(R.id.SongCover);
+        songName = (TextView) view.findViewById(R.id.SongName);
+        nomArtista = (TextView) view.findViewById(R.id.ArtistName);
 
         songName.setText(trck.getName());
         nomArtista.setText(trck.getUserLogin());
@@ -104,25 +101,25 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
             Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(songCover);
         }
 
-        favorites = (ImageButton) findViewById(R.id.favoritos);
-        text_favorites = findViewById(R.id.text_favoritos);
-        layoutFav = findViewById(R.id.layoutFavoritos);
+        favorites = (ImageButton) view.findViewById(R.id.favoritos);
+        text_favorites = view.findViewById(R.id.text_favoritos);
+        layoutFav = view.findViewById(R.id.layoutFavoritos);
         layoutFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tManager.likeTrack(trck.getId(), InfoTrackActivity.this);
+                tManager.likeTrack(trck.getId(), InfoTrackFragment.this);
             }
         });
 
 
-        edit= (ImageButton) findViewById(R.id.edit);
-        text_edit = findViewById(R.id.text_edit);
-        layoutedit = findViewById(R.id.layoutedit);
+        edit= (ImageButton) view.findViewById(R.id.edit);
+        text_edit = view.findViewById(R.id.text_edit);
+        layoutedit = view.findViewById(R.id.layoutedit);
         layoutedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())){
-                    Intent intent = new Intent(getApplicationContext(), EditSongActivity.class);
+                if(Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())){
+                    Intent intent = new Intent(getContext().getApplicationContext(), EditSongActivity.class);
                     intent.putExtra("Trck", trck);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
 
@@ -134,16 +131,16 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
 
 
 
-        artist = (ImageButton) findViewById(R.id.user);
-        text_artist = findViewById(R.id.text_user);
-        layoutArtist = findViewById(R.id.layoutUser);
+        artist = (ImageButton) view.findViewById(R.id.user);
+        text_artist = view.findViewById(R.id.text_user);
+        layoutArtist = view.findViewById(R.id.layoutUser);
         layoutArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())) {
+                if(Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())) {
                     er.showErrorDialog("You cannot check yourself out!");
                 }else{
-                    Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
+                    Intent intent = new Intent(getContext().getApplicationContext(), InfoArtistaActivity.class);
                     intent.putExtra("User", trck.getUser());
                     startActivity(intent);
                 }
@@ -151,35 +148,35 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
         });
 
 
-        playlist = (ImageButton) findViewById(R.id.playlist);
-        text_playlist = findViewById(R.id.text_playlist);
-        layoutPlaylist = findViewById(R.id.layoutPlaylist);
+        playlist = (ImageButton) view.findViewById(R.id.playlist);
+        text_playlist = view.findViewById(R.id.text_playlist);
+        layoutPlaylist = view.findViewById(R.id.layoutPlaylist);
         layoutPlaylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Add2PlaylistActivity.class);
+                Intent intent = new Intent(getContext().getApplicationContext(), Add2PlaylistActivity.class);
                 intent.putExtra("Trck", trck);
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
             }
         });
 
-        eliminar_icono = (ImageButton) findViewById(R.id.eliminar);
-        eliminar_text = findViewById(R.id.text_eliminar);
-        layouteliminar = findViewById(R.id.layoutEliminar);
+        eliminar_icono = (ImageButton) view.findViewById(R.id.eliminar);
+        eliminar_text = view.findViewById(R.id.text_eliminar);
+        layouteliminar = view.findViewById(R.id.layoutEliminar);
         layouteliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
+                if(Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
                     playl.getTracks().remove(trck);
-                    pManager.updatePlaylist(playl, InfoTrackActivity.this);
-                    Toast.makeText(InfoTrackActivity.this, "Eliminada correctament", Toast.LENGTH_SHORT).show();
+                    pManager.updatePlaylist(playl, InfoTrackFragment.this);
+                    Toast.makeText(getContext(), "Eliminada correctament", Toast.LENGTH_SHORT).show();
                 }else{
                     er.showErrorDialog("This playlist is not yours to edit");
                 }
             }
         });
 
-        if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
+        if(Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
             layouteliminar.setVisibility(View.VISIBLE);
             layoutedit.setAlpha((float) 1.0);
         }else{
@@ -191,11 +188,11 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
             layouteliminar.setVisibility(View.INVISIBLE);
         }
 
-        cancel= findViewById(R.id.cancel);
+        cancel= view.findViewById(R.id.cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(getApplicationContext(), UserMainActivity.class);
+                Intent intent2 = new Intent(getContext().getApplicationContext(), UserMainActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivityForResult(intent2, Constants.NETWORK.LOGIN_OK);
             }
@@ -246,11 +243,11 @@ public class InfoTrackActivity extends AppCompatActivity implements TrackCallbac
     @Override
     public void onTrackLiked(int id) {
         if(trck.isLiked()){
-            Toast.makeText(getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
             trck.setLiked(false);
             System.out.println("hooaoofodwfoiehfowehif");
         }else{
-            Toast.makeText(getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
             trck.setLiked(true);
         }
     }

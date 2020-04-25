@@ -607,7 +607,7 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onTrackUpdated(Track body) {
-        Intent intent = new Intent(getApplicationContext(), InfoTrackActivity.class);
+        Intent intent = new Intent(getApplicationContext(), InfoTrackFragment.class);
         intent.putExtra("Trck", body);
         intent.putExtra("Playlst", plyl);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
