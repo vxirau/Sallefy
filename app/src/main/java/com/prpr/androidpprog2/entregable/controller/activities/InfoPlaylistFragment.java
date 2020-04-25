@@ -27,8 +27,10 @@ import com.downloader.Progress;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.callbacks.DownloadCallback;
+import com.prpr.androidpprog2.entregable.controller.callbacks.OptionDialogCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.LoadingDialog;
+import com.prpr.androidpprog2.entregable.controller.dialogs.OptionDialog;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
 import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
 import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
@@ -43,7 +45,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class InfoPlaylistFragment extends BottomSheetDialogFragment implements DownloadCallback {
+public class InfoPlaylistFragment extends BottomSheetDialogFragment implements DownloadCallback, OptionDialogCallback {
 
     private Playlist playlist;
     private ImageView playlistCover;
@@ -57,7 +59,10 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
     private Boolean switchState;
     private int[] downloadId;
     private LoadingDialog loading;
+    private LoadingDialog deleting;
     private SavedPlaylist p;
+    private OptionDialog confirm;
+    private Boolean doChange = true;
 
 
     public InfoPlaylistFragment(Playlist p) {
@@ -126,8 +131,8 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
         download.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    loading.showLoadingDialog("Downloading "+playlist.getName());
+                if(isChecked && doChange){
+                    loading.showProgressBarDialog("Offline Download", "Downloading "+playlist.getName(),0, playlist.getTracks().size());
                     File path= getActivity().getFilesDir();
                     p = new SavedPlaylist();
                     p.setId(playlist.getId());
@@ -159,29 +164,34 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }else{
-                    PRDownloader.cancelAll();
-                    UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedPlaylist.class).get(playlist.getId()).coverPath);
-                    ObjectBox.get().boxFor(SavedPlaylist.class).remove(playlist.getId());
-
-                    for(int i=0; i<playlist.getTracks().size() ;i++){
-                        if(UtilFunctions.trackInPlaylistTotal(playlist.getTracks().get(i))==0){
-                            if(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).coverPath!=null){
-                                UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).coverPath);
-                            }
-                            UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).trackPath);
-                            ObjectBox.get().boxFor(SavedTrack.class).remove(playlist.getTracks().get(i).getId());
-                        }
-                    }
-                    //Delete files created
-                    //Delete from database
+                }else if(!isChecked && doChange){
+                    confirm = new OptionDialog(getContext(), InfoPlaylistFragment.this);
+                    confirm.showConfirmationDialog("Are you sure you want to delete your downloads?");
                 }
+                doChange = true;
 
             }
         });
 
 
         return view;
+    }
+
+    private void deletePlaylist(){
+        PRDownloader.cancelAll();
+        UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedPlaylist.class).get(playlist.getId()).coverPath);
+        ObjectBox.get().boxFor(SavedPlaylist.class).remove(playlist.getId());
+
+        for(int i=0; i<playlist.getTracks().size() ;i++){
+            if(UtilFunctions.trackInPlaylistTotal(playlist.getTracks().get(i))==0){
+                if(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).coverPath!=null){
+                    UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).coverPath);
+                }
+                UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).trackPath);
+                ObjectBox.get().boxFor(SavedTrack.class).remove(playlist.getTracks().get(i).getId());
+            }
+        }
+        deleting.cancelLoadingDialog();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -244,6 +254,7 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
                     @Override
                     public void onDownloadComplete() {
                         System.out.println("Finished: " + playlist.getTracks().get(i).getName());
+                        loading.updateProgress(i, playlist.getTracks().size());
                         if(i<playlist.getTracks().size()-1){
                             i++;
                             try {
@@ -283,4 +294,28 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
     }
 
 
+    @Override
+    public void onDelete() {
+
+    }
+
+    @Override
+    public void onEdit() {
+
+    }
+
+    @Override
+    public void onAccept() {
+        confirm.cancelDialog();
+        deleting = new LoadingDialog(getContext());
+        deleting.showLoadingDialog("Deleting playlist from database...");
+        deletePlaylist();
+    }
+
+    @Override
+    public void onCancel() {
+        confirm.cancelDialog();
+        doChange = false;
+        download.setChecked(true);
+    }
 }

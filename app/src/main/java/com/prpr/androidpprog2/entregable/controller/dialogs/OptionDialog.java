@@ -78,16 +78,15 @@ public class OptionDialog {
     }
 
 
-    public void showConfirmationDialog() {
+    public void showConfirmationDialog(String message) {
         mDialog.setContentView(R.layout.dialog_option);
         mDialog.setCanceledOnTouchOutside(false);
-
 
         tvTitle = (TextView) mDialog.findViewById(R.id.dialog_title);
         tvSubtitle = (TextView) mDialog.findViewById(R.id.dialog_error_subtitle);
         ivIcon = (ImageView) mDialog.findViewById(R.id.dialog_error_icon);
-        tvTitle.setText("Confirm");
-        tvSubtitle.setText("Are you sure you want to delete this playlist?");
+        tvTitle.setText("Careful!");
+        tvSubtitle.setText(message);
         btnAccept = (Button) mDialog.findViewById(R.id.dialog_edit);
         btnAccept.setText("Confirm");
         btnAccept.setOnClickListener(new View.OnClickListener() {
@@ -107,4 +106,8 @@ public class OptionDialog {
         });
         mDialog.show();
     }
+
+
+
+
 }

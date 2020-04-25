@@ -57,8 +57,35 @@
                 android:layout_height="wrap_content"
                 android:indeterminateDrawable="@drawable/progress_selector"
                 android:indeterminateDuration="@android:integer/config_longAnimTime"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:visibility="gone"/>
+            <LinearLayout
+                android:id="@+id/linearProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
 
+                <ProgressBar
+                    android:id="@+id/bar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:visibility="visible"
+                    android:progressBackgroundTint="@color/colorVisualizer"
+                    android:progressTint="@color/colorVisualizer"/>
+
+                <TextView
+                    android:id="@+id/totalDownloaded"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:textColor="#000"
+                    android:textAlignment="center"
+                    android:text="@string/state_error_title"/>
+
+            </LinearLayout>
 
 
         </LinearLayout>

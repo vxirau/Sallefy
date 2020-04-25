@@ -103,6 +103,9 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         }else{
             Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(holder.ivPicture);
         }
+        //Per carregar foto sense internet desde el local.
+        //Picasso.with(context).load(new File(YOUR_FILE_PATH)).into(imageView);
+
     }
 
     @Override

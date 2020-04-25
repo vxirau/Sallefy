@@ -61,7 +61,9 @@
         <Switch
             android:id="@+id/simpleSwitch"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:theme="@style/SwitchCompatTheme"
+            />
 
 
         <TextView

@@ -786,7 +786,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onPlaylistRecieved(List<Playlist> playlists) {
-
+        mTracks = (ArrayList<Track>) playlists.get(0).getTracks();
+        orderByPreferenceUtils();
+        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -919,7 +922,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     @Override
     public void onDelete() {
         dialogEdit.cancelDialog();
-        dialogEdit.showConfirmationDialog();
     }
 
     private void hideUIEdit(){

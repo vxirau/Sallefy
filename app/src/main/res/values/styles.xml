@@ -86,4 +86,8 @@
         <item name="android:background">@drawable/fons_rounded_corners</item>
     </style>
 
+    <style name="SwitchCompatTheme">
+        <item name="colorControlActivated">#21D760</item>
+    </style>
+
 </resources>
