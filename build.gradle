@@ -1,19 +1,24 @@
 
 buildscript {
+    ext.objectboxVersion = '2.5.1'
     repositories {
         google()
         jcenter()
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.android.tools.build:gradle:3.6.3'
         classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.google.gms:google-services:4.3.3'
+        classpath "io.objectbox:objectbox-gradle-plugin:$objectboxVersion"
 
     }
 }
 
 allprojects {
     repositories {
+        maven { url 'https://jitpack.io' }
         google()
         jcenter()
         maven{
