@@ -141,7 +141,11 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    p.setCoverPath(path.toString() + "/Sallefy/covers/playlists/"+ playlist.getName() + "--" + playlist.getUserLogin()+".jpeg");
+                    if(playlist.getThumbnail()!=null){
+                        p.setCoverPath(path.toString() + "/Sallefy/covers/playlists/"+ playlist.getName() + "--" + playlist.getUserLogin()+".jpeg");
+                    }else{
+                        p.setCoverPath(null);
+                    }
 
                     i=0;
                     if(playlist.getThumbnail()!=null){
@@ -184,36 +188,11 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
 
         for(int i=0; i<playlist.getTracks().size() ;i++){
             if(UtilFunctions.trackInPlaylistTotal(playlist.getTracks().get(i))==0){
-                if(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).coverPath!=null){
                     UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).coverPath);
-                }
-                UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).trackPath);
-                ObjectBox.get().boxFor(SavedTrack.class).remove(playlist.getTracks().get(i).getId());
-            }
+                    UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedTrack.class).get(playlist.getTracks().get(i).getId()).trackPath);
+                    ObjectBox.get().boxFor(SavedTrack.class).remove(playlist.getTracks().get(i).getId());}
         }
         deleting.cancelLoadingDialog();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void progressChanged(Progress progress) {
-        /*Intent intent = new Intent();
-        final PendingIntent pendingIntent = PendingIntent.getActivity(
-                getContext(), 0, intent, 0);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-        NotificationCompat.Builder mBuilder =
-                (NotificationCompat.Builder) new NotificationCompat.Builder(getContext())
-                        .setSmallIcon(R.drawable.noti_icon)
-                        .setContentTitle(playlist.getName());
-
-        mBuilder.setContentIntent(pendingIntent);
-        notificationManager = (NotificationManager) getActivity().getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        int p = (int) ((double) progress.currentBytes * 100 / progress.totalBytes);
-        mBuilder.setProgress((int)progress.totalBytes, p, false);
-        notificationManager.notify(101, mBuilder.build());*/
     }
 
 
@@ -223,72 +202,81 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
         File path= getActivity().getFilesDir();
         String a = path.getAbsolutePath();
 
+        if(!UtilFunctions.trackExistsInDatabase(playlist.getTracks().get(i))){
+            SavedTrack t = new SavedTrack();
+            t.setId(playlist.getTracks().get(i).getId());
+            t.setTrackPath(path.toString() + "/Sallefy/tracks/"+playlist.getTracks().get(i).getName() + "--" + playlist.getTracks().get(i).getUserLogin());
+            t.setTrack(t.saveTrack(playlist.getTracks().get(i)));
 
-        SavedTrack t = new SavedTrack();
-        t.setId(playlist.getTracks().get(i).getId());
-        t.setTrackPath(path.toString() + "/Sallefy/tracks/"+playlist.getTracks().get(i).getName() + "--" + playlist.getTracks().get(i).getUserLogin());
-        t.setTrack(t.saveTrack(playlist.getTracks().get(i)));
-        t.setCoverPath(path.toString() + "/Sallefy/covers/tracks/"+playlist.getTracks().get(i).getName()+".jpeg");
 
-        ObjectBox.get().boxFor(SavedTrack.class).attach(t);
-        t.playlist.add(p);
-        ObjectBox.get().boxFor(SavedPlaylist.class).attach(p);
-        p.tracks.add(t);
-
-        downloadId[i] = PRDownloader.download(playlist.getTracks().get(i).getUrl(), path.toString() + "/Sallefy/tracks/", playlist.getTracks().get(i).getName() + "--" + playlist.getTracks().get(i).getUserLogin())
-                .build()
-                .setOnStartOrResumeListener(new OnStartOrResumeListener() {
-                    @Override
-                    public void onStartOrResume() {
-                        System.out.println("Started: " + playlist.getTracks().get(i).getName());
-                    }
-                })
-                .setOnProgressListener(new OnProgressListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onProgress(Progress progress) {
-                        InfoPlaylistFragment.this.progressChanged(progress);
-                    }
-                })
-                .start(new OnDownloadListener() {
-                    @Override
-                    public void onDownloadComplete() {
-                        System.out.println("Finished: " + playlist.getTracks().get(i).getName());
-                        loading.updateProgress(i, playlist.getTracks().size());
-                        if(i<playlist.getTracks().size()-1){
-                            i++;
-                            try {
-                                InfoPlaylistFragment.this.doNext();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }else{
-                            loading.cancelLoadingDialog();
-                            ObjectBox.get().boxFor(SavedPlaylist.class).put(p);
-                        }
-                        ObjectBox.get().boxFor(SavedTrack.class).put(t);
-                    }
-
-                    @Override
-                    public void onError(Error error) {
-                        System.out.println("Error en descarrega");
-                        System.out.println(error.getServerErrorMessage());
-                    }
-                });
-        if(playlist.getTracks().get(i).getThumbnail()!=null){
-            downloadId[(playlist.getTracks().size()-1)+i] = PRDownloader.download(playlist.getTracks().get(i).getThumbnail(), path.toString() + "/Sallefy/covers/tracks/", playlist.getTracks().get(i).getName() + "--" + playlist.getTracks().get(i).getUserLogin()+".jpeg")
+            downloadId[i] = PRDownloader.download(playlist.getTracks().get(i).getUrl(), path.toString() + "/Sallefy/tracks/", playlist.getTracks().get(i).getName() + "--" + playlist.getTracks().get(i).getUserLogin())
                     .build()
+                    .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                        @Override
+                        public void onStartOrResume() {
+                            System.out.println("Started: " + playlist.getTracks().get(i).getName());
+                        }
+                    })
                     .start(new OnDownloadListener() {
                         @Override
                         public void onDownloadComplete() {
                             System.out.println("Finished: " + playlist.getTracks().get(i).getName());
+                            loading.updateProgress(i, playlist.getTracks().size());
+                            if(i<playlist.getTracks().size()-1){
+                                i++;
+                                try {
+                                    InfoPlaylistFragment.this.doNext();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }else{
+                                loading.cancelLoadingDialog();
+                                ObjectBox.get().boxFor(SavedPlaylist.class).put(p);
+                            }
+                            ObjectBox.get().boxFor(SavedTrack.class).put(t);
                         }
+
                         @Override
                         public void onError(Error error) {
                             System.out.println("Error en descarrega");
                             System.out.println(error.getServerErrorMessage());
                         }
                     });
+            if(playlist.getTracks().get(i).getThumbnail()!=null){
+                downloadId[(playlist.getTracks().size())+i] = PRDownloader.download(playlist.getTracks().get(i).getThumbnail(), path.toString() + "/Sallefy/covers/tracks/", playlist.getTracks().get(i).getName() + "--" + playlist.getTracks().get(i).getUserLogin()+".jpeg")
+                        .build()
+                        .start(new OnDownloadListener() {
+                            @Override
+                            public void onDownloadComplete() {
+                                System.out.println("Finished: " + playlist.getTracks().get(i).getName());
+                            }
+                            @Override
+                            public void onError(Error error) {
+                                System.out.println("Error en descarrega");
+                                System.out.println(error.getServerErrorMessage());
+                            }
+                        });
+                t.setCoverPath(path.toString() + "/Sallefy/covers/tracks/"+playlist.getTracks().get(i).getName() + "--" + playlist.getTracks().get(i).getUserLogin()+".jpeg");
+            }else{
+                t.setCoverPath(null);
+            }
+
+            ObjectBox.get().boxFor(SavedTrack.class).attach(t);
+            t.playlist.add(p);
+            ObjectBox.get().boxFor(SavedPlaylist.class).attach(p);
+            p.tracks.add(t);
+        }else{
+            if(i<playlist.getTracks().size()-1){
+                i++;
+                try {
+                    InfoPlaylistFragment.this.doNext();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                loading.cancelLoadingDialog();
+                ObjectBox.get().boxFor(SavedPlaylist.class).put(p);
+            }
         }
 
     }

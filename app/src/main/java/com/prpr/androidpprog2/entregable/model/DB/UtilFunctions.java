@@ -24,20 +24,16 @@ public class UtilFunctions {
     }
 
     public static int trackInPlaylistTotal(Track t){
-        ToMany<SavedPlaylist> list = ObjectBox.get().boxFor(SavedTrack.class).get(t.getId()).getPlaylist();
+        ToMany<SavedPlaylist> list = ObjectBox.get().boxFor(SavedTrack.class).get(t.getId()).playlist;
         return list.size();
     }
 
     public static void deleteFiles(String path) {
-
-        File file = new File(path);
-
-        if (file.exists()) {
-            String deleteCmd = "rm -r " + path;
-            Runtime runtime = Runtime.getRuntime();
-            try {
-                runtime.exec(deleteCmd);
-            } catch (IOException e) { }
+        if(path!=null){
+            File file = new File(path);
+            if (file.exists()) {
+                file.delete();
+            }
         }
     }
 

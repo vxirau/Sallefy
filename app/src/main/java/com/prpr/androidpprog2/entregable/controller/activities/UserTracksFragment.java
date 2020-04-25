@@ -27,6 +27,7 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
+import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -286,7 +287,11 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     public void onTrackAddSelected(int position, ArrayList<Track> tracks, Playlist playlist) {
         Intent intent = new Intent(getActivity(), InfoTrackActivity.class);
         intent.putExtra("Trck", tracks.get(position));
-        intent.putExtra("Playlst", playlist);
+        if(playlist!=null){
+            intent.putExtra("Playlst", playlist);
+        }else{
+            intent.putExtra("Playlst", new Playlist("UserPlaylist", Session.getUser()));
+        }
         startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 

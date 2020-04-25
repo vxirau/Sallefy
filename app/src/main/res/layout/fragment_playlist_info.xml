@@ -183,7 +183,7 @@
     <LinearLayout
         android:id="@+id/separator"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:orientation="horizontal"
         android:gravity="center"
         android:clickable="true"

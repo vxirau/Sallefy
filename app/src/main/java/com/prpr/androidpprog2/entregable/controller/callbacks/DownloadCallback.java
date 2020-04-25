@@ -5,6 +5,5 @@ import com.downloader.Progress;
 import java.io.IOException;
 
 public interface DownloadCallback {
-    void progressChanged(Progress progress);
     void doNext() throws IOException;
 }

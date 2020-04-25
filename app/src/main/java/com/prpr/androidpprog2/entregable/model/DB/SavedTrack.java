@@ -35,7 +35,7 @@ public class SavedTrack {
     }
 
     public String getTrackPath() {
-        return trackPath;
+        return trackPath+".mp3";
     }
 
     public void setTrackPath(String trackPath) {
