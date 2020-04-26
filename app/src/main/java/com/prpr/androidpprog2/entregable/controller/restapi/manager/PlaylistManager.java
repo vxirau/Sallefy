@@ -1,11 +1,15 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.PlaylistService;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -76,8 +80,6 @@ public class PlaylistManager extends MainManager{
 
 
     public synchronized void getAllMyPlaylists(final PlaylistCallback playlistCallback) {
-          
-        
 
         Call<List<Playlist>> call = mPlaylistService.getAllMyPlaylists();
         call.enqueue(new Callback<List<Playlist>>() {
@@ -155,14 +157,18 @@ public class PlaylistManager extends MainManager{
 
 
     public void updatePlaylist(Playlist playlist, final PlaylistCallback playlistCallback) {
-          
-
         Call<Playlist> call = mPlaylistService.addTrackPlaylist(playlist );
         call.enqueue(new Callback<Playlist>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<Playlist> call, Response<Playlist> response) {
                 int code = response.code();
                 if (response.isSuccessful()) {
+                    try {
+                        UtilFunctions.updatePlaylist(response.body(), mContext, false);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     playlistCallback.onPlaylistToUpdated(response.body());
                 } else {
                     try{

@@ -193,7 +193,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
         pManager.checkFollowing(playlst.getId(), this);
         pManager.getPlaylist(playlst.getId(), this);
-        orderByPreferenceUtils();
+        //orderByPreferenceUtils();
     }
 
     @Override
@@ -982,6 +982,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         pause.setVisibility(View.GONE);
         accessible.setVisibility(View.INVISIBLE);
     }
+
 
     @Override
     public void onEdit() {

@@ -236,7 +236,6 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
         if(trck.isLiked()){
             Toast.makeText(getContext().getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
             trck.setLiked(false);
-            System.out.println("hooaoofodwfoiehfowehif");
         }else{
             Toast.makeText(getContext().getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
             trck.setLiked(true);
