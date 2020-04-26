@@ -173,7 +173,12 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
                                 });
                     }
                     try {
-                        doNext();
+                        if(playlist.getTracks().size()>0){
+                            doNext();
+                        }else{
+                            loading.cancelLoadingDialog();
+                            ObjectBox.get().boxFor(SavedPlaylist.class).put(p);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
