@@ -26,6 +26,8 @@ public class SavedCache {
     public String myFollowed;
     public String userInfo;
     public String user;
+    public String username;
+    public String password;
 
     public long getId() {
         return id;
@@ -63,6 +65,22 @@ public class SavedCache {
         Gson gson = new Gson();
         Type type = new TypeToken<User>() {}.getType();
         return gson.fromJson(this.user, type);
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void saveUser(User user){

@@ -146,6 +146,8 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         if(!UtilFunctions.hasCache()){
             SavedCache c = new SavedCache();
             c.setId(1);
+            c.password = userpassword;
+            c.username = username;
             ObjectBox.get().boxFor(SavedCache.class).put(c);
         }
         this.username = username;
