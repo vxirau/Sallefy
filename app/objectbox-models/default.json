@@ -64,7 +64,7 @@
     },
     {
       "id": "3:2701060658214823714",
-      "lastPropertyId": "10:5746435428930921552",
+      "lastPropertyId": "11:5956375282565496633",
       "name": "SavedCache",
       "properties": [
         {
@@ -116,6 +116,11 @@
         {
           "id": "10:5746435428930921552",
           "name": "user",
+          "type": 9
+        },
+        {
+          "id": "11:5956375282565496633",
+          "name": "popularPlaylists",
           "type": 9
         }
       ],
