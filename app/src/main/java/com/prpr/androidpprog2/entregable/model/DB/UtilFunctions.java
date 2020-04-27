@@ -32,7 +32,6 @@ public class UtilFunctions {
         }
     }
 
-
     public static boolean playlistExistsInDatabase(Playlist p){
         List<SavedPlaylist> list = ObjectBox.get().boxFor(SavedPlaylist.class).query().equal(SavedPlaylist_.id, p.getId()).build().find();
         return list.size() ==1;
@@ -70,7 +69,6 @@ public class UtilFunctions {
                     t.setId(playlist.getTracks().get(i).getId());
                     t.setTrackPath(path.toString() + "/Sallefy/tracks/" + playlist.getTracks().get(i).getName() + "--" + playlist.getTracks().get(i).getUserLogin());
                     t.setTrack(t.saveTrack(playlist.getTracks().get(i)));
-
 
                     int downloadId = PRDownloader.download(playlist.getTracks().get(i).getUrl(), path.toString() + "/Sallefy/tracks/", playlist.getTracks().get(i).getName() + "--" + playlist.getTracks().get(i).getUserLogin())
                             .build()
@@ -115,9 +113,21 @@ public class UtilFunctions {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void updatePlaylist(Playlist playlist, Context c, Track track) throws IOException {
-        if(playlistExistsInDatabase(playlist)){
 
+        if(playlistExistsInDatabase(playlist)){
+            SavedTrack t = ObjectBox.get().boxFor(SavedTrack.class).get(track.getId());
+            t.playlist.removeById(playlist.getId());
+            ObjectBox.get().boxFor(SavedTrack.class).put(t);
+
+            SavedPlaylist p = ObjectBox.get().boxFor(SavedPlaylist.class).get(playlist.getId());
+            p.tracks.removeById(track.getId());
+            ObjectBox.get().boxFor(SavedPlaylist.class).put(p);
+
+            if(trackInPlaylistTotal(track)==0){
+                UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedTrack.class).get(track.getId()).coverPath);
+                UtilFunctions.deleteFiles(ObjectBox.get().boxFor(SavedTrack.class).get(track.getId()).trackPath);
+                ObjectBox.get().boxFor(SavedTrack.class).remove(track.getId());
+            }
         }
     }
-
 }

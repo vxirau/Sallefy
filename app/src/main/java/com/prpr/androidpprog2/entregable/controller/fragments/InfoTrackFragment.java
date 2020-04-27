@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,14 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.Add2PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.EditSongActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.InfoArtistaActivity;
+import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
@@ -72,6 +76,12 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
     private PlaylistManager pManager;
 
     private Playlist playl;
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        ((PlaylistActivity)getActivity()).onResume();
+    }
 
     public InfoTrackFragment(Track track, Playlist p, User u) {
         playl = p;
@@ -171,7 +181,7 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
             public void onClick(View view) {
                 if(Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
                     playl.getTracks().remove(trck);
-                    pManager.updatePlaylist(playl, InfoTrackFragment.this);
+                    pManager.updatePlaylist(playl,trck, InfoTrackFragment.this);
                     Toast.makeText(getContext(), "Eliminada correctament", Toast.LENGTH_SHORT).show();
                 }else{
                     er.showErrorDialog("This playlist is not yours to edit");
@@ -303,7 +313,7 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
 
     @Override
     public void onPlaylistToUpdated(Playlist body) {
-
+        dismiss();
     }
 
     @Override
