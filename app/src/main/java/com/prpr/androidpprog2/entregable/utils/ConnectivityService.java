@@ -4,13 +4,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.IBinder;
-import android.util.Log;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.prpr.androidpprog2.entregable.controller.activities.LoginActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.AccountManager;
@@ -24,7 +19,6 @@ import com.prpr.androidpprog2.entregable.model.UserToken;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Timer;
@@ -32,20 +26,15 @@ import java.util.TimerTask;
 
 public class ConnectivityService extends Service implements UserCallback {
 
-    // Constant
     public static String TAG_INTERVAL = "interval";
-
     private int interval;
     private boolean hadInternet=true;
-
     private Timer mTimer = null;
-
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-
 
     void hasInternetConnection(){
         if(!hadInternet){
@@ -82,7 +71,6 @@ public class ConnectivityService extends Service implements UserCallback {
         }
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -93,7 +81,6 @@ public class ConnectivityService extends Service implements UserCallback {
 
         return super.onStartCommand(intent, flags, startId);
     }
-
 
     @Override
     public void onLoginSuccess(UserToken userToken) {

@@ -522,10 +522,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     @Override
     public void onAllPlaylistFailure(Throwable throwable) {
         if(UtilFunctions.noInternet(getApplicationContext())){
-            Gson gson = new Gson();
-            String json = ObjectBox.get().boxFor(SavedCache.class).get(1).getAllPlaylists();
-            Type type = new TypeToken<ArrayList<Playlist>>() {}.getType();
-            onAllPlaylistRecieved(gson.fromJson(json, type));
+            onAllPlaylistRecieved(ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveAllPlaylists());
         }
     }
 
@@ -544,7 +541,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onTopPlaylistsFailure(Throwable throwable) {
-
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            onTopRecieved(ObjectBox.get().boxFor(SavedCache.class).get(1).retrievetopPlaylists());
+        }
     }
 
     @Override
@@ -583,6 +582,18 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     @Override
     public void onPlaylistDeleteFailure(Throwable throwable) {
 
+    }
+
+    @Override
+    public void onAllMyPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingPlaylistsFailure(Throwable throwable) {
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            onFollowingRecieved(ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveFollowingPlaylists());
+        }
     }
 
 
