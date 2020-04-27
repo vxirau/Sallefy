@@ -52,28 +52,79 @@
           "id": "4:7749644761670713709",
           "name": "track",
           "type": 9
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:3191941700622723151",
+          "name": "playlist",
+          "targetId": "1:8270158682513290592"
+        }
+      ]
+    },
+    {
+      "id": "3:2701060658214823714",
+      "lastPropertyId": "8:8913367474138561003",
+      "name": "SavedCache",
+      "properties": [
+        {
+          "id": "1:9062368821912222499",
+          "name": "id",
+          "type": 6,
+          "flags": 129
         },
         {
-          "id": "5:7761534033478320518",
-          "name": "playlistId",
-          "indexId": "1:8769040325466953674",
-          "type": 11,
-          "flags": 1548,
-          "relationTarget": "SavedPlaylist"
+          "id": "2:3336053730357454345",
+          "name": "allPlaylists",
+          "type": 9
+        },
+        {
+          "id": "3:8630044428758913042",
+          "name": "topUsers",
+          "type": 9
+        },
+        {
+          "id": "4:4562414536067324202",
+          "name": "followerPlaylists",
+          "type": 9
+        },
+        {
+          "id": "5:6554186631048964516",
+          "name": "myPlaylists",
+          "type": 9
+        },
+        {
+          "id": "6:4010026126081760635",
+          "name": "mySongs",
+          "type": 9
+        },
+        {
+          "id": "7:7505705102379525808",
+          "name": "myFollowed",
+          "type": 9
+        },
+        {
+          "id": "8:8913367474138561003",
+          "name": "userInfo",
+          "type": 9
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "2:6485588757533469502",
+  "lastEntityId": "3:2701060658214823714",
   "lastIndexId": "1:8769040325466953674",
-  "lastRelationId": "0:0",
+  "lastRelationId": "1:3191941700622723151",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
-  "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredIndexUids": [
+    8769040325466953674
+  ],
+  "retiredPropertyUids": [
+    7761534033478320518
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

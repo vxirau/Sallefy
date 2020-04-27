@@ -15,8 +15,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.util.Util;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.squareup.picasso.Picasso;
@@ -72,11 +75,20 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             holder.downloaded.setVisibility(View.INVISIBLE);
         }
 
-        if (playlist.get(position).getThumbnail() != null) {
-            Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);
+        if(UtilFunctions.noInternet(mContext)){
+            if(UtilFunctions.playlistExistsInDatabase(playlist.get(position))){
+                Picasso.get().load(ObjectBox.get().boxFor(SavedPlaylist.class).get(playlist.get(position).getId()).coverPath).into(holder.ivPicture);
+            }else{
+                Picasso.get().load(R.drawable.default_cover).into(holder.ivPicture);
+            }
         }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(holder.ivPicture);
+            if (playlist.get(position).getThumbnail() != null) {
+                Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);
+            }else {
+                Picasso.get().load(R.drawable.default_cover).into(holder.ivPicture);
+            }
         }
+
     }
 
     @Override

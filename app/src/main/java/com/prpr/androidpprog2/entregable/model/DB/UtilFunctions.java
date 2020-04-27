@@ -1,6 +1,8 @@
 package com.prpr.androidpprog2.entregable.model.DB;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -34,6 +36,11 @@ public class UtilFunctions {
 
     public static boolean playlistExistsInDatabase(Playlist p){
         List<SavedPlaylist> list = ObjectBox.get().boxFor(SavedPlaylist.class).query().equal(SavedPlaylist_.id, p.getId()).build().find();
+        return list.size() ==1;
+    }
+
+    public static boolean hasCache(){
+        List<SavedCache> list = ObjectBox.get().boxFor(SavedCache.class).query().equal(SavedCache_.id, 1).build().find();
         return list.size() ==1;
     }
 
@@ -129,5 +136,12 @@ public class UtilFunctions {
                 ObjectBox.get().boxFor(SavedTrack.class).remove(track.getId());
             }
         }
+    }
+
+    public static boolean noInternet(Context c){
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return !(activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
 }

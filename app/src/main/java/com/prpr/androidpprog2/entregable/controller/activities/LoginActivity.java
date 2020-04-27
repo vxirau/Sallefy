@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 //import com.google.firebase.storage.FirebaseStorage;
 //import com.google.firebase.storage.StorageReference;
 //import com.google.firebase.storage.UploadTask;
+import com.downloader.PRDownloader;
+import com.downloader.PRDownloaderConfig;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -30,6 +33,9 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallbac
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.AccountManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -39,6 +45,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import io.objectbox.android.AndroidObjectBrowser;
 
 public class LoginActivity extends AppCompatActivity implements UserCallback {
 
@@ -58,6 +66,19 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
         super.onCreate(savedInstanceSate);
         setContentView(R.layout.activity_login);
+
+        //----------------------------------------- NO TOCAR -- BASE DE DADES TESTING -----------------------------------------
+        PRDownloaderConfig config = PRDownloaderConfig.newBuilder().build();
+        PRDownloader.initialize(getApplicationContext(), config);
+        ObjectBox.init(this);
+        //if (BuildConfig.DEBUG) {
+        boolean started = new AndroidObjectBrowser(ObjectBox.get()).start(this);
+        Log.i("ObjectBrowser", "Started: " + started);
+        //}
+        //---------------------------------------------------------------------------------------------------------------------
+
+
+
         initViews();
 
     }
@@ -122,39 +143,35 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
     private void doLogin(String username, String userpassword) {
+        if(!UtilFunctions.hasCache()){
+            SavedCache c = new SavedCache();
+            c.setId(1);
+            ObjectBox.get().boxFor(SavedCache.class).put(c);
+        }
         this.username = username;
-        AccountManager.getInstance(getApplicationContext()).loginAttempt(username, userpassword, LoginActivity.this);
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            onLoginSuccess(new UserToken(ObjectBox.get().boxFor(SavedCache.class).get(1).oldToken));
+        }else{
+            AccountManager.getInstance(getApplicationContext()).loginAttempt(username, userpassword, LoginActivity.this);
+        }
     }
 
     @Override
     public void onLoginSuccess(UserToken userToken) {
 
-        /*Uri imageUri = (new Uri.Builder())
-                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-                .authority(getResources().getResourcePackageName(R.drawable.boto_canviar))
-                .appendPath(getResources().getResourceTypeName(R.drawable.boto_canviar))
-                .appendPath(getResources().getResourceEntryName(R.drawable.boto_canviar))
-                .build();*/
-
-        //Uri imageUri = Uri.parse("android.resource://"+getApplicationContext().getPackageName()+"/drawable/cancel_edit");
-
-        mStorage = FirebaseStorage.getInstance().getReference();
-        StorageReference filePath = mStorage.child(Session.changeLogin(etLogin.getText().toString()));
-
-        //.child(imageUri.getLastPathSegment());
-        /*
-        filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(LoginActivity.this,"exito pelotudo",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        */
-
         usTkn = userToken;
         Session.getInstance(getApplicationContext()).setUserToken(usTkn);
-        UserManager.getInstance(getApplicationContext()).getUserData(username, LoginActivity.this, userToken);
+
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            onUserInfoReceived(ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveUser());
+        }else{
+            SavedCache c =  ObjectBox.get().boxFor(SavedCache.class).get(1);
+            c.setOldToken(userToken.getIdToken());
+            ObjectBox.get().boxFor(SavedCache.class).put(c);
+            mStorage = FirebaseStorage.getInstance().getReference();
+            StorageReference filePath = mStorage.child(Session.changeLogin(etLogin.getText().toString()));
+            UserManager.getInstance(getApplicationContext()).getUserData(username, LoginActivity.this, userToken);
+        }
     }
 
     @Override
@@ -174,6 +191,11 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onUserInfoReceived(User userData) {
+        if(!UtilFunctions.noInternet(getApplicationContext())){
+           SavedCache c=  ObjectBox.get().boxFor(SavedCache.class).get(1);
+           c.saveUser(userData);
+           ObjectBox.get().boxFor(SavedCache.class).put(c);
+        }
         Session.getInstance(getApplicationContext()).setUser(userData);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("sameUser", d1);

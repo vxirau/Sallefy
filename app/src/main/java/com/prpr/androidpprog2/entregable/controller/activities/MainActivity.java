@@ -32,6 +32,8 @@ import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
@@ -42,6 +44,9 @@ import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistMana
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache_;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -51,6 +56,7 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -208,16 +214,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //----------------------------------------- NO TOCAR -- BASE DE DADES TESTING -----------------------------------------
-        PRDownloaderConfig config = PRDownloaderConfig.newBuilder().build();
-        PRDownloader.initialize(getApplicationContext(), config);
-        ObjectBox.init(this);
-        //if (BuildConfig.DEBUG) {
-        boolean started = new AndroidObjectBrowser(ObjectBox.get()).start(this);
-        Log.i("ObjectBrowser", "Started: " + started);
-        //}
-        //---------------------------------------------------------------------------------------------------------------------
 
 
         if(getIntent().getSerializableExtra("sameUser")!=null){
@@ -522,7 +518,12 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onAllPlaylistFailure(Throwable throwable) {
-
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            Gson gson = new Gson();
+            String json = ObjectBox.get().boxFor(SavedCache.class).get(1).getAllPlaylists();
+            Type type = new TypeToken<ArrayList<Playlist>>() {}.getType();
+            onAllPlaylistRecieved(gson.fromJson(json, type));
+        }
     }
 
     @Override

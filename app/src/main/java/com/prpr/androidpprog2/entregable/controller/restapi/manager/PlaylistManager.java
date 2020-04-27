@@ -6,9 +6,13 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.PlaylistService;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
@@ -18,6 +22,7 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -105,16 +110,15 @@ public class PlaylistManager extends MainManager{
     }
 
     public synchronized void getAllPlaylists(final PlaylistCallback playlistCallback) {
-          
-          
-
         Call<List<Playlist>> call = mPlaylistService.getAllPlaylists();
         call.enqueue(new Callback<List<Playlist>>() {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
                 int code = response.code();
-
                 if (response.isSuccessful()) {
+                    SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+                    c.saveAllPlaylists((ArrayList<Playlist>) response.body());
+                    ObjectBox.get().boxFor(SavedCache.class).put(c);
                     playlistCallback.onAllPlaylistRecieved(response.body());
                 } else {
                     Log.d(TAG, "Error Not Successful: " + code);
@@ -132,7 +136,7 @@ public class PlaylistManager extends MainManager{
 
     public synchronized void getTopPlaylists(final PlaylistCallback playlistCallback) {
           
-          
+
 
         Call<List<Playlist>> call = mPlaylistService.getTopPlaylists(  );
         call.enqueue(new Callback<List<Playlist>>() {
