@@ -11,9 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:id="@+id/user_menu"
-        android:name="com.prpr.androidpprog2.entregable.controller.activities.UserMenuFragment"
+        android:name="com.prpr.androidpprog2.entregable.controller.fragments.UserMenuFragment"
         tools:layout="@layout/fragment_user_menu">
-
     </fragment>
 
 

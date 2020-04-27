@@ -83,9 +83,6 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private String downloadUri, coverPas;
 
 
-
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

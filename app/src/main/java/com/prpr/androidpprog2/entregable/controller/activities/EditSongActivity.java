@@ -36,6 +36,7 @@ import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.ImageAdapter;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.fragments.InfoTrackFragment;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;

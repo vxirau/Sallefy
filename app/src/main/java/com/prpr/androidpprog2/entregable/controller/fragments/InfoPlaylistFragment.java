@@ -1,12 +1,7 @@
-package com.prpr.androidpprog2.entregable.controller.activities;
+package com.prpr.androidpprog2.entregable.controller.fragments;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.IDNA;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,19 +11,15 @@ import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 
-import com.bumptech.glide.util.Util;
 import com.downloader.Error;
-import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
-import com.downloader.OnPauseListener;
-import com.downloader.OnProgressListener;
 import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
-import com.downloader.Progress;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.activities.InfoArtistaActivity;
+import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.callbacks.DownloadCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.OptionDialogCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
@@ -39,14 +30,12 @@ import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
 import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
-import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class InfoPlaylistFragment extends BottomSheetDialogFragment implements DownloadCallback, OptionDialogCallback {
 

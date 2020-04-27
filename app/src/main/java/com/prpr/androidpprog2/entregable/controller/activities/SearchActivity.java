@@ -96,7 +96,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
-            //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
         }
@@ -120,7 +119,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         doUnbindService();
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -137,6 +135,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     public void onResume() {
         super.onResume();
         if(servidorVinculat){
+
         }
     }
 

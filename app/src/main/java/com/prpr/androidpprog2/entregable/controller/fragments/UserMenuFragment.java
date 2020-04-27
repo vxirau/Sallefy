@@ -1,4 +1,4 @@
-package com.prpr.androidpprog2.entregable.controller.activities;
+package com.prpr.androidpprog2.entregable.controller.fragments;
 
 import android.os.Bundle;
 

@@ -1,11 +1,10 @@
-package com.prpr.androidpprog2.entregable.controller.activities;
+package com.prpr.androidpprog2.entregable.controller.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,13 +20,13 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.activities.UploadActivity;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
-import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
@@ -40,8 +39,6 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     private ArrayList<Track> myTracks;
     private ArrayList<Track> genreFilteredTracks;
-
-
 
     private Button btnFilterTracks;
 
@@ -87,7 +84,6 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_tracks, container, false);
-
 
         /*btnSettingsTracks = (FloatingActionButton) view.findViewById(R.id.configTracksButton);
         btnSettingsTracks.setOnClickListener(new View.OnClickListener() {
@@ -186,12 +182,10 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 filter(editable.toString());

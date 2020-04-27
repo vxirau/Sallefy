@@ -32,6 +32,7 @@ import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.fragments.InfoTrackFragment;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;

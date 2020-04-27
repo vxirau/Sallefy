@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.prpr.androidpprog2.entregable.controller.activities.UserStatisticsFragment"
+    tools:context="com.prpr.androidpprog2.entregable.controller.fragments.UserStatisticsFragment"
     android:background="@drawable/fons_app">
 
 

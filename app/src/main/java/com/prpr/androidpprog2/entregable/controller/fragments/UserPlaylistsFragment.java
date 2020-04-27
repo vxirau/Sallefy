@@ -1,4 +1,4 @@
-package com.prpr.androidpprog2.entregable.controller.activities;
+package com.prpr.androidpprog2.entregable.controller.fragments;
 
 
 import android.os.Bundle;
@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.activities.NewPlaylistActivity;
+import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;

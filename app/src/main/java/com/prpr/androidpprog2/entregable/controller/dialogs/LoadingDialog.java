@@ -51,7 +51,6 @@ public class LoadingDialog {
     public void showLoadingDialog(String message) {
         mDialog.setContentView(R.layout.dialog_loading);
         mDialog.setCanceledOnTouchOutside(false);
-
         tvTitle = (TextView) mDialog.findViewById(R.id.dialog_title);
         tvTitle.setText("Loading");
         tvSubtitle = (TextView) mDialog.findViewById(R.id.dialog_subtitle);

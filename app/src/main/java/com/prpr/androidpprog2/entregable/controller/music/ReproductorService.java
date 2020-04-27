@@ -322,7 +322,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 }
             }
         }
-
     }
 
 
@@ -432,7 +431,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         registerReceiver(playNewAudio, filter);
     }
 
-
     private void initMediaSession() throws RemoteException {
         if (mediaSessionManager != null) return;
         mediaSessionManager = (MediaSessionManager) getSystemService(Context.MEDIA_SESSION_SERVICE);
@@ -496,8 +494,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
     private void updateMetaData() {
-
-
         Bitmap albumArt;
         String urlString;
         if (activeAudio != null && activeAudio.getThumbnail() != null) {
@@ -602,6 +598,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         updateUI();
         return null;
     }
+
 
     private void handleIncomingActions(Intent playbackAction) {
         if (playbackAction == null || playbackAction.getAction() == null) return;
@@ -882,8 +879,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
                 audioManager.abandonAudioFocus(this);
     }
-
-
 
 
     public class LocalBinder extends Binder {

@@ -33,6 +33,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.fragments.UserFollowedFragment;
+import com.prpr.androidpprog2.entregable.controller.fragments.UserPlaylistsFragment;
+import com.prpr.androidpprog2.entregable.controller.fragments.UserStatisticsFragment;
+import com.prpr.androidpprog2.entregable.controller.fragments.UserTracksFragment;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -71,7 +75,6 @@ public class UserMainActivity extends AppCompatActivity{
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
         }
-
         @Override
         public void onServiceDisconnected(ComponentName name) {
             servidorVinculat = false;
@@ -284,14 +287,11 @@ public class UserMainActivity extends AppCompatActivity{
 
         springAnimation.animateToFinalPosition(((this.width/4))- 30);
         System.out.println(((this.width/4)));
+
+
         UserTracksFragment userTracksFragment = new UserTracksFragment();
-
         FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction()
-                .replace(R.id.relativeUserLayout, userTracksFragment, userTracksFragment.getTag())
-                .commit();
-
-
+        manager.beginTransaction().replace(R.id.relativeUserLayout, userTracksFragment, userTracksFragment.getTag()).commit();
 
     }
 

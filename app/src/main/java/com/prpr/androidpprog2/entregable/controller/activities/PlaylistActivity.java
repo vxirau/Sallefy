@@ -38,6 +38,8 @@ import com.prpr.androidpprog2.entregable.controller.callbacks.OptionDialogCallba
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.OptionDialog;
+import com.prpr.androidpprog2.entregable.controller.fragments.InfoPlaylistFragment;
+import com.prpr.androidpprog2.entregable.controller.fragments.InfoTrackFragment;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
@@ -181,7 +183,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if(!serviceBound){
             saveIdForFuture();
@@ -957,7 +959,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         KeyboardUtils.hideKeyboard(this);
     }
 
-    void showUIEdit(){
+    public void showUIEdit(){
         newName.setVisibility(View.VISIBLE);
         plyName.setVisibility(View.GONE);
         newName.setText(playlst.getName());

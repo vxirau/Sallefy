@@ -42,6 +42,7 @@
                     android:id="@+id/track_img"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
+                    android:scaleType="centerCrop"
                     android:layout_centerInParent="true"
                 />
             </androidx.cardview.widget.CardView>

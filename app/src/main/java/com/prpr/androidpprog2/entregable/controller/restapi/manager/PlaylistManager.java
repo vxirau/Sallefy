@@ -12,6 +12,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.service.PlaylistServ
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
@@ -155,6 +156,38 @@ public class PlaylistManager extends MainManager{
         });
     }
 
+    public void updatePlaylist(Playlist playlist, Track trck, final PlaylistCallback playlistCallback) {
+        Call<Playlist> call = mPlaylistService.addTrackPlaylist(playlist );
+        call.enqueue(new Callback<Playlist>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(Call<Playlist> call, Response<Playlist> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    try {
+                        UtilFunctions.updatePlaylist(response.body(), mContext, trck);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    playlistCallback.onPlaylistToUpdated(response.body());
+                } else {
+                    try{
+                        playlistCallback.onTrackAddFailure(new Throwable(response.errorBody().string()));
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Playlist> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                playlistCallback.onTrackAddFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+
+        });
+    }
+
 
     public void updatePlaylist(Playlist playlist, final PlaylistCallback playlistCallback) {
         Call<Playlist> call = mPlaylistService.addTrackPlaylist(playlist );
@@ -165,7 +198,7 @@ public class PlaylistManager extends MainManager{
                 int code = response.code();
                 if (response.isSuccessful()) {
                     try {
-                        UtilFunctions.updatePlaylist(response.body(), mContext, false);
+                        UtilFunctions.updatePlaylist(response.body(), mContext);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -38,7 +38,7 @@
         <activity android:name=".controller.activities.Add2PlaylistActivity"/>
         <activity android:name=".controller.activities.UploadActivity"/>
         <activity android:name=".controller.activities.AddSongsBunchActivity"/>
-        <activity android:name=".controller.activities.InfoTrackFragment"/>
+        <activity android:name=".controller.fragments.InfoTrackFragment"/>
         <activity android:name=".controller.activities.InfoArtistaActivity"/>
         <activity android:name=".controller.activities.SearchActivity"/>
         <activity android:name=".controller.activities.SettingsActivity"/>

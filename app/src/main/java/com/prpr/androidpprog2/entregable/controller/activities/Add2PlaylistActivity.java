@@ -57,7 +57,6 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
     @Override
     public void onCreate(Bundle savedInstanceState){
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_song_2_playlist);
         trck = (Track) getIntent().getSerializableExtra("Trck");

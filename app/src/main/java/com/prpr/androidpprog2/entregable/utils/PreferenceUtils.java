@@ -30,6 +30,7 @@ public class PreferenceUtils {
     private static String KEY_LST_PLY_ID = "lastPlaylist";
 
     public PreferenceUtils() {
+
     }
 
     public static boolean saveTrackIndex(Context context, int index){

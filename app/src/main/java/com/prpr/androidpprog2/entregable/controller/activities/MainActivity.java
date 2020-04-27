@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }
     }
 
-    private int findInex(Track t){
+    private int findIndex(Track t){
         int index=-1;
         for(int i=0; i<audioList.size() ;i++){
             if(t.getId().equals(audioList.get(i).getId()) && t.getName().equals(audioList.get(i).getName()) && t.getUrl().equals(audioList.get(i).getUrl())){
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         audioList = PreferenceUtils.getAllTracks(getApplicationContext());
         Track t = PreferenceUtils.getTrack(getApplicationContext());
         if(t!=null){
-            audioIndex = findInex(t);
+            audioIndex = findIndex(t);
             if(audioIndex==-1){
                 ErrorDialog.getInstance(this).showErrorDialog("Error loading previous session");
             }else{
@@ -177,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }else{
             ErrorDialog.getInstance(this).showErrorDialog("Error loading previous session");
         }
-
     }
 
     private void start() {
@@ -219,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         Log.i("ObjectBrowser", "Started: " + started);
         //}
         //---------------------------------------------------------------------------------------------------------------------
-
 
 
         if(getIntent().getSerializableExtra("sameUser")!=null){

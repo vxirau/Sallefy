@@ -1,4 +1,4 @@
-package com.prpr.androidpprog2.entregable.controller.activities;
+package com.prpr.androidpprog2.entregable.controller.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.activities.Add2PlaylistActivity;
+import com.prpr.androidpprog2.entregable.controller.activities.EditSongActivity;
+import com.prpr.androidpprog2.entregable.controller.activities.InfoArtistaActivity;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
