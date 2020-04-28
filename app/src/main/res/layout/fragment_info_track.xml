@@ -183,7 +183,40 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutEliminar"
+    android:id="@+id/layoutEliminar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:clickable="true"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="38dp"
+    android:layout_marginTop="15dp">
+
+
+    <ImageButton
+        android:id="@+id/eliminar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/delete_track"
+        android:scaleType="fitCenter"/>
+
+
+    <TextView
+        android:id="@+id/text_eliminar"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:layout_marginLeft="20dp"
+        android:textSize="15sp"
+        android:text="@string/eliminar"
+        android:textAlignment="textStart"
+        android:gravity="start"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutShare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -195,21 +228,21 @@
 
 
         <ImageButton
-            android:id="@+id/eliminar"
+            android:id="@+id/button_share"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/delete_track"
+            android:background="@drawable/share_infotrack_24dp"
             android:scaleType="fitCenter"/>
 
 
         <TextView
-            android:id="@+id/text_eliminar"
+            android:id="@+id/text_share"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="20dp"
             android:textSize="15sp"
-            android:text="@string/eliminar"
+            android:text="@string/share"
             android:textAlignment="textStart"
             android:gravity="start"/>
 
@@ -222,6 +255,6 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:clickable="true"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="50dp"/>
 
 </LinearLayout>
