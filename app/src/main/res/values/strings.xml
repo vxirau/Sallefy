@@ -149,8 +149,13 @@
 
     <string name="top_listened_genres_user">Top listened genres</string>
 
-
-
+    <string name="whats">Whatsapp</string>
+    <string name="insta">Instagram</string>
+    <string name="face">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="copy">Copy link</string>
+    <string name="more">More</string>
+    <string name="sms">SMS</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
