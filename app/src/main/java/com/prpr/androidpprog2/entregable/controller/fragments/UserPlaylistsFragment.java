@@ -359,5 +359,15 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     }
 
+    @Override
+    public void onAllMyPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingPlaylistsFailure(Throwable throwable) {
+
+    }
+
 
 }

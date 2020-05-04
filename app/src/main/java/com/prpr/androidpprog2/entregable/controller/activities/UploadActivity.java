@@ -514,4 +514,14 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     public void onPlaylistDeleteFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onAllMyPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingPlaylistsFailure(Throwable throwable) {
+
+    }
 }

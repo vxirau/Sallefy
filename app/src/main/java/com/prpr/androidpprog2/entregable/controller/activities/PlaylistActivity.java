@@ -925,6 +925,16 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
+    public void onAllMyPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingPlaylistsFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onDelete() {
         dialogEdit.cancelDialog();
         dialogEdit.showConfirmationDialog("Are you sure you want to delete this playlist?");
