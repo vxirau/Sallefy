@@ -63,6 +63,10 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
     private TextView eliminar_text;
     private LinearLayout layouteliminar;
 
+    private ImageButton share_icono;
+    private TextView share_text;
+    private LinearLayout layoutShare;
+
     private Button cancel;
 
     private Track trck;
@@ -201,7 +205,15 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
             layouteliminar.setVisibility(View.INVISIBLE);
         }
 
+        share_icono = view.findViewById(R.id.button_share);
+        share_text = view.findViewById(R.id.text_share);
+        layoutShare = view.findViewById(R.id.layoutShare);
+        layoutShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
     }
 
     @Override

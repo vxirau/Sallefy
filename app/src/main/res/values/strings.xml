@@ -165,6 +165,7 @@
     <string name="canvi_nom">Name of the song</string>
     <string name="canvi_durada">Duration</string>
     <string name="eliminar">Remove from playlist</string>
+    <string name="share">Share</string>
     <string name="tots_generes">ALL</string>
     <string name="generes_actuals">ACTUAL</string>
     <string name="edit_playlist">Edit</string>
