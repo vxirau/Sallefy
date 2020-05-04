@@ -166,4 +166,14 @@ public class NewPlaylistActivity extends Activity implements PlaylistCallback {
 
     }
 
+    @Override
+    public void onAllMyPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingPlaylistsFailure(Throwable throwable) {
+
+    }
+
 }

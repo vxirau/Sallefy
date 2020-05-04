@@ -47,17 +47,10 @@ public class PlaylistManager extends MainManager{
 
     public PlaylistManager(Context context) {
         mContext = context;
-        /*if (isConnected(context)){
-            mPlaylistService = mainRetrofit.create(PlaylistService.class);
-        }else{
-            mPlaylistService = getCachedRetrofit(context).create(PlaylistService.class);
-        }*/
         mPlaylistService = mainRetrofit.create(PlaylistService.class);
     }
 
     public synchronized void createPlaylist(Playlist playlist, final PlaylistCallback playlistCallback) {
-          
-
         Call<Playlist> call = mPlaylistService.createPlaylist(playlist );
         call.enqueue(new Callback<Playlist>() {
             @Override
@@ -79,7 +72,6 @@ public class PlaylistManager extends MainManager{
                 Log.d(TAG, "Error Failure: " + t.getStackTrace());
                 playlistCallback.onPlaylistFailure(new Throwable("ERROR " + t.getStackTrace()));
             }
-
         });
     }
 
@@ -92,8 +84,10 @@ public class PlaylistManager extends MainManager{
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
                 int code = response.code();
-
                 if (response.isSuccessful()) {
+                    SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+                    c.saveAllMyPlaylists((ArrayList<Playlist>) response.body());
+                    ObjectBox.get().boxFor(SavedCache.class).put(c);
                     playlistCallback.onPlaylistRecieved(response.body());
                 } else {
                     Log.d(TAG, "Error Not Successful: " + code);
@@ -104,7 +98,7 @@ public class PlaylistManager extends MainManager{
             @Override
             public void onFailure(Call<List<Playlist>> call, Throwable t) {
                 Log.d(TAG, "Error Failure: " + t.getStackTrace());
-                playlistCallback.onPlaylistFailure(new Throwable("ERROR " + t.getStackTrace()));
+                playlistCallback.onAllMyPlaylistFailure(new Throwable("ERROR " + t.getStackTrace()));
             }
         });
     }
@@ -135,8 +129,6 @@ public class PlaylistManager extends MainManager{
     }
 
     public synchronized void getTopPlaylists(final PlaylistCallback playlistCallback) {
-          
-
 
         Call<List<Playlist>> call = mPlaylistService.getTopPlaylists(  );
         call.enqueue(new Callback<List<Playlist>>() {
@@ -145,6 +137,9 @@ public class PlaylistManager extends MainManager{
                 int code = response.code();
 
                 if (response.isSuccessful()) {
+                    SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+                    c.savetopPlaylists((ArrayList<Playlist>) response.body());
+                    ObjectBox.get().boxFor(SavedCache.class).put(c);
                     playlistCallback.onTopRecieved(response.body());
                 } else {
                     Log.d(TAG, "Error Not Successful: " + code);
@@ -234,6 +229,9 @@ public class PlaylistManager extends MainManager{
 
                 int code = response.code();
                 if (response.isSuccessful()) {
+                    SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+                    c.saveFollowingPlaylists((ArrayList<Playlist>) response.body());
+                    ObjectBox.get().boxFor(SavedCache.class).put(c);
                     playlistCallback.onFollowingRecieved(response.body());
                 } else {
                     Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
@@ -244,18 +242,17 @@ public class PlaylistManager extends MainManager{
             @Override
             public void onFailure(Call<List<Playlist>> call, Throwable t) {
                 Log.d(TAG, "Error: " + t.getMessage());
-                playlistCallback.onNoTopPlaylists(new Throwable("ERROR " + t.getStackTrace()));
+                playlistCallback.onFollowingPlaylistsFailure(new Throwable("ERROR " + t.getStackTrace()));
             }
         });
     }
 
     public synchronized void showUserPlaylist(String login,final PlaylistCallback playlistCallback) {
-          
+
         Call<List<Playlist>> call = mPlaylistService.showUserPlaylist(login );
         call.enqueue(new Callback<List<Playlist>>() {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
-
                 int code = response.code();
                 if (response.isSuccessful()) {
                     playlistCallback.onAllPlaylistRecieved(response.body());
@@ -278,7 +275,6 @@ public class PlaylistManager extends MainManager{
         call.enqueue(new Callback<Follow>() {
             @Override
             public void onResponse(Call<Follow> call, Response<Follow> response) {
-
                 int code = response.code();
                 if (response.isSuccessful()) {
                     playlistCallback.onFollowingChecked(response.body());
@@ -302,7 +298,6 @@ public class PlaylistManager extends MainManager{
         call.enqueue(new Callback<Follow>() {
             @Override
             public void onResponse(Call<Follow> call, Response<Follow> response) {
-
                 int code = response.code();
                 if (response.isSuccessful()) {
                     playlistCallback.onFollowSuccessfull(response.body());
@@ -326,7 +321,6 @@ public class PlaylistManager extends MainManager{
         call.enqueue(new Callback<Playlist>() {
             @Override
             public void onResponse(Call<Playlist> call, Response<Playlist> response) {
-
                 int code = response.code();
                 if (response.isSuccessful()) {
                     playlistCallback.onPlaylistRecived(response.body());
@@ -350,7 +344,6 @@ public class PlaylistManager extends MainManager{
         call.enqueue(new Callback<Playlist>() {
             @Override
             public void onResponse(Call<Playlist> call, Response<Playlist> response) {
-
                 int code = response.code();
                 if (response.isSuccessful()) {
                     playlistCallback.onPlaylistDeleted(response.body());

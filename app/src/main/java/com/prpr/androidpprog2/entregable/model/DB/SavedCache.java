@@ -18,9 +18,10 @@ public class SavedCache {
     @Id(assignable = true) public long id;
     public String oldToken;
     public String allPlaylists;
-    public String popularPlaylists;
+    public String allMyPlaylists;
+    public String topPlaylists;
     public String topUsers;
-    public String followerPlaylists;
+    public String followingPlaylists;
     public String myPlaylists;
     public String mySongs;
     public String myFollowed;
@@ -53,12 +54,43 @@ public class SavedCache {
         this.allPlaylists = allPlaylists;
     }
 
-    public String getPopularPlaylists() {
-        return popularPlaylists;
+    public String gettopPlaylists() {
+        return topPlaylists;
     }
 
-    public void setPopularPlaylists(String popularPlaylists) {
-        this.popularPlaylists = popularPlaylists;
+    public void settopPlaylists(String topPlaylists) {
+        this.topPlaylists = topPlaylists;
+    }
+
+    public String getAllMyPlaylists() {
+        return allMyPlaylists;
+    }
+
+    public void setAllMyPlaylists(String allMyPlaylists) {
+        this.allMyPlaylists = allMyPlaylists;
+    }
+    
+    
+    public ArrayList<Playlist> retrieveAllMyPlaylists() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Playlist>>() {}.getType();
+        return gson.fromJson(this.allMyPlaylists, type);
+    }
+
+    public void saveAllMyPlaylists(ArrayList<Playlist> allPlayMylists) {
+        Gson gson = new Gson();
+        this.allMyPlaylists = gson.toJson(allPlaylists);
+    }
+
+    public ArrayList<Playlist> retrieveMyUserPlaylists() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Playlist>>() {}.getType();
+        return gson.fromJson(this.myPlaylists, type);
+    }
+
+    public void saveMyUserPlaylists(ArrayList<Playlist> allPlayMylists) {
+        Gson gson = new Gson();
+        this.myPlaylists = gson.toJson(allPlaylists);
     }
 
     public User retrieveUser(){
@@ -99,15 +131,26 @@ public class SavedCache {
         this.allPlaylists = gson.toJson(allPlaylists);
     }
 
-    public ArrayList<Playlist> retrievePopularPlaylists() {
+    public ArrayList<Playlist> retrievetopPlaylists() {
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<Playlist>>() {}.getType();
-        return gson.fromJson(this.popularPlaylists, type);
+        return gson.fromJson(this.topPlaylists, type);
     }
 
-    public void savePopularPlaylists(ArrayList<Playlist> allPlaylists) {
+    public void savetopPlaylists(ArrayList<Playlist> allPlaylists) {
         Gson gson = new Gson();
-        this.popularPlaylists = gson.toJson(allPlaylists);
+        this.topPlaylists = gson.toJson(allPlaylists);
+    }
+
+    public ArrayList<Playlist> retrieveFollowingPlaylists() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Playlist>>() {}.getType();
+        return gson.fromJson(this.followingPlaylists, type);
+    }
+
+    public void saveFollowingPlaylists(ArrayList<Playlist> allPlaylists) {
+        Gson gson = new Gson();
+        this.followingPlaylists = gson.toJson(allPlaylists);
     }
 
     public String getTopUsers() {
@@ -119,11 +162,11 @@ public class SavedCache {
     }
 
     public String getFollowerPlaylists() {
-        return followerPlaylists;
+        return followingPlaylists;
     }
 
     public void setFollowerPlaylists(String followerPlaylists) {
-        this.followerPlaylists = followerPlaylists;
+        followingPlaylists = followerPlaylists;
     }
 
     public String getMyPlaylists() {

@@ -392,6 +392,16 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
     public void onPlaylistDeleteFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onAllMyPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingPlaylistsFailure(Throwable throwable) {
+
+    }
 }
 
 

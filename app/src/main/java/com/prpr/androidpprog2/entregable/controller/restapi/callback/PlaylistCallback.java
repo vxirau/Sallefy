@@ -26,4 +26,6 @@ public interface PlaylistCallback {
     void onPlaylistRecived(Playlist playlist);
     void onPlaylistDeleted(Playlist body);
     void onPlaylistDeleteFailure(Throwable throwable);
+    void onAllMyPlaylistFailure(Throwable throwable);
+    void onFollowingPlaylistsFailure(Throwable throwable);
 }

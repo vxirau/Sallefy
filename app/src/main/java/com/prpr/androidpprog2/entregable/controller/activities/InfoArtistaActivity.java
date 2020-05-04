@@ -55,6 +55,8 @@ import java.util.List;
 
 public class InfoArtistaActivity extends AppCompatActivity implements TrackListCallback, TrackCallback, PlaylistCallback, UserCallback {
 
+
+
     private Button back;
     private RecyclerView topSongsRecycle;
     private RecyclerView playlistByArtistRecycle;
@@ -75,7 +77,6 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     private ImageView profilePic;
 
 
-
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
     private TextView followingTxt;
@@ -86,9 +87,8 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     private ImageView im;
     private LinearLayout playing;
     private ReproductorService serv;
-    private boolean servidorVinculat=false;
+    private boolean servidorVinculat = false;
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
-
 
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -124,10 +124,10 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     @Override
     public void onStart() {
         super.onStart();
-        if(!servidorVinculat){
+        if (!servidorVinculat) {
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }else{
+        } else {
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
         }
@@ -136,20 +136,17 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     @Override
     public void onResume() {
         super.onResume();
-        if(!servidorVinculat){
+        if (!servidorVinculat) {
             Intent intent = new Intent(this, ReproductorService.class);
             bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }else{
+        } else {
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
         }
     }
 
 
-
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
-
-
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,21 +155,20 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         setContentView(R.layout.activity_info_user);
         artist = (User) getIntent().getSerializableExtra("User");
         umanager = new UserManager(this);
-        umanager.checkFollow(artist.getLogin(),this);
+        umanager.checkFollow(artist.getLogin(), this);
         initViews();
 
         TrackManager topmanager = new TrackManager(this);
         topmanager.getTopTracks(artist.getLogin(), this);
 
         PlaylistManager pmanager = new PlaylistManager(this);
-        pmanager.showUserPlaylist(artist.getLogin(),this);
+        pmanager.showUserPlaylist(artist.getLogin(), this);
 
         TrackManager tmanager = new TrackManager(this);
-        tmanager.getUserTracks(artist.getLogin(),this);
+        tmanager.getUserTracks(artist.getLogin(), this);
     }
 
-    private void initViews(){
-
+    private void initViews() {
 
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
@@ -236,11 +232,11 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         playing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(serv!=null && !trackTitle.getText().toString().equals("")){
+                if (serv != null && !trackTitle.getText().toString().equals("")) {
                     Intent intent = new Intent(getApplicationContext(), ReproductorActivity.class);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                     overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-                }else{
+                } else {
                     ErrorDialog.getInstance(InfoArtistaActivity.this).showErrorDialog("You haven't selected a song yet!");
                 }
             }
@@ -248,12 +244,12 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
 
         back = findViewById(R.id.back2Main);
-        back.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            finish();
-            overridePendingTransition(R.anim.nothing,R.anim.nothing);
-        }
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.nothing, R.anim.nothing);
+            }
         });
 
         name = findViewById(R.id.userName);
@@ -264,7 +260,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         login.setText(artist.getLogin());
 
         profilePic = (ImageView) findViewById(R.id.profilePic);
-        if(artist.getImageUrl() != null && !artist.getImageUrl().isEmpty()){
+        if (artist.getImageUrl() != null && !artist.getImageUrl().isEmpty()) {
             Picasso.get().load(artist.getImageUrl()).into(profilePic, new Callback() {
                 @Override
                 public void onSuccess() {
@@ -274,6 +270,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
                     imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
                     profilePic.setImageDrawable(imageDrawable);
                 }
+
                 @Override
                 public void onError(Exception e) {
                     Picasso.get().load("https://user-images.githubusercontent.com/48185184/77792597-e939a400-7068-11ea-8ade-cd8b4e4ab7c9.png").into(profilePic);
@@ -289,6 +286,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
                     imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
                     profilePic.setImageDrawable(imageDrawable);
                 }
+
                 @Override
                 public void onError(Exception e) {
                     Picasso.get().load("https://user-images.githubusercontent.com/48185184/77792597-e939a400-7068-11ea-8ade-cd8b4e4ab7c9.png").into(profilePic);
@@ -297,35 +295,33 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         }
 
 
-
         follow = (Button) findViewById(R.id.followUser);
-        follow.setOnClickListener(new View.OnClickListener(){
+        follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                umanager.startStopFollowing(artist.getLogin(),InfoArtistaActivity.this);
+                umanager.startStopFollowing(artist.getLogin(), InfoArtistaActivity.this);
             }
         });
 
         topSongsRecycle = (RecyclerView) findViewById(R.id.topSongsRecycle);
         LinearLayoutManager man = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        TrackListAdapter topadapter = new TrackListAdapter(this,this, artTracks , null);
+        TrackListAdapter topadapter = new TrackListAdapter(this, this, artTracks, null);
         topSongsRecycle.setLayoutManager(man);
         topSongsRecycle.setAdapter(topadapter);
 
         playlistByArtistRecycle = (RecyclerView) findViewById(R.id.playlistByArtistRecycle);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        PlaylistAdapter pladapter = new PlaylistAdapter(this,artPlaylist);
+        PlaylistAdapter pladapter = new PlaylistAdapter(this, artPlaylist);
         playlistByArtistRecycle.setLayoutManager(manager);
         playlistByArtistRecycle.setAdapter(pladapter);
 
         allSongsRecycle = (RecyclerView) findViewById(R.id.allSongsRecycle);
         LinearLayoutManager manager2 = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        TrackListAdapter adapter = new TrackListAdapter(this,this, artTracks , null);
+        TrackListAdapter adapter = new TrackListAdapter(this, this, artTracks, null);
         allSongsRecycle.setLayoutManager(manager2);
         allSongsRecycle.setAdapter(adapter);
 
     }
-
 
 
     private void playAudio(int audioIndex) {
@@ -347,7 +343,6 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         trackTitle.setText(artTracks.get(audioIndex).getName());
         trackAuthor.setText(artTracks.get(audioIndex).getUserLogin());
     }
-
 
 
     @Override
@@ -393,7 +388,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     @Override
     public void onUserTracksReceived(List<Track> tracks) {
         this.artTracks = (ArrayList) tracks;
-        if(tracks.size()==0){
+        if (tracks.size() == 0) {
             songs = findViewById(R.id.noSongsAvailable);
             songs.setVisibility(View.VISIBLE);
         } else {
@@ -410,7 +405,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     @Override
     public void onTopTracksRecieved(List<Track> tracks) {
         this.artTracks = (ArrayList) tracks;
-        if(tracks.size() == 0){
+        if (tracks.size() == 0) {
             topSongs = findViewById(R.id.noTopAvailable);
             topSongs.setVisibility(View.VISIBLE);
         } else {
@@ -502,7 +497,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     @Override
     public void onAllPlaylistRecieved(List<Playlist> body) {
         this.artPlaylist = (ArrayList) body;
-        if(body.size()==0){
+        if (body.size() == 0) {
             plists = findViewById(R.id.noPlistAvailable);
             plists.setVisibility(View.VISIBLE);
         } else {
@@ -564,6 +559,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     @Override
     public void onPlaylistDeleteFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onAllMyPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingPlaylistsFailure(Throwable throwable) {
 
     }
 
@@ -641,14 +646,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     @Override
     public void onFollowSuccess(Follow body) {
         followingInfo = body;
-        if(followingInfo.isFollowing()){
+        if (followingInfo.isFollowing()) {
             follow.setText("Following");
-            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
-            isFollowing=false;
-        }else{
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);
+            ;
+            isFollowing = false;
+        } else {
             follow.setText("Follow");
-            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
-            isFollowing=true;
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);
+            ;
+            isFollowing = true;
         }
     }
 
@@ -665,14 +672,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     @Override
     public void onCheckSuccess(Follow body) {
         followingInfo = body;
-        if(followingInfo.isFollowing()){
+        if (followingInfo.isFollowing()) {
             follow.setText("Following");
-            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);;
-            isFollowing=false;
-        }else{
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_green);
+            ;
+            isFollowing = false;
+        } else {
             follow.setText("Follow");
-            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
-            isFollowing=true;
+            follow.setBackgroundResource(R.drawable.rectangle_small_gborder_black);
+            ;
+            isFollowing = true;
         }
     }
 

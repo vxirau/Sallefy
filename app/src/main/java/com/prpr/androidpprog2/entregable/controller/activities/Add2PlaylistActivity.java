@@ -214,6 +214,16 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
     }
 
+    @Override
+    public void onAllMyPlaylistFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowingPlaylistsFailure(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onPlaylistAddSelected(int position, ArrayList<Playlist> playlist, Track track) {
