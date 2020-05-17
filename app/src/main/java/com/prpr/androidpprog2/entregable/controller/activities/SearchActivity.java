@@ -598,6 +598,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     }
 
+    @Override
+    public void onSallefySectionRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onSallefySectionFailure(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onTrackSearchRecived(ArrayList<Track> tracks) {

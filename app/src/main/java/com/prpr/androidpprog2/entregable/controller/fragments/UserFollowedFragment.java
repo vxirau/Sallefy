@@ -274,6 +274,16 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     }
 
     @Override
+    public void onSallefySectionRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onSallefySectionFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

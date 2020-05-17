@@ -259,6 +259,16 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
     }
 
+    @Override
+    public void onSallefySectionRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onSallefySectionFailure(Throwable throwable) {
+
+    }
+
 
 
     /*@Override

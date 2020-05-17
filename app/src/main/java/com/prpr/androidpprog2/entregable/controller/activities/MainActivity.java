@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,7 +61,9 @@ import com.prpr.androidpprog2.entregable.utils.ConnectivityService;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
+import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -107,8 +110,26 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     private PlaylistManager pManager;
     private UserManager usrManager;
-
     private LinearLayout playing;
+
+
+    //---------BY SALLEFY---------
+    private LinearLayout topLeft;
+    private ImageView topLeftImg;
+    private TextView topLeftText;
+
+    private LinearLayout topRight;
+    private ImageView topRightImg;
+    private TextView topRightText;
+
+    private LinearLayout bottomLeft;
+    private ImageView bottomLeftImg;
+    private TextView bottomLeftText;
+
+    private LinearLayout bottomRight;
+    private ImageView bottomRightImg;
+    private TextView bottomRightText;
+    //---------------------------
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.prpr.androidpprog2.entregable.PlayNewAudio";
@@ -243,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager.getAllPlaylists(this);
         pManager.getTopPlaylists(this);
         usrManager.getTopUsers(this);
+        usrManager.getSallefyUsers(this);
         pManager.getFollowingPlaylists(this);
         if(sameUser){
             loadPreviousSession();
@@ -280,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             }
         });
 
+        loadBySallefySection();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -303,7 +326,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }else{
             name = Session.getInstance().getUser().getLogin();;
         }
-
 
         titol = findViewById(R.id.titolActivitat);
         titol.setText(buenas + name);
@@ -444,6 +466,40 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
         mSeekBar = (SeekBar) findViewById(R.id.dynamic_seekBar);
 
+
+    }
+
+    private void loadBySallefySection() {
+        topLeft = findViewById(R.id.id11);
+        topRight = findViewById(R.id.id12);
+        bottomLeft = findViewById(R.id.id21);
+        bottomRight = findViewById(R.id.id22);
+
+        topLeftImg = findViewById(R.id.image11);
+        topRightImg = findViewById(R.id.image12);
+        bottomLeftImg = findViewById(R.id.image21);
+        bottomRightImg = findViewById(R.id.image22);
+
+        topLeftText = findViewById(R.id.playlist11);
+        topRightText = findViewById(R.id.playlist12);
+        bottomLeftText = findViewById(R.id.playlist21);
+        bottomRightText = findViewById(R.id.playlist22);
+
+        topLeftText.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        topLeftText.setSelected(true);
+        topLeftText.setSingleLine(true);
+
+        topRightText.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        topRightText.setSelected(true);
+        topRightText.setSingleLine(true);
+
+        bottomLeftText.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        bottomLeftText.setSelected(true);
+        bottomLeftText.setSingleLine(true);
+
+        bottomRightText.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        bottomRightText.setSelected(true);
+        bottomRightText.setSingleLine(true);
 
     }
 
@@ -776,6 +832,74 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onPasswordUpdatedFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onSallefySectionRecieved(List<User> body) {
+        ArrayList<User> top4 = clearArray(body);
+        if(top4.size()<4){
+            UserManager.getInstance(this).getSallefyUsers(this);
+        }else{
+            System.out.println();
+            for(int i=0; i<top4.size() ;i++){
+                switch (i){
+                    case 0:
+                        Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
+                        topLeftText.setText("This is " + top4.get(i).getFirstName());
+                        break;
+                    case 1:
+                        Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
+                        topRightText.setText("This is " + top4.get(i).getFirstName());
+                        break;
+                    case 2:
+                        Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
+                        bottomLeftText.setText("This is " + top4.get(i).getFirstName());
+                        break;
+                    case 3:
+                        Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
+                        bottomRightText.setText("This is " + top4.get(i).getFirstName());
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    private ArrayList<User> clearArray(List<User> body) {
+        ArrayList<User> top = new ArrayList<>();
+        boolean ok = false;
+        for(int i=0; i<body.size() && !ok ;i++){
+            if(!existsInTop(top, body.get(i)) && body.get(i).getFirstName()!=null && (body.get(i).getImageUrl()!=null && !body.get(i).getImageUrl().equals(""))){
+                if(isValidUrl(body.get(i).getImageUrl())){
+                    top.add(body.get(i));
+                }
+            }
+            if(top.size()==4){
+                ok = true;
+            }
+        }
+
+        return top;
+    }
+
+    private boolean isValidUrl(String imageUrl) {
+        return URLUtil.isValidUrl( "imageUrl" );
+    }
+
+    private boolean existsInTop(ArrayList<User> top, User u) {
+        boolean exist = false;
+        for(User usr : top){
+            if(usr.getId().equals(u.getId())){
+                exist = true;
+            }
+        }
+        return exist;
+    }
+
+    @Override
+    public void onSallefySectionFailure(Throwable throwable) {
 
     }
 

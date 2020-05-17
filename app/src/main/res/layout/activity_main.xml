@@ -37,6 +37,205 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/bySallefy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/by_sallefy"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <GridLayout
+                android:id="@+id/bySallefySection"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="15dp"
+                android:columnCount="2"
+                android:rowCount="2">
+
+                <LinearLayout
+                    android:id="@+id/id11"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_row="0"
+                    android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:layout_columnSpan="1"
+                    android:layout_column="0"
+
+                    android:background="@drawable/by_sallefy_fondo"
+                    android:layout_gravity="left|top"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:elevation="10dp"
+                        app:cardCornerRadius="15dp">
+
+                        <ImageView
+                            android:id="@+id/image11"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="centerCrop" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/playlist11"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:text="This is 11" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/id12"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_row="0"
+                    android:clickable="true"
+                    android:layout_columnSpan="1"
+                    android:layout_column="1"
+
+                    android:background="@drawable/by_sallefy_fondo"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:elevation="10dp"
+                        app:cardCornerRadius="15dp">
+
+                        <ImageView
+                            android:id="@+id/image12"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="centerCrop" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/playlist12"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:text="This is 12" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/id21"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_row="1"
+                    android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:layout_column="0"
+
+                    android:background="@drawable/by_sallefy_fondo"
+                    android:layout_gravity="left|bottom"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:elevation="10dp"
+                        app:cardCornerRadius="15dp">
+
+                        <ImageView
+                            android:id="@+id/image21"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="centerCrop" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/playlist21"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:text="This is 21" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/id22"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_row="1"
+                    android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:layout_column="1"
+
+                    android:background="@drawable/by_sallefy_fondo"
+                    android:layout_gravity="right|bottom"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:elevation="10dp"
+                        app:cardCornerRadius="15dp">
+
+                        <ImageView
+                            android:id="@+id/image22"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="centerCrop" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/playlist22"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:singleLine="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:text="This is 22" />
+
+                </LinearLayout>
+
+            </GridLayout>
+
             <TextView
                 android:id="@+id/topPlayed"
                 android:layout_width="wrap_content"

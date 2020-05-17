@@ -754,4 +754,14 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     public void onPasswordUpdatedFailure(Throwable throwable) {
 
     }
+
+    @Override
+    public void onSallefySectionRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onSallefySectionFailure(Throwable throwable) {
+
+    }
 }

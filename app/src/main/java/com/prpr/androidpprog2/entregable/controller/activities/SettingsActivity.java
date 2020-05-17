@@ -581,6 +581,16 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         Toast.makeText(getApplicationContext(),"Password couldn't be updated!", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onSallefySectionRecieved(List<User> body) {
+
+    }
+
+    @Override
+    public void onSallefySectionFailure(Throwable throwable) {
+
+    }
+
 
     @Override
     public void onFailure(Throwable throwable) {

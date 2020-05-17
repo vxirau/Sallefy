@@ -50,5 +50,8 @@ public interface UserService {
 
     @POST("account/change-password")
     Call<ResponseBody> updatePassword(@Body passwordChangeDto pd);
+
+    @GET("users?popular=true&size=15")
+    Call<List<User>> getSallefyUsers();
 }
 

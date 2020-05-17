@@ -3,6 +3,7 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
@@ -337,5 +338,32 @@ public class UserManager extends MainManager{
             }
         });
 
+    }
+
+    public synchronized void getSallefyUsers (final UserCallback userCallback) {
+
+        Call<List<User>> call = mService.getSallefyUsers();
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    /*SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+                    c.saveTopUsers((ArrayList<User>) response.body());
+                    ObjectBox.get().boxFor(SavedCache.class).put(c);*/
+                    userCallback.onSallefySectionRecieved(response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    userCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                userCallback.onSallefySectionFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
     }
 }
