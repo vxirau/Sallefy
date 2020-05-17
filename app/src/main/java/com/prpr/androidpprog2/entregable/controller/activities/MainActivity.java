@@ -347,6 +347,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
 
         mes= findViewById(R.id.mesButton);
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            mes.setVisibility(View.GONE);
+        }
         mes.setEnabled(true);
         mes.setOnClickListener(new View.OnClickListener() {
             @Override

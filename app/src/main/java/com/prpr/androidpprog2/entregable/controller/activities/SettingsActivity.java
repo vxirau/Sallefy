@@ -33,6 +33,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.cloudinary.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.callbacks.LogOutCallback;
@@ -46,6 +47,7 @@ import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
 import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
 import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -302,12 +304,17 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loading.showLoadingDialog("Updating user");
-                try {
-                    doUpdateUser();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                if(UtilFunctions.noInternet(getApplicationContext())){
+                    ErrorDialog.getInstance(SettingsActivity.this).showErrorDialog("You have no internet connection!");
+                }else{
+                    loading.showLoadingDialog("Updating user");
+                    try {
+                        doUpdateUser();
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
         });
 

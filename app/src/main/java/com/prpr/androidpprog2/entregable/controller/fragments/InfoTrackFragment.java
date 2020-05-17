@@ -26,6 +26,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -214,6 +215,23 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
 
             }
         });
+
+        if(UtilFunctions.noInternet(getActivity().getApplicationContext())){
+            layouteliminar.setAlpha((float) 0.30);
+            layouteliminar.setEnabled(false);
+            layoutShare.setAlpha((float) 0.30);
+            layoutShare.setEnabled(false);
+            layoutPlaylist.setAlpha((float) 0.30);
+            layoutPlaylist.setEnabled(false);
+            layoutArtist.setAlpha((float) 0.30);
+            layoutArtist.setEnabled(false);
+            layoutedit.setAlpha((float) 0.30);
+            layoutedit.setEnabled(false);
+            layoutFav.setAlpha((float) 0.30);
+            layoutFav.setEnabled(false);
+        }
+
+
     }
 
     @Override

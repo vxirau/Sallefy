@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -42,6 +44,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallb
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.SearchManager;
 import com.prpr.androidpprog2.entregable.model.Genre;
@@ -150,6 +153,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
         initViews();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     void initViews(){
 
         play = findViewById(R.id.playButton);
@@ -242,22 +246,34 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
         //Search bar
         mSearchText = (EditText) findViewById(R.id.search_bar);
-        mSearchText.addTextChangedListener(new TextWatcher() {
+        mSearchText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                searchCall();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(UtilFunctions.noInternet(getApplicationContext())){
+                    ErrorDialog.getInstance(SearchActivity.this).showErrorDialog("You have no internet connection!");
+                }
+                return false;
             }
         });
+        if(!UtilFunctions.noInternet(getApplicationContext())){
+            mSearchText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    searchCall();
+                }
+            });
+        }
+
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.buscar);

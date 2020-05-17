@@ -77,25 +77,25 @@ public class UserFollowedAdapter extends RecyclerView.Adapter<UserFollowedAdapte
         holder.userlogin.setSingleLine(true);
 
         if(users.get(position).getTracks() != null){
-            holder.userTracks.setText(String.valueOf(users.get(position).getTracks()));
+            holder.userTracks.setText(String.valueOf(users.get(position).getTracks()) + " Tracks");
         }else{
             holder.userTracks.setText("N/A tracks by this user");
         }
 
         if(users.get(position).getFollowers() != null) {
-            holder.userNumFollowers.setText(String.valueOf(users.get(position).getFollowers()));
+            holder.userNumFollowers.setText(String.valueOf(users.get(position).getFollowers()) + " Followers");
         }else{
             holder.userNumFollowers.setText("N/A followers");
         }
 
         if(users.get(position).getFollowing() != null) {
-            holder.userNumFollowing.setText(String.valueOf(users.get(position).getFollowing()));
+            holder.userNumFollowing.setText(String.valueOf(users.get(position).getFollowing()) + " Following");
         }else {
             holder.userNumFollowing.setText("N/A following");
         }
 
         if(users.get(position).getPlaylists() != null) {
-            holder.userNumPlaylists.setText(String.valueOf(users.get(position).getPlaylists()));
+            holder.userNumPlaylists.setText(String.valueOf(users.get(position).getPlaylists()) + " Playlists");
         }else {
             holder.userNumPlaylists.setText("N/A playlists by this user");
         }

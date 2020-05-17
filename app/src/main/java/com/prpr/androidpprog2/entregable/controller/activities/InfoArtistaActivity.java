@@ -253,7 +253,19 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         });
 
         name = findViewById(R.id.userName);
-        String nom = artist.getFirstName() + " " + artist.getLastName();
+        String fName = "";
+        String lName = "";
+        if(artist.getFirstName()!=null){
+            fName = artist.getFirstName();
+        }else{
+            fName = "--";
+        }
+        if(artist.getLastName()!=null){
+            lName = artist.getLastName();
+        }else{
+            lName = "--";
+        }
+        String nom = fName + " " + lName;
         name.setText(nom);
 
         login = findViewById(R.id.userLogin);
