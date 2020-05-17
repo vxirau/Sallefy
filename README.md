@@ -1,4 +1,4 @@
-# Sallefy-Entregable2
+# Sallefy
 
 Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacion para reproducir musica con funcionalidades parecidas a Spotify y SoundCloud. Este es el diseño de la app que he diseñado junto con el codigo del proyecto de Android Studio. El diseño ha sido realitzado con la herramienta Sketch y he realizado también un prototipado de la funcionalidad con Flinto.
 
