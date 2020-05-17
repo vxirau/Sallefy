@@ -31,6 +31,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
             serv = binder.getService();
             serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
+            serv.setMainActivity(MainActivity.this);
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             boolean shuf = PreferenceUtils.getShuffle(getApplicationContext());
             serv.setShuffle(shuf);
@@ -157,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }else{
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
             serv.updateUI();
+            serv.setMainActivity(MainActivity.this);
         }
     }
 
@@ -215,6 +219,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         Intent intent = new Intent(this, ConnectivityService.class);
         intent.putExtra(ConnectivityService.TAG_INTERVAL, 3);

@@ -78,6 +78,8 @@ public class ReproductorActivity extends Activity implements TrackCallback {
             serv.setDuracioTotal(duracioTotal, duracioActual);
             serv.updateUI();
             serv.setShuffleButtonUI();
+            serv.setMainActivity(ReproductorActivity.this);
+
         }
     }
 
@@ -118,6 +120,8 @@ public class ReproductorActivity extends Activity implements TrackCallback {
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, btnPlay, btnPause, trackImage);
             active = serv.getActiveAudio();
+            serv.setMainActivity(ReproductorActivity.this);
+
             updateLiked();
             serv.setRandomButton(shuffle);
             serv.setShuffleButtonUI();

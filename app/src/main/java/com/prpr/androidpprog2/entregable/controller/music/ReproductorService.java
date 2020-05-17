@@ -1,6 +1,8 @@
 package com.prpr.androidpprog2.entregable.controller.music;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,8 +11,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSession;
@@ -33,9 +38,19 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
@@ -77,6 +92,11 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private NotificationCompat.Builder notification;
     private SeekBar mSeekBar;
     private boolean novaLlista;
+
+    private Context activityContext;
+
+    private FusedLocationProviderClient fusedLocationClient;
+
 
     public static final String ACTION_PLAY = "com.prpr.androidpprog2.entregable.ACTION_PLAY";
     public static final String ACTION_PAUSE = "com.prpr.androidpprog2.entregable.ACTION_PAUSE";
@@ -185,6 +205,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             url = activeAudio.getUrl();
         }
 
+        playTrackOnAPI();
+
         try {
             mediaPlayer.setDataSource(url);
         } catch (IOException e) {
@@ -194,7 +216,14 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mediaPlayer.prepareAsync();
 
 
-        TrackManager.getInstance(getApplicationContext()).playTrack(activeAudio.getId(), new Position(0,0));
+    }
+
+    public void checkPermission(){
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        ){
+            ActivityCompat.requestPermissions((Activity) activityContext, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
+        }
     }
 
     private String duractioActual() {
@@ -220,6 +249,34 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     public void stopOnStart() {
         stopOnStart = true;
+    }
+
+    public void playTrackOnAPI(){
+        if(activityContext!=null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkPermission();
+            }
+            if(fusedLocationClient==null){
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(activityContext);
+            }
+            fusedLocationClient.getLastLocation().addOnSuccessListener((Activity)activityContext, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    Position p;
+                    if (location != null) {
+                        p = new Position(location.getLongitude(),location.getLatitude());
+                    }else{
+                        p = new Position(0,0);
+                    }
+                    TrackManager.getInstance(getApplicationContext()).playTrack(activeAudio.getId(), p);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    TrackManager.getInstance(getApplicationContext()).playTrack(activeAudio.getId(), new Position(0,0));
+                }
+            });
+        }
     }
 
 
@@ -750,6 +807,12 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             isShuffle = PreferenceUtils.getShuffle(getApplicationContext());
             currentPlaylistID = PreferenceUtils.getPlayID(getApplicationContext());
 
+            if(activityContext!=null){
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(activityContext);
+
+            }
+
+
             if (audioIndex != -1 && audioIndex < audioList.size()) {
                 if (t != null) {
                     activeAudio = t;
@@ -918,6 +981,10 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private boolean removeAudioFocus() {
         return AudioManager.AUDIOFOCUS_REQUEST_GRANTED ==
                 audioManager.abandonAudioFocus(this);
+    }
+
+    public void setMainActivity(Context context) {
+        this.activityContext = context;
     }
 
 

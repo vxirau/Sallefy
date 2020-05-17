@@ -150,6 +150,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             player = binder.getService();
             player.setmSeekBar(mseek);
+            player.setMainActivity(PlaylistActivity.this);
             serviceBound = true;
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
         }
@@ -181,6 +182,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }else{
             player.setUIControls(mseek, tvTitle, tvAuthor, play, pause, im);
             player.updateUI();
+            player.setMainActivity(PlaylistActivity.this);
+
         }
         pManager.checkFollowing(playlst.getId(), this);
     }
