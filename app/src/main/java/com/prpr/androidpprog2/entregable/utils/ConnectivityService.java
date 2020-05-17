@@ -229,9 +229,10 @@ public class ConnectivityService extends Service implements UserCallback {
     }
 
     @Override
-    public void onSallefySectionRecieved(List<User> body) {
+    public void onSallefySectionRecieved(List<User> body, boolean recieved) {
 
     }
+
 
     @Override
     public void onSallefySectionFailure(Throwable throwable) {

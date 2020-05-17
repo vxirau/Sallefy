@@ -193,7 +193,7 @@ public class FollowersActivity extends AppCompatActivity implements UserCallback
     }
 
     @Override
-    public void onSallefySectionRecieved(List<User> body) {
+    public void onSallefySectionRecieved(List<User> body, boolean recieved) {
 
     }
 

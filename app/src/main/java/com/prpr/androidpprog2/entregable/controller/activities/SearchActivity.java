@@ -599,7 +599,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
-    public void onSallefySectionRecieved(List<User> body) {
+    public void onSallefySectionRecieved(List<User> body, boolean recieved) {
 
     }
 

@@ -35,6 +35,6 @@ public interface UserCallback extends FailureCallback {
     void onFollowersFailure(Throwable throwable);
     void onPasswordUpdated(passwordChangeDto pd);
     void onPasswordUpdatedFailure(Throwable throwable);
-    void onSallefySectionRecieved(List<User> body);
+    void onSallefySectionRecieved(List<User> body, boolean recieved);
     void onSallefySectionFailure(Throwable throwable);
 }

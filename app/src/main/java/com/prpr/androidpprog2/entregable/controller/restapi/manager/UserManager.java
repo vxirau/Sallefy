@@ -340,7 +340,7 @@ public class UserManager extends MainManager{
 
     }
 
-    public synchronized void getSallefyUsers (final UserCallback userCallback) {
+    public synchronized void getSallefyUsers (final UserCallback userCallback, boolean repeated) {
 
         Call<List<User>> call = mService.getSallefyUsers();
         call.enqueue(new Callback<List<User>>() {
@@ -352,7 +352,7 @@ public class UserManager extends MainManager{
                     /*SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
                     c.saveTopUsers((ArrayList<User>) response.body());
                     ObjectBox.get().boxFor(SavedCache.class).put(c);*/
-                    userCallback.onSallefySectionRecieved(response.body());
+                    userCallback.onSallefySectionRecieved(response.body(), repeated);
                 } else {
                     Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
                     userCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));

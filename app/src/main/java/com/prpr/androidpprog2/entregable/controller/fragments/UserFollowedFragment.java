@@ -274,7 +274,7 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     }
 
     @Override
-    public void onSallefySectionRecieved(List<User> body) {
+    public void onSallefySectionRecieved(List<User> body, boolean recieved) {
 
     }
 

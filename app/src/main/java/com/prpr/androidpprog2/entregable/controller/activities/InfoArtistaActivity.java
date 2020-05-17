@@ -756,7 +756,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
-    public void onSallefySectionRecieved(List<User> body) {
+    public void onSallefySectionRecieved(List<User> body, boolean recieved) {
 
     }
 

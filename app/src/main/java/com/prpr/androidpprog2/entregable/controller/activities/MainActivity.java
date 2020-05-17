@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private ArrayList<Playlist> followingPlaylists;
     private ArrayList<Playlist> discover;
 
+    private ArrayList<User> top4;
 
     private PlaylistManager pManager;
     private UserManager usrManager;
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pManager.getAllPlaylists(this);
         pManager.getTopPlaylists(this);
         usrManager.getTopUsers(this);
-        usrManager.getSallefyUsers(this);
+        usrManager.getSallefyUsers(this, false);
         pManager.getFollowingPlaylists(this);
         if(sameUser){
             loadPreviousSession();
@@ -328,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }
 
         titol = findViewById(R.id.titolActivitat);
-        titol.setText(buenas + name);
+        titol.setText(buenas + name + "!");
 
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
@@ -836,36 +837,72 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
     @Override
-    public void onSallefySectionRecieved(List<User> body) {
-        ArrayList<User> top4 = clearArray(body);
-        if(top4.size()<4){
-            UserManager.getInstance(this).getSallefyUsers(this);
-        }else{
-            System.out.println();
-            for(int i=0; i<top4.size() ;i++){
-                switch (i){
-                    case 0:
-                        Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
-                        topLeftText.setText("This is " + top4.get(i).getFirstName());
-                        break;
-                    case 1:
-                        Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
-                        topRightText.setText("This is " + top4.get(i).getFirstName());
-                        break;
-                    case 2:
-                        Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
-                        bottomLeftText.setText("This is " + top4.get(i).getFirstName());
-                        break;
-                    case 3:
-                        Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
-                        bottomRightText.setText("This is " + top4.get(i).getFirstName());
-                        break;
-                    default:
-                        break;
+    public void onSallefySectionRecieved(List<User> body, boolean recieved) {
+        if (recieved) {
+            ArrayList<User> r = clearArray(body);
+            for(User h : r){
+                if(!existsInTop(top4, h)){
+                    top4.add(h);
                 }
+            }
+            if (top4.size() < 4) {
+                UserManager.getInstance(this).getSallefyUsers(this, true);
+            }else{
+                for(int i=0; i<top4.size() ;i++){
+                    switch (i){
+                        case 0:
+                            topLeftText.setText("This is " + top4.get(i).getFirstName());
+                            Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
+                            topLeft.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            });
+                            break;
+                        case 1:
+                            topRightText.setText("This is " + top4.get(i).getFirstName());
+                            Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
+                            topRight.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            });
+                            break;
+                        case 2:
+                            bottomLeftText.setText("This is " + top4.get(i).getFirstName());
+                            Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
+                            bottomLeft.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            });
+                            break;
+                        case 3:
+                            bottomRightText.setText("This is " + top4.get(i).getFirstName());
+                            Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
+                            bottomRight.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        } else {
+            top4 = clearArray(body);
+            if (top4.size() < 4) {
+                UserManager.getInstance(this).getSallefyUsers(this, true);
             }
         }
     }
+
 
     private ArrayList<User> clearArray(List<User> body) {
         ArrayList<User> top = new ArrayList<>();
@@ -885,7 +922,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     }
 
     private boolean isValidUrl(String imageUrl) {
-        return URLUtil.isValidUrl( "imageUrl" );
+        return URLUtil.isValidUrl(imageUrl);
     }
 
     private boolean existsInTop(ArrayList<User> top, User u) {
