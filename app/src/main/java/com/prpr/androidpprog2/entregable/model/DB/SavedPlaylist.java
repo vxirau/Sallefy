@@ -4,8 +4,11 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.User;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.Base64;
 
 import io.objectbox.annotation.Backlink;
@@ -61,24 +65,19 @@ public class SavedPlaylist {
         this.playlist = playlist;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public Playlist retrievePlaylist() throws IOException, ClassNotFoundException {
-        byte [] data = Base64.getDecoder().decode(playlist);
-        ObjectInputStream ois = new ObjectInputStream(
-                new ByteArrayInputStream(  data ) );
-        Object o  = ois.readObject();
-        ois.close();
-        return (Playlist) o;
+    public Playlist retrievePlaylist(){
+        Gson gson = new Gson();
+        Type type = new TypeToken<Playlist>() {}.getType();
+        if(this.playlist!= null ){
+            return gson.fromJson(this.playlist, type);
+        }else{
+            return new Playlist();
+        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public String savePlaylist(Serializable o) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream( baos );
-        oos.writeObject( o );
-        oos.close();
-        this.playlist = Base64.getEncoder().encodeToString(baos.toByteArray());
-        return Base64.getEncoder().encodeToString(baos.toByteArray());
+    public void savePlaylist(Playlist user){
+        Gson gson = new Gson();
+        this.playlist = gson.toJson(user);
     }
 
 

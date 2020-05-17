@@ -53,6 +53,10 @@ public class Playlist implements Serializable, Comparable<Playlist> {
         this.tracks = null;
     }
 
+    public Playlist() {
+
+    }
+
     public boolean isFollowed() {
         return followed;
     }

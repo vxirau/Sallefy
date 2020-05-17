@@ -4,6 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import java.util.*;
@@ -45,6 +47,8 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallba
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
@@ -201,7 +205,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         }
         pManager.checkFollowing(playlst.getId(), this);
         pManager.getPlaylist(playlst.getId(), this);
-        //orderByPreferenceUtils();
+        orderByPreferenceUtils();
     }
 
     @Override
@@ -219,6 +223,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         trackManager = new TrackManager(this);
         if(playlst.getId()!=-5){
             pManager.checkFollowing(playlst.getId(), this);
+        }
+        if(!playlst.getUserLogin().equals(Session.getInstance().getUser().getLogin())){
+            if(UtilFunctions.playlistExistsInDatabase(playlst)){
+                UtilFunctions.checkForPlaylistUpdate(playlst);
+            }
         }
         initViews();
         getData();
@@ -378,10 +387,20 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             plyAuthor.setText("Created by admin");
         }
 
-        if (playlst.getThumbnail() != null) {
-            Picasso.get().load(playlst.getThumbnail()).into(plyImg);
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            if(UtilFunctions.playlistExistsInDatabase(playlst)){
+                SavedPlaylist p = ObjectBox.get().boxFor(SavedPlaylist.class).get(playlst.getId());
+                Bitmap myBitmap = BitmapFactory.decodeFile(p.coverPath);
+                plyImg.setImageBitmap(myBitmap);
+            }else{
+                Picasso.get().load(R.drawable.default_cover).into(plyImg);
+            }
         }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(plyImg);
+            if (playlst.getThumbnail() != null) {
+                Picasso.get().load(playlst.getThumbnail()).into(plyImg);
+            }else {
+                Picasso.get().load(R.drawable.default_cover).into(plyImg);
+            }
         }
 
         play = findViewById(R.id.playButton);

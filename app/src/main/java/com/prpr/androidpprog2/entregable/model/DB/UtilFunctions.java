@@ -15,7 +15,12 @@ import com.prpr.androidpprog2.entregable.model.Track;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.objectbox.relation.ToMany;
 
@@ -138,10 +143,45 @@ public class UtilFunctions {
         }
     }
 
+    public static void checkForPlaylistUpdate(Playlist playlst) {
+        SavedPlaylist p = ObjectBox.get().boxFor(SavedPlaylist.class).get(playlst.getId());
+        Playlist saved = p.retrievePlaylist();
+
+        Collections.sort(saved.getTracks(), Track.TrackNameAscendentComparator);
+        Collections.sort(playlst.getTracks(), Track.TrackNameAscendentComparator);
+
+        if (!saved.getTracks().equals(playlst.getTracks())) {
+            ArrayList<Track> removedFromPlaylist = (ArrayList<Track>) saved.getTracks();
+            removedFromPlaylist.removeAll(playlst.getTracks());
+            ArrayList<Track> added = (ArrayList<Track>) playlst.getTracks();
+            added.removeAll(saved.getTracks());
+            for(Track t : removedFromPlaylist){
+                saved.getTracks().remove(t);
+            }
+            for(Track t : added){
+                saved.getTracks().add(t);
+            }
+            p.savePlaylist(saved);
+            ObjectBox.get().boxFor(SavedPlaylist.class).put(p);
+        }
+    }
+
+    private static ArrayList<Track> findRemovedTracks(ArrayList<Track> saved, ArrayList<Track> noves) {
+
+        return new ArrayList<>();
+    }
+
+    private static ArrayList<Track> findAddedTracks(ArrayList<Track> saved, ArrayList<Track> noves) {
+
+        return new ArrayList<>();
+    }
+
     public static boolean noInternet(Context c){
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return !(activeNetworkInfo != null && activeNetworkInfo.isConnected());
     }
+
+
 }

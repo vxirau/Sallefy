@@ -141,11 +141,7 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
                     File path= getActivity().getFilesDir();
                     p = new SavedPlaylist();
                     p.setId(playlist.getId());
-                    try {
-                        p.setPlaylist(p.savePlaylist(playlist));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    p.savePlaylist(playlist);
                     if(playlist.getThumbnail()!=null){
                         p.setCoverPath(path.toString() + "/Sallefy/covers/playlists/"+ playlist.getName() + "--" + playlist.getUserLogin()+".jpeg");
                     }else{
