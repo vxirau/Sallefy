@@ -2,6 +2,8 @@ package com.prpr.androidpprog2.entregable.controller.adapters;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,16 +70,18 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         holder.nomPlaylist.setSingleLine(true);
         int size = playlist.get(position).getTracks() != null ? playlist.get(position).getTracks().size() : 0 ;
         holder.totalCancons.setText( size + " songs");
-
-        if(UtilFunctions.playlistExistsInDatabase(playlist.get(position))){
+        boolean exist = UtilFunctions.playlistExistsInDatabase(playlist.get(position));
+        if(exist){
             holder.downloaded.setVisibility(View.VISIBLE);
         }else{
             holder.downloaded.setVisibility(View.INVISIBLE);
         }
 
         if(UtilFunctions.noInternet(mContext)){
-            if(UtilFunctions.playlistExistsInDatabase(playlist.get(position))){
-                Picasso.get().load(ObjectBox.get().boxFor(SavedPlaylist.class).get(playlist.get(position).getId()).coverPath).into(holder.ivPicture);
+            if(exist){
+                SavedPlaylist p = ObjectBox.get().boxFor(SavedPlaylist.class).get(playlist.get(position).getId());
+                Bitmap myBitmap = BitmapFactory.decodeFile(p.coverPath);
+                holder.ivPicture.setImageBitmap(myBitmap);
             }else{
                 Picasso.get().load(R.drawable.default_cover).into(holder.ivPicture);
             }

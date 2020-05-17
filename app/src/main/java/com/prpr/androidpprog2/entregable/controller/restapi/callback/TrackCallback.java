@@ -20,4 +20,5 @@ public interface TrackCallback extends FailureCallback {
     void onTrackUpdateFailure(Throwable throwable);
     void onTrackDeleted(int id);
     void onTrackReceived(Track track);
+    void onMyTracksFailure(Throwable throwable);
 }

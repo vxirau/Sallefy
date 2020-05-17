@@ -643,6 +643,11 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
+    public void onMyTracksFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

@@ -7,6 +7,8 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCal
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
@@ -17,6 +19,7 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -113,6 +116,9 @@ public class UserManager extends MainManager{
 
                 int code = response.code();
                 if (response.isSuccessful()) {
+                    SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+                    c.saveTopUsers((ArrayList<User>) response.body());
+                    ObjectBox.get().boxFor(SavedCache.class).put(c);
                     userCallback.onTopUsersRecieved(response.body());
                 } else {
                     Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
@@ -123,7 +129,7 @@ public class UserManager extends MainManager{
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 Log.d(TAG, "Error: " + t.getMessage());
-                userCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+                userCallback.onTopUsersFailure(new Throwable("ERROR " + t.getStackTrace()));
             }
         });
     }
@@ -136,6 +142,9 @@ public class UserManager extends MainManager{
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 int code = response.code();
                 if (response.isSuccessful()) {
+                    SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+                    c.saveFollowedUsers((ArrayList<User>) response.body());
+                    ObjectBox.get().boxFor(SavedCache.class).put(c);
                     userCallback.onFollowedUsersSuccess(response.body());
                 } else {
                     Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
@@ -145,7 +154,7 @@ public class UserManager extends MainManager{
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                userCallback.onFailure(t);
+                userCallback.onFollowedUsersFailure(t);
             }
         });
 

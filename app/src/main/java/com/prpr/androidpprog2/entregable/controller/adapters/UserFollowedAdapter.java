@@ -15,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.squareup.picasso.Picasso;
@@ -52,19 +54,26 @@ public class UserFollowedAdapter extends RecyclerView.Adapter<UserFollowedAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(mCallback!=null){
-                    mCallback.onUserSelected(users.get(position));
+                if(UtilFunctions.noInternet(mContext)){
+                    ErrorDialog.getInstance(mContext).showErrorDialog("You have no internet to see this user!");
+                }else{
+                    if(mCallback!=null){
+                        mCallback.onUserSelected(users.get(position));
+                    }
                 }
+
             }
         });
 
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(mCallback!=null){
-                    mCallback.onUserSelected(users.get(position));
+                if(UtilFunctions.noInternet(mContext)){
+                    ErrorDialog.getInstance(mContext).showErrorDialog("You have no internet to see this user!");
+                }else{
+                    if(mCallback!=null){
+                        mCallback.onUserSelected(users.get(position));
+                    }
                 }
             }
         });

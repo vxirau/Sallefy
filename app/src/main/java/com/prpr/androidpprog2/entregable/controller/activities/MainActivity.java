@@ -703,6 +703,18 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
+    @Override
+    public void onTopUsersFailure(Throwable throwable) {
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            onTopUsersRecieved(ObjectBox.get().boxFor(SavedCache.class).get(1).retreiveTopUsers());
+        }
+    }
+
+    @Override
+    public void onFollowedUsersFailure(Throwable t) {
+
+    }
+
 
     @Override
     public void onFailure(Throwable throwable) {

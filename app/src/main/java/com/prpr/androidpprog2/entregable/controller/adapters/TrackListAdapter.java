@@ -1,6 +1,8 @@
 package com.prpr.androidpprog2.entregable.controller.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,9 @@ import com.bumptech.glide.Glide;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.AddSongsBunchActivity;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
+import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -91,20 +96,38 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         }else{
             holder.trackLength.setText("00:00");
         }
-
-        if(UtilFunctions.trackExistsInDatabase(mTracks.get(position))){
+        boolean noInternete = UtilFunctions.noInternet(mContext);
+        boolean exists = UtilFunctions.trackExistsInDatabase(mTracks.get(position));
+        if(exists){
             holder.downloaded.setVisibility(View.VISIBLE);
         }else{
             holder.downloaded.setVisibility(View.INVISIBLE);
         }
 
-        if (mTracks.get(position).getThumbnail() != null && !mTracks.get(position).getThumbnail().equals("")) {
-            Picasso.get().load(mTracks.get(position).getThumbnail()).into(holder.ivPicture);
-        }else{
-            Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(holder.ivPicture);
+        if(noInternete && !exists){
+            holder.mLayout.setAlpha((float) 0.30);
+            holder.mLayout.setEnabled(false);
         }
-        //Per carregar foto sense internet desde el local.
-        //Picasso.with(context).load(new File(YOUR_FILE_PATH)).into(imageView);
+
+        if(noInternete){
+            if(exists){
+                SavedTrack p = ObjectBox.get().boxFor(SavedTrack.class).get(mTracks.get(position).getId());
+                Bitmap myBitmap = BitmapFactory.decodeFile(p.coverPath);
+                holder.ivPicture.setImageBitmap(myBitmap);
+            }else{
+                Picasso.get().load(R.drawable.default_track_cover).into(holder.ivPicture);
+            }
+        }else{
+            if (mTracks.get(position).getThumbnail() != null && !mTracks.get(position).getThumbnail().equals("")) {
+                Picasso.get().load(mTracks.get(position).getThumbnail()).into(holder.ivPicture);
+            }else{
+                Picasso.get().load(R.drawable.default_track_cover).into(holder.ivPicture);
+            }
+        }
+
+
+
+
 
     }
 

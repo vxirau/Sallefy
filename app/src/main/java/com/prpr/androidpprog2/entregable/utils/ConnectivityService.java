@@ -186,6 +186,16 @@ public class ConnectivityService extends Service implements UserCallback {
     }
 
     @Override
+    public void onTopUsersFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFailure(Throwable t) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

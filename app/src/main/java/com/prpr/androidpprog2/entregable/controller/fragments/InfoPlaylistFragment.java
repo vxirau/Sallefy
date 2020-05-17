@@ -42,6 +42,7 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
     private Playlist playlist;
     private ImageView playlistCover;
     private TextView playlistName;
+    private TextView artistName;
     private TextView playlistArtist;
     private LinearLayout layoutArtist;
     private LinearLayout layoutedit;
@@ -86,6 +87,8 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
         playlistArtist = view.findViewById(R.id.ArtistName);
         playlistArtist.setText(playlist.getUserLogin());
 
+
+
         layoutdelete = view.findViewById(R.id.layoutEliminar);
         layoutdelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +111,7 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
         });
 
         layoutArtist = view.findViewById(R.id.layoutUser);
+
         layoutArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +124,9 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
                 }
             }
         });
+        artistName =  view.findViewById(R.id.text_user);
+        artistName.setText("See " + playlist.getUserLogin());
+
         downloadId = new int [playlist.getTracks().size()*2];
         download = (Switch) view.findViewById(R.id.simpleSwitch);
         if(UtilFunctions.playlistExistsInDatabase(playlist)){
@@ -180,6 +187,12 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
             }
         });
 
+        if(!Session.getInstance(getActivity().getApplicationContext()).getUser().getLogin().equals(playlist.getOwner().getLogin())){
+            layoutedit.setAlpha((float) 0.30);
+            layoutedit.setEnabled(false);
+            layoutdelete.setAlpha((float) 0.30);
+            layoutdelete.setEnabled(false);
+        }
 
         return view;
     }

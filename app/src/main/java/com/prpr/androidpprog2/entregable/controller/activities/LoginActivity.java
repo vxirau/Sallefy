@@ -143,13 +143,17 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
     private void doLogin(String username, String userpassword) {
+        SavedCache c;
         if(!UtilFunctions.hasCache()){
-            SavedCache c = new SavedCache();
+            c = new SavedCache();
             c.setId(1);
-            c.password = userpassword;
-            c.username = username;
-            ObjectBox.get().boxFor(SavedCache.class).put(c);
+        }else{
+            c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+            c.setPassword(userpassword);
+            c.setUsername(username);
         }
+        ObjectBox.get().boxFor(SavedCache.class).put(c);
+
         this.username = username;
         if(UtilFunctions.noInternet(getApplicationContext())){
             onLoginSuccess(new UserToken(ObjectBox.get().boxFor(SavedCache.class).get(1).oldToken));
@@ -169,6 +173,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         }else{
             SavedCache c =  ObjectBox.get().boxFor(SavedCache.class).get(1);
             c.setOldToken(userToken.getIdToken());
+
             ObjectBox.get().boxFor(SavedCache.class).put(c);
             mStorage = FirebaseStorage.getInstance().getReference();
             StorageReference filePath = mStorage.child(Session.changeLogin(etLogin.getText().toString()));
@@ -196,6 +201,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         if(!UtilFunctions.noInternet(getApplicationContext())){
            SavedCache c=  ObjectBox.get().boxFor(SavedCache.class).get(1);
            c.saveUser(userData);
+
            ObjectBox.get().boxFor(SavedCache.class).put(c);
         }
         Session.getInstance(getApplicationContext()).setUser(userData);
@@ -274,6 +280,16 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onCheckFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopUsersFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFailure(Throwable t) {
 
     }
 

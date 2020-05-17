@@ -45,6 +45,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallba
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -295,6 +296,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         follow = findViewById(R.id.playlistSeguirBoto);
         follow.setEnabled(true);
+
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -352,6 +354,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             accessible.setText("Private");
             accessible.setBackgroundResource(R.drawable.rectangle_small_gborder_black);;
         }
+
 
 
         plyName = findViewById(R.id.playlistName);
@@ -456,21 +459,27 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 bottomSheetDialog.show(getSupportFragmentManager(), "playlist_info");
             }
         });
+        infoPlaylist.setVisibility(View.VISIBLE);
+
 
         if(Session.getInstance(getApplicationContext()).getUser().getLogin().equals(playlst.getOwner().getLogin())){
             addBunch.setVisibility(View.VISIBLE);
-            infoPlaylist.setVisibility(View.VISIBLE);
             follow.setVisibility(View.GONE);
             accessible.setVisibility(View.VISIBLE);
         }else{
             addBunch.setVisibility(View.INVISIBLE);
-            infoPlaylist.setVisibility(View.INVISIBLE);
             follow.setVisibility(View.VISIBLE);
             accessible.setVisibility(View.GONE);
         }
         if(playlst.getId()==-5){
             follow.setVisibility(View.GONE);
         }
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            accessible.setVisibility(View.GONE);
+            follow.setVisibility(View.GONE);
+            addBunch.setVisibility(View.GONE);
+        }
+
         dialogEdit = new OptionDialog(PlaylistActivity.this, PlaylistActivity.this);
 
 
@@ -744,6 +753,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onMyTracksFailure(Throwable throwable) {
 
     }
 

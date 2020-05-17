@@ -2,6 +2,8 @@ package com.prpr.androidpprog2.entregable.controller.adapters;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.squareup.picasso.Picasso;
@@ -65,8 +69,8 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
         });
 
         holder.nomPlaylist.setText(playlist.get(position).getName());
-
-        if(UtilFunctions.playlistExistsInDatabase(playlist.get(position))){
+        boolean exists = UtilFunctions.playlistExistsInDatabase(playlist.get(position));
+        if(exists){
             holder.downloaded.setVisibility(View.VISIBLE);
         }else{
             holder.downloaded.setVisibility(View.INVISIBLE);
@@ -75,11 +79,24 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
         int size = playlist.get(position).getTracks() != null ? playlist.get(position).getTracks().size() : 0 ;
         holder.totalCancons.setText( size + " songs");
 
-        if (playlist.get(position).getThumbnail() != null) {
-            Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);
+        if(UtilFunctions.noInternet(mContext)){
+            if(exists){
+                SavedPlaylist p = ObjectBox.get().boxFor(SavedPlaylist.class).get(playlist.get(position).getId());
+                Bitmap myBitmap = BitmapFactory.decodeFile(p.coverPath);
+                holder.ivPicture.setImageBitmap(myBitmap);
+            }else{
+                Picasso.get().load(R.drawable.default_cover).into(holder.ivPicture);
+            }
         }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(holder.ivPicture);
+            if (playlist.get(position).getThumbnail() != null) {
+                Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);
+            }else {
+                Picasso.get().load(R.drawable.default_cover).into(holder.ivPicture);
+            }
         }
+
+
+
     }
 
     @Override

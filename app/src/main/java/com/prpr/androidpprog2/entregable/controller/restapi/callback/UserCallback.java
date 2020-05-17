@@ -26,5 +26,6 @@ public interface UserCallback extends FailureCallback {
     void onFollowFailure(Throwable throwable);
     void onCheckSuccess(Follow body);
     void onCheckFailure(Throwable throwable);
-
+    void onTopUsersFailure(Throwable throwable);
+    void onFollowedUsersFailure(Throwable t);
 }

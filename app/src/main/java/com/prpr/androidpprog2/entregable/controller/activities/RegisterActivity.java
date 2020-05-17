@@ -222,6 +222,16 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
 
     }
 
+    @Override
+    public void onTopUsersFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFailure(Throwable t) {
+
+    }
+
 
 
     /*@Override

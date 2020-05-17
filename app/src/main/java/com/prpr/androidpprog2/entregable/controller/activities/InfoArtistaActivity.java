@@ -463,6 +463,11 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     }
 
     @Override
+    public void onMyTracksFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }
@@ -699,6 +704,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     @Override
     public void onCheckFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTopUsersFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFailure(Throwable t) {
 
     }
 }

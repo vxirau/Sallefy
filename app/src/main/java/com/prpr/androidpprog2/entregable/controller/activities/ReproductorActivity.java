@@ -337,6 +337,11 @@ public class ReproductorActivity extends Activity implements TrackCallback {
     }
 
     @Override
+    public void onMyTracksFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

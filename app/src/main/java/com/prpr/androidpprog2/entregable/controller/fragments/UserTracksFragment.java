@@ -25,6 +25,9 @@ import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
@@ -382,6 +385,13 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     @Override
     public void onTrackReceived(Track track) {
 
+    }
+
+    @Override
+    public void onMyTracksFailure(Throwable throwable) {
+        if(UtilFunctions.noInternet(getActivity().getApplicationContext())){
+            onPersonalTracksReceived(ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveMyTracks());
+        }
     }
 
     @Override

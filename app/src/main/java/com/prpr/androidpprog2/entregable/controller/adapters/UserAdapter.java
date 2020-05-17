@@ -15,8 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.squareup.picasso.Picasso;
@@ -48,14 +51,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mCallback!=null){
-                    mCallback.onUserSelected(users.get(position));
-                }
-            }
-        });
+
         if(users.get(position).getFirstName() != null & users.get(position).getLastName()!=null){
             holder.username.setText(users.get(position).getFirstName() + " " + users.get(position).getLastName());
         }else if(users.get(position).getFirstName() != null & users.get(position).getLastName()==null){
@@ -63,15 +59,35 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         }else{
             holder.username.setText("-- --");
         }
+
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(UtilFunctions.noInternet(mContext)){
+                    ErrorDialog.getInstance(mContext).showErrorDialog("You have no internet to see this user!");
+                }else{
+                    if(mCallback!=null){
+                        mCallback.onUserSelected(users.get(position));
+                    }
+                }
+
+            }
+        });
+
         holder.username.setEllipsize(TextUtils.TruncateAt.MARQUEE);
         holder.username.setSelected(true);
         holder.username.setSingleLine(true);
         holder.userlogin.setText(users.get(position).getLogin());
 
-        if (users.get(position).getImageUrl() != null && !users.get(position).getImageUrl().isEmpty()) {
-            Picasso.get().load(users.get(position).getImageUrl()).into(holder.image);
+        if(UtilFunctions.noInternet(mContext)){
+            Picasso.get().load(R.drawable.default_user_cover).into(holder.image);
         }else{
-            Picasso.get().load("https://user-images.githubusercontent.com/48185184/77792597-e939a400-7068-11ea-8ade-cd8b4e4ab7c9.png").into(holder.image);
+
+            if (users.get(position).getImageUrl() != null && !users.get(position).getImageUrl().isEmpty()) {
+                Picasso.get().load(users.get(position).getImageUrl()).into(holder.image);
+            }else{
+                Picasso.get().load(R.drawable.default_user_cover).into(holder.image);
+            }
         }
     }
 

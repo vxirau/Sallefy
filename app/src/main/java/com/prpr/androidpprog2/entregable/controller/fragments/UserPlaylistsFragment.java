@@ -26,6 +26,9 @@ import com.prpr.androidpprog2.entregable.controller.adapters.UserPlaylistAdapter
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -361,12 +364,16 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     @Override
     public void onAllMyPlaylistFailure(Throwable throwable) {
-
+        if(UtilFunctions.noInternet(getActivity().getApplicationContext())){
+            onPlaylistRecieved(ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveAllMyPlaylists());
+        }
     }
 
     @Override
     public void onFollowingPlaylistsFailure(Throwable throwable) {
-
+        if(UtilFunctions.noInternet(getActivity().getApplicationContext())){
+            onFollowingRecieved(ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveFollowingPlaylists());
+        }
     }
 
 

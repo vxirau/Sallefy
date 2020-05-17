@@ -562,6 +562,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     }
 
+    @Override
+    public void onTopUsersFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFailure(Throwable t) {
+
+    }
+
 
     @Override
     public void onTrackSearchRecived(ArrayList<Track> tracks) {

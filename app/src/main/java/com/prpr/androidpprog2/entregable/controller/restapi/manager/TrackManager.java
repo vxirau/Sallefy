@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.TrackService;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Position;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -144,6 +146,9 @@ public class TrackManager extends MainManager{
 
                 int code = response.code();
                 if (response.isSuccessful()) {
+                    SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+                    c.saveMyTracks((ArrayList<Track>) response.body());
+                    ObjectBox.get().boxFor(SavedCache.class).put(c);
                     trackCallback.onPersonalTracksReceived((ArrayList<Track>) response.body());
                 } else {
                     Log.d(TAG, "Error Not Successful: " + code);
@@ -154,7 +159,7 @@ public class TrackManager extends MainManager{
             @Override
             public void onFailure(Call<List<Track>> call, Throwable t) {
                 Log.d(TAG, "Error Failure: " + t.getStackTrace());
-                trackCallback.onFailure(new Throwable("ERROR " + t.getStackTrace()));
+                trackCallback.onMyTracksFailure(new Throwable("ERROR " + t.getStackTrace()));
             }
         });
     }

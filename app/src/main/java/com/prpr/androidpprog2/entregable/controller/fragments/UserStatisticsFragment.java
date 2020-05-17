@@ -363,6 +363,11 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
     }
 
     @Override
+    public void onMyTracksFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

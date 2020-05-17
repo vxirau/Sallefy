@@ -21,6 +21,9 @@ import com.prpr.androidpprog2.entregable.controller.activities.InfoArtistaActivi
 import com.prpr.androidpprog2.entregable.controller.adapters.UserFollowedAdapter;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -229,6 +232,18 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     @Override
     public void onCheckFailure(Throwable throwable) {
 
+    }
+
+    @Override
+    public void onTopUsersFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowedUsersFailure(Throwable t) {
+        if(UtilFunctions.noInternet(getActivity().getApplicationContext())){
+            onFollowedUsersSuccess(ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveFollowedUsers());
+        }
     }
 
     @Override

@@ -85,7 +85,9 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        ((PlaylistActivity)getActivity()).onResume();
+        if(getActivity() instanceof  PlaylistActivity){
+            ((PlaylistActivity)getActivity()).onResume();
+        }
     }
 
     public InfoTrackFragment(Track track, Playlist p, User u) {
@@ -198,12 +200,12 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
             layouteliminar.setVisibility(View.VISIBLE);
             layoutedit.setAlpha((float) 1.0);
         }else{
-            layouteliminar.setVisibility(View.INVISIBLE);
+            layouteliminar.setVisibility(View.GONE);
             layoutedit.setAlpha((float) 0.60);
         }
 
         if(playl==null){
-            layouteliminar.setVisibility(View.INVISIBLE);
+            layouteliminar.setVisibility(View.GONE);
         }
 
         share_icono = view.findViewById(R.id.button_share);
@@ -308,6 +310,11 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
 
     @Override
     public void onTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onMyTracksFailure(Throwable throwable) {
 
     }
 

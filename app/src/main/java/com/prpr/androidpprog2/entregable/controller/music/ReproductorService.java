@@ -39,6 +39,9 @@ import androidx.core.app.NotificationCompat;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Position;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
@@ -158,6 +161,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initMediaPlayer() {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(this);
@@ -169,8 +173,20 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         mediaPlayer.reset();
 
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        String url="";
+
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            if(UtilFunctions.trackExistsInDatabase(activeAudio)){
+                url = ObjectBox.get().boxFor(SavedTrack.class).get(activeAudio.getId()).trackPath;
+            }else{
+                skipToNext();
+            }
+        }else{
+            url = activeAudio.getUrl();
+        }
+
         try {
-            mediaPlayer.setDataSource(activeAudio.getUrl());
+            mediaPlayer.setDataSource(url);
         } catch (IOException e) {
             e.printStackTrace();
             stopSelf();
@@ -315,10 +331,20 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 playB.setVisibility(View.VISIBLE);
             }
             if (imahen != null) {
-                if (activeAudio.getThumbnail() != null && !activeAudio.getThumbnail().equals("")) {
-                    Picasso.get().load(activeAudio.getThumbnail()).into(imahen);
-                } else {
-                    Picasso.get().load("https://user-images.githubusercontent.com/48185184/77687559-e3778c00-6f9e-11ea-8e14-fa8ee4de5b4d.png").into(imahen);
+                if(UtilFunctions.noInternet(getApplicationContext())){
+                    if(UtilFunctions.trackExistsInDatabase(activeAudio)){
+                        SavedTrack p = ObjectBox.get().boxFor(SavedTrack.class).get(activeAudio.getId());
+                        Bitmap myBitmap = BitmapFactory.decodeFile(p.coverPath);
+                        imahen.setImageBitmap(myBitmap);
+                    }else{
+                        Picasso.get().load(R.drawable.default_track_cover).into(imahen);
+                    }
+                }else{
+                    if (activeAudio.getThumbnail() != null && !activeAudio.getThumbnail().equals("")) {
+                        Picasso.get().load(activeAudio.getThumbnail()).into(imahen);
+                    } else {
+                        Picasso.get().load(R.drawable.default_track_cover).into(imahen);
+                    }
                 }
             }
         }
@@ -462,8 +488,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             public void onSkipToNext() {
                 super.onSkipToNext();
                 skipToNext();
-                //updateMetaData();
-                //buildNotification(PlaybackStatus.PLAYING);
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -471,8 +495,6 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
                 skipToPrevious();
-                // updateMetaData();
-                //buildNotification(PlaybackStatus.PLAYING);
             }
 
             @Override
@@ -496,19 +518,28 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private void updateMetaData() {
         Bitmap albumArt;
         String urlString;
-        if (activeAudio != null && activeAudio.getThumbnail() != null) {
-            urlString = activeAudio.getThumbnail();
-        } else {
-            urlString = " https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1";
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            if(UtilFunctions.trackExistsInDatabase(activeAudio)){
+                SavedTrack p = ObjectBox.get().boxFor(SavedTrack.class).get(activeAudio.getId());
+                albumArt = BitmapFactory.decodeFile(p.coverPath);
+            }else{
+                albumArt = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.default_track_cover);
+            }
+        }else{
+            if (activeAudio != null && activeAudio.getThumbnail() != null) {
+                urlString = activeAudio.getThumbnail();
+            } else {
+                urlString = " https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1";
+            }
+            try {
+                URL url = new URL(urlString);
+                albumArt = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+                albumArt = null;
+            }
         }
 
-        try {
-            URL url = new URL(urlString);
-            albumArt = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-            albumArt = null;
-        }
         mediaSession.setMetadata(new MediaMetadataCompat.Builder()
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt)
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, activeAudio.getUserLogin())
@@ -533,17 +564,26 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
         Bitmap largeIcon;
         String urlString;
-        if (activeAudio.getThumbnail() != null) {
-            urlString = activeAudio.getThumbnail();
-        } else {
-            urlString = " https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1";
-        }
-        try {
-            URL url = new URL(urlString);
-            largeIcon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-            largeIcon = null;
+        if(UtilFunctions.noInternet(getApplicationContext())){
+            if(UtilFunctions.trackExistsInDatabase(activeAudio)){
+                SavedTrack p = ObjectBox.get().boxFor(SavedTrack.class).get(activeAudio.getId());
+                largeIcon = BitmapFactory.decodeFile(p.coverPath);
+            }else{
+                largeIcon = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.default_track_cover);
+            }
+        }else{
+            if (activeAudio.getThumbnail() != null) {
+                urlString = activeAudio.getThumbnail();
+            } else {
+                urlString = " https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1";
+            }
+            try {
+                URL url = new URL(urlString);
+                largeIcon = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+                largeIcon = null;
+            }
         }
 
         NotificationManager notificationManager =
