@@ -47,7 +47,7 @@
                 android:autoSizeTextType="uniform"
                 android:layout_height="20dp"
                 android:gravity="center"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:text="@string/default_user_name"
                 />
 
@@ -58,7 +58,7 @@
                 style="@style/SongArtistTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:text="@string/default_user_followed" />
 
             <TextView
@@ -66,14 +66,14 @@
                 style="@style/SongArtistTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:text="@string/default_user_following" />
             <TextView
                 android:id="@+id/userNumTracks"
                 style="@style/SongArtistTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:text="@string/default_playlist_song_amount" />
 
             <TextView
@@ -81,7 +81,7 @@
                 style="@style/SongArtistTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:text="@string/default_user_playlists" />
 
         </LinearLayout>

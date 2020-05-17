@@ -88,6 +88,8 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     private TextView username;
     private Button followers;
 
+    private ArrayList<User> followerList;
+
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
@@ -172,6 +174,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         setContentView(R.layout.activity_settings);
         myUser = Session.getUser();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        UserManager.getInstance(getApplicationContext()).getFollowers(myUser.getLogin(), this);
         initViews();
 
     }
@@ -283,7 +286,10 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         followers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ErrorDialog.getInstance(SettingsActivity.this).showErrorDialog("You cannot see your followers yet!");
+                Intent intent = new Intent(getApplicationContext(), FollowersActivity.class);
+                intent.putExtra("followers", SettingsActivity.this.followerList);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
 
@@ -339,7 +345,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         if(myUser.getImageUrl()!=null){
             Picasso.get().load(myUser.getImageUrl()).into(imgBtnUserPic);
         }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(imgBtnUserPic);
+            Picasso.get().load(R.drawable.default_user_cover).into(imgBtnUserPic);
         }
 
         imgBtnUserPic.setOnClickListener(new View.OnClickListener() {
@@ -496,7 +502,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     @Override
     public void onFollowersRecieved(ArrayList<User> body) {
-
+        this.followerList = body;
     }
 
     @Override

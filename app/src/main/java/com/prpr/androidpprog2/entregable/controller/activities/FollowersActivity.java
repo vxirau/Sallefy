@@ -3,6 +3,8 @@ package com.prpr.androidpprog2.entregable.controller.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,12 +25,22 @@ public class FollowersActivity extends AppCompatActivity implements UserCallback
 
     private ArrayList<User> followers;
     private RecyclerView mRecyclerView;
+    private Button atras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_followers);
         followers = (ArrayList<User>) getIntent().getSerializableExtra("followers");
+
+        atras = findViewById(R.id.back);
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycle);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
