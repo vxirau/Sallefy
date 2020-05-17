@@ -3,6 +3,7 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.prpr.androidpprog2.entregable.controller.activities.InfoArtistaActivity;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
@@ -301,4 +302,25 @@ public class UserManager extends MainManager{
     }
 
 
+    public void getFollowers(String login, final UserCallback userCallback) {
+        Call<List<User>> call = mService.getFollowers(login);
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onFollowersRecieved((ArrayList<User>) response.body());
+                } else {
+                    Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());
+                    userCallback.onFollowersFailed(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d(TAG, "Error: " + t.getMessage());
+                userCallback.onFollowersFailure(new Throwable("ERROR " + t.getStackTrace()));
+            }
+        });
+    }
 }

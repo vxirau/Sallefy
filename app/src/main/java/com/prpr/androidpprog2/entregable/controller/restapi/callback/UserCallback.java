@@ -4,6 +4,7 @@ import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface UserCallback extends FailureCallback {
@@ -28,4 +29,7 @@ public interface UserCallback extends FailureCallback {
     void onCheckFailure(Throwable throwable);
     void onTopUsersFailure(Throwable throwable);
     void onFollowedUsersFailure(Throwable t);
+    void onFollowersRecieved(ArrayList<User> body);
+    void onFollowersFailed(Throwable throwable);
+    void onFollowersFailure(Throwable throwable);
 }

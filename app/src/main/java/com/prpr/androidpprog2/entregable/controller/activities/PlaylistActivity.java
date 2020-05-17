@@ -49,6 +49,7 @@ import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.KeyboardUtils;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
@@ -106,6 +107,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private boolean isOpen;
     private boolean asc_dsc;
     private BottomNavigationView navigation;
+
 
     private Animation fabOpen, fabClose;
     private OptionDialog dialogEdit;
@@ -259,6 +261,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         followers = findViewById(R.id.followers);
         followers.setText(playlst.getFollowers() +" Followers");
+
 
         playing = findViewById(R.id.reproductor);
         playing.setOnClickListener(new View.OnClickListener() {

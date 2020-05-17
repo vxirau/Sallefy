@@ -76,6 +76,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     private UserManager umanager;
     private ImageView profilePic;
 
+    private ArrayList<User> followers;
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private TextView trackTitle;
@@ -96,7 +97,6 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
             serv = binder.getService();
-            //serv.setmSeekBar(mSeekBar);
             servidorVinculat = true;
             serv.setUIControls(mSeekBar, trackTitle, trackAuthor, play, pause, im);
         }
@@ -156,6 +156,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         artist = (User) getIntent().getSerializableExtra("User");
         umanager = new UserManager(this);
         umanager.checkFollow(artist.getLogin(), this);
+        umanager.getFollowers(artist.getLogin(), this);
         initViews();
 
         TrackManager topmanager = new TrackManager(this);
@@ -196,6 +197,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
                 return false;
             }
         });
+
 
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
@@ -255,21 +257,31 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         name = findViewById(R.id.userName);
         String fName = "";
         String lName = "";
-        if(artist.getFirstName()!=null){
+        if (artist.getFirstName() != null) {
             fName = artist.getFirstName();
-        }else{
+        } else {
             fName = "--";
         }
-        if(artist.getLastName()!=null){
+        if (artist.getLastName() != null) {
             lName = artist.getLastName();
-        }else{
+        } else {
             lName = "--";
         }
         String nom = fName + " " + lName;
         name.setText(nom);
 
         login = findViewById(R.id.userLogin);
-        login.setText(artist.getLogin());
+        login.setText(artist.getLogin() + " - " + artist.getFollowers() + " Followers");
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), FollowersActivity.class);
+                intent.putExtra("followers", InfoArtistaActivity.this.followers);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+            }
+        });
+
 
         profilePic = (ImageView) findViewById(R.id.profilePic);
         if (artist.getImageUrl() != null && !artist.getImageUrl().isEmpty()) {
@@ -714,6 +726,21 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
 
     @Override
     public void onFollowedUsersFailure(Throwable t) {
+
+    }
+
+    @Override
+    public void onFollowersRecieved(ArrayList<User> body) {
+        this.followers = body;
+    }
+
+    @Override
+    public void onFollowersFailed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowersFailure(Throwable throwable) {
 
     }
 }

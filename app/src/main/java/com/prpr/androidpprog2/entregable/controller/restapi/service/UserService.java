@@ -46,5 +46,7 @@ public interface UserService {
     @GET("users/{login}/follow")
     Call<Follow> checkFollow(@Path("login") String login);
 
+    @GET("users/{login}/followers")
+    Call<List<User>> getFollowers(String login);
 }
 

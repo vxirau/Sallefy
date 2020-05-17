@@ -45,6 +45,7 @@
         <activity android:name=".controller.activities.UserMainActivity"/>
         <activity android:name=".controller.activities.NewGenreActivity"/>
         <activity android:name=".controller.activities.ImageActivity"/>
+        <activity android:name=".controller.activities.FollowersActivity"/>
         <activity android:name=".controller.activities.EditSongActivity"/>
         <service android:name=".controller.music.ReproductorService"/>
         <service android:name=".utils.ConnectivityService"/>
