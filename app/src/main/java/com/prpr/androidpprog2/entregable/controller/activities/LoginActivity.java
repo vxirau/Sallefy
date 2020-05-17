@@ -39,6 +39,7 @@ import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.model.passwordChangeDto;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.io.File;
@@ -306,6 +307,17 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onFollowersFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPasswordUpdated(passwordChangeDto pd) {
+
+    }
+
+
+    @Override
+    public void onPasswordUpdatedFailure(Throwable throwable) {
 
     }
 

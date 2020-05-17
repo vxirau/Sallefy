@@ -33,7 +33,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import com.cloudinary.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.callbacks.LogOutCallback;
@@ -45,10 +44,12 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallbac
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
 import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
 import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
+import com.prpr.androidpprog2.entregable.model.passwordChangeDto;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -70,6 +71,13 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     private EditText etFirstName;
     private EditText etLastName;
     private EditText etEmail;
+
+    private EditText oldPassword;
+    private EditText newPassword;
+    private Button openChangePassword;
+    private Button closeChangePassword;
+    private LinearLayout passwordLayout;
+    private boolean passwordChanged;
 
     private ImageButton imgBtnUserPic;
 
@@ -243,6 +251,35 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
             }
         });
 
+        passwordLayout  = findViewById(R.id.passwordLayout);
+        passwordLayout.setVisibility(View.GONE);
+        openChangePassword = findViewById(R.id.changePasswordBtn);
+        openChangePassword.setVisibility(View.VISIBLE);
+        openChangePassword.setEnabled(true);
+        openChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passwordChanged = true;
+                passwordLayout.setVisibility(View.VISIBLE);
+                closeChangePassword.setVisibility(View.VISIBLE);
+                openChangePassword.setVisibility(View.GONE);
+            }
+        });
+        closeChangePassword = findViewById(R.id.backBtn);
+        closeChangePassword.setVisibility(View.GONE);
+        closeChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passwordChanged = false;
+                closeChangePassword.setVisibility(View.GONE);
+                openChangePassword.setVisibility(View.VISIBLE);
+                passwordLayout.setVisibility(View.GONE);
+            }
+        });
+        oldPassword = findViewById(R.id.text_settingsCurrentPassword);
+        newPassword = findViewById(R.id.text_settingsNewPassword);
+
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.perfil);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -315,6 +352,9 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
                     ErrorDialog.getInstance(SettingsActivity.this).showErrorDialog("You have no internet connection!");
                 }else{
                     loading.showLoadingDialog("Updating user");
+                    if(passwordChanged){
+                        doUpdatePassword();
+                    }
                     try {
                         doUpdateUser();
                     } catch (MalformedURLException e) {
@@ -387,6 +427,15 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         userManager = new UserManager(this);
         userManager.saveAccount(myUser, this);
 
+    }
+
+
+    private void doUpdatePassword(){
+        if(oldPassword.getText().length() > 0 && newPassword.getText().length() > 0){
+            passwordChangeDto pd = new passwordChangeDto(oldPassword.getText().toString(), newPassword.getText().toString());
+            userManager = new UserManager(this);
+            userManager.updatePassword(pd, this);
+        }
     }
 
     @Override
@@ -513,6 +562,23 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
     @Override
     public void onFollowersFailure(Throwable throwable) {
 
+    }
+
+    @Override
+    public void onPasswordUpdated(passwordChangeDto pd) {
+        Toast.makeText(getApplicationContext(),"Password updated!", Toast.LENGTH_SHORT).show();
+        SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+        c.setPassword(pd.getNewPassword());
+        ObjectBox.get().boxFor(SavedCache.class).put(c);
+        final SharedPreferences prefs = getSharedPreferences("RememberMe", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("password", pd.getNewPassword());
+        editor.commit();
+    }
+
+    @Override
+    public void onPasswordUpdatedFailure(Throwable throwable) {
+        Toast.makeText(getApplicationContext(),"Password couldn't be updated!", Toast.LENGTH_SHORT).show();
     }
 
 

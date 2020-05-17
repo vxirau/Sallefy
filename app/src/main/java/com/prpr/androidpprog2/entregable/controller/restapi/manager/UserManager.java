@@ -3,21 +3,15 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
-import com.prpr.androidpprog2.entregable.controller.activities.InfoArtistaActivity;
-import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
-import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
 import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
 import com.prpr.androidpprog2.entregable.model.Follow;
-import com.prpr.androidpprog2.entregable.model.Playlist;
+import com.prpr.androidpprog2.entregable.model.passwordChangeDto;
 import com.prpr.androidpprog2.entregable.model.User;
-import com.prpr.androidpprog2.entregable.model.UserLogin;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
 import com.prpr.androidpprog2.entregable.model.UserToken;
-import com.prpr.androidpprog2.entregable.utils.Constants;
-import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,8 +21,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserManager extends MainManager{
 
@@ -51,8 +43,6 @@ public class UserManager extends MainManager{
     }
 
     public void updateUser(User user, final UserCallback userCallback) {
-          
-
         Call<User> call = mService.updateUser(user);
        call.enqueue(new Callback<User>() {
            @Override
@@ -60,11 +50,9 @@ public class UserManager extends MainManager{
                int code = response.code();
                if (response.isSuccessful()) {
                    userCallback.onUserUpdated(response.body());
-                   System.out.println("is successful");
                } else {
                    try{
                        userCallback.onUserUpdateFailure(new Throwable(response.errorBody().string()));
-                       System.out.println("it is not successful");
                    }catch (IOException e){
                        e.printStackTrace();
                    }
@@ -322,5 +310,32 @@ public class UserManager extends MainManager{
                 userCallback.onFollowersFailure(new Throwable("ERROR " + t.getStackTrace()));
             }
         });
+    }
+
+    public synchronized void updatePassword(passwordChangeDto pd, final UserCallback userCallback) {
+
+        Call<ResponseBody> call = mService.updatePassword(pd);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if (response.isSuccessful()) {
+                    userCallback.onPasswordUpdated(pd);
+                } else {
+                    try{
+                        userCallback.onPasswordUpdatedFailure(new Throwable(response.errorBody().string()));
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "Error Failure: " + t.getStackTrace());
+                userCallback.onPasswordUpdatedFailure(new Throwable("ERROR " + t.getStackTrace()));
+
+            }
+        });
+
     }
 }

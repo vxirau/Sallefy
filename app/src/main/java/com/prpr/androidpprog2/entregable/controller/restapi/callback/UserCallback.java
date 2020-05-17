@@ -3,6 +3,7 @@ package com.prpr.androidpprog2.entregable.controller.restapi.callback;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.model.passwordChangeDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,4 +33,6 @@ public interface UserCallback extends FailureCallback {
     void onFollowersRecieved(ArrayList<User> body);
     void onFollowersFailed(Throwable throwable);
     void onFollowersFailure(Throwable throwable);
+    void onPasswordUpdated(passwordChangeDto pd);
+    void onPasswordUpdatedFailure(Throwable throwable);
 }

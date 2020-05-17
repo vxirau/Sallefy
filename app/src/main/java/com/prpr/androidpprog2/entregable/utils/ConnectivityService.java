@@ -16,6 +16,7 @@ import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.model.passwordChangeDto;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -208,6 +209,16 @@ public class ConnectivityService extends Service implements UserCallback {
 
     @Override
     public void onFollowersFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPasswordUpdated(passwordChangeDto pd) {
+
+    }
+
+    @Override
+    public void onPasswordUpdatedFailure(Throwable throwable) {
 
     }
 

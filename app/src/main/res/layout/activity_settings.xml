@@ -173,6 +173,90 @@
                     android:singleLine="true"
                     android:textColorHint="#70353535" />
 
+                <Button
+                    android:id="@+id/changePasswordBtn"
+                    android:layout_width="210dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="35dp"
+                    android:background="@android:color/transparent"
+                    android:text="@string/change_password"
+                    android:textColor="#21D760"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/backBtn"
+                    android:layout_width="210dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="35dp"
+                    android:background="@android:color/transparent"
+                    android:text="@string/back"
+                    android:textColor="#21D760"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
+
+
+            <LinearLayout
+                android:id="@+id/passwordLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/settingsCurrentPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="55dp"
+                    android:layout_marginTop="15dp"
+                    android:gravity="left"
+                    android:text="@string/current_password"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/text_settingsCurrentPassword"
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rectangle_gran_gborder_white"
+                    android:hint="@string/write_your_current_password"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColorHint="#70353535" />
+
+                <TextView
+                    android:id="@+id/settingsNewPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="55dp"
+                    android:layout_marginTop="15dp"
+                    android:gravity="left"
+                    android:text="@string/new_password"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/text_settingsNewPassword"
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:inputType="textPassword"
+                    android:background="@drawable/rectangle_gran_gborder_white"
+                    android:hint="@string/write_your_new_password"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColorHint="#70353535" />
+
+
+            </LinearLayout>
+
+
 
                 <Button
                     android:id="@+id/update_button"
@@ -202,6 +286,11 @@
                     android:textStyle="bold">
 
                 </Button>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"></LinearLayout>
             </LinearLayout>
 
         </ScrollView>

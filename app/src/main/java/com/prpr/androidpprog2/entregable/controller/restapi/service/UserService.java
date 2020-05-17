@@ -2,6 +2,7 @@ package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
 import com.prpr.androidpprog2.entregable.model.Follow;
 
+import com.prpr.androidpprog2.entregable.model.passwordChangeDto;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
 
@@ -11,7 +12,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -47,5 +47,8 @@ public interface UserService {
 
     @GET("users/{login}/followers")
     Call<List<User>> getFollowers(@Path("login") String login);
+
+    @POST("account/change-password")
+    Call<ResponseBody> updatePassword(@Body passwordChangeDto pd);
 }
 

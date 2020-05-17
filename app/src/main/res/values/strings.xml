@@ -121,16 +121,16 @@
     <string name="settings">Settings</string>
     <string name="settings_change_username">Update Username</string>
     <string name="settings_change_email">Update Email</string>
-    <string name="settings_add_new_username">Tap your new username</string>
-    <string name="settings_add_new_email">Tap your new email</string>
+    <string name="settings_add_new_username">Write your new username</string>
+    <string name="settings_add_new_email">Write your new email</string>
     <string name="log_out">LOG OUT</string>
 
     <string name="settings_change_first_name">First Name</string>
     <string name="settings_change_last_name">Last Name</string>
     <string name="update">Update Profile</string>
     <string name="settings_change_profile_pic">Profile Pic</string>
-    <string name="settings_add_new_first_name">Tap your First Name</string>
-    <string name="settings_add_new_last_name">Tap your Last Name</string>
+    <string name="settings_add_new_first_name">Write your First Name</string>
+    <string name="settings_add_new_last_name">Write your Last Name</string>
     <string name="followed_users">Following</string>
     <string name="apply_filter">Apply filter</string>
     <string name="filter_track_search_genre">Type a genre</string>
@@ -179,5 +179,11 @@
     <string name="numFollowers">X Followers</string>
     <string name="deletePlaylist">Delete playlist</string>
     <string name="download">Download playlist</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="write_your_current_password">Write your current password</string>
+    <string name="write_your_new_password">Write your new password</string>
+    <string name="change_password">Change Password</string>
+    <string name="back">Cancel changes</string>
 </resources>
 

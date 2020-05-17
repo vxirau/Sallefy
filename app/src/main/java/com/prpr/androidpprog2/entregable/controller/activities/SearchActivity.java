@@ -52,6 +52,7 @@ import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
+import com.prpr.androidpprog2.entregable.model.passwordChangeDto;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
 import java.util.ArrayList;
@@ -584,6 +585,16 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onFollowersFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPasswordUpdated(passwordChangeDto pd) {
+
+    }
+
+    @Override
+    public void onPasswordUpdatedFailure(Throwable throwable) {
 
     }
 

@@ -24,7 +24,7 @@ public interface TrackService {
     @GET("me/tracks")
      Call<List<Track>> getOwnTracks();
 
-    @GET("users/{login}/tracks?popular=true")
+    @GET("users/{login}/tracks")
     Call<List<Track>> getUserTracks(@Path("login") String login);
 
     @GET("me/tracks/liked")
