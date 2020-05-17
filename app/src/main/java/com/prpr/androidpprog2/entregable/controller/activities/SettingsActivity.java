@@ -56,6 +56,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -490,6 +491,21 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
 
     @Override
     public void onFollowedUsersFailure(Throwable t) {
+
+    }
+
+    @Override
+    public void onFollowersRecieved(ArrayList<User> body) {
+
+    }
+
+    @Override
+    public void onFollowersFailed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowersFailure(Throwable throwable) {
 
     }
 

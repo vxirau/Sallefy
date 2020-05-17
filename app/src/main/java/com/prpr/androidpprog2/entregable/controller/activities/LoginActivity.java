@@ -43,6 +43,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -290,6 +291,21 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onFollowedUsersFailure(Throwable t) {
+
+    }
+
+    @Override
+    public void onFollowersRecieved(ArrayList<User> body) {
+
+    }
+
+    @Override
+    public void onFollowersFailed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowersFailure(Throwable throwable) {
 
     }
 

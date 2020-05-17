@@ -302,7 +302,7 @@ public class UserManager extends MainManager{
     }
 
 
-    public void getFollowers(String login, final UserCallback userCallback) {
+    public synchronized void getFollowers(String login, final UserCallback userCallback) {
         Call<List<User>> call = mService.getFollowers(login);
         call.enqueue(new Callback<List<User>>() {
             @Override

@@ -247,6 +247,21 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     }
 
     @Override
+    public void onFollowersRecieved(ArrayList<User> body) {
+
+    }
+
+    @Override
+    public void onFollowersFailed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowersFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onFailure(Throwable throwable) {
 
     }

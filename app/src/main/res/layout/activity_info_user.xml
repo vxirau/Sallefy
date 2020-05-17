@@ -88,6 +88,7 @@
                     android:id="@+id/followUser"
                     android:layout_width="wrap_content"
                     android:layout_height="29dp"
+                    android:layout_marginTop="5dp"
                     android:layout_gravity="center"
                     android:background="@drawable/rectangle_small_gborder_black"
                     android:text=""

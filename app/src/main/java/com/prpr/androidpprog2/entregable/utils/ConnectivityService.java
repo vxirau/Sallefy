@@ -20,6 +20,7 @@ import com.prpr.androidpprog2.entregable.model.UserToken;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -192,6 +193,21 @@ public class ConnectivityService extends Service implements UserCallback {
 
     @Override
     public void onFollowedUsersFailure(Throwable t) {
+
+    }
+
+    @Override
+    public void onFollowersRecieved(ArrayList<User> body) {
+
+    }
+
+    @Override
+    public void onFollowersFailed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onFollowersFailure(Throwable throwable) {
 
     }
 

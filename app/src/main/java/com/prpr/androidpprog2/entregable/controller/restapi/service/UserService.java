@@ -36,7 +36,6 @@ public interface UserService {
     @POST("account")
     Call<ResponseBody> saveAccount(@Body User user);
 
-
     @PUT("users")
     Call<User> updateUser(@Body User userDTO);
 
@@ -47,6 +46,6 @@ public interface UserService {
     Call<Follow> checkFollow(@Path("login") String login);
 
     @GET("users/{login}/followers")
-    Call<List<User>> getFollowers(String login);
+    Call<List<User>> getFollowers(@Path("login") String login);
 }
 
