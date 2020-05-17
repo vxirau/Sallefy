@@ -59,6 +59,7 @@ import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Position;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.utils.ConnectivityService;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.squareup.picasso.Picasso;
 
@@ -67,6 +68,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
 
 
 public class ReproductorService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener,
@@ -80,6 +82,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private TextView artist;
     private ImageView imahen;
     private Button playB;
+
+    private boolean offline = false;
+
     private Button pauseB;
     private ArrayList<Track> audioList;
     private ArrayList<Track> shuffledAudioList;
@@ -129,6 +134,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         callStateListener();
         registerBecomingNoisyReceiver();
         register_playNewAudio();
+        registerConnectionRegained();
+        registerConnectionLost();
     }
 
     private Runnable mProgressRunner = new Runnable() {
@@ -196,12 +203,14 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         String url="";
 
         if(UtilFunctions.noInternet(getApplicationContext())){
+            offline = true;
             if(UtilFunctions.trackExistsInDatabase(activeAudio)){
                 url = ObjectBox.get().boxFor(SavedTrack.class).get(activeAudio.getId()).trackPath;
             }else{
                 skipToNext();
             }
         }else{
+            offline = false;
             url = activeAudio.getUrl();
         }
 
@@ -468,43 +477,47 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         Collections.shuffle(shuffledAudioList);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void playAudio(){
+        int index = PreferenceUtils.getPlayID(getApplicationContext());
+        isShuffle = PreferenceUtils.getShuffle(getApplicationContext());
+        if (currentPlaylistID != index || shuffledAudioList == null) {
+            audioList = PreferenceUtils.getAllTracks(getApplicationContext());
+            makeShuffled();
+        }
+        audioIndex = indexTrack(PreferenceUtils.getTrack(getApplicationContext()));
+        if (audioIndex != -1 && audioIndex < audioList.size()) {
+            if (isShuffle) {
+                activeAudio = shuffledAudioList.get(audioIndex);
+            } else {
+                activeAudio = audioList.get(audioIndex);
+            }
+        } else {
+            stopSelf();
+        }
+        if (mediaSessionManager == null) {
+            try {
+                initMediaSession();
+                initMediaPlayer();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                stopSelf();
+            }
+            buildNotification(PlaybackStatus.PLAYING);
+        }
+
+        stopMedia();
+        mediaPlayer.reset();
+        initMediaPlayer();
+        updateMetaData();
+        buildNotification(PlaybackStatus.PLAYING);
+    }
+
     private BroadcastReceiver playNewAudio = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onReceive(Context context, Intent intent) {
-
-            int index = PreferenceUtils.getPlayID(getApplicationContext());
-            isShuffle = PreferenceUtils.getShuffle(getApplicationContext());
-            if (currentPlaylistID != index || shuffledAudioList == null) {
-                audioList = PreferenceUtils.getAllTracks(getApplicationContext());
-                makeShuffled();
-            }
-            audioIndex = indexTrack(PreferenceUtils.getTrack(getApplicationContext()));
-            if (audioIndex != -1 && audioIndex < audioList.size()) {
-                if (isShuffle) {
-                    activeAudio = shuffledAudioList.get(audioIndex);
-                } else {
-                    activeAudio = audioList.get(audioIndex);
-                }
-            } else {
-                stopSelf();
-            }
-            if (mediaSessionManager == null) {
-                try {
-                    initMediaSession();
-                    initMediaPlayer();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                    stopSelf();
-                }
-                buildNotification(PlaybackStatus.PLAYING);
-            }
-
-            stopMedia();
-            mediaPlayer.reset();
-            initMediaPlayer();
-            updateMetaData();
-            buildNotification(PlaybackStatus.PLAYING);
+           playAudio();
         }
     };
 
@@ -513,6 +526,40 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         IntentFilter filter = new IntentFilter(PlaylistActivity.Broadcast_PLAY_NEW_AUDIO);
         registerReceiver(playNewAudio, filter);
     }
+
+    private void registerConnectionRegained() {
+        IntentFilter filter = new IntentFilter(ConnectivityService.Broadcast_CONNECTION_REGAINED);
+        registerReceiver(connectionRegained, filter);
+    }
+
+    private void registerConnectionLost() {
+        IntentFilter filter = new IntentFilter(ConnectivityService.Broadcast_CONNECTION_LOST);
+        registerReceiver(connectionLost, filter);
+    }
+
+    private BroadcastReceiver connectionRegained = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(mediaPlayer.isPlaying()){
+                if(offline){
+                    offline = false;
+                    playAudio();
+                }
+            }
+        }
+    };
+
+    private BroadcastReceiver connectionLost = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(mediaPlayer.isPlaying()){
+                if(!offline){
+                    offline = true;
+                    playAudio();
+                }
+            }
+        }
+    };
 
     private void initMediaSession() throws RemoteException {
         if (mediaSessionManager != null) return;

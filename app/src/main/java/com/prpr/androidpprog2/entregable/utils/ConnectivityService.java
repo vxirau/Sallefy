@@ -32,6 +32,8 @@ public class ConnectivityService extends Service implements UserCallback {
     private int interval;
     private boolean hadInternet=true;
     private Timer mTimer = null;
+    public static final String Broadcast_CONNECTION_REGAINED = "com.prpr.androidpprog2.entregable.CONNECTION_REGAINED";
+    public static final String Broadcast_CONNECTION_LOST = "com.prpr.androidpprog2.entregable.CONNECTION_LOST";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -47,6 +49,8 @@ public class ConnectivityService extends Service implements UserCallback {
                 s.oldToken = Session.getInstance().getUserToken().getIdToken();
                 ObjectBox.get().boxFor(SavedCache.class).put(s);
             }
+            //Intent broadcastIntent = new Intent(Broadcast_CONNECTION_REGAINED);
+            //sendBroadcast(broadcastIntent);
             AccountManager.getInstance(getApplicationContext()).loginAttempt(ObjectBox.get().boxFor(SavedCache.class).get(1).username, ObjectBox.get().boxFor(SavedCache.class).get(1).password, ConnectivityService.this);
         }
     }
@@ -70,6 +74,8 @@ public class ConnectivityService extends Service implements UserCallback {
                 dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(dialogIntent);
             }
+            //Intent broadcastIntent = new Intent(Broadcast_CONNECTION_LOST);
+            //sendBroadcast(broadcastIntent);
         }
     }
 

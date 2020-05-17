@@ -29,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.AccountManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
@@ -185,7 +186,17 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
 
     @Override
     public void onLoginFailure(Throwable throwable) {
-        Toast.makeText(getApplicationContext(), "Login failed " + throwable.getMessage(), Toast.LENGTH_LONG).show();
+        String message = "";
+        if(throwable.getMessage().contains("401")){
+            message = "Wrong Credentials";
+        }else if(throwable.getMessage().contains("403")){
+            message = "Wrong Credentials";
+        }else if(throwable.getMessage().contains("404")){
+            message = "User doesn't Exist";
+        }else{
+            message = "Unkown Error";
+        }
+        ErrorDialog.getInstance(this).showErrorDialog(message);
     }
 
     @Override
@@ -320,17 +331,6 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     public void onPasswordUpdatedFailure(Throwable throwable) {
 
     }
-
-
-    /*@Override
-    public void onUsernameUpdated(User user) {
-
-    }
-
-    @Override
-    public void onEmailUpdated(User user) {
-
-    }*/
 
     @Override
     public void onFailure(Throwable throwable) {
