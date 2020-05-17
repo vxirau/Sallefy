@@ -63,6 +63,7 @@ import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -82,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private TextView trackTitle;
     private TextView followingTxt;
     private TextView trackAuthor;
+
+    private TextView titol;
+
     private SeekBar mSeekBar;
     private Button play;
     private Button pause;
@@ -281,6 +285,28 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         StrictMode.setThreadPolicy(policy);
 
         followingTxt= findViewById(R.id.noFollow);
+        String buenas = "";
+
+        Calendar calendar = Calendar.getInstance();
+        long hours= calendar.get(Calendar.HOUR_OF_DAY);
+        if(hours>5 && hours<12){
+            buenas = "Good Morning ";
+        }else if(hours>=12 && hours<19){
+            buenas = "Good Evening ";
+        }else if((hours >=19 && hours <=24) || (hours > 0 && hours <= 5)){
+            buenas = "Good Night ";
+        }
+
+        String name = "";
+        if(Session.getInstance().getUser().getFirstName()!=null){
+            name = Session.getInstance().getUser().getFirstName();
+        }else{
+            name = Session.getInstance().getUser().getLogin();;
+        }
+
+
+        titol = findViewById(R.id.titolActivitat);
+        titol.setText(buenas + name);
 
         play = findViewById(R.id.playButton);
         play.setEnabled(true);
