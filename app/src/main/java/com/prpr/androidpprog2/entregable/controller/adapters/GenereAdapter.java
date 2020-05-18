@@ -25,6 +25,8 @@ import com.prpr.androidpprog2.entregable.model.Genre;
 
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder> {
 
@@ -63,6 +65,10 @@ public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder
 
     }
 
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
     @Override
     public int getItemCount() {
         return generes != null ? generes.size():0;
@@ -72,7 +78,6 @@ public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder
 
         LinearLayout mLayout;
         TextView nomGenere;
-
         public void setFractionAnim() {
             fractionAnim = (float) valueAnimator.getAnimatedValue();;
         }
@@ -83,16 +88,13 @@ public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder
             nomGenere = (TextView) itemView.findViewById(R.id.genere_name);
 
             //Canvi de colors de fons
-            valueAnimator.setDuration(2000);
+            //valueAnimator.setDuration(2000);
+            valueAnimator.setDuration(getRandomNumber(3500, 5500));
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
-
                     setFractionAnim();
-
-                    nomGenere.setBackgroundColor(ColorUtils.blendARGB(Color.parseColor("#15C872")
-                            , Color.parseColor("#064A28")
-                            , fractionAnim));
+                    nomGenere.setBackgroundColor(ColorUtils.blendARGB(Color.parseColor("#15C872"), Color.parseColor("#2A9D52"), fractionAnim));
                 }
             });
             valueAnimator.setRepeatCount(Animation.INFINITE);

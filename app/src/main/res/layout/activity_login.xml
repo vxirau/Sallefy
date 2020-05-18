@@ -173,7 +173,7 @@
             android:layout_width="250dp"
             android:layout_height="203dp"
             android:layout_marginTop="50dp"
-            android:src="@drawable/logo_sallefy_blanc_1" />
+            android:src="@drawable/loading_logo" />
 
     </LinearLayout>
 

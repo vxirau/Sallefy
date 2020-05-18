@@ -58,7 +58,7 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements  TrackListCallback, PlaylistCallback, UserCallback, GenreCallback, SearchCallback {
+public class SearchActivity extends AppCompatActivity implements  TrackListCallback, PlaylistCallback, GenreCallback, SearchCallback, UserCallback{
 
     //Llista de songs i playists
     private RecyclerView mRecyclerViewTracks;
