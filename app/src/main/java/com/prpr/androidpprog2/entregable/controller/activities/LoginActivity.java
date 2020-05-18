@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,8 @@ public class LoginActivity extends AppCompatActivity implements AccountCallback 
     private UserToken usTkn;
     private boolean d1=true;
     private String username="";
+    private LinearLayout loginLayout;
+    private LinearLayout loadingLayout;
     private StorageReference mStorage;
 
     @Override
@@ -87,6 +90,11 @@ public class LoginActivity extends AppCompatActivity implements AccountCallback 
     }
 
     private void initViews () {
+        loginLayout = findViewById(R.id.LoginView);
+        loadingLayout = findViewById(R.id.loadingScreen);
+
+        loadingLayout.setVisibility(View.VISIBLE);
+        loginLayout.setVisibility(View.GONE);
 
         etLogin = (EditText) findViewById(R.id.login_user);
         etPassword = (EditText) findViewById(R.id.login_password);
@@ -111,8 +119,13 @@ public class LoginActivity extends AppCompatActivity implements AccountCallback 
         etLogin.setText(nickname);
         etPassword.setText(pass);
 
+
+
         if(btnRemember.isChecked()){
            doLogin(etLogin.getText().toString(),etPassword.getText().toString());
+        }else{
+            loadingLayout.setVisibility(View.GONE);
+            loginLayout.setVisibility(View.VISIBLE);
         }
 
         btnLogin = (Button) findViewById(R.id.login_btn_action);
