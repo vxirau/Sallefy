@@ -30,6 +30,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.AccountCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.AccountManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
@@ -51,7 +52,7 @@ import java.util.Map;
 
 import io.objectbox.android.AndroidObjectBrowser;
 
-public class LoginActivity extends AppCompatActivity implements UserCallback {
+public class LoginActivity extends AppCompatActivity implements AccountCallback {
 
     private EditText etLogin;
     private EditText etPassword;
@@ -62,7 +63,6 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     private boolean d1=true;
     private String username="";
     private StorageReference mStorage;
-
 
     @Override
     public void onCreate(Bundle savedInstanceSate) {
@@ -225,54 +225,7 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
     @Override
-    public void onUserUpdated(User body) {
-
-    }
-
-    @Override
     public void onAccountSaved(User body) {
-
-    }
-
-
-    @Override
-    public void onTopUsersRecieved(List<User> body) {
-
-    }
-
-    @Override
-    public void onUserUpdateFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserSelected(User user) {
-
-    }
-
-    @Override
-    public void onAllUsersSuccess(List<User> users) {
-
-    }
-
-    @Override
-    public void onFollowedUsersSuccess(List<User> users) {
-
-    }
-
-
-    @Override
-    public void onAllUsersFail(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowedUsersFail(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowSuccess(Follow body) {
 
     }
 
@@ -282,70 +235,10 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
     }
 
     @Override
-    public void onFollowFailure(Throwable throwable) {
+    public void onFailure(Throwable t) {
 
     }
 
-    @Override
-    public void onCheckSuccess(Follow body) {
-
-    }
-
-    @Override
-    public void onCheckFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onTopUsersFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowedUsersFailure(Throwable t) {
-
-    }
-
-    @Override
-    public void onFollowersRecieved(ArrayList<User> body) {
-
-    }
-
-    @Override
-    public void onFollowersFailed(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowersFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onPasswordUpdated(passwordChangeDto pd) {
-
-    }
-
-
-    @Override
-    public void onPasswordUpdatedFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onSallefySectionRecieved(List<User> body, boolean recieved) {
-
-    }
-
-    @Override
-    public void onSallefySectionFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-
-    }
 
 }
 

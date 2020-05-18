@@ -9,13 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface UserCallback extends FailureCallback {
-    void onLoginSuccess(UserToken userToken);
-    void onLoginFailure(Throwable throwable);
-    void onRegisterSuccess() ;
-    void onRegisterFailure(Throwable throwable);
-    void onUserInfoReceived(User userData);
     void onUserUpdated(User body);
-    void onAccountSaved(User body);
+    void onUserInfoReceived(User userData);
     void onTopUsersRecieved(List<User> body);
     void onUserUpdateFailure(Throwable throwable);
     void onUserSelected(User user);
@@ -24,9 +19,10 @@ public interface UserCallback extends FailureCallback {
     void onAllUsersFail(Throwable throwable);
     void onFollowedUsersFail(Throwable throwable);
     void onFollowSuccess(Follow body);
-    void onAccountSavedFailure(Throwable throwable);
     void onFollowFailure(Throwable throwable);
     void onCheckSuccess(Follow body);
+    void onAccountSaved(User body);
+    void onAccountSavedFailure(Throwable throwable);
     void onCheckFailure(Throwable throwable);
     void onTopUsersFailure(Throwable throwable);
     void onFollowedUsersFailure(Throwable t);

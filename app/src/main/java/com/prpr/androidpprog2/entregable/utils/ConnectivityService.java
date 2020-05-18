@@ -7,26 +7,22 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 
 import com.prpr.androidpprog2.entregable.controller.activities.LoginActivity;
-import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.AccountCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.AccountManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
 import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
-import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
-import com.prpr.androidpprog2.entregable.model.passwordChangeDto;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ConnectivityService extends Service implements UserCallback {
+public class ConnectivityService extends Service implements AccountCallback {
 
     public static String TAG_INTERVAL = "interval";
     private int interval;
@@ -124,120 +120,17 @@ public class ConnectivityService extends Service implements UserCallback {
     }
 
     @Override
-    public void onUserUpdated(User body) {
-
-    }
-
-    @Override
     public void onAccountSaved(User body) {
 
     }
 
-    @Override
-    public void onTopUsersRecieved(List<User> body) {
-
-    }
-
-    @Override
-    public void onUserUpdateFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserSelected(User user) {
-
-    }
-
-    @Override
-    public void onAllUsersSuccess(List<User> users) {
-
-    }
-
-    @Override
-    public void onFollowedUsersSuccess(List<User> users) {
-
-    }
-
-    @Override
-    public void onAllUsersFail(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowedUsersFail(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowSuccess(Follow body) {
-
-    }
 
     @Override
     public void onAccountSavedFailure(Throwable throwable) {
 
     }
 
-    @Override
-    public void onFollowFailure(Throwable throwable) {
 
-    }
-
-    @Override
-    public void onCheckSuccess(Follow body) {
-
-    }
-
-    @Override
-    public void onCheckFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onTopUsersFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowedUsersFailure(Throwable t) {
-
-    }
-
-    @Override
-    public void onFollowersRecieved(ArrayList<User> body) {
-
-    }
-
-    @Override
-    public void onFollowersFailed(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowersFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onPasswordUpdated(passwordChangeDto pd) {
-
-    }
-
-    @Override
-    public void onPasswordUpdatedFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onSallefySectionRecieved(List<User> body, boolean recieved) {
-
-    }
-
-
-    @Override
-    public void onSallefySectionFailure(Throwable throwable) {
-
-    }
 
     @Override
     public void onFailure(Throwable throwable) {

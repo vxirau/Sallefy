@@ -59,25 +59,6 @@ public class FollowersActivity extends AppCompatActivity implements UserCallback
         overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
 
-    @Override
-    public void onLoginSuccess(UserToken userToken) {
-
-    }
-
-    @Override
-    public void onLoginFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onRegisterSuccess() {
-
-    }
-
-    @Override
-    public void onRegisterFailure(Throwable throwable) {
-
-    }
 
     @Override
     public void onUserInfoReceived(User userData) {

@@ -23,6 +23,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.AccountCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.AccountManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.CloudinaryManager;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RegisterActivity extends AppCompatActivity implements UserCallback {
+public class RegisterActivity extends AppCompatActivity implements AccountCallback {
 
     private EditText etEmail;
     private EditText etLogin;
@@ -154,53 +155,7 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     }
 
     @Override
-    public void onUserUpdated(User body) {
-
-    }
-
-    @Override
     public void onAccountSaved(User body) {
-
-    }
-
-
-    @Override
-    public void onTopUsersRecieved(List<User> body) {
-
-    }
-
-    @Override
-    public void onUserUpdateFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onUserSelected(User user) {
-
-    }
-
-    @Override
-    public void onAllUsersSuccess(List<User> users) {
-
-    }
-
-    @Override
-    public void onFollowedUsersSuccess(List<User> users) {
-
-    }
-
-    @Override
-    public void onAllUsersFail(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowedUsersFail(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowSuccess(Follow body) {
 
     }
 
@@ -208,78 +163,6 @@ public class RegisterActivity extends AppCompatActivity implements UserCallback 
     public void onAccountSavedFailure(Throwable throwable) {
 
     }
-
-    @Override
-    public void onFollowFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onCheckSuccess(Follow body) {
-
-    }
-
-    @Override
-    public void onCheckFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onTopUsersFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowedUsersFailure(Throwable t) {
-
-    }
-
-    @Override
-    public void onFollowersRecieved(ArrayList<User> body) {
-
-    }
-
-    @Override
-    public void onFollowersFailed(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onFollowersFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onPasswordUpdated(passwordChangeDto pd) {
-
-    }
-
-    @Override
-    public void onPasswordUpdatedFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onSallefySectionRecieved(List<User> body, boolean recieved) {
-
-    }
-
-    @Override
-    public void onSallefySectionFailure(Throwable throwable) {
-
-    }
-
-
-
-    /*@Override
-    public void onUsernameUpdated(User user) {
-
-    }
-
-    @Override
-    public void onEmailUpdated(User user) {
-
-    }*/
 
 
     @Override

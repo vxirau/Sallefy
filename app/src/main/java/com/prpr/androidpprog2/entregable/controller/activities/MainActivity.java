@@ -4,6 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -277,7 +279,8 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
        if(UtilFunctions.needsSallefyUsers() && !UtilFunctions.noInternet(this)){
            usrManager.getSallefyUsers(sallefyIndex, this, false);
        }else{
-           top4Playlists = ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveSallefyPlaylists();
+         isCache = true;
+         top4Playlists = ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveSallefyPlaylists();
        }
         pManager.getFollowingPlaylists(this);
         initViews();
@@ -733,26 +736,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
 
     @Override
-    public void onLoginSuccess(UserToken userToken) {
-
-    }
-
-    @Override
-    public void onLoginFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onRegisterSuccess() {
-
-    }
-
-    @Override
-    public void onRegisterFailure(Throwable throwable) {
-
-    }
-
-    @Override
     public void onUserInfoReceived(User userData) {
 
     }
@@ -928,26 +911,48 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         topRight.setVisibility(View.INVISIBLE);
         bottomLeft.setVisibility(View.INVISIBLE);
         bottomRight.setVisibility(View.INVISIBLE);
+        boolean noInternet = UtilFunctions.noInternet(this);
+
         for(int i=0; i<top4.size() ;i++){
             switch (i){
                 case 0:
                     topLeftText.setText("This is " + top4.get(i).getFirstName());
-                    Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
+                    if(noInternet && isCache){
+                        Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
+                        topLeftImg.setImageBitmap(myBitmap);
+                    }else{
+                        Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
+                    }
                     topLeft.setVisibility(View.VISIBLE);
                     break;
                 case 1:
                     topRightText.setText("This is " + top4.get(i).getFirstName());
-                    Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
+                    if(noInternet && isCache){
+                        Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
+                        topRightImg.setImageBitmap(myBitmap);
+                    }else{
+                        Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
+                    }
                     topRight.setVisibility(View.VISIBLE);
                     break;
                 case 2:
                     bottomLeftText.setText("This is " + top4.get(i).getFirstName());
-                    Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
+                    if(noInternet && isCache){
+                        Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
+                        bottomLeftImg.setImageBitmap(myBitmap);
+                    }else{
+                        Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
+                    }
                     bottomLeft.setVisibility(View.VISIBLE);
                     break;
                 case 3:
                     bottomRightText.setText("This is " + top4.get(i).getFirstName());
-                    Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
+                    if(noInternet && isCache){
+                        Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
+                        bottomRightImg.setImageBitmap(myBitmap);
+                    }else{
+                        Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
+                    }
                     bottomRight.setVisibility(View.VISIBLE);
                     break;
                 default:
@@ -1055,7 +1060,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                 break;
 
         }
-        if((top4Playlists.size()==4 || done && !isCache) /*&& UtilFunctions.needsSallefyUsers()*/){
+        if((top4Playlists.size()==4 || done) && !isCache/*&& UtilFunctions.needsSallefyUsers()*/){
             storeSallefyCache();
         }
     }

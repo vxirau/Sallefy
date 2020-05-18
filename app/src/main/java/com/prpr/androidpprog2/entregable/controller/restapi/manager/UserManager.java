@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.prpr.androidpprog2.entregable.controller.activities.MainActivity;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.AccountCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
@@ -151,7 +152,7 @@ public class UserManager extends MainManager{
 
     }
 
-    public synchronized void registerAttempt (String email, String username, String password, final UserCallback userCallback) {
+    public synchronized void registerAttempt (String email, String username, String password, final AccountCallback userCallback) {
 
         Call<ResponseBody> call = mService.registerUser(new UserRegister(email, username, password));
 
@@ -174,7 +175,7 @@ public class UserManager extends MainManager{
         });
     }
 
-    public synchronized void getUserData (String login, final UserCallback userCallback, UserToken userToken) {
+    public synchronized void getUserData (String login, final AccountCallback userCallback, UserToken userToken) {
         //  
         Call<User> call = mService.getUserById(login);
         call.enqueue(new Callback<User>() {

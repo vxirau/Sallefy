@@ -3,6 +3,7 @@ package com.prpr.androidpprog2.entregable.controller.restapi.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.AccountCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
@@ -42,7 +43,7 @@ public class AccountManager {
     }
 
 
-    public synchronized void loginAttempt (String username, String password, final UserCallback userCallback) {
+    public synchronized void loginAttempt (String username, String password, final AccountCallback userCallback) {
 
         Call<UserToken> call = mTokenService.loginUser(new UserLogin(username, password, true));
 

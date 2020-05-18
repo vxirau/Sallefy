@@ -438,25 +438,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         }
     }
 
-    @Override
-    public void onLoginSuccess(UserToken userToken) {
 
-    }
-
-    @Override
-    public void onLoginFailure(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onRegisterSuccess() {
-
-    }
-
-    @Override
-    public void onRegisterFailure(Throwable throwable) {
-
-    }
 
     @Override
     public void onUserInfoReceived(User userData) {
