@@ -15,8 +15,13 @@ import com.prpr.androidpprog2.entregable.model.Track;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -184,4 +189,30 @@ public class UtilFunctions {
     }
 
 
+    public static boolean needsSallefyUsers() {
+        SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+        if(c.getSallefyDate() == null || c.getSallefyDate().equals("") || c.getSallefyPlaylists() == null || c.getSallefyPlaylists().equals("") || c.retrieveSallefyPlaylists() == null){
+            return true;
+        }else{
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = null;
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Calendar cal = Calendar.getInstance();
+            Date currentDate = null;
+            try {
+                date = format.parse(c.getSallefyDate());
+
+                currentDate = format.parse(dateFormat.format(cal.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long secs = (currentDate.getTime() - date.getTime()) / 1000;
+            int hours = (int) (secs / 3600);
+            if(hours>=24){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
 }

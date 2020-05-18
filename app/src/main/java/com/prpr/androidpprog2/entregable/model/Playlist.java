@@ -34,8 +34,6 @@ public class Playlist implements Serializable, Comparable<Playlist> {
 
     public Playlist(String name) {
         this.name = name;
-        //this.thumbnail = "https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1";
-        //this.cover = "https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1" ;
         this.cover = null;
         this.id = null;
         this.thumbnail = null;
@@ -52,6 +50,16 @@ public class Playlist implements Serializable, Comparable<Playlist> {
         this.publicAccessible = false;
         this.tracks = null;
     }
+
+    public Playlist(String name, User user, List<Track> tracks, String thumbnail){
+        this.id = -5;
+        this.name = name;
+        this.owner = user;
+        this.thumbnail = thumbnail;
+        this.tracks = tracks;
+    }
+
+
 
     public Playlist() {
 

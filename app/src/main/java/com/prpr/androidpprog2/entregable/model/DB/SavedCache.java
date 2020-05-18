@@ -28,6 +28,25 @@ public class SavedCache {
     public String username;
     public String password;
 
+    public String sallefyDate;
+    public String sallefyPlaylists;
+
+    public ArrayList<Playlist> retrieveSallefyPlaylists() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Playlist>>() {}.getType();
+        if(this.sallefyPlaylists!= null ){
+            return gson.fromJson(this.sallefyPlaylists, type);
+        }else{
+            return new ArrayList<>();
+        }
+
+    }
+
+    public void saveSallefyPlaylists(ArrayList<Playlist> ply) {
+        Gson gson = new Gson();
+        this.sallefyPlaylists = gson.toJson(ply);
+    }
+
     public ArrayList<Playlist> retrieveAllMyPlaylists() {
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<Playlist>>() {}.getType();
@@ -238,5 +257,43 @@ public class SavedCache {
         this.topPlaylists = topPlaylists;
     }
 
+    public String getAllMyPlaylists() {
+        return allMyPlaylists;
+    }
 
+    public void setAllMyPlaylists(String allMyPlaylists) {
+        this.allMyPlaylists = allMyPlaylists;
+    }
+
+    public String getTopPlaylists() {
+        return topPlaylists;
+    }
+
+    public void setTopPlaylists(String topPlaylists) {
+        this.topPlaylists = topPlaylists;
+    }
+
+    public String getFollowingPlaylists() {
+        return followingPlaylists;
+    }
+
+    public void setFollowingPlaylists(String followingPlaylists) {
+        this.followingPlaylists = followingPlaylists;
+    }
+
+    public String getSallefyDate() {
+        return sallefyDate;
+    }
+
+    public void setSallefyDate(String sallefyDate) {
+        this.sallefyDate = sallefyDate;
+    }
+
+    public String getSallefyPlaylists() {
+        return sallefyPlaylists;
+    }
+
+    public void setSallefyPlaylists(String sallefyPlaylists) {
+        this.sallefyPlaylists = sallefyPlaylists;
+    }
 }

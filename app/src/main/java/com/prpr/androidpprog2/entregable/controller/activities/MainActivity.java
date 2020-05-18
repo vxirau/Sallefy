@@ -43,8 +43,10 @@ import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.UserManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
@@ -65,6 +67,8 @@ import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -75,7 +79,7 @@ import io.objectbox.android.AndroidObjectBrowser;
 import io.objectbox.android.BuildConfig;
 
 
-public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback {
+public class MainActivity extends AppCompatActivity implements PlaylistCallback, UserCallback, TrackCallback {
 
     private FloatingActionButton mes;
     private FloatingActionButton btnNewPlaylist;
@@ -126,6 +130,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private LinearLayout bottomLeft;
     private ImageView bottomLeftImg;
     private TextView bottomLeftText;
+
+    private ArrayList<Playlist> top4Playlists;
+    private int sallefyIndex=0;
+    private boolean done = false;
+    private boolean isCache = false;
 
     private LinearLayout bottomRight;
     private ImageView bottomRightImg;
@@ -257,16 +266,23 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         }else{
             sameUser=false;
         }
-        initViews();
-        btnNewPlaylist.setEnabled(true);
         UserToken userToken = Session.getInstance(this).getUserToken();
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
         pManager.getTopPlaylists(this);
         usrManager.getTopUsers(this);
-        usrManager.getSallefyUsers(this, false);
+
+
+       if(UtilFunctions.needsSallefyUsers() && !UtilFunctions.noInternet(this)){
+           usrManager.getSallefyUsers(sallefyIndex, this, false);
+       }else{
+           top4Playlists = ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveSallefyPlaylists();
+       }
         pManager.getFollowingPlaylists(this);
+        initViews();
+        btnNewPlaylist.setEnabled(true);
+
         if(sameUser){
             loadPreviousSession();
         }
@@ -502,6 +518,26 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         bottomRightText.setSelected(true);
         bottomRightText.setSingleLine(true);
 
+        topLeft.setVisibility(View.INVISIBLE);
+        topRight.setVisibility(View.INVISIBLE);
+        bottomLeft.setVisibility(View.INVISIBLE);
+        bottomRight.setVisibility(View.INVISIBLE);
+
+        if(top4Playlists !=null && top4Playlists.size() > 0){
+            getUsersFromPlaylists();
+            isCache = true;
+            saQuedaoCorto();
+        }
+
+    }
+
+    private void getUsersFromPlaylists() {
+        top4 = new ArrayList<>();
+        for(Playlist p : top4Playlists){
+            String[] arr = p.getName().split(" ");
+            User u = new User(p.getThumbnail(), p.getUserLogin(), arr[2]);
+            top4.add(u);
+        }
     }
 
     private void animateFab(){
@@ -769,7 +805,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
-    @Override
+      @Override
     public void onFollowedUsersFail(Throwable throwable) {
 
     }
@@ -838,7 +874,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onSallefySectionRecieved(List<User> body, boolean recieved) {
-        if (recieved) {
+        if (recieved && body.size()>0) {
             ArrayList<User> r = clearArray(body);
             for(User h : r){
                 if(!existsInTop(top4, h)){
@@ -846,63 +882,85 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                 }
             }
             if (top4.size() < 4) {
-                UserManager.getInstance(this).getSallefyUsers(this, true);
+                sallefyIndex++;
+                UserManager.getInstance(this).getSallefyUsers(sallefyIndex, this, true);
             }else{
                 for(int i=0; i<top4.size() ;i++){
                     switch (i){
                         case 0:
                             topLeftText.setText("This is " + top4.get(i).getFirstName());
                             Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
-                            topLeft.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            });
                             break;
                         case 1:
                             topRightText.setText("This is " + top4.get(i).getFirstName());
                             Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
-                            topRight.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            });
                             break;
                         case 2:
                             bottomLeftText.setText("This is " + top4.get(i).getFirstName());
                             Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
-                            bottomLeft.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            });
                             break;
                         case 3:
                             bottomRightText.setText("This is " + top4.get(i).getFirstName());
                             Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
-                            bottomRight.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            });
                             break;
                         default:
                             break;
                     }
+                    TrackManager.getInstance(this).getUserTracks(top4.get(i).getLogin(), this);
                 }
             }
-        } else {
+        } else if(body.size()==0){
+            done = true;
+            isCache = false;
+            saQuedaoCorto();
+        }else{
             top4 = clearArray(body);
+            top4Playlists = new ArrayList<>();
             if (top4.size() < 4) {
-                UserManager.getInstance(this).getSallefyUsers(this, true);
+                sallefyIndex++;
+                UserManager.getInstance(this).getSallefyUsers(sallefyIndex, this, true);
             }
         }
     }
 
+    private void saQuedaoCorto() {
+        topLeft.setVisibility(View.INVISIBLE);
+        topRight.setVisibility(View.INVISIBLE);
+        bottomLeft.setVisibility(View.INVISIBLE);
+        bottomRight.setVisibility(View.INVISIBLE);
+        for(int i=0; i<top4.size() ;i++){
+            switch (i){
+                case 0:
+                    topLeftText.setText("This is " + top4.get(i).getFirstName());
+                    Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
+                    topLeft.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    topRightText.setText("This is " + top4.get(i).getFirstName());
+                    Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
+                    topRight.setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    bottomLeftText.setText("This is " + top4.get(i).getFirstName());
+                    Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
+                    bottomLeft.setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    bottomRightText.setText("This is " + top4.get(i).getFirstName());
+                    Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
+                    bottomRight.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    break;
+            }
+            if(isCache){
+                onUserTracksReceived(top4Playlists.get(i).getTracks());
+            }else{
+                TrackManager.getInstance(this).getUserTracks(top4.get(i).getLogin(), this);
+            }
+        }
+
+    }
 
     private ArrayList<User> clearArray(List<User> body) {
         ArrayList<User> top = new ArrayList<>();
@@ -946,4 +1004,128 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     }
 
+    @Override
+    public void onTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onPersonalTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onPersonalLikedTracksReceived(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onUserTracksReceived(List<Track> tracks) {
+        int trackUser = getUserFromTracks(tracks);
+        Playlist p = new Playlist("This is " + top4.get(trackUser).getFirstName(), new User("Sallefy"), tracks, top4.get(trackUser).getImageUrl());
+        top4Playlists.add(p);
+        View.OnClickListener click = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PlaylistActivity.class);
+                intent.putExtra("Playlst", p);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        };
+        switch (trackUser){
+            case 0:
+                topLeft.setOnClickListener(click);
+                break;
+            case 1:
+                topRight.setOnClickListener(click);
+                break;
+            case 2:
+                bottomLeft.setOnClickListener(click);
+                break;
+            case 3:
+                bottomRight.setOnClickListener(click);
+                break;
+            default:
+                break;
+
+        }
+        if((top4Playlists.size()==4 || done && !isCache) /*&& UtilFunctions.needsSallefyUsers()*/){
+            storeSallefyCache();
+        }
+    }
+
+    private void storeSallefyCache() {
+        SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+        c.saveSallefyPlaylists(top4Playlists);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        c.setSallefyDate(dateFormat.format(cal.getTime()));
+        ObjectBox.get().boxFor(SavedCache.class).put(c);
+    }
+
+    private int getUserFromTracks(List<Track> tracks) {
+        int index = 0;
+        for(int i=0; i<top4.size() ;i++){
+            if(top4.get(i).getImageUrl().equals(tracks.get(0).getUser().getImageUrl())){
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    @Override
+    public void onCreateTrack(Track t) {
+
+    }
+
+    @Override
+    public void onTopTracksRecieved(List<Track> tracks) {
+
+    }
+
+    @Override
+    public void onNoTopTracks(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackLiked(int id) {
+
+    }
+
+    @Override
+    public void onTrackNotFound(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackUpdated(Track body) {
+
+    }
+
+    @Override
+    public void onTrackUpdateFailure(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTrackDeleted(int id) {
+
+    }
+
+    @Override
+    public void onTrackReceived(Track track) {
+
+    }
+
+    @Override
+    public void onMyTracksFailure(Throwable throwable) {
+
+    }
 }

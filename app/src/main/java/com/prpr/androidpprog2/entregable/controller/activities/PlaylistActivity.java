@@ -507,7 +507,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         dialogEdit = new OptionDialog(PlaylistActivity.this, PlaylistActivity.this);
 
-
+        if(playlst.getUserLogin().equals("Sallefy") && playlst.getId()== -5){
+            followers.setVisibility(View.INVISIBLE);
+            infoPlaylist.setVisibility(View.INVISIBLE);
+        }
 
 
         back2Main = findViewById(R.id.back2Main);
@@ -1023,7 +1026,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         if (playlst.getThumbnail() != null) {
             Picasso.get().load(playlst.getThumbnail()).into(imgEdit);
         }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(imgEdit);
+            Picasso.get().load(R.drawable.default_cover).into(imgEdit);
         }
         navigation.setVisibility(View.GONE);
         actionButtons.setVisibility(View.GONE);

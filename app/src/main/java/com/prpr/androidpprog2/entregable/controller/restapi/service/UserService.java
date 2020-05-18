@@ -15,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface UserService {
 
@@ -51,7 +52,7 @@ public interface UserService {
     @POST("account/change-password")
     Call<ResponseBody> updatePassword(@Body passwordChangeDto pd);
 
-    @GET("users?popular=true&size=15")
-    Call<List<User>> getSallefyUsers();
+    @GET("users?popular=true")
+    Call<List<User>> getSallefyUsers(@Query(value="page", encoded=true) int page);
 }
 

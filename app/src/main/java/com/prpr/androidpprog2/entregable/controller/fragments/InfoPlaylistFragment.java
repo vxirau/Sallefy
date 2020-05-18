@@ -80,7 +80,7 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
         if (playlist.getThumbnail() != null) {
             Picasso.get().load(playlist.getThumbnail()).into(playlistCover);
         }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(playlistCover);
+            Picasso.get().load(R.drawable.default_cover).into(playlistCover);
         }
         playlistName = view.findViewById(R.id.playlistName);
         playlistName.setText(playlist.getName());

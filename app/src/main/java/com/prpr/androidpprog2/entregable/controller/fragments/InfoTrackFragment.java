@@ -118,7 +118,7 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
         if(trck.getThumbnail()!=null){
             Picasso.get().load(trck.getThumbnail()).into(songCover);
         }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(songCover);
+            Picasso.get().load(R.drawable.default_cover).into(songCover);
         }
 
         favorites = (ImageButton) view.findViewById(R.id.favoritos);

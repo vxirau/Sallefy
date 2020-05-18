@@ -97,7 +97,7 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
         if (playlist.get(position).getThumbnail() != null) {
             Picasso.get().load(playlist.get(position).getThumbnail()).into(holder.ivPicture);
         }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(holder.ivPicture);
+            Picasso.get().load(R.drawable.default_cover).into(holder.ivPicture);
         }
     }
 

@@ -85,6 +85,12 @@ public class User implements Serializable {
         this.login = login;
     }
 
+    public User(String imageUrl, String login, String firstName){
+        this.login = login;
+        this.firstName = firstName;
+        this.imageUrl = imageUrl;
+    }
+
     public Boolean getActivated() {
         return activated;
     }

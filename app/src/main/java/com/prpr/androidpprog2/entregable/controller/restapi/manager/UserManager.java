@@ -340,18 +340,15 @@ public class UserManager extends MainManager{
 
     }
 
-    public synchronized void getSallefyUsers (final UserCallback userCallback, boolean repeated) {
+    public synchronized void getSallefyUsers (int index, final UserCallback userCallback, boolean repeated) {
 
-        Call<List<User>> call = mService.getSallefyUsers();
+        Call<List<User>> call = mService.getSallefyUsers(index);
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 
                 int code = response.code();
                 if (response.isSuccessful()) {
-                    /*SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
-                    c.saveTopUsers((ArrayList<User>) response.body());
-                    ObjectBox.get().boxFor(SavedCache.class).put(c);*/
                     userCallback.onSallefySectionRecieved(response.body(), repeated);
                 } else {
                     Log.d(TAG, "Error NOT SUCCESSFUL: " + response.toString());

@@ -75,8 +75,8 @@ public class LoginActivity extends AppCompatActivity implements UserCallback {
         PRDownloader.initialize(getApplicationContext(), config);
         ObjectBox.init(this);
         //if (BuildConfig.DEBUG) {
-        boolean started = new AndroidObjectBrowser(ObjectBox.get()).start(this);
-        Log.i("ObjectBrowser", "Started: " + started);
+        //boolean started = new AndroidObjectBrowser(ObjectBox.get()).start(this);
+        //Log.i("ObjectBrowser", "Started: " + started);
         //}
         //---------------------------------------------------------------------------------------------------------------------
 
