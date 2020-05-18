@@ -170,8 +170,8 @@
         android:visibility="visible">
 
         <ImageView
-            android:layout_width="250dp"
-            android:layout_height="203dp"
+            android:layout_width="200dp"
+            android:layout_height="190dp"
             android:layout_marginTop="50dp"
             android:src="@drawable/loading_logo" />
 
