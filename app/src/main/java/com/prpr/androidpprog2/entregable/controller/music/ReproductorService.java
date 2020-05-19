@@ -24,6 +24,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.os.StrictMode;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -258,6 +259,14 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     public void stopOnStart() {
         stopOnStart = true;
+    }
+
+    public void updateAudioList(ArrayList<Track> list){
+        if(isShuffle){
+            shuffledAudioList = list;
+        }else{
+            audioList = list;
+        }
     }
 
     public void playTrackOnAPI(){
@@ -656,7 +665,15 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
     public Track getCurrentTrack() {
-        return activeAudio;
+        if(activeAudio==null){
+            if(isShuffle){
+                return shuffledAudioList.get(audioIndex);
+            }else{
+                return audioList.get(audioIndex);
+            }
+        }else{
+          return activeAudio;
+        }
     }
 
     private void updateMetaData() {

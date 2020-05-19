@@ -210,6 +210,7 @@ public class ReproductorActivity extends Activity implements TrackCallback {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), QueueActivity.class);
                 intent.putExtra("queue", serv.getAudioList());
+                intent.putExtra("currentTrack", serv.getCurrentTrack());
                 startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }

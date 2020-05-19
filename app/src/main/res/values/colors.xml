@@ -20,5 +20,6 @@
 
     <color name="colorVisualizer">#00A338</color>
     <color name="radioSelected">#18AB4B</color>
+    <color name="fonsColor">#191B1E</color>
 
 </resources>

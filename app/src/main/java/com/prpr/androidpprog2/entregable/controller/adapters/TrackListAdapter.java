@@ -38,6 +38,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
     private TrackListCallback mCallback;
     private QueueCallback callbackQ;
     private Playlist plylst;
+    private Track current;
 
     public TrackListAdapter(TrackListCallback callback, Context context, ArrayList<Track> tracks, Playlist playlist) {
         mTracks = tracks;
@@ -46,16 +47,18 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         this.plylst = playlist;
     }
 
-    public TrackListAdapter(QueueCallback callback, Context context, ArrayList<Track> tracks) {
+    public TrackListAdapter(int value, QueueCallback callback, Context context, ArrayList<Track> tracks, Track current) {
         mTracks = tracks;
         mContext = context;
         callbackQ = callback;
+        this.current = current;
     }
+
+
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: called.");
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.track_item, parent, false);
         return new TrackListAdapter.ViewHolder(itemView);
     }
@@ -152,11 +155,17 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
             }
         }
 
-
-
+        if(current !=null && callbackQ!=null){
+            if(current.getId().equals(mTracks.get(position).getId())){
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            }
+        }
 
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -182,6 +191,8 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+
             addSong = itemView.findViewById(R.id.addSong);
             trackLength = itemView.findViewById(R.id.track_duratio);
             mLayout = itemView.findViewById(R.id.track_item_layout);
