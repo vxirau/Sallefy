@@ -222,8 +222,6 @@ public class AddSongsBunchActivity extends AppCompatActivity implements TrackCal
 
     }
 
-
-
     @Override
     public void onRadioSelected(Track t) {
         bunch.add(t);

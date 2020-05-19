@@ -24,6 +24,7 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallba
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.utils.Constants;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class ReproductorActivity extends Activity implements TrackCallback {
     private ImageButton btnBackward;
     private Button btnPlay;
     private Button btnPause;
+    private Button queueButton;
 
     private Button likeTrack;
     private boolean liked=false;
@@ -199,6 +201,17 @@ public class ReproductorActivity extends Activity implements TrackCallback {
             public void onClick(View v) {
                 serv.toggleShuffle();
 
+            }
+        });
+
+        queueButton = findViewById(R.id.queueButton);
+        queueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), QueueActivity.class);
+                intent.putExtra("queue", serv.getAudioList());
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
 

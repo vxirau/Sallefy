@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
-import com.prpr.androidpprog2.entregable.controller.callbacks.Add2PlaylistListCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
@@ -38,7 +37,6 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
     private static final String TAG = "PlaylistListAdapter";
     private ArrayList<Playlist> playlist;
     private Context mContext;
-    private Add2PlaylistListCallback mCallback;
     private Track trck;
     private PlaylistManager pManager;
     private Playlist actual;
@@ -50,10 +48,6 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
         this.trck = t;
         this.actual = actual;
 
-    }
-
-    public void setPlaylistCallback(final Add2PlaylistListCallback itemClickCallback) {
-        this.mCallback = itemClickCallback;
     }
 
     @NonNull

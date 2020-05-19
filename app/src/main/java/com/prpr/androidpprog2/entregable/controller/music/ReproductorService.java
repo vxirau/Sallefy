@@ -288,6 +288,14 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }
     }
 
+    public ArrayList<Track> getAudioList(){
+        if(isShuffle){
+            return shuffledAudioList;
+        }else{
+            return audioList;
+        }
+    }
+
 
     public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg) {
         mSeekBar = seekBar;
@@ -461,6 +469,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     public void stopMedia() {
         if (mediaPlayer == null) return;
         if (mediaPlayer.isPlaying()) {
+            //stopMedia();
             mediaPlayer.stop();
         }
     }

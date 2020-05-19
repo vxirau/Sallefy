@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.AddSongsBunchActivity;
+import com.prpr.androidpprog2.entregable.controller.callbacks.QueueCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
 import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
@@ -35,6 +36,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
     private ArrayList<Track> mTracks;
     private Context mContext;
     private TrackListCallback mCallback;
+    private QueueCallback callbackQ;
     private Playlist plylst;
 
     public TrackListAdapter(TrackListCallback callback, Context context, ArrayList<Track> tracks, Playlist playlist) {
@@ -42,6 +44,12 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         mContext = context;
         mCallback = callback;
         this.plylst = playlist;
+    }
+
+    public TrackListAdapter(QueueCallback callback, Context context, ArrayList<Track> tracks) {
+        mTracks = tracks;
+        mContext = context;
+        callbackQ = callback;
     }
 
     @NonNull
@@ -84,6 +92,25 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
                 }
             }
         });
+
+        holder.queue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               callbackQ.dragNdropClicked();
+            }
+        });
+
+
+        if(callbackQ!=null){
+            holder.like.setVisibility(View.GONE);
+            holder.addSong.setVisibility(View.GONE);
+            holder.queue.setVisibility(View.VISIBLE);
+        }else if(mCallback!=null){
+            holder.like.setVisibility(View.VISIBLE);
+            holder.addSong.setVisibility(View.VISIBLE);
+            holder.queue.setVisibility(View.GONE);
+        }
+
 
         String segons ="";
         if(mTracks.get(position).getDuration()!=null){
@@ -147,6 +174,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         TextView tvTitle;
         Button addSong;
         Button like;
+        Button queue;
         TextView tvAuthor;
         TextView trackLength;
         ImageView ivPicture;
@@ -162,6 +190,8 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
             tvAuthor = (TextView) itemView.findViewById(R.id.track_author);
             ivPicture = (ImageView) itemView.findViewById(R.id.track_img);
             downloaded = itemView.findViewById(R.id.downloaded);
+            queue = itemView.findViewById(R.id.dragnDrop);
+
         }
     }
 }

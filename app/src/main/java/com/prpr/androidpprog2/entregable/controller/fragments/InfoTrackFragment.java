@@ -90,6 +90,8 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
         }
     }
 
+
+
     public InfoTrackFragment(Track track, Playlist p, User u) {
         playl = p;
         trck = track;

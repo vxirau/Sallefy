@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_max_heightX"
     android:layout_margin="5dp"
+    android:foreground="?attr/selectableItemBackground"
     android:gravity="center_vertical">
 
     <LinearLayout
@@ -93,16 +94,26 @@
             android:id="@+id/add2Favorite"
             android:layout_width="23dp"
             android:layout_height="20dp"
-
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
             android:background="@drawable/ic_heart" />
+
+        <Button
+            android:id="@+id/dragnDrop"
+            android:layout_width="23dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_drag_drop" />
+
         <Button
             android:id="@+id/addSong"
             android:layout_width="30dp"
             android:layout_height="40dp"
             android:layout_marginRight="10dp"
             android:paddingBottom="10dp"
+            android:visibility="gone"
             android:background="@android:color/transparent"
             android:drawableBottom="@drawable/ic_track_info"
             />

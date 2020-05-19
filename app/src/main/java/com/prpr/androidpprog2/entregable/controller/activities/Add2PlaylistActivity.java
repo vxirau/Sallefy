@@ -15,9 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.Add2PlaylistListAdapter;
-import com.prpr.androidpprog2.entregable.controller.callbacks.Add2PlaylistListCallback;
-import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
-import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.model.Follow;
@@ -31,7 +28,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistCallback, Add2PlaylistListCallback {
+public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistCallback {
 
     private static final String TAG = "Add2PlaylistActivity";
     private static final String PLAY_VIEW = "PlayIcon";
@@ -77,7 +74,6 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         adapter = new Add2PlaylistListAdapter(this,  null, null, null);
         mRecyclerView.setLayoutManager(manager);
-        adapter.setPlaylistCallback(this);
         mRecyclerView.setAdapter(adapter);
 
         mHandler = new Handler();
@@ -221,12 +217,6 @@ public class Add2PlaylistActivity extends AppCompatActivity implements PlaylistC
 
     @Override
     public void onFollowingPlaylistsFailure(Throwable throwable) {
-
-    }
-
-
-    @Override
-    public void onPlaylistAddSelected(int position, ArrayList<Playlist> playlist, Track track) {
 
     }
 

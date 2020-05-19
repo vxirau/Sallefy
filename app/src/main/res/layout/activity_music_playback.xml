@@ -27,14 +27,22 @@
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorWhite"
                 android:textSize="24sp"
                 android:gravity="center"
-                android:layout_marginRight="70dp"
                 android:textStyle="bold"
                 android:text="@string/reproduint_se" />
+
+            <Button
+                android:id="@+id/queueButton"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/ic_queue"
+                android:paddingEnd="70dp" />
+
 
         </LinearLayout>
 
