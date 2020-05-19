@@ -55,4 +55,24 @@ public class ErrorDialog {
         });
         mDialog.show();
     }
+
+    public void showInform(String title, String message) {
+        mDialog.setContentView(R.layout.dialog_error);
+        mDialog.setCanceledOnTouchOutside(false);
+
+        tvTitle = (TextView) mDialog.findViewById(R.id.dialog_error_title);
+        tvTitle.setText(title);
+        tvSubtitle = (TextView) mDialog.findViewById(R.id.dialog_error_subtitle);
+        tvSubtitle.setText(message);
+        ivIcon = (ImageView) mDialog.findViewById(R.id.dialog_error_icon);
+
+        btnAccept = (Button) mDialog.findViewById(R.id.dialog_error_button);
+        btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.cancel();
+            }
+        });
+        mDialog.show();
+    }
 }

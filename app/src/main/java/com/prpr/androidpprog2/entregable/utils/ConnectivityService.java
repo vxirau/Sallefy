@@ -45,8 +45,8 @@ public class ConnectivityService extends Service implements AccountCallback {
                 s.oldToken = Session.getInstance().getUserToken().getIdToken();
                 ObjectBox.get().boxFor(SavedCache.class).put(s);
             }
-            //Intent broadcastIntent = new Intent(Broadcast_CONNECTION_REGAINED);
-            //sendBroadcast(broadcastIntent);
+            Intent broadcastIntent = new Intent(Broadcast_CONNECTION_REGAINED);
+            sendBroadcast(broadcastIntent);
             AccountManager.getInstance(getApplicationContext()).loginAttempt(ObjectBox.get().boxFor(SavedCache.class).get(1).username, ObjectBox.get().boxFor(SavedCache.class).get(1).password, ConnectivityService.this);
         }
     }
@@ -70,8 +70,8 @@ public class ConnectivityService extends Service implements AccountCallback {
                 dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(dialogIntent);
             }
-            //Intent broadcastIntent = new Intent(Broadcast_CONNECTION_LOST);
-            //sendBroadcast(broadcastIntent);
+            Intent broadcastIntent = new Intent(Broadcast_CONNECTION_LOST);
+            sendBroadcast(broadcastIntent);
         }
     }
 

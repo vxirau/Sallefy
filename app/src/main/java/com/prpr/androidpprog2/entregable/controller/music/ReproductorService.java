@@ -2,16 +2,16 @@ package com.prpr.androidpprog2.entregable.controller.music;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Application;
+import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -45,14 +45,12 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
+import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
 import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
@@ -61,6 +59,7 @@ import com.prpr.androidpprog2.entregable.model.Position;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.utils.ConnectivityService;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
+import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -84,6 +83,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private Button playB;
 
     private boolean offline = false;
+    private boolean reseted = false;
 
     private Button pauseB;
     private ArrayList<Track> audioList;
@@ -382,8 +382,24 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         this.shuffle = shuffle;
     }
 
-    public void updateUI() {
+    private void clearUI() {
         if (mediaPlayer != null && title != null && artist != null) {
+            title.setVisibility(View.INVISIBLE);
+            artist.setVisibility(View.INVISIBLE);
+            mSeekBar.setVisibility(View.INVISIBLE);
+            mSeekBar.setVisibility(View.INVISIBLE);
+            pauseB.setVisibility(View.INVISIBLE);
+            playB.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    public void updateUI() {
+        if (mediaPlayer != null && title != null && artist != null && !reseted) {
+            title.setVisibility(View.VISIBLE);
+            artist.setVisibility(View.VISIBLE);
+            mSeekBar.setVisibility(View.VISIBLE);
+            mSeekBar.setVisibility(View.VISIBLE);
             title.setText(activeAudio.getName());
             artist.setText(activeAudio.getUserLogin());
             mProgressRunner.run();
@@ -413,6 +429,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                     }
                 }
             }
+        }else if(reseted){
+            clearUI();
         }
     }
 
@@ -517,6 +535,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onReceive(Context context, Intent intent) {
+            reseted = false;
            playAudio();
         }
     };
@@ -538,26 +557,38 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     }
 
     private BroadcastReceiver connectionRegained = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(mediaPlayer.isPlaying()){
-                if(offline){
-                    offline = false;
-                    playAudio();
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onReceive(Context context, Intent intent) {
+            if(offline){
+                offline = false;
+                if(mediaPlayer!=null){
+                    stopMedia();
                 }
+                clearUI();
+                reseted = true;
+                StateDialog.getInstance(Session.quinaActivityEsta()).informTask("Connection Regained", "Select track to resume playback");
             }
         }
     };
 
+
+
     private BroadcastReceiver connectionLost = new BroadcastReceiver() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(mediaPlayer.isPlaying()){
-                if(!offline){
-                    offline = true;
-                    playAudio();
+            if(!offline){
+                offline = true;
+                reseted = true;
+                if(mediaPlayer!=null){
+                    stopMedia();
                 }
+                clearUI();
+                StateDialog.getInstance(Session.quinaActivityEsta()).informTask("Connection Lost", "Playback has been stopped!");
+
             }
+
         }
     };
 

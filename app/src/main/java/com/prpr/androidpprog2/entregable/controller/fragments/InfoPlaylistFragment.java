@@ -47,6 +47,7 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
     private LinearLayout layoutArtist;
     private LinearLayout layoutedit;
     private LinearLayout layoutdelete;
+    private LinearLayout layoutDownload;
     private Switch download;
     private int i = 0;
     private Boolean switchState;
@@ -111,12 +112,17 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
         });
 
         layoutArtist = view.findViewById(R.id.layoutUser);
+        layoutDownload = view.findViewById(R.id.layoutDownload);
+
 
         layoutArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Session.getInstance(((PlaylistActivity)getActivity()).getApplicationContext()).getUser().getLogin().equals(playlist.getUserLogin())) {
                     ErrorDialog.getInstance(((PlaylistActivity)getActivity())).showErrorDialog("You cannot check yourself out!");
+                }else if(UtilFunctions.noInternet(getActivity())){
+                    ErrorDialog.getInstance(((PlaylistActivity)getActivity())).showErrorDialog("You need internet for this feature");
+
                 }else{
                     Intent intent = new Intent(((PlaylistActivity)getActivity()), InfoArtistaActivity.class);
                     intent.putExtra("User", playlist.getOwner());
@@ -183,12 +189,18 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
             }
         });
 
-        if(!Session.getInstance(getActivity().getApplicationContext()).getUser().getLogin().equals(playlist.getOwner().getLogin())){
+        if(!Session.getInstance(getActivity().getApplicationContext()).getUser().getLogin().equals(playlist.getOwner().getLogin()) || UtilFunctions.noInternet(getActivity())){
             layoutedit.setAlpha((float) 0.30);
             layoutedit.setEnabled(false);
             layoutdelete.setAlpha((float) 0.30);
             layoutdelete.setEnabled(false);
         }
+        if(UtilFunctions.noInternet(getActivity())){
+            layoutDownload.setAlpha((float) 0.30);
+            layoutDownload.setEnabled(false);
+            download.setEnabled(false);
+        }
+
 
         return view;
     }

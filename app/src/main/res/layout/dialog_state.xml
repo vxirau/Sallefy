@@ -7,15 +7,15 @@
 
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="380dp"
         android:layout_height="200dp"
         android:layout_centerInParent="true"
         android:background="@drawable/rectangle_blanc_cuadrat"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingBottom="20dp"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +28,7 @@
             android:gravity="center">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="10dp"
@@ -45,7 +45,7 @@
                     android:id="@+id/dialog_state_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="30sp"
+                    android:textSize="24sp"
                     android:textColor="#000"
                     android:textStyle="bold"
                     android:textAlignment="center"

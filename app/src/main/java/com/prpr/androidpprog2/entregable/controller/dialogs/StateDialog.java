@@ -69,6 +69,7 @@ public class StateDialog {
         tvSubtitle.setText(taskMessage);
         ivIcon = (ImageView) mDialog.findViewById(R.id.dialog_state_icon);
         btnAccept = (Button) mDialog.findViewById(R.id.dialog_state_button);
+        btnAccept.setVisibility(View.VISIBLE);
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

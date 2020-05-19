@@ -912,7 +912,6 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         bottomLeft.setVisibility(View.INVISIBLE);
         bottomRight.setVisibility(View.INVISIBLE);
         boolean noInternet = UtilFunctions.noInternet(this);
-
         for(int i=0; i<top4.size() ;i++){
             switch (i){
                 case 0:

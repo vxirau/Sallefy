@@ -1,10 +1,14 @@
 package com.prpr.androidpprog2.entregable.utils;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserRegister;
 import com.prpr.androidpprog2.entregable.model.UserToken;
+
+import java.lang.reflect.Field;
+import java.util.Map;
 
 public class Session {
 
@@ -82,4 +86,36 @@ public class Session {
     public void setUserToken(UserToken userToken) {
         this.mUserToken = userToken;
     }
+
+
+    public static Activity quinaActivityEsta() {
+        try {
+            Class activityThreadClass = Class.forName("android.app.ActivityThread");
+            Object activityThread = activityThreadClass.getMethod("currentActivityThread").invoke(null);
+            Field activitiesField = activityThreadClass.getDeclaredField("mActivities");
+            activitiesField.setAccessible(true);
+
+            Map<Object, Object> activities = (Map<Object, Object>) activitiesField.get(activityThread);
+            if (activities == null)
+                return null;
+
+            for (Object activityRecord : activities.values()) {
+                Class activityRecordClass = activityRecord.getClass();
+                Field pausedField = activityRecordClass.getDeclaredField("paused");
+                pausedField.setAccessible(true);
+                if (!pausedField.getBoolean(activityRecord)) {
+                    Field activityField = activityRecordClass.getDeclaredField("activity");
+                    activityField.setAccessible(true);
+                    return (Activity) activityField.get(activityRecord);
+                }
+            }
+
+            return null;
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+    }
+
 }
