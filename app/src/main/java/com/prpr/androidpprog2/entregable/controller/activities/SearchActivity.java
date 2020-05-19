@@ -69,6 +69,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     private RecyclerView getmRecyclerViewGeneres;
     private ArrayList<Genre> mGeneres;
     private Playlist mPlaylistDeGenere;
+    private ArrayList<Track> searchedTracks;
 
     //Cerca
     private EditText mSearchText;
@@ -321,7 +322,6 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
         GenereAdapter adapter = new GenereAdapter(this, this, mGeneres);
         getmRecyclerViewGeneres.setAdapter(adapter);
-
         mGeneresLayout.setVisibility(View.VISIBLE);
 
     }
@@ -590,6 +590,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onTrackSearchRecived(ArrayList<Track> tracks) {
+        this.searchedTracks = tracks;
         mRecyclerViewTracks.setAdapter(new TrackListAdapter(this, this, tracks, null));
 
         mTracksLayout.setVisibility(View.VISIBLE);
@@ -641,7 +642,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onTrackSelected(int index) {
-
+        serv.addToQueue(searchedTracks.get(index));
     }
 
     @Override
