@@ -7,7 +7,10 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import java.util.*;
@@ -27,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -126,6 +130,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private final int SORT_AZ = 0;
     private final int SORT_TIME = 1;
     private final int SORT_ARTIST = 2;
+
 
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
@@ -311,58 +316,26 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 if (direction == ItemTouchHelper.LEFT) {
-
-                }else{
-
+                    player.addToQueue(playlst.getTracks().get(viewHolder.getAdapterPosition()));
+                    Toast toast = Toast.makeText(PlaylistActivity.this, "Track added to queue!", Toast.LENGTH_SHORT);
+                    View view = toast.getView();
+                    view.getBackground().setColorFilter(Color.parseColor("#21D760"), PorterDuff.Mode.SRC_IN);
+                    TextView text = view.findViewById(android.R.id.message);
+                    text.setTextColor(Color.WHITE);
+                    text.setTypeface(text.getTypeface(), Typeface.BOLD);
+                    toast.show();
                 }
-                    /*final int position = viewHolder.getAdapterPosition();
-                    final String item = mAdapter.removeItem(position);
-                    Snackbar snackbar = Snackbar.make(viewHolder.itemView, "Item " + (direction == ItemTouchHelper.RIGHT ? "deleted" : "archived") + ".", Snackbar.LENGTH_LONG);
-                    snackbar.setAction(android.R.string.cancel, new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View view) {
-                            //mAdapter.addItem(item, position);
-                        }
-                    });
-                    snackbar.show();*/
-
             }
+
             @Override
             public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,float dX, float dY,int actionState, boolean isCurrentlyActive){
-
                 new RecyclerViewSwipeDecorator.Builder(PlaylistActivity.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        //.addBackgroundColor()
                         .addActionIcon(R.drawable.ic_queue_add).addSwipeLeftBackgroundColor(ContextCompat.getColor(PlaylistActivity.this, R.color.fonsColor))
                         .create()
                         .decorate();
 
-
                 super.onChildDraw(c, recyclerView, viewHolder, dX / 6, dY, actionState, isCurrentlyActive);
             }
-            /*@Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                    // Get RecyclerView item from the ViewHolder
-                    View itemView = viewHolder.itemView;
-
-                    Paint p = new Paint();
-                    if (dX > 0) {
-
-
-                        // Draw Rect with varying right side, equal to displacement dX
-                        c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX,
-                                (float) itemView.getBottom(), p);
-                    } else {
-
-                        // Draw Rect with varying left side, equal to the item's right side plus negative displacement dX
-                        c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
-                                (float) itemView.getRight(), (float) itemView.getBottom(), p);
-                    }
-
-                    super.onChildDraw(c, recyclerView, viewHolder, dX/4, dY, actionState, isCurrentlyActive);
-                }
-            }*/
         });
 
         helper.attachToRecyclerView(mRecyclerView);

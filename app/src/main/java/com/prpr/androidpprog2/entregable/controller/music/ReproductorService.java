@@ -1091,6 +1091,18 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         this.activityContext = context;
     }
 
+    public void addToQueue(Track track) {
+        int index = 0;
+        if(audioIndex>0){
+            index = audioIndex-1;
+        }
+        if(isShuffle){
+            shuffledAudioList.add(index, track);
+        }else{
+            audioList.add(index, track);
+        }
+    }
+
 
     public class LocalBinder extends Binder {
         public ReproductorService getService() {
