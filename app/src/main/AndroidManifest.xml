@@ -7,11 +7,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <permission android:name="android.permission.MEDIA_CONTENT_CONTROL"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 
     <application
@@ -21,8 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        >
+        android:usesCleartextTraffic="true">
 
         <activity android:name=".controller.activities.LoginActivity">
             <intent-filter>
@@ -31,6 +32,39 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".controller.activities.PlaylistActivity" />
+        <activity android:name=".controller.activities.ReproductorActivity" />
+        <activity android:name=".controller.activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="sallefy" android:host="open.my.sallefy" />
+
+                <data
+                    android:scheme="http"
+                    android:host="sallefy.eu-west-3.elasticbeanstalk.com" />
+
+            </intent-filter>
+        </activity>
+        <activity android:name=".controller.activities.RegisterActivity" />
+        <activity android:name=".controller.activities.NewPlaylistActivity" />
+        <activity android:name=".controller.activities.Add2PlaylistActivity" />
+        <activity android:name=".controller.activities.UploadActivity" />
+        <activity android:name=".controller.activities.AddSongsBunchActivity" />
+        <activity android:name=".controller.fragments.InfoTrackFragment"></activity>
+        <activity android:name=".controller.activities.InfoArtistaActivity" />
+        <activity android:name=".controller.activities.SearchActivity" />
+        <activity android:name=".controller.activities.SettingsActivity" />
+        <activity android:name=".controller.activities.UserMainActivity" />
+        <activity android:name=".controller.activities.NewGenreActivity" />
+        <activity android:name=".controller.activities.ImageActivity" />
+        <activity android:name=".controller.activities.FollowersActivity" />
+        <activity android:name=".controller.activities.EditSongActivity" />
+
+        <service android:name=".controller.music.ReproductorService" />
+        <service android:name=".utils.ConnectivityService" />
         <activity android:name=".controller.activities.PlaylistActivity"/>
         <activity android:name=".controller.activities.ReproductorActivity"/>
         <activity android:name=".controller.activities.MainActivity"/>

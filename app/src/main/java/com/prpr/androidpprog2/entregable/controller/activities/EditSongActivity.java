@@ -75,6 +75,7 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
     private Button guardar_portada;
     private Button cancel_portada;
     private Button show_uploads;
+    private boolean change = false;
 
     //Nom
     private TextView text_song; //Titol: Nom de la canco
@@ -278,6 +279,7 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
                 portada1.setVisibility(View.VISIBLE);
                 portada2.setVisibility(View.INVISIBLE);
                 Picasso.get().load(coverPas).fit().centerCrop().into(song_cover);
+                change = true;
             }
         });
 
@@ -451,7 +453,9 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
             public void onClick(View view) {
                 trck.setName(song_name.getText().toString());
                 trck.setDuration(convertSeconds(durada_name.getText().toString()));
-                trck.setThumbnail(coverPas);
+                if(change) {
+                    trck.setThumbnail(coverPas);
+                }
                 afegirGenere();
                 tManager.updateTrack(trck, EditSongActivity.this);
                 //
@@ -608,11 +612,8 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onTrackUpdated(Track body) {
-        Intent intent = new Intent(getApplicationContext(), InfoTrackFragment.class);
-        intent.putExtra("Trck", body);
-        intent.putExtra("Playlst", plyl);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+        finish();
+        overridePendingTransition(R.anim.nothing, R.anim.nothing);
     }
 
     @Override

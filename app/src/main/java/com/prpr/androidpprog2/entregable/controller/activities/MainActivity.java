@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -258,15 +259,14 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         setContentView(R.layout.activity_main);
 
 
-
         Intent intent = new Intent(this, ConnectivityService.class);
         intent.putExtra(ConnectivityService.TAG_INTERVAL, 3);
         startService(intent);
 
-        if(getIntent().getSerializableExtra("sameUser")!=null){
+        if (getIntent().getSerializableExtra("sameUser") != null) {
             sameUser = (boolean) getIntent().getSerializableExtra("sameUser");
-        }else{
-            sameUser=false;
+        } else {
+            sameUser = false;
         }
         UserToken userToken = Session.getInstance(this).getUserToken();
         pManager = new PlaylistManager(this);
@@ -276,19 +276,24 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         usrManager.getTopUsers(this);
 
 
-       if(UtilFunctions.needsSallefyUsers() && !UtilFunctions.noInternet(this)){
-           usrManager.getSallefyUsers(sallefyIndex, this, false);
-       }else{
-         isCache = true;
-         top4Playlists = ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveSallefyPlaylists();
-       }
+        if (UtilFunctions.needsSallefyUsers() && !UtilFunctions.noInternet(this)) {
+            usrManager.getSallefyUsers(sallefyIndex, this, false);
+        } else {
+            isCache = true;
+            top4Playlists = ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveSallefyPlaylists();
+        }
         pManager.getFollowingPlaylists(this);
         initViews();
         btnNewPlaylist.setEnabled(true);
 
-        if(sameUser){
+        if (sameUser) {
             loadPreviousSession();
         }
+        // ATTENTION: This was auto-generated to handle app links.
+        Intent appLinkIntent = getIntent();
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
+        System.out.println();
     }
 
     @Override
