@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import com.prpr.androidpprog2.entregable.controller.fragments.InfoTrackFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.prpr.androidpprog2.entregable.R;
@@ -104,6 +106,12 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
         tManager = new TrackManager(getContext());
         pManager = new PlaylistManager(getContext());
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        tManager.getTrack(trck.id, this);
     }
 
     private void initViews(View view){
@@ -214,7 +222,10 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
         layoutShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                dismiss();
+                ShareTrackFragment bottomSheetDialog = new ShareTrackFragment(trck);
+                bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+                bottomSheetDialog.show(getActivity().getSupportFragmentManager(), "track_info");
             }
         });
 
@@ -310,7 +321,13 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
 
     @Override
     public void onTrackReceived(Track track) {
-
+        if(track.getThumbnail()!=null){
+            Picasso.get().load(track.getThumbnail()).into(songCover);
+        }else{
+            Picasso.get().load(R.drawable.default_cover).into(songCover);
+        }
+        nomArtista.setText(track.getUserLogin());
+        songName.setText(track.getName());
     }
 
     @Override
