@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements AccountCallback 
     private LinearLayout loginLayout;
     private LinearLayout loadingLayout;
     private StorageReference mStorage;
+    private Uri data;
 
     @Override
     public void onCreate(Bundle savedInstanceSate) {
@@ -82,8 +83,8 @@ public class LoginActivity extends AppCompatActivity implements AccountCallback 
         //Log.i("ObjectBrowser", "Started: " + started);
         //}
         //---------------------------------------------------------------------------------------------------------------------
-
-
+        Intent intent = getIntent();
+        data = intent.getData();
 
         initViews();
 
@@ -233,6 +234,9 @@ public class LoginActivity extends AppCompatActivity implements AccountCallback 
         Session.getInstance(getApplicationContext()).setUser(userData);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra("sameUser", d1);
+        if(data!=null){
+            intent.putExtra("url", data.toString());
+        }
         intent.putExtra("UserInfo", userData);
         startActivity(intent);
     }

@@ -142,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private LinearLayout bottomRight;
     private ImageView bottomRightImg;
     private TextView bottomRightText;
+
+    private String urlRecieved;
+
     //---------------------------
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
@@ -268,6 +271,11 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         } else {
             sameUser = false;
         }
+        if(getIntent().getSerializableExtra("url") != null){
+            urlRecieved = (String) getIntent().getSerializableExtra("url");
+
+        }
+
         UserToken userToken = Session.getInstance(this).getUserToken();
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
