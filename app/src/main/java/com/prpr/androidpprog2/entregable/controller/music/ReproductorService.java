@@ -15,6 +15,9 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -51,6 +54,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
+import com.prpr.androidpprog2.entregable.controller.activities.SearchActivity;
 import com.prpr.androidpprog2.entregable.controller.dialogs.StateDialog;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
@@ -585,7 +589,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 }
                 clearUI();
                 reseted = true;
-                StateDialog.getInstance(Session.quinaActivityEsta()).informTask("Connection Regained", "Select track to resume playback");
+                Toast toast = Toast.makeText(Session.quinaActivityEsta(), "Connection Regained", Toast.LENGTH_LONG);
+                View view = toast.getView();
+                view.getBackground().setColorFilter(Color.parseColor("#21D760"), PorterDuff.Mode.SRC_IN);
+                TextView text = view.findViewById(android.R.id.message);
+                text.setTextColor(Color.WHITE);
+                text.setTypeface(text.getTypeface(), Typeface.BOLD);
+                toast.show();
             }
         }
     };
@@ -603,8 +613,13 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                     stopMedia();
                 }
                 clearUI();
-                StateDialog.getInstance(Session.quinaActivityEsta()).informTask("Connection Lost", "Playback has been stopped!");
-
+                Toast toast = Toast.makeText(Session.quinaActivityEsta(), "Connection Lost", Toast.LENGTH_LONG);
+                View view = toast.getView();
+                view.getBackground().setColorFilter(Color.parseColor("#21D760"), PorterDuff.Mode.SRC_IN);
+                TextView text = view.findViewById(android.R.id.message);
+                text.setTextColor(Color.WHITE);
+                text.setTypeface(text.getTypeface(), Typeface.BOLD);
+                toast.show();
             }
 
         }
@@ -689,16 +704,17 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         }else{
             if (activeAudio != null && activeAudio.getThumbnail() != null) {
                 urlString = activeAudio.getThumbnail();
+                try {
+                    URL url = new URL(urlString);
+                    albumArt = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    albumArt = null;
+                }
             } else {
-                urlString = " https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1";
+                albumArt = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.default_track_cover);
             }
-            try {
-                URL url = new URL(urlString);
-                albumArt = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-                albumArt = null;
-            }
+
         }
 
         mediaSession.setMetadata(new MediaMetadataCompat.Builder()
@@ -1089,6 +1105,18 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
     public void setMainActivity(Context context) {
         this.activityContext = context;
+    }
+
+    public void addToQueue(Track track) {
+        int index = 0;
+        if(audioIndex>0){
+            index = audioIndex-1;
+        }
+        if(isShuffle){
+            shuffledAudioList.add(index, track);
+        }else{
+            audioList.add(index, track);
+        }
     }
 
 

@@ -269,4 +269,5 @@ public class UserFollowedFragment extends Fragment implements UserCallback {
     public void onFailure(Throwable throwable) {
 
     }
+
 }

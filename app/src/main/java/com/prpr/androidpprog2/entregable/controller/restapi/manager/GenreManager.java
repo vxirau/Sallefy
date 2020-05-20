@@ -5,7 +5,10 @@ import android.util.Log;
 
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.GenreCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.GenreService;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
 import com.prpr.androidpprog2.entregable.model.Genre;
+import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -51,8 +54,10 @@ public class GenreManager extends MainManager{
                 ArrayList<Genre> data = (ArrayList<Genre>) response.body();
 
                 if (response.isSuccessful()) {
+                    SavedCache c = ObjectBox.get().boxFor(SavedCache.class).get(1);
+                    c.saveAllGenres((ArrayList<Genre>) response.body());
+                    ObjectBox.get().boxFor(SavedCache.class).put(c);
                     genreCallback.onGenresReceive(data);
-
                 } else {
                     Log.d(TAG, "Error: " + code);
                     genreCallback.onFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
@@ -62,7 +67,7 @@ public class GenreManager extends MainManager{
             @Override
             public void onFailure(Call<List<Genre>> call, Throwable t) {
                 Log.d(TAG, "Error: " + t);
-                genreCallback.onFailure(new Throwable("ERROR " + t.getMessage() ));
+                genreCallback.onAllGenreFailure(new Throwable("ERROR " + t.getMessage() ));
             }
         });
     }

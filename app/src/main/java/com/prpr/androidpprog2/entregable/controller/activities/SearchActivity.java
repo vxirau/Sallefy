@@ -5,6 +5,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -22,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -44,6 +48,8 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.SearchCallb
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.GenreManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.SearchManager;
@@ -69,6 +75,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     private RecyclerView getmRecyclerViewGeneres;
     private ArrayList<Genre> mGeneres;
     private Playlist mPlaylistDeGenere;
+    private ArrayList<Track> searchedTracks;
 
     //Cerca
     private EditText mSearchText;
@@ -316,14 +323,18 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
     }
 
     @Override
+    public void onAllGenreFailure(Throwable throwable) {
+        if(UtilFunctions.noInternet(this)){
+            onGenresReceive(ObjectBox.get().boxFor(SavedCache.class).get(1).retrieveAllGenres());
+        }
+    }
+
+    @Override
     public void onGenresReceive(ArrayList<Genre> genres) {
         mGeneres = genres;
-
         GenereAdapter adapter = new GenereAdapter(this, this, mGeneres);
         getmRecyclerViewGeneres.setAdapter(adapter);
-
         mGeneresLayout.setVisibility(View.VISIBLE);
-
     }
 
     @Override
@@ -337,8 +348,20 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onGenreSelected(Genre genere) {
-        mPlaylistDeGenere = new Playlist(genere.getName(), new User("Sallefy"));
-        GenreManager.getInstance(this).getTracksByGenre(genere.getId(), this);
+        if(UtilFunctions.noInternet(this)){
+            Toast toast = Toast.makeText(SearchActivity.this, "Feature not available!", Toast.LENGTH_LONG);
+            View view = toast.getView();
+            view.getBackground().setColorFilter(Color.parseColor("#21D760"), PorterDuff.Mode.SRC_IN);
+            TextView text = view.findViewById(android.R.id.message);
+            text.setTextColor(Color.WHITE);
+            text.setTypeface(text.getTypeface(), Typeface.BOLD);
+            toast.show();
+        }else{
+            mPlaylistDeGenere = new Playlist(genere.getName(), new User("Sallefy"));
+            GenreManager.getInstance(this).getTracksByGenre(genere.getId(), this);
+        }
+
+
     }
 
     @Override
@@ -590,6 +613,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onTrackSearchRecived(ArrayList<Track> tracks) {
+        this.searchedTracks = tracks;
         mRecyclerViewTracks.setAdapter(new TrackListAdapter(this, this, tracks, null));
 
         mTracksLayout.setVisibility(View.VISIBLE);
@@ -641,7 +665,7 @@ public class SearchActivity extends AppCompatActivity implements  TrackListCallb
 
     @Override
     public void onTrackSelected(int index) {
-
+        serv.addToQueue(searchedTracks.get(index));
     }
 
     @Override

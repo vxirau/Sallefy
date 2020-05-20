@@ -142,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private LinearLayout bottomRight;
     private ImageView bottomRightImg;
     private TextView bottomRightText;
+
+    private String urlRecieved;
+
     //---------------------------
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
@@ -268,13 +271,17 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         } else {
             sameUser = false;
         }
+        if(getIntent().getSerializableExtra("url") != null){
+            urlRecieved = (String) getIntent().getSerializableExtra("url");
+
+        }
+
         UserToken userToken = Session.getInstance(this).getUserToken();
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
         pManager.getTopPlaylists(this);
         usrManager.getTopUsers(this);
-
 
         if (UtilFunctions.needsSallefyUsers() && !UtilFunctions.noInternet(this)) {
             usrManager.getSallefyUsers(sallefyIndex, this, false);
@@ -289,11 +296,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         if (sameUser) {
             loadPreviousSession();
         }
-        // ATTENTION: This was auto-generated to handle app links.
-        Intent appLinkIntent = getIntent();
-        String appLinkAction = appLinkIntent.getAction();
-        Uri appLinkData = appLinkIntent.getData();
-        System.out.println();
+
     }
 
     @Override
@@ -873,28 +876,57 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                 sallefyIndex++;
                 UserManager.getInstance(this).getSallefyUsers(sallefyIndex, this, true);
             }else{
+                boolean noInternet = UtilFunctions.noInternet(this);
                 for(int i=0; i<top4.size() ;i++){
                     switch (i){
                         case 0:
                             topLeftText.setText("This is " + top4.get(i).getFirstName());
-                            Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
+                            if(noInternet && isCache){
+                                Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
+                                topLeftImg.setImageBitmap(myBitmap);
+                            }else{
+                                Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
+                            }
+                            topLeft.setVisibility(View.VISIBLE);
                             break;
                         case 1:
                             topRightText.setText("This is " + top4.get(i).getFirstName());
-                            Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
+                            if(noInternet && isCache){
+                                Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
+                                topRightImg.setImageBitmap(myBitmap);
+                            }else{
+                                Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
+                            }
+                            topRight.setVisibility(View.VISIBLE);
                             break;
                         case 2:
                             bottomLeftText.setText("This is " + top4.get(i).getFirstName());
-                            Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
+                            if(noInternet && isCache){
+                                Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
+                                bottomLeftImg.setImageBitmap(myBitmap);
+                            }else{
+                                Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
+                            }
+                            bottomLeft.setVisibility(View.VISIBLE);
                             break;
                         case 3:
                             bottomRightText.setText("This is " + top4.get(i).getFirstName());
-                            Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
+                            if(noInternet && isCache){
+                                Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
+                                bottomRightImg.setImageBitmap(myBitmap);
+                            }else{
+                                Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
+                            }
+                            bottomRight.setVisibility(View.VISIBLE);
                             break;
                         default:
                             break;
                     }
-                    TrackManager.getInstance(this).getUserTracks(top4.get(i).getLogin(), this);
+                    if(isCache){
+                        onUserTracksReceived(top4Playlists.get(i).getTracks());
+                    }else{
+                        TrackManager.getInstance(this).getUserTracks(top4.get(i).getLogin(), this);
+                    }
                 }
             }
         } else if(body.size()==0){
@@ -922,8 +954,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                 case 0:
                     topLeftText.setText("This is " + top4.get(i).getFirstName());
                     if(noInternet && isCache){
-                        Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
-                        topLeftImg.setImageBitmap(myBitmap);
+                        Picasso.get().load(R.drawable.default_cover).into(topLeftImg);
                     }else{
                         Picasso.get().load(top4.get(i).getImageUrl()).into(topLeftImg);
                     }
@@ -932,8 +963,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                 case 1:
                     topRightText.setText("This is " + top4.get(i).getFirstName());
                     if(noInternet && isCache){
-                        Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
-                        topRightImg.setImageBitmap(myBitmap);
+                        Picasso.get().load(R.drawable.default_cover).into(topLeftImg);
                     }else{
                         Picasso.get().load(top4.get(i).getImageUrl()).into(topRightImg);
                     }
@@ -942,8 +972,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                 case 2:
                     bottomLeftText.setText("This is " + top4.get(i).getFirstName());
                     if(noInternet && isCache){
-                        Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
-                        bottomLeftImg.setImageBitmap(myBitmap);
+                        Picasso.get().load(R.drawable.default_cover).into(topLeftImg);
                     }else{
                         Picasso.get().load(top4.get(i).getImageUrl()).into(bottomLeftImg);
                     }
@@ -952,8 +981,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                 case 3:
                     bottomRightText.setText("This is " + top4.get(i).getFirstName());
                     if(noInternet && isCache){
-                        Bitmap myBitmap = BitmapFactory.decodeFile(top4Playlists.get(i).getThumbnail());
-                        bottomRightImg.setImageBitmap(myBitmap);
+                        Picasso.get().load(R.drawable.default_cover).into(topLeftImg);
                     }else{
                         Picasso.get().load(top4.get(i).getImageUrl()).into(bottomRightImg);
                     }
@@ -979,6 +1007,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
                 if(isValidUrl(body.get(i).getImageUrl())){
                     top.add(body.get(i));
                 }
+            }
+            if(body.get(i).getId().equals(83)){
+                System.out.println("martin");
             }
             if(top.size()==4){
                 ok = true;

@@ -51,7 +51,8 @@ public interface UserService {
 
     @POST("account/change-password")
     Call<ResponseBody> updatePassword(@Body passwordChangeDto pd);
-
+    //?popular=true
+    //?sort=id
     @GET("users?popular=true")
     Call<List<User>> getSallefyUsers(@Query(value="page", encoded=true) int page);
 }

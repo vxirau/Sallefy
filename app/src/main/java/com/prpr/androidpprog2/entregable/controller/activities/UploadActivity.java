@@ -214,26 +214,6 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
                     }
                 }
             });
-
-            /*StorageReference fileRef = mStorage.child("file" + System.currentTimeMillis() + "." + getExtension(mPhotoUri));
-            mUploadTask = fileRef.putFile(mPhotoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(UploadActivity.this, "Upload successfull", Toast.LENGTH_SHORT).show();
-                    Task<Uri> uri = fileRef.getDownloadUrl()
-                    String iconPathFirebase = uri.getResult().toString();
-                    Upload upload = new Upload(iconPathFirebase);
-                    String id = mDatabase.push().getKey();
-                    mDatabase.child(id).setValue(upload);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(UploadActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-            */
-
         } else {
             Toast.makeText(this, "You have to choose a file", Toast.LENGTH_SHORT).show();
         }
@@ -325,6 +305,11 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     @Override
     public void onGenreCreated(Genre data) {
+
+    }
+
+    @Override
+    public void onAllGenreFailure(Throwable throwable) {
 
     }
 

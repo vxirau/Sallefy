@@ -30,11 +30,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="http" android:host="sallefy.eu-west-3.elasticbeanstalk.com"/>
+            </intent-filter>
         </activity>
 
         <activity android:name=".controller.activities.PlaylistActivity" />
         <activity android:name=".controller.activities.ReproductorActivity" />
         <activity android:name=".controller.activities.MainActivity">
+
         </activity>
         <activity android:name=".controller.activities.RegisterActivity" />
         <activity android:name=".controller.activities.NewPlaylistActivity" />
