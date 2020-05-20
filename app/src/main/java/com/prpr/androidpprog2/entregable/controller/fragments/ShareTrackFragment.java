@@ -1,6 +1,8 @@
 package com.prpr.androidpprog2.entregable.controller.fragments;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Layout;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.prpr.androidpprog2.entregable.R;
@@ -53,6 +56,7 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
 
     private Track track;
 
+    private String url;
 
     public ShareTrackFragment(Track trck) {
         track = trck;
@@ -67,6 +71,9 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
     }
 
     private void initViews(View view){
+
+        url = "http://sallefy.eu-west-3.elasticbeanstalk.com/track/" + track.getId();
+
 
         portada = view.findViewById(R.id.SongCover);
         titol = view.findViewById(R.id.SongName);
@@ -97,11 +104,28 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
     }
 
     private void whatsappIntent(){
-        String url = "https://www.whatsapp.com/";
-        Intent i= new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        PackageManager pm = getActivity().getPackageManager();
+        try {
+
+            Intent waIntent = new Intent(Intent.ACTION_SEND);
+            waIntent.setType("text/plain");
+            String text = url;
+
+            PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+            //Check if package exists or not. If not then code
+            //in catch block will be called
+            waIntent.setPackage("com.whatsapp");
+
+            waIntent.putExtra(Intent.EXTRA_TEXT, text);
+            startActivity(Intent.createChooser(waIntent, "Share with"));
+
+        } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(getActivity(), "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
+
+
 
     private void facebookIntent(){
         String url = "https://www.facebook.com/";
