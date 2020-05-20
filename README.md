@@ -4,7 +4,7 @@ Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacio
 
 -------------
 
-<img src="https://user-images.githubusercontent.com/48185184/77230548-47f8ac80-6b95-11ea-995f-fb809f6d74b1.png" data-canonical-src="https://user-images.githubusercontent.com/48185184/77230548-47f8ac80-6b95-11ea-995f-fb809f6d74b1.png" width="580" height="500" />
+<img align="center" src="https://user-images.githubusercontent.com/48185184/77230548-47f8ac80-6b95-11ea-995f-fb809f6d74b1.png" data-canonical-src="https://user-images.githubusercontent.com/48185184/77230548-47f8ac80-6b95-11ea-995f-fb809f6d74b1.png" width="580" height="500" />
 
 -------------
 
