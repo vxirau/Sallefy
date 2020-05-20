@@ -198,19 +198,21 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
             startActivity(Intent.createChooser(waIntent, "Share with"));
 
         } catch (PackageManager.NameNotFoundException e) {
-            Toast.makeText(getActivity(), "WhatsApp not Installed", Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(getActivity(), "WhatsApp not Installed", Toast.LENGTH_SHORT).show();
         }
     }
 
+    //Peta
     private void facebookIntent(){
-        Intent facebookIntent = new Intent(Intent.ACTION_SEND);
-        facebookIntent.setType("text/plain");
-        facebookIntent.setPackage("com.facebook.katana");
-        facebookIntent.putExtra(Intent.EXTRA_TEXT, url);
-        startActivity(facebookIntent);
+        Intent share=new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.putExtra(Intent.EXTRA_TEXT, url);
+        share.setPackage("com.facebook.katana"); //Facebook App package
+        startActivity(Intent.createChooser(share, "Title of the dialog the system will open"));
+
     }
 
+    //No va, surt el menu sencer
     private void gmailIntent(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -220,6 +222,7 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
         startActivity(Intent.createChooser(intent, "Share to Email..."));
     }
 
+    //No va
     private void twitterIntent(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, url);
@@ -227,6 +230,7 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
         startActivity(intent);
     }
 
+    //No va
     private void SMSIntent(){
         String smsBody="Sms Body";
         Intent sendIntent = new Intent(Intent.ACTION_VIEW);
@@ -234,7 +238,6 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
         sendIntent.setType("vnd.android-dir/mms-sms");
         startActivity(sendIntent);
     }
-
 
     private void copyLink() {
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
@@ -248,11 +251,12 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
     }
 
     private void others(){
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, url);
-        sendIntent.setType("text/plain");
-        getContext().startActivity(sendIntent);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Sallefy");
+        intent.putExtra(Intent.EXTRA_TEXT, url);
+        intent.setType("message/rfc822");
+        startActivity(Intent.createChooser(intent, "Share to Email..."));
     }
 
 
