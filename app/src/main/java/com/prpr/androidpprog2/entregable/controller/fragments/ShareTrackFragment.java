@@ -259,10 +259,7 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
             String text = url;
 
             PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-            //Check if package exists or not. If not then code
-            //in catch block will be called
             waIntent.setPackage("com.whatsapp");
-
             waIntent.putExtra(Intent.EXTRA_TEXT, text);
             startActivity(Intent.createChooser(waIntent, "Share with"));
 
@@ -330,7 +327,8 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, url);
         sendIntent.setType("text/plain");
-        getContext().startActivity(sendIntent);
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
 
