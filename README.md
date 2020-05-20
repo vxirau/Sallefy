@@ -13,10 +13,8 @@ Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacio
 </p>
 
 -------------
-<p align="justify">
-  
+
 **Este diseño es el diseño que por ahora esta presente en la aplicación. La lista de funcionalidades implementadas es visible en el mismo pero el resumen es el siguiente:**
-</p>
 * Autentificación de Usuario
 * Creación de Playlists
 * Consultar Playlists
