@@ -8,7 +8,8 @@ Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacio
 
 -------------
 
-![App Design](https://user-images.githubusercontent.com/48185184/77230548-47f8ac80-6b95-11ea-995f-fb809f6d74b1.png =250x250)
+
+<img src="https://user-images.githubusercontent.com/48185184/77230548-47f8ac80-6b95-11ea-995f-fb809f6d74b1.png" data-canonical-src="https://user-images.githubusercontent.com/48185184/77230548-47f8ac80-6b95-11ea-995f-fb809f6d74b1.png" width="200" height="400" />
 
 
 Este diseño es el diseño con el que se planteó el proyecto y a partir del que partimos. A lo largo de las diferentes entregas que se nos han pedido hemos perfeccionado el diseño para acabar tenindo un diseño como este:
