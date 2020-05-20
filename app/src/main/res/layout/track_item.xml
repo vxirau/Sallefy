@@ -96,7 +96,6 @@
             android:layout_height="20dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
-            android:visibility="gone"
             android:background="@drawable/ic_heart" />
 
         <Button
@@ -105,6 +104,7 @@
             android:layout_height="20dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
             android:background="@drawable/ic_drag_drop" />
 
         <Button
@@ -113,7 +113,6 @@
             android:layout_height="40dp"
             android:layout_marginRight="10dp"
             android:paddingBottom="10dp"
-            android:visibility="gone"
             android:background="@android:color/transparent"
             android:drawableBottom="@drawable/ic_track_info"
             />

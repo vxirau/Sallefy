@@ -1,9 +1,15 @@
 package com.prpr.androidpprog2.entregable.controller.fragments;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -20,9 +26,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.PlaylistManager;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
+import com.prpr.androidpprog2.entregable.model.DB.SavedPlaylist;
+import com.prpr.androidpprog2.entregable.model.DB.SavedTrack;
+import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
+import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
 public class ShareTrackFragment extends BottomSheetDialogFragment {
@@ -67,11 +78,15 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
     private LinearLayout layout_more;
 
     private Track track;
+		private User user;
+		private Playlist playlist;
 
     private String url;
 
-    public ShareTrackFragment(Track trck) {
-        track = trck;
+    public ShareTrackFragment(Track trck, User user, Playlist playlist) {
+        this.track = trck;
+				this.user = user;
+        this.playlist = playlist;
     }
 
     @Override
@@ -84,21 +99,75 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
 
     private void initViews(View view){
 
-        url = "http://sallefy.eu-west-3.elasticbeanstalk.com/track/" + track.getId();
 
 
-        portada = view.findViewById(R.id.SongCover);
-        titol = view.findViewById(R.id.SongName);
-        artista = view.findViewById(R.id.ArtistName);
+			portada = view.findViewById(R.id.SongCover);
+			titol = view.findViewById(R.id.SongName);
+			artista = view.findViewById(R.id.ArtistName);
 
-        titol.setText(track.getName());
-        artista.setText(track.getUserLogin());
 
-        if(track.getThumbnail()!=null){
-            Picasso.get().load(track.getThumbnail()).into(portada);
-        }else{
-            Picasso.get().load("https://community.spotify.com/t5/image/serverpage/image-id/25294i2836BD1C1A31BDF2/image-size/original?v=mpbl-1&px=-1").into(portada);
-        }
+            String tipus = "";
+            String ending = "";
+            if(track!=null && user ==null && playlist == null){
+                tipus = "track";
+                ending = track.getId()+"";
+                titol.setText(track.getName());
+                artista.setText(track.getUserLogin());
+                if(track.getThumbnail()!=null){
+                    if(UtilFunctions.noInternet(getActivity())){
+                        if(UtilFunctions.trackExistsInDatabase(track)){
+                            SavedTrack p = ObjectBox.get().boxFor(SavedTrack.class).get(track.getId());
+                            Bitmap myBitmap = BitmapFactory.decodeFile(p.coverPath);
+                            portada.setImageBitmap(myBitmap);
+                        }else{
+                            Picasso.get().load(R.drawable.default_track_cover).into(portada);
+                        }
+                    }else{
+                     Picasso.get().load(track.getThumbnail()).into(portada);
+                    }
+                }else{
+                    Picasso.get().load(R.drawable.default_track_cover).into(portada);
+                }
+
+            }else if(track ==null && user!=null && playlist==null){
+                tipus = "user";
+                ending = user.getLogin()+"";
+                titol.setText(user.getLogin());
+                artista.setVisibility(View.GONE);
+                if(user.getImageUrl()!=null){
+                    if(!UtilFunctions.noInternet(getActivity())){
+                        Picasso.get().load(user.getImageUrl()).into(portada);
+                    }else{
+                        Picasso.get().load(R.drawable.default_user_cover).into(portada);
+                    }
+                }else{
+                    Picasso.get().load(R.drawable.default_user_cover).into(portada);
+                }
+
+				}else if(track==null && user==null && playlist!=null){
+                    tipus = "playlist";
+                    ending = playlist.getId()+"";
+                    titol.setText(playlist.getName());
+                    artista.setText(playlist.getOwner().getLogin());
+                    if(playlist.getThumbnail()!=null){
+                        if(UtilFunctions.noInternet(getActivity())){
+                            if(UtilFunctions.playlistExistsInDatabase(playlist)){
+                                SavedPlaylist p = ObjectBox.get().boxFor(SavedPlaylist.class).get(playlist.getId());
+                                Bitmap myBitmap = BitmapFactory.decodeFile(p.coverPath);
+                                portada.setImageBitmap(myBitmap);
+                            }else{
+                                Picasso.get().load(R.drawable.default_cover).into(portada);
+                            }
+                        }else{
+                            Picasso.get().load(playlist.getThumbnail()).into(portada);
+                        }
+                    }else{
+                        Picasso.get().load(R.drawable.default_cover).into(portada);
+                    }
+
+                }
+
+        url = "http://sallefy.eu-west-3.elasticbeanstalk.com/"+tipus+"/" + ending;
 
         //Whatsapp
         icon_whats = view.findViewById(R.id.whats_icon);
@@ -198,46 +267,45 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
             startActivity(Intent.createChooser(waIntent, "Share with"));
 
         } catch (PackageManager.NameNotFoundException e) {
-            Toast.makeText(getActivity(), "WhatsApp not Installed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "WhatsApp not Installed", Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
-    //Peta
     private void facebookIntent(){
         Intent share=new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.putExtra(Intent.EXTRA_TEXT, url);
-        share.setPackage("com.facebook.katana"); //Facebook App package
+        share.setPackage("com.facebook.katana");
         startActivity(Intent.createChooser(share, "Title of the dialog the system will open"));
-
     }
 
-    //No va, surt el menu sencer
     private void gmailIntent(){
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Sallefy");
-        intent.putExtra(Intent.EXTRA_TEXT, url);
-        intent.setType("message/rfc822");
-        startActivity(Intent.createChooser(intent, "Share to Email..."));
+        String urlString = "mailto:?subject=Sallefy&body=Check this out!\n\n" + url;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            intent.setPackage(null);
+            startActivity(intent);
+        }
     }
 
-    //No va
     private void twitterIntent(){
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, url);
-        intent.setType("application/twitter");
-        startActivity(intent);
+        String tweetUrl = "https://twitter.com/intent/tweet?text=Follow this link to checkout what amazing things live in Sallefy!&url=" +url;
+        Uri uri = Uri.parse(tweetUrl);
+        startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
 
-    //No va
     private void SMSIntent(){
-        String smsBody="Sms Body";
-        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.putExtra("sms_body", url);
-        sendIntent.setType("vnd.android-dir/mms-sms");
-        startActivity(sendIntent);
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Sallefy");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, url);
+        startActivity(Intent.createChooser(intent, url));
     }
+
 
     private void copyLink() {
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
@@ -248,15 +316,21 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
             android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", url);
             clipboard.setPrimaryClip(clip);
         }
+        Toast toast = Toast.makeText(Session.quinaActivityEsta(), "Link Copied!", Toast.LENGTH_LONG);
+        View view = toast.getView();
+        view.getBackground().setColorFilter(Color.parseColor("#21D760"), PorterDuff.Mode.SRC_IN);
+        TextView text = view.findViewById(android.R.id.message);
+        text.setTextColor(Color.WHITE);
+        text.setTypeface(text.getTypeface(), Typeface.BOLD);
+        toast.show();
     }
 
     private void others(){
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Sallefy");
-        intent.putExtra(Intent.EXTRA_TEXT, url);
-        intent.setType("message/rfc822");
-        startActivity(Intent.createChooser(intent, "Share to Email..."));
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, url);
+        sendIntent.setType("text/plain");
+        getContext().startActivity(sendIntent);
     }
 
 

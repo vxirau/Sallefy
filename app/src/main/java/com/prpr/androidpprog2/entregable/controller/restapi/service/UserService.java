@@ -55,5 +55,7 @@ public interface UserService {
     //?sort=id
     @GET("users?popular=true")
     Call<List<User>> getSallefyUsers(@Query(value="page", encoded=true) int page);
+
+
 }
 

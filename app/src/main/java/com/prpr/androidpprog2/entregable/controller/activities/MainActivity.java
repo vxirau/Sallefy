@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,6 +49,8 @@ import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.adapters.PlaylistAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.UserAdapter;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
+import com.prpr.androidpprog2.entregable.controller.fragments.InfoPlaylistFragment;
+import com.prpr.androidpprog2.entregable.controller.fragments.InfoTrackFragment;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
@@ -271,12 +277,30 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         } else {
             sameUser = false;
         }
-        if(getIntent().getSerializableExtra("url") != null){
-            urlRecieved = (String) getIntent().getSerializableExtra("url");
 
+
+        if(getIntent().getSerializableExtra("url") != null && !UtilFunctions.noInternet(this)){
+            urlRecieved = (String) getIntent().getSerializableExtra("url");
+            String[] parts = urlRecieved.split("/");
+            if(parts[3].equals("track")){
+                int id = Integer.parseInt(parts[4]);
+                TrackManager.getInstance(this).getTrack(id, this);
+            }else if(parts[3].equals("playlist")){
+                int id = Integer.parseInt(parts[4]);
+                PlaylistManager.getInstance(this).getPlaylist(id, this);
+            }else if(parts[3].equals("user")){
+                UserManager.getInstance(this).getUser(parts[4], this);
+            }else{
+                Toast toast = Toast.makeText(Session.quinaActivityEsta(), "Link Not Valid", Toast.LENGTH_LONG);
+                View view = toast.getView();
+                view.getBackground().setColorFilter(Color.parseColor("#21D760"), PorterDuff.Mode.SRC_IN);
+                TextView text = view.findViewById(android.R.id.message);
+                text.setTextColor(Color.WHITE);
+                text.setTypeface(text.getTypeface(), Typeface.BOLD);
+                toast.show();
+            }
         }
 
-        UserToken userToken = Session.getInstance(this).getUserToken();
         pManager = new PlaylistManager(this);
         usrManager = new UserManager(this);
         pManager.getAllPlaylists(this);
@@ -717,7 +741,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onPlaylistRecived(Playlist playlist) {
-
+        Intent intent = new Intent(getApplicationContext(), PlaylistActivity.class);
+        intent.putExtra("Playlst", playlist);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
     @Override
@@ -745,7 +772,10 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onUserInfoReceived(User userData) {
-
+        Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
+        intent.putExtra("User", userData);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
     }
 
     @Override
@@ -1161,7 +1191,9 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     @Override
     public void onTrackReceived(Track track) {
-
+        InfoTrackFragment bottomSheetDialog = new InfoTrackFragment(track, null, Session.getInstance().getUser());
+        bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.show(getSupportFragmentManager(), "playlist_info");
     }
 
     @Override
