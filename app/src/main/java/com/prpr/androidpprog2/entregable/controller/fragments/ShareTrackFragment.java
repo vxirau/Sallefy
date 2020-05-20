@@ -1,10 +1,12 @@
 package com.prpr.androidpprog2.entregable.controller.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,15 +46,25 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
     private TextView text_twit;
     private LinearLayout layout_twit;
 
-    //Instagram
-    private ImageView icon_insta;
-    private TextView text_insta;
-    private LinearLayout layout_insta;
+    //Gmail
+    private ImageView icon_gmail;
+    private TextView text_gmail;
+    private LinearLayout layout_gmail;
+
+    //SMS
+    private ImageView icon_sms;
+    private TextView text_sms;
+    private LinearLayout layout_sms;
 
     //Copy Link
     private ImageView icon_link;
     private TextView text_link;
     private LinearLayout layout_link;
+
+    //More
+    private ImageView icon_more;
+    private TextView text_more;
+    private LinearLayout layout_more;
 
     private Track track;
 
@@ -92,13 +104,79 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
         icon_whats = view.findViewById(R.id.whats_icon);
         text_whats = view.findViewById(R.id.whats_text);
         layout_whats = view.findViewById(R.id.layoutwhats);
-
         layout_whats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 whatsappIntent();
             }
         });
+
+        //Facebook
+        icon_face = view.findViewById(R.id.icon_face);
+        text_face = view.findViewById(R.id.text_face);
+        layout_face = view.findViewById(R.id.layoutFacebook);
+        layout_face.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                facebookIntent();
+            }
+        });
+
+        //Twitter
+        icon_twit = view.findViewById(R.id.icon_twitter);
+        text_twit = view.findViewById(R.id.text_twitter);
+        layout_twit = view.findViewById(R.id.layoutTwitter);
+        layout_twit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                twitterIntent();
+            }
+        });
+
+        //Gmail
+        icon_gmail = view.findViewById(R.id.gmail_icon);
+        text_gmail = view.findViewById(R.id.gmail_text);
+        layout_gmail = view.findViewById(R.id.layoutGmail);
+        layout_gmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gmailIntent();
+            }
+        });
+
+        //SMS
+        icon_sms = view.findViewById(R.id.icon_SMS);
+        text_sms = view.findViewById(R.id.text_SMS);
+        layout_sms = view.findViewById(R.id.layoutSMS);
+        layout_sms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SMSIntent();
+            }
+        });
+
+        //Copy
+        icon_link = view.findViewById(R.id.button_copy);
+        text_link = view.findViewById(R.id.text_copy);
+        layout_link = view.findViewById(R.id.layoutCopy);
+        layout_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                copyLink();
+            }
+        });
+
+        //More
+        icon_more = view.findViewById(R.id.button_mes);
+        text_more = view.findViewById(R.id.text_mes);
+        layout_more = view.findViewById(R.id.layoutMes);
+        layout_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                others();
+            }
+        });
+
 
 
     }
@@ -125,33 +203,57 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
         }
     }
 
-
-
     private void facebookIntent(){
-        String url = "https://www.facebook.com/";
-        Intent i= new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        Intent facebookIntent = new Intent(Intent.ACTION_SEND);
+        facebookIntent.setType("text/plain");
+        facebookIntent.setPackage("com.facebook.katana");
+        facebookIntent.putExtra(Intent.EXTRA_TEXT, url);
+        startActivity(facebookIntent);
+    }
+
+    private void gmailIntent(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Sallefy");
+        intent.putExtra(Intent.EXTRA_TEXT, url);
+        intent.setType("message/rfc822");
+        startActivity(Intent.createChooser(intent, "Share to Email..."));
     }
 
     private void twitterIntent(){
-        String url = "https://www.twitter.com/";
-        Intent i= new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, url);
+        intent.setType("application/twitter");
+        startActivity(intent);
     }
 
-    private void instagramIntent(){
-        String url = "https://www.instagram.com/";
-        Intent i= new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+    private void SMSIntent(){
+        String smsBody="Sms Body";
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+        sendIntent.putExtra("sms_body", url);
+        sendIntent.setType("vnd.android-dir/mms-sms");
+        startActivity(sendIntent);
     }
 
-    /*private void copyLink(){
-        text_link.setText(uri.getText().toString());
-    }*/
 
+    private void copyLink() {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(url);
+        } else {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", url);
+            clipboard.setPrimaryClip(clip);
+        }
+    }
+
+    private void others(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, url);
+        sendIntent.setType("text/plain");
+        getContext().startActivity(sendIntent);
+    }
 
 
 

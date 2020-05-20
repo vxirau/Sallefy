@@ -69,42 +69,9 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutInsta"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="25dp"
-        android:layout_marginRight="50dp"
-        android:clickable="true"
-        android:orientation="horizontal">
-
-
-        <ImageButton
-            android:id="@+id/insta_icon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:layout_marginRight="30dp"
-            android:src="@drawable/instagram" />
-
-
-        <TextView
-            android:id="@+id/insta_text"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp"
-            android:text="@string/insta"
-            android:textAlignment="textStart"
-            android:gravity="start"/>
-
-    </LinearLayout>
-
 
     <LinearLayout
-        android:id="@+id/layoutUser"
+        android:id="@+id/layoutFacebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -115,7 +82,7 @@
 
 
         <ImageButton
-            android:id="@+id/user"
+            android:id="@+id/icon_face"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@android:color/transparent"
@@ -124,7 +91,7 @@
             android:src="@drawable/logo" />
 
         <TextView
-            android:id="@+id/text_user"
+            android:id="@+id/text_face"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
@@ -136,7 +103,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutPlaylist"
+        android:id="@+id/layoutTwitter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -147,7 +114,7 @@
 
 
         <ImageButton
-            android:id="@+id/playlist"
+            android:id="@+id/icon_twitter"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
@@ -158,7 +125,7 @@
 
 
         <TextView
-            android:id="@+id/text_playlist"
+            android:id="@+id/text_twitter"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:gravity="start"
@@ -170,7 +137,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutEliminar"
+        android:id="@+id/layoutGmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -181,7 +148,41 @@
 
 
         <ImageButton
-            android:id="@+id/eliminar"
+            android:id="@+id/gmail_icon"
+            android:layout_width="35dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="30dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/gmail" />
+
+
+        <TextView
+            android:id="@+id/gmail_text"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/gmail"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutSMS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:clickable="true"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="25dp">
+
+
+        <ImageButton
+            android:id="@+id/icon_SMS"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:background="@drawable/charlar"
@@ -190,7 +191,7 @@
 
 
         <TextView
-            android:id="@+id/text_eliminar"
+            android:id="@+id/text_SMS"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
@@ -202,7 +203,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutShare"
+        android:id="@+id/layoutCopy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -213,7 +214,7 @@
 
 
         <ImageButton
-            android:id="@+id/button_share"
+            android:id="@+id/button_copy"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginRight="30dp"
@@ -222,7 +223,7 @@
 
 
         <TextView
-            android:id="@+id/text_share"
+            android:id="@+id/text_copy"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
