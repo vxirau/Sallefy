@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context="com.prpr.androidpprog2.entregable.controller.fragments.UserTracksFragment"
+    android:background="@drawable/fons_app">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/search_user_playlists"
+                android:layout_width="580dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle_white_border_transparent"
+                android:elevation="10dp"
+                android:hint="@string/Search"
+                android:paddingLeft="15dp"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/filter_user_playlists"
+                android:gravity="center"
+                android:layout_width="70dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/search_user_playlists"
+                android:text="@string/filters"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/rectangle_blanc_small"
+                >
+
+            </Button>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/add_new_playlist"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="left"
+                android:background="@drawable/ic_plus_button"
+
+                >
+
+            </Button>
+
+            <TextView
+                android:id="@+id/tv_add_new_playlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_new_playlist"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/colorWhite"
+                android:clickable="true"
+                >
+
+            </TextView>
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userPlaylistsRecyclerview"
+            android:layout_width="match_parent"
+            android:layout_marginTop="140dp"
+            android:layout_marginBottom="107dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+
+
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top">
+
+        <LinearLayout
+
+            android:id="@+id/filterButtons"
+            android:layout_width="70dp"
+            android:layout_height="95dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="320dp"
+            android:layout_marginTop="45dp"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/btn_filter_playlists_by_name_ascendent"
+                android:layout_width="70dp"
+                android:layout_height="28dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/filter_track_by_ascendent"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/rectangle_blanc_small"
+                android:visibility="invisible"
+                android:elevation="10dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/rectangle_blanc_small" />
+
+            <Button
+                android:id="@+id/btn_filter_playlists_by_name_descendent"
+                android:layout_width="70dp"
+                android:layout_height="28dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/filter_track_by_descendent"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/rectangle_blanc_small"
+                android:visibility="invisible"
+                android:elevation="10dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/rectangle_blanc_small" />
+            <Button
+                android:id="@+id/btn_reset_filters_playlists"
+                android:layout_width="70dp"
+                android:layout_height="28dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/reset_filters"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/rectangle_blanc_small"
+                android:visibility="invisible"
+                android:elevation="10dp"
+                app:borderWidth="0dp"
+                android:src="@drawable/rectangle_blanc_small" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</FrameLayout>

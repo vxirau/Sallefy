@@ -16,6 +16,13 @@
         android:textSize="34sp"
         android:textStyle="bold" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:fillViewport="true">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,6 +32,8 @@
         android:layout_marginBottom="60dp"
         android:background="@drawable/rectangle_input_3"
         android:orientation="vertical">
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,7 +68,7 @@
                     android:id="@+id/button_choose_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="210dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/crear" />
@@ -101,7 +110,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="230dp"
                 android:text="@string/titol_de_la_can"
                 android:textColor="#000000"
                 android:textSize="20dp" />
@@ -127,7 +136,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="230dp"
                 android:text="@string/g_nere_de_la_can"
                 android:textColor="#000000"
                 android:textSize="20dp" />
@@ -154,7 +163,7 @@
                 android:id="@+id/create_song_file"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="320dp"
                 android:background="@drawable/rectangle_small_gborder_white"
                 android:text="@string/crear"
                 android:textAllCaps="false"
@@ -192,6 +201,7 @@
                 android:layout_height="50dp"
                 android:text="@string/cancelar"
                 android:textColor="#21D760"
+                android:layout_marginBottom="20dp"
                 android:textSize="20sp"
                 android:textAllCaps="false"
                 android:background="@drawable/rectangle_blanc_small_sombra"/>
@@ -200,6 +210,9 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
+    </ScrollView>
 
 
 </LinearLayout>

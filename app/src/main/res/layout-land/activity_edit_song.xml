@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@drawable/fons_app">
+
+
+    <TextView
+        android:id="@+id/title_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="@string/title_edit"
+        android:textColor="@color/colorWhite"
+        android:textSize="40dp" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:layout_marginBottom="110dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="350dp"
+                android:layout_height="200dp">
+
+                <LinearLayout
+                    android:id="@+id/portada"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="75dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="75dp"
+                    android:background="@drawable/quadrat_songcover"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/SongCover"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp"
+                        android:scaleType="fitCenter" />
+
+                    <Button
+                        android:id="@+id/cp"
+                        android:layout_width="105dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="50dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/rectangle_canvi_edit"
+                        android:text="Change cover"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/canvi_portada"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rectangle_edit_song"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+
+                    <LinearLayout
+                        android:layout_width="300dp"
+                        android:layout_height="150dp">
+
+                        <ImageView
+                            android:id="@+id/image_upload"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="50dp"
+                            android:background="@drawable/default_cover" />
+
+                        <LinearLayout
+                            android:layout_width="120dp"
+                            android:layout_height="100dp"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="30dp"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <Button
+                                android:id="@+id/choose_file"
+                                android:layout_width="90dp"
+                                android:layout_height="30dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="@drawable/cancel_edit"
+                                android:textColor="#18AB4B"
+                                android:text="@string/crear"
+                                android:textAllCaps="false"
+                                android:textSize="12dp" />
+
+                            <Button
+                                android:id="@+id/upload_file"
+                                android:layout_width="80dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/cancel_edit"
+                                android:textColor="#18AB4B"                                android:text="@string/upload"
+                                android:textAllCaps="false"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="12dp" />
+
+                            <Button
+                                android:id="@+id/show_results"
+                                android:layout_width="130dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/cancel_edit"
+                                android:textColor="#18AB4B"                                android:text="@string/show"
+                                android:textAllCaps="false"
+                                android:textSize="12dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="25dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/guardar_portada"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/rectangle_canvi_edit"
+                            android:text="Save"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="12dp" />
+
+                        <Button
+                            android:id="@+id/cancel_portada"
+                            android:layout_width="60dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/cancel_2_edit_song"
+                            android:text="Cancel"
+                            android:textAllCaps="false"
+                            android:textColor="#18AB4B"
+                            android:textSize="12dp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/text_canco"
+                android:layout_width="168dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="65dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/canvi_nom"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp"
+                android:visibility="invisible">
+
+            </TextView>
+
+            <RelativeLayout
+                android:layout_width="325dp"
+                android:layout_height="50dp">
+
+                <LinearLayout
+                    android:id="@+id/song1"
+                    android:layout_width="400dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rectangle_edit_canco"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/nom_canco"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nom_canco"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="20dp" />
+
+
+                    <Button
+                        android:id="@+id/boto_canviar_nom"
+                        android:layout_width="100dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/boto_canviar"
+                        android:text="Change name"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12dp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/song2"
+                    android:layout_width="400dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rectangle_edit_canco"
+                    android:orientation="horizontal"
+                    android:visibility="invisible">
+
+
+                    <EditText
+                        android:id="@+id/nom_canviat"
+                        android:layout_width="155dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:singleLine="true"
+                        android:background="@drawable/rectangle_edit"
+                        android:paddingLeft="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/guardar_song"
+                            android:layout_width="50dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/rectangle_canvi_edit"
+                            android:text="Save"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="10dp" />
+
+                        <Button
+                            android:id="@+id/cancel_song"
+                            android:layout_width="50dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/cancel_2_edit_song"
+                            android:text="Cancel"
+                            android:textAllCaps="false"
+                            android:textColor="#18AB4B"
+                            android:textSize="10dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/text_durada"
+                android:layout_width="168dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="65dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/canvi_durada"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp"
+                android:visibility="invisible">
+
+            </TextView>
+
+            <RelativeLayout
+                android:layout_width="325dp"
+                android:layout_height="65dp">
+
+                <LinearLayout
+                    android:id="@+id/durada1"
+                    android:layout_width="400dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rectangle_edit_canco"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/durada"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nom_canco"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="20dp" />
+
+                    <Button
+                        android:id="@+id/boto_canviar_durada"
+                        android:layout_width="100dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/boto_canviar"
+                        android:text="Change duration"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12dp" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/durada2"
+                    android:layout_width="400dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rectangle_edit_canco"
+                    android:orientation="horizontal"
+                    android:visibility="invisible">
+
+                    <EditText
+                        android:id="@+id/durada_canviada"
+                        android:layout_width="155dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectangle_edit"
+                        android:paddingLeft="15dp" />
+
+                    <LinearLayout
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/guardar_durada"
+                            android:layout_width="50dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/rectangle_canvi_edit"
+                            android:text="Save"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="10dp" />
+
+                        <Button
+                            android:id="@+id/cancel_durada"
+                            android:layout_width="50dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/cancel_2_edit_song"
+                            android:text="Cancel"
+                            android:textAllCaps="false"
+                            android:textColor="#18AB4B"
+                            android:textSize="10dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="325dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp">
+
+
+                <Button
+                    android:id="@+id/genere1"
+                    android:layout_width="160dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/boto_canviar"
+                    android:text="Add genre"
+                    android:layout_marginLeft="82dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="visible"/>
+
+                <LinearLayout
+                    android:id="@+id/genere2"
+                    android:layout_width="325dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/rectangle_edit_canco"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="30dp"
+                    android:visibility="invisible">
+
+
+                    <LinearLayout
+                        android:layout_width="120dp"
+                        android:layout_height="100dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="25dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="55dp"
+                            android:text="@string/tots_generes"
+                            android:layout_marginTop="3dp"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="12dp"/>
+
+                        <Spinner
+                            android:id="@+id/genere_total"
+                            android:layout_width="100dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/rectangle_edit" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/arrow_edit"/>
+
+                    <LinearLayout
+                        android:layout_width="130dp"
+                        android:layout_height="100dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/generes_actuals"
+                            android:layout_marginLeft="35dp"
+                            android:textColor="@color/colorWhite"
+                            android:layout_marginTop="3dp"
+                            android:textSize="12dp"/>
+
+                        <Spinner
+                            android:id="@+id/genere_canviat"
+                            android:layout_width="100dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginLeft="9dp"
+                            android:background="@drawable/rectangle_edit" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+
+
+            <Button
+                android:id="@+id/eliminar"
+                android:layout_width="160dp"
+                android:layout_height="35dp"
+                android:background="@drawable/boto_canviar"
+                android:text="Remove song"
+                android:layout_marginBottom="40dp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:textSize="20dp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/guardar"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/guardar_edit"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="70dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/cancel_edit"
+            android:text="Cancel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:textAllCaps="false"
+            android:layout_alignParentBottom="true"
+            android:textSize="17dp"
+            android:textColor="#18AB4B"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

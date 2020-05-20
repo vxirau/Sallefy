@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayoutId"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".controller.activities.PlaylistActivity"
-    android:background="@drawable/fons_app">
-
-    <ScrollView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/relativeLayoutId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="80dp"
-        android:fillViewport="true">
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:context=".controller.activities.PlaylistActivity"
+        android:background="@drawable/fons_app">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="80dp"
+            android:fillViewport="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
         android:paddingTop="5dp">
+
 
 
         <LinearLayout
@@ -33,12 +33,13 @@
             android:orientation="vertical"
             android:layout_alignParentTop="true">
 
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="20dp">
+                android:gravity="center">
 
                 <Button
                     android:id="@+id/back2Main"
@@ -109,14 +110,14 @@
                 tools:layout_editor_absoluteY="32dp" />
 
             <TextView
-            android:id="@+id/followers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/autor_de_la_playlist"
-            android:textColor="@color/colorWhite"
-            android:textSize="13sp" />
+                android:id="@+id/followers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/autor_de_la_playlist"
+                android:textColor="@color/colorWhite"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/playlistAuthor"
@@ -194,7 +195,6 @@
             </LinearLayout>
 
 
-
         </LinearLayout>
 
 
@@ -207,9 +207,8 @@
             android:orientation="vertical"
             android:layout_marginBottom="100dp"/>
 
-
-</RelativeLayout>
-    </ScrollView>
+    </RelativeLayout>
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/actionbuttons"
@@ -345,6 +344,7 @@
 
         </LinearLayout>
 
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/menu"
             android:layout_width="match_parent"
@@ -357,9 +357,9 @@
             app:itemIconSize= "30dp"
             app:labelVisibilityMode="unlabeled" />
 
-    </RelativeLayout>
 
 
+</RelativeLayout>
 
 
 

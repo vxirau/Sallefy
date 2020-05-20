@@ -1,0 +1,118 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.prpr.androidpprog2.entregable.controller.fragments.UserMenuFragment">
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/fons_app"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/user_playlists_title"
+                android:textColor="@color/colorWhite"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="25dp"
+                android:clickable="true"
+                android:textSize="18dp"
+                android:layout_marginLeft="20dp"
+
+                android:text="@string/playlists">
+
+            </TextView>
+            <TextView
+                android:id="@+id/user_my_songs_title"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="19dp"
+                android:clickable="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="18dp"
+                android:layout_toRightOf="@+id/user_playlists_title"
+                android:text="@string/my_songs">
+
+            </TextView>
+            <TextView
+                android:id="@+id/user_statistics_title"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="24dp"
+                android:clickable="true"
+                android:textColor="@color/colorWhite"
+                android:layout_toRightOf="@+id/user_my_songs_title"
+                android:textSize="18dp"
+                android:text="@string/statistics"
+                >
+
+            </TextView>
+            <TextView
+                android:id="@+id/user_my_followed_title"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="22dp"
+                android:clickable="true"
+                android:textColor="@color/colorWhite"
+                android:layout_toRightOf="@+id/user_my_songs_title"
+                android:textSize="18dp"
+                android:text="@string/followed_users"
+                >
+
+            </TextView>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <View
+
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#21D760"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="22dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginBottom="15dp"
+                android:layout_alignParentTop="true"
+                />
+            <View
+                android:id="@+id/view_big_bar"
+                android:layout_width="90dp"
+                android:layout_height="4dp"
+                android:background="#21D760"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_alignParentTop="true"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>

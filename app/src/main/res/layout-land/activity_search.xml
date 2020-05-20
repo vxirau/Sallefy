@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/fons_app">
+
+    <LinearLayout
+        android:id="@+id/search_general"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/search_topZone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:text="@string/search_title"
+                android:textColor="#FFFFFF"
+                android:textSize="40sp" />
+
+            <EditText
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/rectangle_gran_gborder_white"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:hint="@string/search_bar"
+                android:inputType="text"
+                android:drawableEnd="@drawable/ic_search_green"
+                android:textColorHint="#70353535"
+                android:layout_marginHorizontal="40dp"
+                app:actionViewClass="android.support.v7.widget.SearchView"
+                app:showAsAction="always"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/search_genere_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="37.5dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="100dp"
+            app:layout_constraintTop_toBottomOf="@id/search_topZone"
+            android:orientation="horizontal">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_dynamic_recyclerView_genere"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/search_scroll_all"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="20dp"
+            android:layout_marginBottom="100dp"
+            android:fillViewport="true"
+            android:isScrollContainer="false"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/search_recyclerView_playlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/playlist_"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/search_dynamic_recyclerView_playlist"
+                        android:layout_width="match_parent"
+                        android:layout_height="210dp"
+                        android:maxHeight="570dp"
+                        android:orientation="horizontal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/search_recyclerView_song"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/songs_"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/search_dynamic_recyclerView_songs"
+                        android:layout_width="match_parent"
+                        android:layout_height="210dp"
+                        android:maxHeight="570dp"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/search_recyclerView_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="@string/search_user_"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/search_dynamic_recyclerView_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="210dp"
+                        android:maxHeight="570dp"
+                        android:orientation="horizontal" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <SeekBar
+            android:id="@+id/dynamic_seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="87dp"
+            android:backgroundTint="#21D760"
+            android:colorControlActivated="@drawable/ic_seekbar_scrubber"
+            android:progressBackgroundTint="#21D760"
+            android:progressTint="@color/colorWhite"
+            android:thumb="@drawable/seek_thumb" />
+
+        <Button
+            android:id="@+id/playButton"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="55dp"
+            android:background="@drawable/ic_play_white"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/playPause"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="55dp"
+            android:background="@drawable/ic_pause_white"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:id="@+id/reproductor"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/fons_reproductor"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center">
+
+            <TextView
+                android:id="@+id/dynamic_title"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:maxWidth="300dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"/>
+            <TextView
+                android:id="@+id/dynamic_artist"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:maxWidth="300dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp"
+                android:alpha = ".56"
+                android:paddingBottom="12dp"/>
+
+        </LinearLayout>
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/menu"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:background="#2A2D31"
+            app:itemBackground="@color/menuColor"
+            app:itemIconSize="30dp"
+            app:itemIconTint="@drawable/menu_selector"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/navigation" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
