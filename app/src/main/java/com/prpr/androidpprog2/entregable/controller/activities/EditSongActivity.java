@@ -679,6 +679,11 @@ public class EditSongActivity extends AppCompatActivity implements TrackCallback
     }
 
     @Override
+    public void onAllGenreFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onGenreCreateFailure(Throwable throwable) {
 
     }

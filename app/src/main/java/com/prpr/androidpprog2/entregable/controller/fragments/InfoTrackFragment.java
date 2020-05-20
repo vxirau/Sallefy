@@ -42,6 +42,8 @@ import java.util.List;
 
 public class InfoTrackFragment extends BottomSheetDialogFragment implements TrackCallback, PlaylistCallback {
 
+
+
     private ImageView songCover;
     private TextView songName;
     private TextView nomArtista;
@@ -73,7 +75,7 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
     private Button cancel;
 
     private Track trck;
-//3.37
+    //3.37
     private ErrorDialog er;
 
     private User user;
@@ -87,11 +89,10 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        if(getActivity() instanceof  PlaylistActivity){
-            ((PlaylistActivity)getActivity()).onResume();
+        if (getActivity() instanceof PlaylistActivity) {
+            ((PlaylistActivity) getActivity()).onResume();
         }
     }
-
 
 
     public InfoTrackFragment(Track track, Playlist p, User u) {
@@ -103,7 +104,7 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_info_track, container, false);
+        View view = inflater.inflate(R.layout.fragment_info_track, container, false);
         initViews(view);
         tManager = new TrackManager(getContext());
         pManager = new PlaylistManager(getContext());
@@ -111,12 +112,12 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         tManager.getTrack(trck.id, this);
     }
 
-    private void initViews(View view){
+    private void initViews(View view) {
         er = new ErrorDialog(getContext());
         songCover = (ImageView) view.findViewById(R.id.SongCover);
         songName = (TextView) view.findViewById(R.id.SongName);
@@ -125,9 +126,9 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
         songName.setText(trck.getName());
         nomArtista.setText(trck.getUserLogin());
 
-        if(trck.getThumbnail()!=null){
+        if (trck.getThumbnail() != null) {
             Picasso.get().load(trck.getThumbnail()).into(songCover);
-        }else{
+        } else {
             Picasso.get().load(R.drawable.default_cover).into(songCover);
         }
 
@@ -142,23 +143,22 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
         });
 
 
-        edit= (ImageButton) view.findViewById(R.id.edit);
+        edit = (ImageButton) view.findViewById(R.id.edit);
         text_edit = view.findViewById(R.id.text_edit);
         layoutedit = view.findViewById(R.id.layoutedit);
         layoutedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())){
+                if (Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())) {
                     Intent intent = new Intent(getContext().getApplicationContext(), EditSongActivity.class);
                     intent.putExtra("Trck", trck);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
 
-                }else{
+                } else {
                     er.showErrorDialog("This track is not yours to edit");
                 }
             }
         });
-
 
 
         artist = (ImageButton) view.findViewById(R.id.user);
@@ -167,9 +167,9 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
         layoutArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())) {
+                if (Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(trck.getUserLogin())) {
                     er.showErrorDialog("You cannot check yourself out!");
-                }else{
+                } else {
                     Intent intent = new Intent(getContext().getApplicationContext(), InfoArtistaActivity.class);
                     intent.putExtra("User", trck.getUser());
                     startActivity(intent);
@@ -196,25 +196,25 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
         layouteliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
+                if (Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
                     playl.getTracks().remove(trck);
-                    pManager.updatePlaylist(playl,trck, InfoTrackFragment.this);
+                    pManager.updatePlaylist(playl, trck, InfoTrackFragment.this);
                     Toast.makeText(getContext(), "Eliminada correctament", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     er.showErrorDialog("This playlist is not yours to edit");
                 }
             }
         });
 
-        if(Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
+        if (Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
             layouteliminar.setVisibility(View.VISIBLE);
             layoutedit.setAlpha((float) 1.0);
-        }else{
+        } else {
             layouteliminar.setVisibility(View.GONE);
             layoutedit.setAlpha((float) 0.60);
         }
 
-        if(playl==null){
+        if (playl == null) {
             layouteliminar.setVisibility(View.GONE);
         }
 
@@ -231,7 +231,7 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
             }
         });
 
-        if(UtilFunctions.noInternet(getActivity().getApplicationContext())){
+        if (UtilFunctions.noInternet(getActivity().getApplicationContext())) {
             layouteliminar.setAlpha((float) 0.30);
             layouteliminar.setEnabled(false);
             layoutShare.setAlpha((float) 0.30);
@@ -291,10 +291,10 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
 
     @Override
     public void onTrackLiked(int id) {
-        if(trck.isLiked()){
+        if (trck.isLiked()) {
             Toast.makeText(getContext().getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
             trck.setLiked(false);
-        }else{
+        } else {
             Toast.makeText(getContext().getApplicationContext(), "Afegit correctament", Toast.LENGTH_SHORT).show();
             trck.setLiked(true);
         }
@@ -323,9 +323,9 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
 
     @Override
     public void onTrackReceived(Track track) {
-        if(track.getThumbnail()!=null){
+        if (track.getThumbnail() != null) {
             Picasso.get().load(track.getThumbnail()).into(songCover);
-        }else{
+        } else {
             Picasso.get().load(R.drawable.default_cover).into(songCover);
         }
         nomArtista.setText(track.getUserLogin());

@@ -64,7 +64,7 @@
     },
     {
       "id": "3:2701060658214823714",
-      "lastPropertyId": "18:503563331153921473",
+      "lastPropertyId": "19:4332903701840417897",
       "name": "SavedCache",
       "properties": [
         {
@@ -136,6 +136,11 @@
         {
           "id": "18:503563331153921473",
           "name": "sallefyPlaylists",
+          "type": 9
+        },
+        {
+          "id": "19:4332903701840417897",
+          "name": "allGenres",
           "type": 9
         }
       ],

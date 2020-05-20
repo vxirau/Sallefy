@@ -2,6 +2,7 @@ package com.prpr.androidpprog2.entregable.model.DB;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.prpr.androidpprog2.entregable.model.Genre;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
@@ -22,6 +23,7 @@ public class SavedCache {
     public String topPlaylists;
     public String topUsers;
     public String followingPlaylists;
+    public String allGenres;
     public String mySongs;
     public String myFollowed;
     public String user;
@@ -45,6 +47,22 @@ public class SavedCache {
     public void saveSallefyPlaylists(ArrayList<Playlist> ply) {
         Gson gson = new Gson();
         this.sallefyPlaylists = gson.toJson(ply);
+    }
+
+    public ArrayList<Genre> retrieveAllGenres() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Genre>>() {}.getType();
+        if(this.allGenres!= null ){
+            return gson.fromJson(this.allGenres, type);
+        }else{
+            return new ArrayList<>();
+        }
+
+    }
+
+    public void saveAllGenres(ArrayList<Genre> ply) {
+        Gson gson = new Gson();
+        this.allGenres = gson.toJson(ply);
     }
 
     public ArrayList<Playlist> retrieveAllMyPlaylists() {

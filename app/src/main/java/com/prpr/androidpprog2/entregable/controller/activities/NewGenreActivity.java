@@ -103,6 +103,11 @@ public class NewGenreActivity extends Activity implements GenreCallback {
     }
 
     @Override
+    public void onAllGenreFailure(Throwable throwable) {
+
+    }
+
+    @Override
     public void onGenreCreateFailure(Throwable throwable) {
         loadingDialog.cancelLoadingDialog();
         ErrorDialog.getInstance(this).showErrorDialog("The creation of the genre \""+ nomGenre.getText().toString() + "\" was not successful");
