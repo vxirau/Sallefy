@@ -56,6 +56,7 @@
         <activity android:name=".controller.activities.FollowersActivity" />
         <activity android:name=".controller.activities.EditSongActivity" />
         <service android:name=".controller.music.ReproductorService" />
+        <service android:name=".utils.ConnectivityService" />
         <activity android:name=".controller.activities.QueueActivity"/>
         <service android:name=".utils.ConnectivityService"/>
 

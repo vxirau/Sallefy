@@ -201,7 +201,6 @@ public class UtilFunctions {
             Date currentDate = null;
             try {
                 date = format.parse(c.getSallefyDate());
-
                 currentDate = format.parse(dateFormat.format(cal.getTime()));
             } catch (ParseException e) {
                 e.printStackTrace();

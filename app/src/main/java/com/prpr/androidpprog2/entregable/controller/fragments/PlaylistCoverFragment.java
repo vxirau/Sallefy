@@ -20,7 +20,7 @@ public class PlaylistCoverFragment extends Fragment {
 
         if(p!=null){
             Bundle bundle = new Bundle();
-            bundle.putParcelable("cover", p);
+            //bundle.putParcelable("cover", p);
             fragment.setArguments(bundle);
         }
 
