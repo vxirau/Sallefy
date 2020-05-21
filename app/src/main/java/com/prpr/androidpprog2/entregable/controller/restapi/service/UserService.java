@@ -39,6 +39,8 @@ public interface UserService {
 
     @PUT("users")
     Call<User> updateUser(@Body User userDTO);
+    @GET("playbacks")
+
 
     @PUT("users/{login}/follow")
     Call<Follow> startStopFollowing(@Path("login") String login);

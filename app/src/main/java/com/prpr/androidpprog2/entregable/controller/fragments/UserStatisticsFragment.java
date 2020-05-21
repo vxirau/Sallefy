@@ -34,6 +34,14 @@ import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import android.support.v4.app.*;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
@@ -60,13 +68,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-public class UserStatisticsFragment extends Fragment implements TrackCallback {
+public class UserStatisticsFragment extends Fragment implements TrackCallback, OnMapReadyCallback {
 
 
     private ArrayList<Track> myLikedTracks;
     private ArrayList<Track> myUploadedTracks;
 
-    private RadarChart radarChart;
+    private PieChart pieChart;
     private BarChart barChart;
     private ScrollView scrollView;
     private ArrayList<String> genres;
@@ -74,11 +82,11 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
     private static final int GREEN_SALLEFY_COLOR = Color.rgb(0, 153, 51);
     private static final int[] SALLEFY_COLORS =  {GREEN_SALLEFY_COLOR, Color.rgb(0, 175, 32) , Color.rgb(0, 123, 76), Color.rgb(0, 127, 12), Color.rgb(0, 243, 50)};
     private TrackManager trackManager;
-
+    private GoogleMap map;
     private boolean hasBeenShown;
 
     HashMap<String, Integer> likedTracksHashMap = new HashMap<String, Integer>();
-    HashMap<String, Integer> topPlayedTracksHashmap = new HashMap<String, Integer>();
+    HashMap<String, Integer> topPlayedGenresHashmap = new HashMap<String, Integer>();
     public UserStatisticsFragment() {
         // Required empty public constructor
         this.genres = new ArrayList<>();
@@ -96,19 +104,22 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
 
         scrollView = view.findViewById(R.id.statisticsScrollview);
 
-        //Radar Chart Top Listened Genres by User
-        radarChart = (RadarChart) view.findViewById(R.id.radarChartTopListenedGenres);
+        //Pie Chart Top Listened Genres by User
+        pieChart = (PieChart) view.findViewById(R.id.pieChart);
 
-        radarChart.getDescription().setEnabled(false);
-        radarChart.setDragDecelerationFrictionCoef(0.30f);
-        radarChart.animateY(750, Easing.EaseInOutCubic);
-        radarChart.getLegend().setTextColor(Color.WHITE);
+        pieChart.setUsePercentValues(true);
+        pieChart.getDescription().setEnabled(false);
+        pieChart.setExtraOffsets(5, 10, 5, 5);
+        pieChart.setDragDecelerationFrictionCoef(0.45f);
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(Color.rgb(25, 27, 30));
+        pieChart.animateX(1200);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.setTransparentCircleRadius(55f);
 
-        radarChart.getYAxis().setTextColor(Color.WHITE);
+        pieChart.setNoDataText("");
+        //pieChart.setHole
 
-        radarChart.getXAxis().setTextColor(Color.WHITE);
-        radarChart.getXAxis().setTextSize(15);
-        radarChart.getLegend().setEnabled(false);
 
         //Bar Chart Top Played Tracks uploaded from user
         barChart = (BarChart) view.findViewById(R.id.barChartTopPlayedTracks);
@@ -139,10 +150,12 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
         });
 
 
-
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         //Manager
         trackManager = new TrackManager(getContext());
+
         trackManager.getOwnLikedTracks(this);
         trackManager.getOwnTracks(this);
 
@@ -150,21 +163,82 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
         return view;
     }
 
-    private void createRadarChart( HashMap<String, Integer> tracks){
-        RadarDataSet dataSet = new RadarDataSet(addDataValuesToRadarChart(tracks), "Top Listened Genres by User");
-        dataSet.setColor(GREEN_SALLEFY_COLOR);
+    //HEATMAP
+    private void createHeatMap(GoogleMap map){
 
 
-        RadarData data = new RadarData();
-        data.addDataSet(dataSet);
 
-        XAxis xAxis = radarChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(genres));
-        xAxis.setTextSize(10f);
-        radarChart.setData(data);
-        radarChart.invalidate();
+
+
     }
 
+
+    //TOP LISTENED GENRES
+    private void createPieChart( HashMap<String, Integer> tracks){
+        PieDataSet dataSet = new PieDataSet(addValuesToPieChart(tracks), "Top Listened Genres by User");
+        dataSet.setColors(SALLEFY_COLORS);
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+        PieData data = new PieData();
+        data.addDataSet(dataSet);
+        data.setValueTextSize(10f);
+        data.setValueTextColor(Color.WHITE);
+        pieChart.setData(data);
+    }
+    private void sortGenresByPlays(ArrayList<Track> tracks){
+
+        for(Track t : tracks) {
+            for (int i = 0; i < t.getPlays(); i++) {
+                String key = t.getName();
+                if (!topPlayedGenresHashmap.containsKey(key)) {
+
+                    topPlayedGenresHashmap.put(key, t.getPlays());
+
+                } else {
+                    topPlayedGenresHashmap.put(key, t.getPlays());
+                }
+            }
+        }
+
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(topPlayedGenresHashmap.entrySet());
+
+
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2)
+            {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+
+        HashMap<String, Integer> sortedLikedTracksGenre = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> aa : list) {
+            sortedLikedTracksGenre.put(aa.getKey(), aa.getValue());
+        }
+
+        for (Map.Entry<String,Integer> entry : sortedLikedTracksGenre.entrySet())
+            System.out.println("Key = " + entry.getKey() +
+                    ", Value = " + entry.getValue());
+        createBarChart(sortedLikedTracksGenre);
+
+    }
+    private ArrayList<PieEntry> addValuesToPieChart( HashMap<String, Integer> sortedLikedTracksGenre){
+
+        int count = 0;
+        ArrayList<PieEntry> dataVals = new ArrayList<>();
+
+        for (Map.Entry<String,Integer> entry : sortedLikedTracksGenre.entrySet()){
+            dataVals.add(new PieEntry(entry.getValue(), entry.getKey()));
+            genres.add(entry.getKey());
+            count++;
+            if(count == 6){  //The top genres chart is limited to 5 genres
+                return dataVals;
+            }
+        }
+        return dataVals;
+    }
+
+    //TOP LIKED TRACKS
     private void createBarChart(HashMap<String, Integer> tracks){
 
         BarDataSet barDataSet = new BarDataSet(addDataValuesToBarChart(tracks), "Top Played Tracks From User");
@@ -175,7 +249,6 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
 
         barChart.setData(barData);
     }
-
     private void sortTracksByLikes(ArrayList<Track> tracks){
 
         for(Track t : tracks) {
@@ -213,44 +286,7 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
         for (Map.Entry<String,Integer> entry : sortedLikedTracksGenre.entrySet())
             System.out.println("Key = " + entry.getKey() +
                     ", Value = " + entry.getValue());
-        createRadarChart(sortedLikedTracksGenre);
-
-    }
-    private void sortTracksByPlays(ArrayList<Track> tracks){
-
-        for(Track t : tracks) {
-            for (int i = 0; i < t.getPlays(); i++) {
-                String key = t.getName();
-                if (!likedTracksHashMap.containsKey(key)) {
-
-                    likedTracksHashMap.put(key, t.getPlays());
-
-                } else {
-                    likedTracksHashMap.put(key, t.getPlays());
-                }
-            }
-        }
-
-        List<Map.Entry<String, Integer>> list = new LinkedList<>(likedTracksHashMap.entrySet());
-
-
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
-            public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2)
-            {
-                return (o2.getValue()).compareTo(o1.getValue());
-            }
-        });
-
-        HashMap<String, Integer> sortedLikedTracksGenre = new LinkedHashMap<>();
-        for (Map.Entry<String, Integer> aa : list) {
-            sortedLikedTracksGenre.put(aa.getKey(), aa.getValue());
-        }
-
-        for (Map.Entry<String,Integer> entry : sortedLikedTracksGenre.entrySet())
-            System.out.println("Key = " + entry.getKey() +
-                    ", Value = " + entry.getValue());
-        createBarChart(sortedLikedTracksGenre);
+        createPieChart(sortedLikedTracksGenre);
 
     }
     private ArrayList<BarEntry> addDataValuesToBarChart( HashMap<String, Integer> sortedPlayedTracks){
@@ -268,21 +304,9 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
         }
         return dataVals;
     }
-    private ArrayList<RadarEntry> addDataValuesToRadarChart( HashMap<String, Integer> sortedLikedTracksGenre){
 
-        int count = 0;
-        ArrayList<RadarEntry> dataVals = new ArrayList<>();
 
-        for (Map.Entry<String,Integer> entry : sortedLikedTracksGenre.entrySet()){
-            dataVals.add(new RadarEntry(entry.getValue()));
-            genres.add(entry.getKey());
-            count++;
-            if(count == 6){  //The top genres chart is limited to 5 genres
-                return dataVals;
-            }
-        }
-        return dataVals;
-    }
+
 
     @Override
     public void onTracksReceived(List<Track> tracks) {
@@ -297,7 +321,7 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
     @Override
     public void onPersonalTracksReceived(List<Track> tracks) {
         this.myUploadedTracks = (ArrayList<Track>) tracks;
-        sortTracksByPlays(myUploadedTracks);
+        sortGenresByPlays(myUploadedTracks);
     }
 
     @Override
@@ -373,4 +397,16 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback {
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        map = googleMap;
+        LatLng Maharashtra = new LatLng(19.169257, 73.341601);
+        map.addMarker(new MarkerOptions().position(Maharashtra).title("Maharashtra"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(Maharashtra));
+
+
+
+
+    }
 }

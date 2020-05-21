@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: me.itangqi.waveloadingview:library:0.3.5@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e8e86fb0e39800fc73f5575089dfb7d8/jetified-library-0.3.5/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e8e86fb0e39800fc73f5575089dfb7d8/jetified-library-0.3.5/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ffa2e05238de03059349ede5b08c9c6a/jetified-library-0.3.5/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ffa2e05238de03059349ede5b08c9c6a/jetified-library-0.3.5/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.itangqi.waveloadingview/library/0.3.5/54a283dd89525783227c9daba03af61d63e946ae/library-0.3.5-javadoc.jar!/" />

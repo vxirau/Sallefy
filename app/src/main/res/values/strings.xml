@@ -151,7 +151,7 @@
 
 
     <string name="top_listened_genres_user">Top listened genres</string>
-
+    <string name="top_played_tracks_user">Top played tracks</string>
     <string name="whats">Whatsapp</string>
     <string name="insta">Instagram</string>
     <string name="face">Facebook</string>

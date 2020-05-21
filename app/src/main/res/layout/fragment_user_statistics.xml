@@ -20,6 +20,18 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            
+            <fragment
+                android:layout_width="400dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_height="500dp"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+
+                />
+            
+            
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -31,16 +43,16 @@
                     android:textSize="30sp"
                     />
 
-                <com.github.mikephil.charting.charts.RadarChart
-                    android:id="@+id/radarChartTopListenedGenres"
-                    android:layout_width="370dp"
-                    android:layout_height="380dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginLeft="20dp"
-
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart"
+                    android:layout_width="400dp"
+                    android:layout_height="400dp"
+                    android:layout_gravity="center"
                     >
 
-                </com.github.mikephil.charting.charts.RadarChart>
+                </com.github.mikephil.charting.charts.PieChart>
+
+
 
                 <View
                     android:layout_width="match_parent"
@@ -56,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/TextViewTopPlayedTracks"
-                android:text="@string/top_listened_genres_user"
+                android:text="@string/top_played_tracks_user"
                 android:layout_marginLeft="20dp"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="10dp"

@@ -82,7 +82,8 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.android.support:multidex:1.0.3'
-
+    implementation 'com.google.maps.android:android-maps-utils:1.2.1'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
     //---Eliminar per una entrega final----//
     debugImplementation "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
