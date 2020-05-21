@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -23,6 +24,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +35,7 @@ import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
 import com.prpr.androidpprog2.entregable.controller.dialogs.ErrorDialog;
 import com.prpr.androidpprog2.entregable.controller.fragments.InfoTrackFragment;
+import com.prpr.androidpprog2.entregable.controller.fragments.ShareTrackFragment;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.PlaylistCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
@@ -72,6 +75,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
     private TextView plists;
     private TextView songs;
     private Button follow;
+    private ImageButton buttonShare;
     private Follow followingInfo;
     private boolean isFollowing = false;
     private UserManager umanager;
@@ -199,6 +203,16 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
             }
         });
 
+
+        buttonShare = findViewById(R.id.button_share);
+        buttonShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShareTrackFragment bottomSheetDialog = new ShareTrackFragment(null, artist, null);
+                bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+                bottomSheetDialog.show(getSupportFragmentManager(), "track_info");
+            }
+        });
 
         play = findViewById(R.id.playButton);
         play.setEnabled(true);

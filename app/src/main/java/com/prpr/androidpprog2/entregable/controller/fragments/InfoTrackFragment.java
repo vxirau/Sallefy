@@ -206,16 +206,18 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
             }
         });
 
-        if (Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
-            layouteliminar.setVisibility(View.VISIBLE);
-            layoutedit.setAlpha((float) 1.0);
-        } else {
-            layouteliminar.setVisibility(View.GONE);
-            layoutedit.setAlpha((float) 0.60);
-        }
+
 
         if (playl == null) {
             layouteliminar.setVisibility(View.GONE);
+        }else{
+            if (Session.getInstance(getContext().getApplicationContext()).getUser().getLogin().equals(playl.getUserLogin())) {
+                layouteliminar.setVisibility(View.VISIBLE);
+                layoutedit.setAlpha((float) 1.0);
+            } else {
+                layouteliminar.setVisibility(View.GONE);
+                layoutedit.setAlpha((float) 0.60);
+            }
         }
 
         share_icono = view.findViewById(R.id.button_share);
@@ -225,7 +227,7 @@ public class InfoTrackFragment extends BottomSheetDialogFragment implements Trac
             @Override
             public void onClick(View view) {
                 dismiss();
-                ShareTrackFragment bottomSheetDialog = new ShareTrackFragment(trck);
+                ShareTrackFragment bottomSheetDialog = new ShareTrackFragment(trck, null, null);
                 bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
                 bottomSheetDialog.show(getActivity().getSupportFragmentManager(), "track_info");
             }

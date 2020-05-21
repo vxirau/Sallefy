@@ -48,7 +48,6 @@ public class GenereAdapter extends RecyclerView.Adapter<GenereAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: called.");
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.genere_item, parent, false);
         return new GenereAdapter.ViewHolder(itemView);
     }

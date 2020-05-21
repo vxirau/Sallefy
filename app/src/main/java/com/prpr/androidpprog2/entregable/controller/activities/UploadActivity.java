@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.Continuation;
@@ -28,8 +30,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -64,7 +69,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     private EditText etTitle;
     private Spinner mSpinner;
-    private TextView mFilename, txtShow;
+    private TextView mFilename, txtShow, txtSave;
     private Button btnFind, btnCancel, btnAccept, btnChoose, btnUpload;
     private PlaylistManager pManager;
     private RecyclerView uRecyclerView;
@@ -83,6 +88,17 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private String downloadUri, coverPas;
 
 
+    //--------
+    private RecyclerView rView;
+    private ImageAdapter iAdapt;
+
+    private FirebaseStorage mFireStorage;
+    private DatabaseReference mDataBase;
+    private List<Upload> iUploads;
+
+    //--------
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +110,15 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
 
     }
     private void initViews() {
+
+
+        txtSave = findViewById(R.id.text_save);
+        txtSave.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                saveCover();
+            }
+        });
 
 
         pManager = new PlaylistManager(mContext);
@@ -169,11 +194,60 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
             Picasso.get().load(ImageAdapter.upload.getImageUrl()).fit().centerCrop().into(thumbnail);
             coverPas = ImageAdapter.upload.getImageUrl();
         }
+
+        //--------------------------------------------------------------------------------------------
+
+        rView = findViewById(R.id.coverRecycle);
+        rView.setHasFixedSize(true);
+        rView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+
+        iUploads = new ArrayList<>();
+        mDataBase = FirebaseDatabase.getInstance().getReference(Session.changeLogin(Session.getUser().getLogin()));
+
+        mDataBase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                iUploads.clear();
+
+                for(DataSnapshot d : dataSnapshot.getChildren()){
+                    Upload u = d.getValue(Upload.class);
+                    u.setKey(d.getKey());
+                    iUploads.add(u);
+                }
+
+                iAdapt = new ImageAdapter(UploadActivity.this, iUploads);
+                rView.setAdapter(iAdapt);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(UploadActivity.this, databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        //--------------------------------------------------------------------------------------------
+
+    }
+
+    private void saveCover() {
+        rView.setVisibility(View.GONE);
+        thumbnail.setVisibility(View.VISIBLE);
+        txtShow.setVisibility(View.VISIBLE);
+        txtSave.setVisibility(View.GONE);
+        if (ImageAdapter.upload != null) {
+            Picasso.get().load(ImageAdapter.upload.getImageUrl()).fit().centerCrop().into(thumbnail);
+            coverPas = ImageAdapter.upload.getImageUrl();
+        }
     }
 
     private void openImages(){
-        Intent intent = new Intent(this, ImageActivity.class);
-        startActivityForResult(intent,2);
+        rView.setVisibility(View.VISIBLE);
+        thumbnail.setVisibility(View.GONE);
+        txtShow.setVisibility(View.GONE);
+        txtSave.setVisibility(View.VISIBLE);
     }
 
     private void chooseFile(){
@@ -256,21 +330,16 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == Constants.STORAGE.SONG_SELECTED && resultCode == RESULT_OK) {
             mFileUri = data.getData();
-
             mFilename.setText(mFileUri.toString());
         } else {
-            if(requestCode == chooseRequest && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            if (requestCode == chooseRequest && resultCode == RESULT_OK && data != null && data.getData() != null) {
                 mPhotoUri = data.getData();
                 Upload u = new Upload(mPhotoUri.toString());
                 coverPas = u.getImageUrl();
                 Picasso.get().load(mPhotoUri).fit().centerCrop().into(thumbnail);
-            } else {
-                if(requestCode == 2 && ImageAdapter.upload != null){
-                    Picasso.get().load(ImageAdapter.upload.getImageUrl()).fit().centerCrop().into(thumbnail);
-                    coverPas = ImageAdapter.upload.getImageUrl();
-                }
             }
         }
     }

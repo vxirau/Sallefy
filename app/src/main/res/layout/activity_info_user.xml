@@ -45,6 +45,21 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="20dp" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/button_share"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/share_infotrack_24dp"
+                        android:scaleType="fitCenter"/>
+                </LinearLayout>
 
             </LinearLayout>
 

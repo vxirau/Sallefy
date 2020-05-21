@@ -11,6 +11,7 @@ import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.DialogFragment;
 
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
@@ -47,6 +48,7 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
     private LinearLayout layoutArtist;
     private LinearLayout layoutedit;
     private LinearLayout layoutdelete;
+    private LinearLayout layoutShare;
     private LinearLayout layoutDownload;
     private Switch download;
     private int i = 0;
@@ -113,6 +115,17 @@ public class InfoPlaylistFragment extends BottomSheetDialogFragment implements D
 
         layoutArtist = view.findViewById(R.id.layoutUser);
         layoutDownload = view.findViewById(R.id.layoutDownload);
+
+        layoutShare = view.findViewById(R.id.layoutShare);
+        layoutShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                ShareTrackFragment bottomSheetDialog = new ShareTrackFragment(null, null, playlist);
+                bottomSheetDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+                bottomSheetDialog.show(getActivity().getSupportFragmentManager(), "track_info");
+            }
+        });
 
 
         layoutArtist.setOnClickListener(new View.OnClickListener() {
