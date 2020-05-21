@@ -88,9 +88,8 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.objectbox:objectbox-windows:2.5.1@jar" level="project" />
-    <orderEntry type="library" name="Gradle: __local_aars__:C./Users/apaja/Desktop/La Salle/Sallefy-Entregable2/app/libs/support-v4-r7.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" name="Gradle: __local_aars__:C./Users/apaja/Desktop/La Salle/Sallefy-Entregable2/app/Sallefy/app/libs/support-v4-r7.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.objectbox:objectbox-macos:2.5.1@jar" level="project" />
+    <orderEntry type="library" name="Gradle: __local_aars__:./app/libs/support-v4-r7.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: io.objectbox:objectbox-java:2.5.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: io.objectbox:objectbox-java-api:2.5.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.greenrobot:essentials:3.0.0-RC1@jar" level="project" />
