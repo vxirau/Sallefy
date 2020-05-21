@@ -33,7 +33,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     implementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-
     def dynamicanimation_version = "1.0.0"
     implementation "androidx.dynamicanimation:dynamicanimation:$dynamicanimation_version"
 
@@ -87,6 +86,7 @@ dependencies {
     //---Eliminar per una entrega final----//
     debugImplementation "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
+    implementation files('/Sallefy/app/libs/support-v4-r7.jar')
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.objectbox'
