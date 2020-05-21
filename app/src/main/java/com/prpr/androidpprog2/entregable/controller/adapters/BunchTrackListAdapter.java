@@ -41,7 +41,6 @@ public class BunchTrackListAdapter extends RecyclerView.Adapter<BunchTrackListAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: called.");
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_song_item, parent, false);
         return new BunchTrackListAdapter.ViewHolder(itemView);
     }

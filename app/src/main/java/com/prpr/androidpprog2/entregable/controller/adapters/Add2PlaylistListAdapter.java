@@ -53,7 +53,6 @@ public class Add2PlaylistListAdapter extends RecyclerView.Adapter<Add2PlaylistLi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: called.");
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.add_playlist_item, parent, false);
         pManager = new PlaylistManager(mContext);
         return new Add2PlaylistListAdapter.ViewHolder(itemView);

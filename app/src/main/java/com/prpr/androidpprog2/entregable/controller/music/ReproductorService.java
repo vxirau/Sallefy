@@ -103,6 +103,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private SeekBar mSeekBar;
     private boolean novaLlista;
 
+    private boolean destroyed = false;
+
     private Context activityContext;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -146,7 +148,7 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     private Runnable mProgressRunner = new Runnable() {
         @Override
         public void run() {
-            if (mSeekBar != null) {
+            if (mSeekBar != null && mediaPlayer!=null) {
                 mSeekBar.setProgress(mediaPlayer.getCurrentPosition());
 
                 if (mediaPlayer.isPlaying()) {
@@ -480,9 +482,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
 
 
     public void stopMedia() {
-        if (mediaPlayer == null) return;
-        if (mediaPlayer.isPlaying()) {
-            //stopMedia();
+        if (mediaPlayer == null){
+            return;
+        }else{
             mediaPlayer.stop();
         }
     }
@@ -969,18 +971,29 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mediaPlayer != null) {
-            stopMedia();
-            mediaPlayer.release();
+        if(!destroyed){
+            if (mediaPlayer != null) {
+                stopMedia();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+            removeAudioFocus();
+            if (phoneStateListener != null) {
+                telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
+            }
+            removeNotification();
+            killNotification();
+            //try {
+            unregisterReceiver(becomingNoisyReceiver);
+            unregisterReceiver(connectionLost);
+            unregisterReceiver(connectionRegained);
+            unregisterReceiver(playNewAudio);
+            destroyed = true;
         }
-        removeAudioFocus();
-        if (phoneStateListener != null) {
-            telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
-        }
-        removeNotification();
-        killNotification();
-        unregisterReceiver(becomingNoisyReceiver);
-        unregisterReceiver(playNewAudio);
+
+        //} catch(IllegalArgumentException e) {
+        //}
+
     }
 
     @Override
