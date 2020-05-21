@@ -25,6 +25,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBCF4eV_XDTWCUVghg-qq9jwToWTwwI2uI"/>
+
         <activity android:name=".controller.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,6 +67,7 @@
         <service android:name=".utils.ConnectivityService" />
         <activity android:name=".controller.activities.QueueActivity"/>
         <service android:name=".utils.ConnectivityService"/>
+
 
 
     </application>

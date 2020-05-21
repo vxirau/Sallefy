@@ -20,18 +20,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            
-            <fragment
-                android:layout_width="400dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_height="500dp"
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
 
-                />
-            
-            
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -83,6 +72,35 @@
 
             </com.github.mikephil.charting.charts.BarChart>
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/heatmapTitle"
+                android:text="Checkout where your tracks are most played!"
+                android:layout_marginLeft="20dp"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                />
+
+            <Spinner
+                android:id="@+id/trackNames"
+                android:layout_width="match_parent"
+                android:layout_marginRight="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rectangle_edit" />
+
+            <fragment
+                android:layout_width="400dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_height="500dp"
+                android:id="@+id/map"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                />
 
 
         </LinearLayout>

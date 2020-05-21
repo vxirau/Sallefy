@@ -274,6 +274,7 @@ public class UserMainActivity extends AppCompatActivity{
 
         springAnimation.animateToFinalPosition(0);
         UserPlaylistsFragment userPlaylistsFragment = new UserPlaylistsFragment();
+        btnSettings.setVisibility(View.VISIBLE);
 
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction()
@@ -286,7 +287,7 @@ public class UserMainActivity extends AppCompatActivity{
     void initTracksViews(){
 
         springAnimation.animateToFinalPosition(((this.width/4))- 30);
-        System.out.println(((this.width/4)));
+        btnSettings.setVisibility(View.VISIBLE);
 
 
         UserTracksFragment userTracksFragment = new UserTracksFragment();
@@ -297,7 +298,9 @@ public class UserMainActivity extends AppCompatActivity{
 
     void initStatisticsViews(){
         springAnimation.animateToFinalPosition(((this.width/4)*2) - 45);
-        System.out.println(((this.width/4)*2) - 20);
+
+        btnSettings.setVisibility(View.GONE);
+
         UserStatisticsFragment userStatisticsFragment = new UserStatisticsFragment();
 
         FragmentManager manager = getSupportFragmentManager();
@@ -308,8 +311,9 @@ public class UserMainActivity extends AppCompatActivity{
     }
 
     void initMyFollowedViews(){
+        btnSettings.setVisibility(View.VISIBLE);
+
         springAnimation.animateToFinalPosition(((this.width/4)*3)- 55);
-        System.out.println(((this.width/4)*3)- 20);
         UserFollowedFragment userFollowedFragment = new UserFollowedFragment();
 
         FragmentManager manager = getSupportFragmentManager();

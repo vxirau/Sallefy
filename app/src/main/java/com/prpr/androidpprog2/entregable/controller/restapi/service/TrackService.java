@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.restapi.service;
 
+import com.prpr.androidpprog2.entregable.model.Heat;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Position;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -15,6 +16,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface TrackService {
 
@@ -51,4 +53,6 @@ public interface TrackService {
     @GET("tracks/{id}")
     Call<Track> getTrack(@Path("id") int id);
 
+    @GET("playbacks")
+    Call<List<Heat>> getHeatInfo(@Query(value="trackId", encoded=true) int id);
 }

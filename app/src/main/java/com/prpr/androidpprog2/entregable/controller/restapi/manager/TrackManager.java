@@ -20,10 +20,12 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.HeatTrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.TrackService;
 import com.prpr.androidpprog2.entregable.model.DB.ObjectBox;
 import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
+import com.prpr.androidpprog2.entregable.model.Heat;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Position;
 import com.prpr.androidpprog2.entregable.model.Track;
@@ -333,6 +335,28 @@ public class TrackManager extends MainManager{
             @Override
             public void onFailure(Call<Track> call, Throwable t) {
                 Log.d(TAG, "Error Failure: " + t.getStackTrace());
+            }
+
+        });
+
+    }
+
+    public void getTrackLocations(int id, final HeatTrackCallback callback) {
+        Call<List<Heat>> call = mTrackService.getHeatInfo(id);
+        call.enqueue(new Callback<List<Heat>>() {
+            @Override
+            public void onResponse(Call<List<Heat>> call, Response<List<Heat>> response) {
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    callback.onHeatInfoRecieved((ArrayList<Heat>)response.body());
+                } else {
+                    callback.onHeatInfoFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Heat>> call, Throwable t) {
+                callback.onFailure();
             }
 
         });

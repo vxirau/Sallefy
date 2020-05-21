@@ -1,6 +1,7 @@
 package com.prpr.androidpprog2.entregable.controller.fragments;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -9,11 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.UserManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ScrollView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -39,16 +43,28 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import android.support.v4.app.*;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.maps.android.heatmaps.Gradient;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.activities.EditSongActivity;
+import com.prpr.androidpprog2.entregable.controller.restapi.callback.HeatTrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
+import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Genre;
+import com.prpr.androidpprog2.entregable.model.Heat;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.model.UserToken;
@@ -68,11 +84,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-public class UserStatisticsFragment extends Fragment implements TrackCallback, OnMapReadyCallback {
+public class UserStatisticsFragment extends Fragment implements TrackCallback, OnMapReadyCallback, HeatTrackCallback {
 
 
     private ArrayList<Track> myLikedTracks;
     private ArrayList<Track> myUploadedTracks;
+    private ArrayList<String> mapOptions;
+
+    private Spinner llistaSongs;
+    private ArrayAdapter<String> adapter;
 
     private PieChart pieChart;
     private BarChart barChart;
@@ -84,6 +104,9 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
     private TrackManager trackManager;
     private GoogleMap map;
     private boolean hasBeenShown;
+
+    private HeatmapTileProvider mProvider;
+    private TileOverlay mOverlay;
 
     HashMap<String, Integer> likedTracksHashMap = new HashMap<String, Integer>();
     HashMap<String, Integer> topPlayedGenresHashmap = new HashMap<String, Integer>();
@@ -107,6 +130,22 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
         //Pie Chart Top Listened Genres by User
         pieChart = (PieChart) view.findViewById(R.id.pieChart);
 
+        llistaSongs = (Spinner) view.findViewById(R.id.trackNames);
+        llistaSongs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = adapterView.getItemAtPosition(i).toString();
+                TrackManager.getInstance(getContext()).getTrackLocations(myUploadedTracks.get(i).getId(), UserStatisticsFragment.this);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
@@ -124,11 +163,14 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
         //Bar Chart Top Played Tracks uploaded from user
         barChart = (BarChart) view.findViewById(R.id.barChartTopPlayedTracks);
         barChart.setDrawBarShadow(false);
-        barChart.setDrawValueAboveBar(true);
+        barChart.setDrawValueAboveBar(false);
         barChart.setMaxVisibleValueCount(50);
         barChart.setPinchZoom(false);
         barChart.setDrawGridBackground(false);
         barChart.getXAxis().setTextColor(Color.WHITE);
+        barChart.getAxisLeft().setTextColor(Color.WHITE);
+        barChart.getAxisRight().setTextColor(Color.WHITE);
+        barChart.getLegend().setTextColor(Color.WHITE);
         barChart.getLegend().setEnabled(false);
         barChart.getDescription().setEnabled(false);
 
@@ -162,16 +204,6 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
 
         return view;
     }
-
-    //HEATMAP
-    private void createHeatMap(GoogleMap map){
-
-
-
-
-
-    }
-
 
     //TOP LISTENED GENRES
     private void createPieChart( HashMap<String, Integer> tracks){
@@ -217,8 +249,6 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
         }
 
         for (Map.Entry<String,Integer> entry : sortedLikedTracksGenre.entrySet())
-            System.out.println("Key = " + entry.getKey() +
-                    ", Value = " + entry.getValue());
         createBarChart(sortedLikedTracksGenre);
 
     }
@@ -284,8 +314,7 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
         }
 
         for (Map.Entry<String,Integer> entry : sortedLikedTracksGenre.entrySet())
-            System.out.println("Key = " + entry.getKey() +
-                    ", Value = " + entry.getValue());
+
         createPieChart(sortedLikedTracksGenre);
 
     }
@@ -321,7 +350,36 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
     @Override
     public void onPersonalTracksReceived(List<Track> tracks) {
         this.myUploadedTracks = (ArrayList<Track>) tracks;
+        TrackManager.getInstance(getContext()).getTrackLocations(myUploadedTracks.get(0).getId(), this);
+
         sortGenresByPlays(myUploadedTracks);
+
+        ArrayList<String> allNames = new ArrayList<>();
+        for(Track t : myUploadedTracks){
+            allNames.add(t.getId() + " - " + t.getName());
+        }
+        mapOptions = allNames;
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, mapOptions){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent)
+            {
+                return setCentered(super.getView(position, convertView, parent));
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent)
+            {
+                return setCentered(super.getDropDownView(position, convertView, parent));
+            }
+
+            private View setCentered(View view)
+            {
+                TextView textView = (TextView)view.findViewById(android.R.id.text1);
+                textView.setGravity(Gravity.CENTER);
+                return view;
+            }
+        };
+        llistaSongs.setAdapter(adapter);
     }
 
     @Override
@@ -401,12 +459,58 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
     public void onMapReady(GoogleMap googleMap) {
 
         map = googleMap;
-        LatLng Maharashtra = new LatLng(19.169257, 73.341601);
-        map.addMarker(new MarkerOptions().position(Maharashtra).title("Maharashtra"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(Maharashtra));
+        try {
 
+            boolean success = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_style));
 
+        } catch (Resources.NotFoundException e) {
 
+        }
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(true);
+        map.getUiSettings().setScrollGesturesEnabled(true);
+
+    }
+
+    @Override
+    public void onHeatInfoRecieved(ArrayList<Heat> body) {
+        if(body!=null && body.size()>0){
+            map.clear();
+            if(mOverlay!=null){
+                mOverlay.remove();
+            }
+            map.resetMinMaxZoomPreference();
+
+            int[] colors = {
+                    Color.rgb(102, 225, 0),
+                    Color.rgb(255, 0, 0)
+            };
+
+            float[] startPoints = {
+                    0.2f, 1f
+            };
+
+            Gradient gradient = new Gradient(colors, startPoints);
+
+            List<LatLng> list = new ArrayList<>();
+            for(Heat h : body){
+                LatLng location = new LatLng(h.getLatitude(), h.getLongitude());
+                list.add(location);
+            }
+
+            mProvider = new HeatmapTileProvider.Builder().data(list).gradient(gradient).build();
+            mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+        }
+
+    }
+
+    @Override
+    public void onHeatInfoFailure() {
+
+    }
+
+    @Override
+    public void onFailure() {
 
     }
 }
