@@ -32,7 +32,7 @@ public class PlaylistCoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_info_track, container, false);
-
+        //LIDIA DIME QUE LO RESIBES
     }
 
     @Override
