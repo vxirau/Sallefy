@@ -1,5 +1,6 @@
 package com.prpr.androidpprog2.entregable.controller.fragments;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -202,7 +203,6 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
         }
     }
 
-    //Peta
     private void facebookIntent(){
         Intent share=new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
@@ -212,17 +212,20 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
 
     }
 
-    //No va, surt el menu sencer
     private void gmailIntent(){
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Sallefy");
-        intent.putExtra(Intent.EXTRA_TEXT, url);
-        intent.setType("message/rfc822");
-        startActivity(Intent.createChooser(intent, "Share to Email..."));
+        String urlString = "mailto:?subject=Sallefy&body=Check this out!" + url;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intent.setPackage("com.android.chrome");
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            intent.setPackage(null);
+            startActivity(intent);
+        }
     }
 
-    //No va
+
     private void twitterIntent(){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, url);
@@ -232,11 +235,17 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
 
     //No va
     private void SMSIntent(){
-        String smsBody="Sms Body";
-        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.putExtra("sms_body", url);
-        sendIntent.setType("vnd.android-dir/mms-sms");
-        startActivity(sendIntent);
+        /*Create an ACTION_SEND Intent*/
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        /*This will be the actual content you wish you share.*/
+        String shareBody = "Here is the share content body";
+        /*The type of the content is text, obviously.*/
+        intent.setType("text/plain");
+        /*Applying information Subject and Body.*/
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, url);
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, url);
+        /*Fire!*/
+        startActivity(Intent.createChooser(intent, url));
     }
 
     private void copyLink() {

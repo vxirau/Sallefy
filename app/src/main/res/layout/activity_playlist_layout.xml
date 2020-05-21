@@ -11,6 +11,9 @@
     tools:context=".controller.activities.PlaylistActivity"
     android:background="@drawable/fons_app">
 
+
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -88,12 +91,36 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="300dp"
+                android:layout_height="200dp">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v4.view.ViewPager>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabDots"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabBackground="@drawable/tab_selector"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp"/>
+
+
             <ImageView
                 android:id="@+id/playlistCover"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginTop="10dp"
                 android:scaleType="fitCenter"
+                android:layout_marginLeft="90dp"
                 tools:layout_editor_absoluteX="136dp"
                 tools:layout_editor_absoluteY="32dp" />
 
@@ -112,7 +139,7 @@
             android:id="@+id/followers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="130dp"
             android:gravity="center"
             android:text="@string/autor_de_la_playlist"
             android:textColor="@color/colorWhite"
@@ -124,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/autor_de_la_playlist"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="153dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="11sp" />
 
@@ -135,9 +162,12 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp"
                 android:textStyle="bold"
+                android:layout_marginTop="160dp"
+                android:layout_marginLeft="100dp"
                 android:background="@drawable/rectangle_small_gborder_black"
                 android:text="" />
 
+            </RelativeLayout>
             <Button
                 android:id="@+id/privadaPublica"
                 android:layout_width="100dp"
