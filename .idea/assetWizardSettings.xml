@@ -16,12 +16,26 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
+                        <option name="children">
+                          <map>
+                            <entry key="clipartAsset">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_arrow_forward_black_24dp.xml" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="rectangleblancborde" />
-                            <entry key="sourceFile" value="C:\Users\Bernat\La Salle\Víctor Xirau Guardans - Projecte S2 PrPr\Dissenys\Pagina de Buscar\Recursos\SVG\Rectangle@1x.svg" />
+                            <entry key="color" value="24b560" />
+                            <entry key="outputName" value="arrow_edit" />
+                            <entry key="sourceFile" value="$APPLICATION_HOME_DIR$/bin/C:\Users\Bernat\La Salle\Víctor Xirau Guardans - Projecte S2 PrPr\Dissenys\Pagina de Buscar\Recursos\SVG\Rectangle@1x.svg" />
                           </map>
                         </option>
                       </PersistentState>

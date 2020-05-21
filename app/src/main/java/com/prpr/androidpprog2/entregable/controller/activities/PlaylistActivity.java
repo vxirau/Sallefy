@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import java.util.*;
@@ -47,6 +48,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.adapters.ImageAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.OptionDialogCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
@@ -65,6 +67,7 @@ import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.Upload;
 import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.ConnectivityService;
 import com.prpr.androidpprog2.entregable.utils.Constants;
@@ -80,7 +83,6 @@ import java.util.List;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class PlaylistActivity extends AppCompatActivity implements TrackCallback, TrackListCallback, PlaylistCallback, OptionDialogCallback {
-
     private Playlist playlst;
     private TextView plyName;
     private TextView plyAuthor;
@@ -93,8 +95,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private LinearLayout playing;
     private LinearLayout actionButtons;
     private LinearLayout reproductor;
-
-
 
     private Button back2Main;
     private Button infoPlaylist;
@@ -415,16 +415,18 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 if(!newName.getText().toString().matches("")){
                     playlst.setName(newName.getText().toString());
                 }
+
                 pManager.updatePlaylist(playlst, PlaylistActivity.this);
             }
         });
         acceptEdit.setVisibility(View.GONE);
 
+
         imgEdit = findViewById(R.id.imgEdit);
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ErrorDialog.getInstance(PlaylistActivity.this).showErrorDialog("Change playlist cover is not yet available");
+
             }
         });
         imgEdit.setVisibility(View.GONE);
@@ -602,10 +604,12 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         back2Main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(bunch){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+
                 }else{
                     finish();
                     overridePendingTransition(R.anim.nothing,R.anim.nothing);
@@ -936,7 +940,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onPlaylistToUpdated(Playlist body) {
-
+        System.out.println();
     }
 
 
@@ -1084,6 +1088,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         actionButtons.setVisibility(View.VISIBLE);
         reproductor.setVisibility(View.VISIBLE);
         mseek.setVisibility(View.VISIBLE);
+
         if(player!=null){
             player.updateUI();
         }else{
@@ -1091,13 +1096,15 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             pause.setVisibility(View.INVISIBLE);
         }
         accessible.setVisibility(View.VISIBLE);
+
         if(!newName.getText().toString().matches("")){
-            plyName.setText(newName.getText().toString());
+            playlst.setName(newName.getText().toString());
         }
+
         KeyboardUtils.hideKeyboard(this);
     }
 
-    public void showUIEdit(){
+    public void showUIEdit() {
         newName.setVisibility(View.VISIBLE);
         plyName.setVisibility(View.GONE);
         newName.setText(playlst.getName());
@@ -1140,4 +1147,5 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     public void onCancel() {
         dialogEdit.cancelDialog();
     }
+
 }
