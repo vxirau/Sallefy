@@ -24,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.activities.ImageActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.UploadActivity;
 import com.prpr.androidpprog2.entregable.model.Upload;
 import com.prpr.androidpprog2.entregable.utils.Session;
@@ -39,8 +38,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public static Upload upload;
     private FirebaseStorage mStorage;
     private DatabaseReference mDataBase;
-
-
 
 
     public ImageAdapter(Context mContext, List<Upload> mFiles) {
@@ -59,10 +56,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
 
         Upload uCurrent = mFiles.get(position);
-        //Picasso.get().load(uCurrent.getImageUrl()).fit().centerCrop().into(holder.iButton);
         Glide.with(mContext).load(uCurrent.getImageUrl()).into(holder.iButton);
         holder.iButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Toast.makeText(mContext, "Item " + position, Toast.LENGTH_SHORT).show();
