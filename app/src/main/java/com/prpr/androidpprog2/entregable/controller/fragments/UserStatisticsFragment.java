@@ -366,12 +366,6 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
                 return setCentered(super.getView(position, convertView, parent));
             }
 
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent)
-            {
-                return setCentered(super.getDropDownView(position, convertView, parent));
-            }
-
             private View setCentered(View view)
             {
                 TextView textView = (TextView)view.findViewById(android.R.id.text1);
