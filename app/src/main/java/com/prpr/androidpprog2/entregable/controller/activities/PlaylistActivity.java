@@ -1,8 +1,10 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -64,6 +66,7 @@ import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
 import com.prpr.androidpprog2.entregable.model.User;
+import com.prpr.androidpprog2.entregable.utils.ConnectivityService;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.KeyboardUtils;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
@@ -123,6 +126,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private boolean isOpen;
     private boolean asc_dsc;
     private BottomNavigationView navigation;
+
+    private TrackListAdapter adapter;
 
 
     private Animation fabOpen, fabClose;
@@ -186,6 +191,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
             unbindService(serviceConnection);
             player.stopSelf();
         }
+        unregisterReceiver(connectionLost);
+        unregisterReceiver(connectionRegained);
     }
 
 
@@ -221,10 +228,39 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         orderByPreferenceUtils();
     }
 
+    private BroadcastReceiver connectionRegained = new BroadcastReceiver() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            adapter = new TrackListAdapter(PlaylistActivity.this, PlaylistActivity.this, mTracks, playlst);
+            mRecyclerView.setAdapter(adapter);
+        }
+    };
+
+    private BroadcastReceiver connectionLost = new BroadcastReceiver() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            adapter = new TrackListAdapter(PlaylistActivity.this, PlaylistActivity.this, mTracks, playlst);
+            mRecyclerView.setAdapter(adapter);
+        }
+    };
+
+    private void registerConnectionRegained() {
+        IntentFilter filter = new IntentFilter(ConnectivityService.Broadcast_CONNECTION_REGAINED);
+        registerReceiver(connectionRegained, filter);
+    }
+
+    private void registerConnectionLost() {
+        IntentFilter filter = new IntentFilter(ConnectivityService.Broadcast_CONNECTION_LOST);
+        registerReceiver(connectionLost, filter);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_playlist_layout);
         if(getIntent().getSerializableExtra("Playlst")!=null){
             playlst = (Playlist) getIntent().getSerializableExtra("Playlst");
@@ -242,6 +278,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 UtilFunctions.checkForPlaylistUpdate(playlst);
             }
         }
+        registerConnectionLost();
+        registerConnectionRegained();
         initViews();
         getData();
     }
@@ -306,7 +344,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         mRecyclerView = (RecyclerView) findViewById(R.id.dynamic_recyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        TrackListAdapter adapter = new TrackListAdapter(this, this, null, playlst);
+        adapter = new TrackListAdapter(this, this, null, playlst);
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
@@ -646,7 +684,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     asc_dsc = true;
                 }
             }
-            TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+            adapter = new TrackListAdapter(this, this, mTracks, playlst);
             mRecyclerView.setAdapter(adapter);
             mSorted = SORT_AZ;
 
@@ -672,7 +710,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     asc_dsc = true;
                 }
             }
-            TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+            adapter = new TrackListAdapter(this, this, mTracks, playlst);
             mRecyclerView.setAdapter(adapter);
             mSorted = SORT_TIME;
 
@@ -698,7 +736,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     asc_dsc = true;
                 }
             }
-            TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+            adapter = new TrackListAdapter(this, this, mTracks, playlst);
             mRecyclerView.setAdapter(adapter);
             mSorted = SORT_ARTIST;
 
@@ -739,7 +777,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private void getData() {
         mTracks = (ArrayList<Track>) playlst.getTracks();
         orderByPreferenceUtils();
-        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -747,7 +785,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     public void onTracksReceived(List<Track> tracks) {
         mTracks = (ArrayList<Track>) tracks;
         orderByPreferenceUtils();
-        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -882,7 +920,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     public void onPlaylistRecieved(List<Playlist> playlists) {
         mTracks = (ArrayList<Track>) playlists.get(0).getTracks();
         orderByPreferenceUtils();
-        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -974,7 +1012,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     public void onPlaylistRecived(Playlist playlist) {
         playlst = playlist;
         mTracks = (ArrayList<Track>) playlist.getTracks();
-        TrackListAdapter adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        adapter = new TrackListAdapter(this, this, mTracks, playlst);
         mRecyclerView.setAdapter(adapter);
     }
 

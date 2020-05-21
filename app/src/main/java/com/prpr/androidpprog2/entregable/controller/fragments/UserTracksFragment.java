@@ -1,8 +1,13 @@
 package com.prpr.androidpprog2.entregable.controller.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +25,7 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.prpr.androidpprog2.entregable.R;
+import com.prpr.androidpprog2.entregable.controller.activities.PlaylistActivity;
 import com.prpr.androidpprog2.entregable.controller.activities.UploadActivity;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
@@ -30,6 +36,7 @@ import com.prpr.androidpprog2.entregable.model.DB.SavedCache;
 import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.utils.ConnectivityService;
 import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 
@@ -62,6 +69,7 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     private FloatingActionButton btnSettings;
 
+    private TrackListAdapter adapter;
 
     private TextView tvAddnewTrack;
 
@@ -83,11 +91,20 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().unregisterReceiver(connectionLost);
+        getActivity().unregisterReceiver(connectionRegained);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_tracks, container, false);
-
+        registerConnectionLost();
+        registerConnectionRegained();
         /*btnSettingsTracks = (FloatingActionButton) view.findViewById(R.id.configTracksButton);
         btnSettingsTracks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,16 +218,16 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     private void sortNameAscendent(){
 
         Collections.sort(myTracks, Track.TrackNameAscendentComparator);
-
-        mRecyclerView.setAdapter(new TrackListAdapter(this, getContext(), myTracks, this.myPlaylist));
+        adapter = new TrackListAdapter(this, getContext(), myTracks, this.myPlaylist);
+        mRecyclerView.setAdapter(adapter);
 
     }
 
     private void sortNameDescendent(){
 
         Collections.sort(myTracks, Track.TrackNameDescendentComparator);
-
-        mRecyclerView.setAdapter(new TrackListAdapter(this, getContext(), myTracks, this.myPlaylist));
+        adapter = new TrackListAdapter(this, getContext(), myTracks, this.myPlaylist);
+        mRecyclerView.setAdapter(adapter);
 
     }
 
@@ -222,7 +239,8 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
                 filteredTracks.add(t);
             }
         }
-        mRecyclerView.setAdapter(new TrackListAdapter(this, getContext(), filteredTracks, this.myPlaylist));
+        adapter = new TrackListAdapter(this, getContext(), myTracks, this.myPlaylist);
+        mRecyclerView.setAdapter(adapter);
     }
 
     private void resetFilters(){
@@ -277,6 +295,36 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
 
     }
 
+
+    private BroadcastReceiver connectionRegained = new BroadcastReceiver() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            adapter = new TrackListAdapter(UserTracksFragment.this, getContext() , myTracks, myPlaylist);
+            mRecyclerView.setAdapter(adapter);
+        }
+    };
+
+    private BroadcastReceiver connectionLost = new BroadcastReceiver() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            adapter = new TrackListAdapter(UserTracksFragment.this, getContext() , myTracks, myPlaylist);
+            mRecyclerView.setAdapter(adapter);
+        }
+    };
+
+
+    private void registerConnectionRegained() {
+        IntentFilter filter = new IntentFilter(ConnectivityService.Broadcast_CONNECTION_REGAINED);
+        getActivity().registerReceiver(connectionRegained, filter);
+    }
+
+    private void registerConnectionLost() {
+        IntentFilter filter = new IntentFilter(ConnectivityService.Broadcast_CONNECTION_LOST);
+        getActivity().registerReceiver(connectionLost, filter);
+    }
+
     @Override
     public void onTrackSelected(int index) {
         playAudio(index);
@@ -313,8 +361,8 @@ public class UserTracksFragment extends Fragment implements TrackListCallback, T
     @Override
     public void onPersonalTracksReceived(List<Track> tracks) {
         this.myTracks = (ArrayList) tracks;
-        TrackListAdapter trackListAdapter = new TrackListAdapter(this, getContext(), this.myTracks, this.myPlaylist);
-        mRecyclerView.setAdapter(trackListAdapter);
+        adapter = new TrackListAdapter(this, getContext(), myTracks, this.myPlaylist);
+        mRecyclerView.setAdapter(adapter);
     }
 
     @Override
