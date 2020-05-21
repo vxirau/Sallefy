@@ -11,6 +11,7 @@
         tools:context=".controller.activities.PlaylistActivity"
         android:background="@drawable/fons_app">
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

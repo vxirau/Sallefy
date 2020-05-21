@@ -14,6 +14,9 @@
     <string name="default_user_playlists">nPlaylists</string>
     <string name="default_playlist_song_amount">20 songs</string>
 
+    <string name="user_">User</string>
+    <string name="description">Description</string>
+
     <string name="action_login">Log in</string>
     <string name="action_logout">Log out</string>
     <string name="action_register">Register</string>
