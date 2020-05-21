@@ -1,5 +1,7 @@
 package com.prpr.androidpprog2.entregable.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Editable;
 
 import com.google.gson.annotations.Expose;
@@ -9,7 +11,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
-public class Playlist implements Serializable, Comparable<Playlist> {
+public class Playlist implements Serializable, Comparable<Playlist>, Parcelable {
     @SerializedName("cover")
     public String cover;
     @SerializedName("description")
@@ -200,4 +202,13 @@ public class Playlist implements Serializable, Comparable<Playlist> {
 
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }
