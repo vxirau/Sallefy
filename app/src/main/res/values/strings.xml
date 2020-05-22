@@ -17,6 +17,10 @@
     <string name="user_">User</string>
     <string name="description">Description</string>
 
+    <string name="descriptionChange">New Description</string>
+    <string name="nameChange">New Name</string>
+
+    <string name="info">i</string>
     <string name="action_login">Log in</string>
     <string name="action_logout">Log out</string>
     <string name="action_register">Register</string>

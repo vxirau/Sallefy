@@ -10,18 +10,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import java.util.*;
 
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.os.StrictMode;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -31,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,15 +39,16 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.prpr.androidpprog2.entregable.R;
-import com.prpr.androidpprog2.entregable.controller.adapters.ImageAdapter;
 import com.prpr.androidpprog2.entregable.controller.adapters.TrackListAdapter;
 import com.prpr.androidpprog2.entregable.controller.callbacks.OptionDialogCallback;
 import com.prpr.androidpprog2.entregable.controller.callbacks.TrackListCallback;
@@ -67,8 +67,6 @@ import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
-import com.prpr.androidpprog2.entregable.model.Upload;
-import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.ConnectivityService;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.KeyboardUtils;
@@ -109,6 +107,11 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private Button pause;
 
     private EditText newName;
+    private TextView nametext;
+    private EditText descripcioCanvi;
+    private TextView descripcioText;
+    private LinearLayout canvi;
+
 
     private RecyclerView mRecyclerView;
     private boolean bunch;
@@ -128,6 +131,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private BottomNavigationView navigation;
 
     private TrackListAdapter adapter;
+
+    private ImageButton info;
+    private ImageView user;
+    private TextView name, description;
+    private LinearLayout info_layout;
+    private ImageButton back;
+
+    private ScrollView scroll;
 
 
     private Animation fabOpen, fabClose;
@@ -278,6 +289,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 UtilFunctions.checkForPlaylistUpdate(playlst);
             }
         }
+
         registerConnectionLost();
         registerConnectionRegained();
         initViews();
@@ -289,7 +301,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
 
     private void initViews() {
-
         navigation = (BottomNavigationView) findViewById(R.id.menu);
         navigation.setSelectedItemId(R.id.none);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -416,20 +427,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                     playlst.setName(newName.getText().toString());
                 }
 
+                if(!descripcioCanvi.getText().toString().matches("")){
+                    playlst.setName(descripcioCanvi.getText().toString());
+                }
+
                 pManager.updatePlaylist(playlst, PlaylistActivity.this);
             }
         });
         acceptEdit.setVisibility(View.GONE);
-
-
-        imgEdit = findViewById(R.id.imgEdit);
-        imgEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        imgEdit.setVisibility(View.GONE);
 
         reproductor= findViewById(R.id.reproductor);
 
@@ -672,6 +677,49 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
             }
         });
+
+        info = findViewById(R.id.info);
+        user = findViewById(R.id.userImage);
+        if (playlst.getOwner().getImageUrl() != null && !playlst.getOwner().getImageUrl().isEmpty()) {
+            Picasso.get().load(playlst.getOwner().getImageUrl()).into(user);
+        }else{
+            Picasso.get().load(R.drawable.default_user_cover).into(user);
+        }
+        name = findViewById(R.id.userName);
+        name.setText(playlst.getOwner().getFirstName());
+        description = findViewById(R.id.description);
+        description.setText(playlst.getDescription());
+
+        info_layout = findViewById(R.id.InfoLayout);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                info.setVisibility(View.GONE);
+                back.setVisibility(View.VISIBLE);
+                info_layout.setVisibility(View.VISIBLE);
+                plyImg.setVisibility(View.GONE);
+            }
+        });
+
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                info.setVisibility(View.VISIBLE);
+                back.setVisibility(View.GONE);
+                plyImg.setVisibility(View.VISIBLE);
+                info_layout.setVisibility(View.GONE);
+            }
+        });
+
+        descripcioText = findViewById(R.id.text_description);
+        descripcioCanvi = findViewById(R.id.descripcioCanvi);
+
+        nametext = findViewById(R.id.text_newName);
+
+        canvi = findViewById(R.id.canvi);
+
+        scroll = findViewById(R.id.scroll);
     }
 
     private void sortAZ(){
@@ -1083,11 +1131,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         shuffle.setVisibility(View.VISIBLE);
         addBunch.setVisibility(View.VISIBLE);
         acceptEdit.setVisibility(View.GONE);
-        imgEdit.setVisibility(View.GONE);
         navigation.setVisibility(View.VISIBLE);
         actionButtons.setVisibility(View.VISIBLE);
         reproductor.setVisibility(View.VISIBLE);
         mseek.setVisibility(View.VISIBLE);
+        canvi.setVisibility(View.GONE);
+        plyAuthor.setVisibility(View.VISIBLE);
+        followers.setVisibility(View.VISIBLE);
+        scroll.setVisibility(View.VISIBLE);
 
         if(player!=null){
             player.updateUI();
@@ -1099,6 +1150,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
         if(!newName.getText().toString().matches("")){
             playlst.setName(newName.getText().toString());
+        }
+
+        if(!descripcioCanvi.getText().toString().matches("")){
+            playlst.setName(descripcioCanvi.getText().toString());
         }
 
         KeyboardUtils.hideKeyboard(this);
@@ -1115,12 +1170,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         shuffle.setVisibility(View.GONE);
         addBunch.setVisibility(View.GONE);
         acceptEdit.setVisibility(View.VISIBLE);
-        imgEdit.setVisibility(View.VISIBLE);
-        if (playlst.getThumbnail() != null) {
-            Picasso.get().load(playlst.getThumbnail()).into(imgEdit);
-        }else{
-            Picasso.get().load(R.drawable.default_cover).into(imgEdit);
-        }
+        descripcioText.setVisibility(View.VISIBLE);
+        descripcioCanvi.setVisibility(View.VISIBLE);
         navigation.setVisibility(View.GONE);
         actionButtons.setVisibility(View.GONE);
         reproductor.setVisibility(View.GONE);
@@ -1128,6 +1179,10 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         play.setVisibility(View.GONE);
         pause.setVisibility(View.GONE);
         accessible.setVisibility(View.INVISIBLE);
+        plyAuthor.setVisibility(View.GONE);
+        followers.setVisibility(View.GONE);
+        canvi.setVisibility(View.VISIBLE);
+        scroll.setVisibility(View.GONE);
     }
 
 
