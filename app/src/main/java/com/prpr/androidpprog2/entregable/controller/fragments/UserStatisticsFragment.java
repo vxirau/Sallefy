@@ -13,11 +13,13 @@ import android.os.UserManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -195,8 +197,40 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
         });
 
 
+        /*Disableing Parent Scrolling when map is scrolled using two fingers*/
+
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        ImageView ivMapTransparent = (ImageView) view.findViewById(R.id.ivMapTransparent);
+        ivMapTransparent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        scrollView.requestDisallowInterceptTouchEvent(true);
+                        // Disable touch on transparent view
+                        return false;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        scrollView.requestDisallowInterceptTouchEvent(false);
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        scrollView.requestDisallowInterceptTouchEvent(true);
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        });
 
         //Manager
         trackManager = new TrackManager(getContext());
@@ -456,6 +490,13 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
     public void onMapReady(GoogleMap googleMap) {
 
         map = googleMap;
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                scrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
+
         try {
 
             boolean success = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_style));

@@ -100,7 +100,9 @@
                 android:layout_height="500dp"
                 android:id="@+id/map"
                 class="com.google.android.gms.maps.SupportMapFragment"
-                />
+                >
+                <ImageView android:id="@+id/ivMapTransparent" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@android:color/transparent" />
+            </fragment>
 
 
         </LinearLayout>
