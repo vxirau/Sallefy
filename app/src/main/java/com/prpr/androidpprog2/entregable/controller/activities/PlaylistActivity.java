@@ -428,7 +428,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
                 }
 
                 if(!descripcioCanvi.getText().toString().matches("")){
-                    playlst.setName(descripcioCanvi.getText().toString());
+                    playlst.setDescription(descripcioCanvi.getText().toString());
                 }
 
                 pManager.updatePlaylist(playlst, PlaylistActivity.this);
@@ -720,6 +720,16 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         canvi = findViewById(R.id.canvi);
 
         scroll = findViewById(R.id.scroll);
+
+        user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), InfoArtistaActivity.class);
+                intent.putExtra("User", playlst.getOwner());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivityForResult(intent, Constants.NETWORK.LOGIN_OK);
+            }
+        });
     }
 
     private void sortAZ(){
@@ -988,7 +998,9 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
 
     @Override
     public void onPlaylistToUpdated(Playlist body) {
-        System.out.println();
+        description.setText(body.getDescription());
+
+        newName.setText(body.getName());
     }
 
 
@@ -1065,6 +1077,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         playlst = playlist;
         mTracks = (ArrayList<Track>) playlist.getTracks();
         adapter = new TrackListAdapter(this, this, mTracks, playlst);
+        descripcioCanvi.setText(playlist.getDescription());
         mRecyclerView.setAdapter(adapter);
     }
 

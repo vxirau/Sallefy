@@ -145,7 +145,7 @@
                                 style="@style/SongTitleTheme"
                                 android:layout_width="match_parent"
                                 android:textSize="10dp"
-                                android:layout_height="30dp"
+                                android:layout_height="45dp"
                                 android:gravity="center"
                                 android:textAlignment="center"
                                 android:text="@string/user_"
