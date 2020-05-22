@@ -88,6 +88,7 @@ dependencies {
     //---Eliminar per una entrega final----//
     debugImplementation "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseImplementation "io.objectbox:objectbox-android:$objectboxVersion"
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
 }
 apply plugin: 'com.google.gms.google-services'
