@@ -34,8 +34,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
@@ -67,6 +65,7 @@ import com.prpr.androidpprog2.entregable.model.DB.UtilFunctions;
 import com.prpr.androidpprog2.entregable.model.Follow;
 import com.prpr.androidpprog2.entregable.model.Playlist;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.model.User;
 import com.prpr.androidpprog2.entregable.utils.ConnectivityService;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 import com.prpr.androidpprog2.entregable.utils.KeyboardUtils;
@@ -148,6 +147,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     private final int SORT_ARTIST = 2;
 
 
+    private ArrayList<User> seguidoreh;
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
     private SeekBar mseek;
@@ -240,7 +240,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     }
 
     private BroadcastReceiver connectionRegained = new BroadcastReceiver() {
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onReceive(Context context, Intent intent) {
             adapter = new TrackListAdapter(PlaylistActivity.this, PlaylistActivity.this, mTracks, playlst);
@@ -249,7 +248,6 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
     };
 
     private BroadcastReceiver connectionLost = new BroadcastReceiver() {
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onReceive(Context context, Intent intent) {
             adapter = new TrackListAdapter(PlaylistActivity.this, PlaylistActivity.this, mTracks, playlst);
@@ -305,7 +303,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         navigation.setSelectedItemId(R.id.none);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
                         saveIdForFuture();
@@ -358,7 +356,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         adapter = new TrackListAdapter(this, this, null, playlst);
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder dragged, RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -498,7 +496,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+
             @Override
             public void onClick(View v) {
                 int index=0;
@@ -511,7 +509,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackCallback
         pause.setEnabled(true);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+
             @Override
             public void onClick(View v) {
                 player.pauseMedia();

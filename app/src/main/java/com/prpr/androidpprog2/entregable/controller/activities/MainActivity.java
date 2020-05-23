@@ -29,9 +29,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -161,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
     private int audioIndex = -1;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
-        @RequiresApi(api = Build.VERSION_CODES.O)
+    
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             ReproductorService.LocalBinder binder = (ReproductorService.LocalBinder) service;
@@ -221,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         return index;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     private void loadPreviousSession() {
         audioList = PreferenceUtils.getAllTracks(getApplicationContext());
         Track t = PreferenceUtils.getTrack(getApplicationContext());
@@ -261,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -335,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         navigation.setSelectedItemId(R.id.home);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
                         return true;
@@ -387,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         play.bringToFront();
         play.setVisibility(View.VISIBLE);
         play.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
@@ -398,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
         pause.setVisibility(View.INVISIBLE);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
@@ -606,7 +603,7 @@ public class MainActivity extends AppCompatActivity implements PlaylistCallback,
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.NETWORK.LOGIN_OK) {
             enableNetworkButtons();

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.UserManager;
@@ -195,10 +194,6 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
 
             }
         });
-
-
-        /*Disableing Parent Scrolling when map is scrolled using two fingers*/
-
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);

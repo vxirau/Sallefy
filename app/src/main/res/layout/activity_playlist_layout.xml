@@ -188,6 +188,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="@string/autor_de_la_playlist"
+                    android:clickable="true"
                     android:textColor="@color/colorWhite"
                     android:textSize="13sp" />
 

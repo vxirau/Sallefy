@@ -28,8 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -209,7 +207,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+            
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
@@ -220,7 +218,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         pause.setEnabled(true);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+            
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
@@ -284,7 +282,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         navigation.setSelectedItemId(R.id.perfil);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public boolean onNavigationItemSelected( MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -391,8 +389,7 @@ public class SettingsActivity extends AppCompatActivity implements UserCallback,
         imgBtnUserPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chooseFile();
-
+                //chooseFile();
             }
         });
 
