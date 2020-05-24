@@ -424,7 +424,7 @@ public class ReproductorActivity extends AppCompatActivity implements TrackCallb
     private void videoShow() {
 
         ViewGroup.MarginLayoutParams marginParams = new ViewGroup.MarginLayoutParams(relativeLayoutLikeButton.getLayoutParams());
-        marginParams.setMargins(0, 0 ,160, 0);
+        marginParams.setMargins(0, 0 ,200, 0);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(marginParams);
         relativeLayoutLikeButton.setLayoutParams(layoutParams);
 

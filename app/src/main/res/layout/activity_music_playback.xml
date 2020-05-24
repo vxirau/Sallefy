@@ -68,14 +68,12 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/track_img"
                         android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:layout_marginLeft="40dp" />
+                        android:layout_height="200dp"/>
 
 
                 </RelativeLayout>
@@ -86,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -107,7 +105,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="61dp"
+                    android:layout_marginEnd="80dp"
                     android:visibility="visible">
 
                     <Button
