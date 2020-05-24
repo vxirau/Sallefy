@@ -19,8 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -181,7 +179,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         navigation.setSelectedItemId(R.id.none);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
                         Intent intent0 = new Intent(getApplicationContext(), MainActivity.class);
@@ -218,7 +216,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         play.setEnabled(true);
         play.bringToFront();
         play.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+            
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
@@ -228,7 +226,7 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         pause.setEnabled(true);
         pause.bringToFront();
         pause.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+            
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
