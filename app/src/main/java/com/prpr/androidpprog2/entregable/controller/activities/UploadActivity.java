@@ -324,6 +324,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
                 genre = g;
             }
         }
+
         CloudinaryManager.getInstance(this, this).uploadAudioFile(mFileUri, etTitle.getText().toString(), genre, coverPas);
     }
 

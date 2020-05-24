@@ -23,6 +23,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -48,6 +49,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.github.mikephil.charting.utils.Utils;
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaLoadRequestData;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.MediaQueueData;
+import com.google.android.gms.cast.MediaQueueItem;
+import com.google.android.gms.cast.MediaTrack;
+import com.google.android.gms.cast.framework.CastSession;
+import com.google.android.gms.cast.framework.media.RemoteMediaClient;
+import com.google.android.gms.common.images.WebImage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -67,10 +78,13 @@ import com.prpr.androidpprog2.entregable.utils.PreferenceUtils;
 import com.prpr.androidpprog2.entregable.utils.Session;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -310,6 +324,58 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
             return audioList;
         }
     }
+
+    public void loadMedia(int position,CastSession castSession,boolean play) {
+        if (castSession == null) {
+            return;
+        }
+
+        final RemoteMediaClient remoteMediaClient = castSession.getRemoteMediaClient();
+        if (remoteMediaClient == null) {
+            return;
+        }
+
+        downVolume();
+
+            remoteMediaClient.load(new MediaLoadRequestData.Builder()
+                    .setMediaInfo(buildMediaInfo())
+                    .setAutoplay(play)
+                    .setCurrentTime(position).build());
+
+    }
+
+    private MediaInfo buildMediaInfo() {
+
+        MediaMetadata musicMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK);
+        musicMetadata.putString(MediaMetadata.KEY_TITLE, getCurrentTrack().getName());
+        musicMetadata.addImage(new WebImage(Uri.parse(getCurrentTrack().getThumbnail())));
+
+
+        return new MediaInfo.Builder(getCurrentTrack().getUrl())
+                .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
+                .setContentType("audio/mp3")
+                .setMetadata(musicMetadata)
+                .setStreamDuration(getCurrentTrack().getDuration() * 1000)
+                .build();
+
+    }
+
+    /*private MediaInfo buildMediaInfo() {
+
+        MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK);
+
+        movieMetadata.putString(MediaMetadata.KEY_SUBTITLE, mSelectedMedia.getStudio());
+        movieMetadata.putString(MediaMetadata.KEY_TITLE, mSelectedMedia.getTitle());
+        movieMetadata.addImage(new WebImage(Uri.parse(mSelectedMedia.getImage(0))));
+        movieMetadata.addImage(new WebImage(Uri.parse(mSelectedMedia.getImage(1))))
+
+        return new MediaInfo.Builder(mSelectedMedia.getUrl())
+                .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
+                .setContentType("videos/mp4")
+                .setMetadata(movieMetadata)
+                .setStreamDuration(mSelectedMedia.getDuration() * 1000)
+                .build();
+    }*/
 
 
     public void setUIControls(SeekBar seekBar, TextView titol, TextView autor, Button play, Button pause, ImageView trackImg) {
@@ -1100,6 +1166,14 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
                 if (mediaPlayer.isPlaying()) mediaPlayer.setVolume(0.1f, 0.1f);
                 break;
         }
+    }
+
+    public void downVolume(){
+        mediaPlayer.setVolume(0.0f,0.0f);
+    }
+
+    public void upVolume(){
+        mediaPlayer.setVolume(1.0f,1.0f);
     }
 
     private boolean requestAudioFocus() {

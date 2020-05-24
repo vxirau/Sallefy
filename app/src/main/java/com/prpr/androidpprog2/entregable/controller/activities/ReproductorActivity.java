@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -18,7 +22,26 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.framework.CastContext;
+
+
+
+import com.google.android.gms.cast.framework.CastOptions;
+import com.google.android.gms.cast.framework.CastSession;
+import com.google.android.gms.cast.framework.CastState;
+import com.google.android.gms.cast.framework.CastStateListener;
+import com.google.android.gms.cast.framework.IntroductoryOverlay;
+import com.google.android.gms.cast.framework.OptionsProvider;
+import com.google.android.gms.cast.framework.Session;
+import com.google.android.gms.cast.framework.SessionManager;
+import com.google.android.gms.cast.framework.SessionManagerListener;
+import com.google.android.gms.cast.framework.SessionProvider;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.media.RemoteMediaClient;
 import com.prpr.androidpprog2.entregable.R;
 import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallback;
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
@@ -28,7 +51,7 @@ import com.prpr.androidpprog2.entregable.utils.Constants;
 
 import java.util.List;
 
-public class ReproductorActivity extends Activity implements TrackCallback {
+public class ReproductorActivity extends AppCompatActivity implements TrackCallback,OptionsProvider {
 
     private static final String TAG = "DynamicPlaybackActivity";
     private static final String PLAY_VIEW = "PlayIcon";
@@ -53,6 +76,7 @@ public class ReproductorActivity extends Activity implements TrackCallback {
 
     private ImageButton btnForward;
     private ImageButton shuffle;
+    private Toolbar chromeBar;
     private LinearLayout shuffleLayout;
     private Button atras;
     private SeekBar mSeekBar;
@@ -61,6 +85,14 @@ public class ReproductorActivity extends Activity implements TrackCallback {
 
     private ReproductorService serv;
     private boolean servidorVinculat=false;
+
+    private CastContext mCastContext;
+    private MenuItem mediaRouteMenuItem;
+    private CastStateListener mCastStateListener;
+    private IntroductoryOverlay mIntroductoryOverlay;
+    private CastSession mCastSession;
+    private SessionManager mSessionManager;
+    private SessionManagerListener<CastSession> mSessionManagerListener;
 
 
 
@@ -88,11 +120,16 @@ public class ReproductorActivity extends Activity implements TrackCallback {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume() was called");
+        mCastContext.getSessionManager().addSessionManagerListener(
+                mSessionManagerListener, CastSession.class);
         super.onResume();
+
         if(servidorVinculat){
             serv.setShuffleButtonUI();
             active = serv.getActiveAudio();
             updateLiked();
+
         }
     }
 
@@ -110,8 +147,66 @@ public class ReproductorActivity extends Activity implements TrackCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playback);
+        setupActionBar();
+
+
+        /*mCastStateListener = new CastStateListener() {
+            @Override
+            public void onCastStateChanged(int newState) {
+                if (newState != CastState.NO_DEVICES_AVAILABLE) {
+                    showIntroductoryOverlay();
+                }
+            }
+        };*/
+
         initViews();
         tManager = new TrackManager(this);
+        setupCastListener();
+        mCastContext = CastContext.getSharedInstance(this);
+        mSessionManager = mCastContext.getSessionManager();
+        mCastSession = mSessionManager.getCurrentCastSession();
+
+    }
+
+    private void setupActionBar() {
+        chromeBar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(chromeBar);
+    }
+
+    private void showIntroductoryOverlay() {
+        if (mIntroductoryOverlay != null) {
+            mIntroductoryOverlay.remove();
+        }
+        if ((mediaRouteMenuItem != null) && mediaRouteMenuItem.isVisible()) {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    mIntroductoryOverlay = new IntroductoryOverlay.Builder(
+                            ReproductorActivity.this, mediaRouteMenuItem)
+                            .setTitleText("Introducing Cast")
+                            .setSingleTime()
+                            .setOnOverlayDismissedListener(
+                                    new IntroductoryOverlay.OnOverlayDismissedListener() {
+                                        @Override
+                                        public void onOverlayDismissed() {
+                                            mIntroductoryOverlay = null;
+                                        }
+                                    })
+                            .build();
+                    mIntroductoryOverlay.show();
+                }
+            });
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.chromecast, menu);
+        mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu,
+                R.id.media_route_menu_item);
+
+        return true;
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -156,9 +251,8 @@ public class ReproductorActivity extends Activity implements TrackCallback {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
+        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
     }
-
 
     private void initViews() {
 
@@ -233,6 +327,7 @@ public class ReproductorActivity extends Activity implements TrackCallback {
             @Override
             public void onClick(View v) {
                 serv.skipToPrevious();
+                serv.loadMedia(mSeekBar.getProgress(), mCastSession,true);
             }
         });
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
@@ -241,6 +336,7 @@ public class ReproductorActivity extends Activity implements TrackCallback {
             @Override
             public void onClick(View v) {
                 serv.skipToNext();
+                serv.loadMedia(mSeekBar.getProgress(), mCastSession,true);
             }
         });
         btnPlay = findViewById(R.id.play);
@@ -251,6 +347,7 @@ public class ReproductorActivity extends Activity implements TrackCallback {
             @Override
             public void onClick(View v) {
                 serv.resumeMedia();
+                serv.loadMedia(mSeekBar.getProgress(), mCastSession,true);
             }
         });
         btnPause = findViewById(R.id.pause);
@@ -262,6 +359,7 @@ public class ReproductorActivity extends Activity implements TrackCallback {
             @Override
             public void onClick(View v) {
                 serv.pauseMedia();
+                serv.loadMedia(mSeekBar.getProgress(), mCastSession,false);
             }
         });
 
@@ -271,9 +369,10 @@ public class ReproductorActivity extends Activity implements TrackCallback {
     }
 
 
-
     @Override
     protected void onPause() {
+        mCastContext.getSessionManager().removeSessionManagerListener(
+                mSessionManagerListener, CastSession.class);
         super.onPause();
     }
 
@@ -363,4 +462,73 @@ public class ReproductorActivity extends Activity implements TrackCallback {
     public void onFailure(Throwable throwable) {
 
     }
+
+
+    @Override
+    public CastOptions getCastOptions(Context appContext) {
+        CastOptions castOptions = new CastOptions.Builder()
+                .setReceiverApplicationId(appContext.getString(R.string.app_id))
+                .build();
+        return castOptions;
+    }
+    @Override
+    public List<SessionProvider> getAdditionalSessionProviders(Context context) {
+        return null;
+    }
+
+    private void setupCastListener() {
+        mSessionManagerListener = new SessionManagerListener<CastSession>() {
+
+            @Override
+            public void onSessionEnded(CastSession session, int error) {
+                onApplicationDisconnected();
+            }
+
+            @Override
+            public void onSessionResumed(CastSession session, boolean wasSuspended) {
+                //onApplicationConnected(session);
+            }
+
+            @Override
+            public void onSessionResumeFailed(CastSession session, int error) {
+                onApplicationDisconnected();
+            }
+
+            @Override
+            public void onSessionStarted(CastSession session, String sessionId) {
+                onApplicationConnected(session);
+            }
+
+            @Override
+            public void onSessionStartFailed(CastSession session, int error) {
+                onApplicationDisconnected();
+            }
+
+            @Override
+            public void onSessionStarting(CastSession session) {
+            }
+
+            @Override
+            public void onSessionEnding(CastSession session) {
+            }
+
+            @Override
+            public void onSessionResuming(CastSession session, String sessionId) {
+            }
+
+            @Override
+            public void onSessionSuspended(CastSession session, int reason) {
+            }
+
+            private void onApplicationConnected(CastSession castSession) {
+                serv.loadMedia(mSeekBar.getProgress(), castSession,false);
+                mCastSession = castSession;
+            }
+
+            private void onApplicationDisconnected() {
+                serv.upVolume();
+            }
+        };
+    }
+
 }

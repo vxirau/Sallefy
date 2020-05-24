@@ -128,7 +128,6 @@ public class CloudinaryManager extends AppCompatActivity {
             long hours = duration / 3600;
             long minutes = (duration - hours * 3600) / 60;
             long seconds = duration - (hours * 3600 + minutes * 60);
-
             track.setDuration((int) (seconds + (minutes*60)));
             track.setUrl((String) resultData.get("url"));
             ArrayList<Genre> genres = new ArrayList<>();
