@@ -505,6 +505,7 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
 
     }
 
+
     @Override
     public void onHeatInfoRecieved(ArrayList<Heat> body) {
         if(body!=null && body.size()>0){
@@ -532,7 +533,10 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
             }
 
             mProvider = new HeatmapTileProvider.Builder().data(list).gradient(gradient).build();
+
             mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+            mProvider.setRadius(50);
+            map.setMaxZoomPreference(14.0f);
         }
 
     }
