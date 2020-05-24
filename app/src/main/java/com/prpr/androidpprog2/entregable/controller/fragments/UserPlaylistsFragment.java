@@ -65,7 +65,6 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
     private RecyclerView mRecyclerView;
     public UserPlaylistsFragment() {
-        // Required empty public constructor
         this.myPlaylists = new ArrayList<>();
     }
 
@@ -83,10 +82,8 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
 
         View view =  inflater.inflate(R.layout.fragment_user_playlists, container, false);
 
-        //container.get
 
         btnSettings = (FloatingActionButton)getActivity().findViewById(R.id.configButton);
-
 
         btnFilterPlaylists = (Button) view.findViewById(R.id.filter_user_playlists);
         btnFilterPlaylists.setEnabled(true);
@@ -332,6 +329,24 @@ public class UserPlaylistsFragment extends Fragment implements PlaylistCallback 
     @Override
     public void onFollowingRecieved(List<Playlist> body) {
         this.myPlaylists.addAll(body);
+        clearRepeated();
+    }
+
+    private void clearRepeated(){
+        ArrayList<Integer> eliminar = new ArrayList<>();
+        ArrayList<Integer> ids = new ArrayList<>();
+        for(int i=0; i<this.myPlaylists.size() ;i++){
+            for(int j=0; j< this.myPlaylists.size();j++){
+                if((this.myPlaylists.get(i).getId() == this.myPlaylists.get(j).getId()) && i!=j && !ids.contains(this.myPlaylists.get(i).getId())){
+                    eliminar.add(i);
+                    ids.add(this.myPlaylists.get(i).getId());
+                }
+            }
+        }
+        for(Integer i : eliminar){
+            this.myPlaylists.remove((int)i);
+        }
+
         UserPlaylistAdapter userPlaylistAdapter = new UserPlaylistAdapter(getContext(), this.myPlaylists);
         userPlaylistAdapter.setPlaylistCallback(this);
         mRecyclerView.setAdapter(userPlaylistAdapter);
