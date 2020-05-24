@@ -313,7 +313,7 @@ public class UploadActivity extends AppCompatActivity implements GenreCallback, 
     private void getAudioFromStorage() {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("audio/mpeg");
+        intent.setType("video/* audio/*");
         startActivityForResult(Intent.createChooser(intent, "Choose a song"), Constants.STORAGE.SONG_SELECTED);
     }
 

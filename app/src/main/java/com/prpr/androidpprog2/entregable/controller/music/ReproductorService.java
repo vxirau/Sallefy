@@ -35,6 +35,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -90,7 +91,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class ReproductorService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener,
-        MediaPlayer.OnInfoListener, MediaPlayer.OnBufferingUpdateListener, AudioManager.OnAudioFocusChangeListener {
+        MediaPlayer.OnInfoListener, MediaPlayer.OnBufferingUpdateListener, AudioManager.OnAudioFocusChangeListener, SurfaceHolder.Callback {
 
 
     private MediaPlayer mediaPlayer;
@@ -129,6 +130,8 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
     public static final String ACTION_PREVIOUS = "com.prpr.androidpprog2.entregable.ACTION_PREVIOUS";
     public static final String ACTION_NEXT = "com.prpr.androidpprog2.entregable.ACTION_NEXT";
     public static final String ACTION_STOP = "com.prpr.androidpprog2.entregable.ACTION_STOP";
+
+    public static final String Broadcast_SONG_CHANGED = "com.prpr.androidpprog2.entregable.SONG_CHANGED";
 
     private MediaSessionManager mediaSessionManager;
     private MediaSessionCompat mediaSession;
@@ -930,6 +933,9 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         updateUI();
         updateMetaData();
         buildNotification(PlaybackStatus.PLAYING);
+
+        Intent broadcastIntent = new Intent(Broadcast_SONG_CHANGED);
+        sendBroadcast(broadcastIntent);
     }
 
 
@@ -1252,5 +1258,26 @@ public class ReproductorService extends Service implements MediaPlayer.OnComplet
         if (novaLlista && isShuffle) {
             novaLlista = false;
         }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        mediaPlayer.setDisplay(holder);
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
+    }
+
+    public boolean isOffline() {
+        return offline;
     }
 }

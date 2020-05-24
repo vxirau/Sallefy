@@ -1,10 +1,16 @@
 package com.prpr.androidpprog2.entregable.controller.activities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,13 +19,19 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +39,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.framework.CastContext;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.mikephil.charting.formatter.IFillFormatter;
 
 
 import com.google.android.gms.cast.framework.CastOptions;
@@ -36,7 +50,6 @@ import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.IntroductoryOverlay;
 import com.google.android.gms.cast.framework.OptionsProvider;
-import com.google.android.gms.cast.framework.Session;
 import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 import com.google.android.gms.cast.framework.SessionProvider;
@@ -47,7 +60,9 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.TrackCallba
 import com.prpr.androidpprog2.entregable.controller.restapi.manager.TrackManager;
 import com.prpr.androidpprog2.entregable.controller.music.ReproductorService;
 import com.prpr.androidpprog2.entregable.model.Track;
+import com.prpr.androidpprog2.entregable.utils.ConnectivityService;
 import com.prpr.androidpprog2.entregable.utils.Constants;
+import com.prpr.androidpprog2.entregable.utils.Session;
 
 import java.util.List;
 
@@ -73,6 +88,7 @@ public class ReproductorActivity extends AppCompatActivity implements TrackCallb
 
     private Button likeTrack;
     private boolean liked=false;
+    private RelativeLayout relativeLayoutLikeButton;
 
     private ImageButton btnForward;
     private ImageButton shuffle;
@@ -94,7 +110,20 @@ public class ReproductorActivity extends AppCompatActivity implements TrackCallb
     private SessionManager mSessionManager;
     private SessionManagerListener<CastSession> mSessionManagerListener;
 
+    private SurfaceHolder surfaceHolder;
+    private SurfaceView surfaceView;
 
+    private RelativeLayout relativeLayoutImage;
+    private RelativeLayout relativeLayoutVideo;
+
+    private BroadcastReceiver songChanged = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            active = serv.getActiveAudio();
+            surfaceHolder.addCallback(serv);
+            ReproductorActivity.this.videoShow();
+        }
+    };
 
     //----------------------------------------------------------------PART DE SERVICE--------------------------------------------------------------------------------
 
@@ -129,7 +158,6 @@ public class ReproductorActivity extends AppCompatActivity implements TrackCallb
             serv.setShuffleButtonUI();
             active = serv.getActiveAudio();
             updateLiked();
-
         }
     }
 
@@ -223,6 +251,9 @@ public class ReproductorActivity extends AppCompatActivity implements TrackCallb
             serv.setRandomButton(shuffle);
             serv.setShuffleButtonUI();
             serv.setDuracioTotal(duracioTotal, duracioActual);
+
+            surfaceHolder.addCallback(serv);
+            ReproductorActivity.this.videoShow();
         }
 
         @Override
@@ -243,6 +274,12 @@ public class ReproductorActivity extends AppCompatActivity implements TrackCallb
     protected void onDestroy() {
         super.onDestroy();
         doUnbindService();
+        unregisterReceiver(songChanged);
+    }
+
+    private void registerSongChanged() {
+        IntentFilter filter = new IntentFilter(ReproductorService.Broadcast_SONG_CHANGED);
+        registerReceiver(songChanged, filter);
     }
 
     //----------------------------------------------------------------FIN DE LA PART DE SERVICE--------------------------------------------------------------------------------
@@ -328,6 +365,8 @@ public class ReproductorActivity extends AppCompatActivity implements TrackCallb
             public void onClick(View v) {
                 serv.skipToPrevious();
                 serv.loadMedia(mSeekBar.getProgress(), mCastSession,true);
+                active = serv.getActiveAudio();
+                videoShow();
             }
         });
         btnForward = (ImageButton)findViewById(R.id.music_forward_btn);
@@ -337,6 +376,8 @@ public class ReproductorActivity extends AppCompatActivity implements TrackCallb
             public void onClick(View v) {
                 serv.skipToNext();
                 serv.loadMedia(mSeekBar.getProgress(), mCastSession,true);
+                active = serv.getActiveAudio();
+                videoShow();
             }
         });
         btnPlay = findViewById(R.id.play);
@@ -365,9 +406,41 @@ public class ReproductorActivity extends AppCompatActivity implements TrackCallb
 
         mSeekBar = (SeekBar) findViewById(R.id.seekBar);
 
+        relativeLayoutLikeButton = (RelativeLayout) findViewById(R.id.relativeLayoutLikeButton);
 
+        relativeLayoutImage = (RelativeLayout) findViewById(R.id.layoutPlayPicture);
+        relativeLayoutVideo = (RelativeLayout) findViewById(R.id.layoutPlayVideo);
+
+        relativeLayoutImage.setVisibility(View.VISIBLE);
+        relativeLayoutVideo.setVisibility(View.GONE);
+
+        surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
+
+        surfaceHolder = surfaceView.getHolder();
+
+        registerSongChanged();
     }
 
+    private void videoShow() {
+
+        ViewGroup.MarginLayoutParams marginParams = new ViewGroup.MarginLayoutParams(relativeLayoutLikeButton.getLayoutParams());
+        marginParams.setMargins(0, 0 ,160, 0);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(marginParams);
+        relativeLayoutLikeButton.setLayoutParams(layoutParams);
+
+        relativeLayoutImage.setVisibility(View.VISIBLE);
+        relativeLayoutVideo.setVisibility(View.GONE);
+
+        if (!serv.isOffline() && active.getUrl().contains("mp4")){
+            ViewGroup.MarginLayoutParams marginParamsOnVideo = new ViewGroup.MarginLayoutParams(relativeLayoutLikeButton.getLayoutParams());
+            marginParamsOnVideo.setMargins(0, 20 ,20, 0);
+            RelativeLayout.LayoutParams layoutParamsOnVideo = new RelativeLayout.LayoutParams(marginParamsOnVideo);
+            relativeLayoutLikeButton.setLayoutParams(layoutParamsOnVideo);
+
+            relativeLayoutImage.setVisibility(View.GONE);
+            relativeLayoutVideo.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     protected void onPause() {
