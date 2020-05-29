@@ -8,9 +8,11 @@ import com.prpr.androidpprog2.entregable.controller.restapi.callback.UserCallbac
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserService;
 import com.prpr.androidpprog2.entregable.controller.restapi.service.UserTokenService;
 import com.prpr.androidpprog2.entregable.model.UserLogin;
+import com.prpr.androidpprog2.entregable.model.UserRegister;
 import com.prpr.androidpprog2.entregable.model.UserToken;
 import com.prpr.androidpprog2.entregable.utils.Constants;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +42,29 @@ public class AccountManager {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mTokenService = retrofit.create(UserTokenService.class);
+    }
+
+    public synchronized void registerAttempt (String email, String username, String password, final AccountCallback userCallback) {
+
+        Call<ResponseBody> call = mTokenService.registerUser(new UserRegister(email, username, password));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                int code = response.code();
+                if (response.isSuccessful()) {
+                    userCallback.onRegisterSuccess();
+                } else {
+                    userCallback.onRegisterFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                userCallback.onFailure(t);
+            }
+        });
     }
 
 

@@ -152,28 +152,7 @@ public class UserManager extends MainManager{
 
     }
 
-    public synchronized void registerAttempt (String email, String username, String password, final AccountCallback userCallback) {
 
-        Call<ResponseBody> call = mService.registerUser(new UserRegister(email, username, password));
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                int code = response.code();
-                if (response.isSuccessful()) {
-                    userCallback.onRegisterSuccess();
-                } else {
-                    userCallback.onRegisterFailure(new Throwable("ERROR " + code + ", " + response.raw().message()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                userCallback.onFailure(t);
-            }
-        });
-    }
 
     public synchronized void getUserData (String login, final AccountCallback userCallback, UserToken userToken) {
         //  

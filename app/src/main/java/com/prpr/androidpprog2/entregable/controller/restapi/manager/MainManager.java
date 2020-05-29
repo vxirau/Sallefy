@@ -32,14 +32,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainManager {
     protected Retrofit mainRetrofit;
 
-    private Retrofit mRetrofit;
     public static final String TAG = "MainManager";
     protected Context mContext;
-    private Retrofit mCachedRetrofit;
-    private Cache mCache;
     private OkHttpClient client, mCachedOkHttpClient;
-    public static final String HEADER_CACHE_CONTROL = "Cache-Control";
-    public static final String HEADER_PRAGMA = "Pragma";
+
 
 
     public MainManager(){

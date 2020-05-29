@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.android.MediaManager;
+import com.cloudinary.provisioning.Account;
 import com.cloudinary.utils.ObjectUtils;
 //import com.google.android.gms.tasks.OnSuccessListener;
 //import com.google.firebase.storage.FirebaseStorage;
@@ -78,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity implements AccountCallba
                 String password = etPassword.getText().toString();
                 String email = etEmail.getText().toString();
                 Session.getInstance(getApplicationContext()).setUserRegister(new UserRegister(email, login, password));
-                UserManager.getInstance(getApplicationContext()).registerAttempt(email, login, password, RegisterActivity.this);
+                AccountManager.getInstance(getApplicationContext()).registerAttempt(email, login, password, RegisterActivity.this);
             }
         });
 
@@ -116,22 +117,6 @@ public class RegisterActivity extends AppCompatActivity implements AccountCallba
 
     @Override
     public void onRegisterSuccess() {
-        UserRegister userData = Session.getInstance(getApplicationContext()).getUserRegister();
-
-        //CloudinaryManager.getInstance(this, null).createFolder(userData.getLogin());
-
-        //Uri uri = Uri.parse("R.drawable.add_green_button");
-
-        /*mStorage = FirebaseStorage.getInstance().getReference();
-        StorageReference filePath = mStorage.child(etLogin.getText().toString()).child(uri.getLastPathSegment());
-
-        filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(RegisterActivity.this,"exito pelotudo",Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
 
         mStorage = FirebaseStorage.getInstance().getReference();
         StorageReference filePath = mStorage.child(Session.changeLogin(etLogin.getText().toString()));

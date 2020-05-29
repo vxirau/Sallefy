@@ -31,8 +31,7 @@ public interface UserService {
     @GET("me/followings")
     Call<List<User>> getFollowedUsers();
 
-    @POST("register")
-    Call<ResponseBody> registerUser(@Body UserRegister user);
+
 
     @POST("account")
     Call<ResponseBody> saveAccount(@Body User user);
