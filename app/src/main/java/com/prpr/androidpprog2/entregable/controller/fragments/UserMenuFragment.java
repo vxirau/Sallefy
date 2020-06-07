@@ -13,8 +13,6 @@ import com.prpr.androidpprog2.entregable.R;
 public class UserMenuFragment extends Fragment {
 
 
-
-
     public UserMenuFragment() {
         // Required empty public constructor
     }

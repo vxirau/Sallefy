@@ -382,30 +382,33 @@ public class UserStatisticsFragment extends Fragment implements TrackCallback, O
     @Override
     public void onPersonalTracksReceived(List<Track> tracks) {
         this.myUploadedTracks = (ArrayList<Track>) tracks;
-        TrackManager.getInstance(getContext()).getTrackLocations(myUploadedTracks.get(0).getId(), this);
+        if(myUploadedTracks.size()>0){
+            TrackManager.getInstance(getContext()).getTrackLocations(myUploadedTracks.get(0).getId(), this);
+            sortGenresByPlays(myUploadedTracks);
 
-        sortGenresByPlays(myUploadedTracks);
+            ArrayList<String> allNames = new ArrayList<>();
+            for(Track t : myUploadedTracks){
+                allNames.add(t.getId() + " - " + t.getName());
+            }
+            mapOptions = allNames;
+            adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, mapOptions){
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent)
+                {
+                    return setCentered(super.getView(position, convertView, parent));
+                }
 
-        ArrayList<String> allNames = new ArrayList<>();
-        for(Track t : myUploadedTracks){
-            allNames.add(t.getId() + " - " + t.getName());
+                private View setCentered(View view)
+                {
+                    TextView textView = (TextView)view.findViewById(android.R.id.text1);
+                    textView.setGravity(Gravity.CENTER);
+                    return view;
+                }
+            };
+            llistaSongs.setAdapter(adapter);
         }
-        mapOptions = allNames;
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, mapOptions){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent)
-            {
-                return setCentered(super.getView(position, convertView, parent));
-            }
 
-            private View setCentered(View view)
-            {
-                TextView textView = (TextView)view.findViewById(android.R.id.text1);
-                textView.setGravity(Gravity.CENTER);
-                return view;
-            }
-        };
-        llistaSongs.setAdapter(adapter);
+
     }
 
     @Override
