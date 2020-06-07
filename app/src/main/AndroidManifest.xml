@@ -58,7 +58,6 @@
         <activity android:name=".controller.activities.Add2PlaylistActivity" />
         <activity android:name=".controller.activities.UploadActivity" />
         <activity android:name=".controller.activities.AddSongsBunchActivity" />
-        <activity android:name=".controller.fragments.InfoTrackFragment"/>
         <activity android:name=".controller.activities.InfoArtistaActivity" />
         <activity android:name=".controller.activities.SearchActivity" />
         <activity android:name=".controller.activities.SettingsActivity" />
@@ -68,7 +67,6 @@
         <activity android:name=".controller.activities.FollowersActivity" />
         <activity android:name=".controller.activities.EditSongActivity" />
         <service android:name=".controller.music.ReproductorService" />
-        <service android:name=".utils.ConnectivityService" />
         <activity android:name=".controller.activities.QueueActivity"/>
         <service android:name=".utils.ConnectivityService"/>
 
