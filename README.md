@@ -3,7 +3,11 @@
 -------------
 
 <p align="justify">
-Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacion para reproducir musica con funcionalidades parecidas a Spotify y SoundCloud. A continuación se presenta el diseño de la App. El  repositorio Git  contiene el código fuente  con la evolución de todos los commits.  Se ha utilizado la herramienta Sketch y  también se ha prototipado la funcionalidad con Flinto. A lo largo de las diferentes entregas que se nos han pedido hemos perfeccionado el diseño para acabar tenindo un diseño como este:
+Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacion para reproducir musica con funcionalidades parecidas a Spotify y SoundCloud. 
+
+Para el desarrollo de la aplicación se nos ha ofrecido una REST API desarrollada con Spring Boot específicamente para esta asignatura. La implementación del backend es opensource y está disponible en: [arnaugarcia/sallefy](https://github.com/arnaugarcia/sallefy) 
+  
+A continuación se presenta el diseño de la App. El  repositorio Git  contiene el código fuente  con la evolución de todos los commits.  Se ha utilizado la herramienta Sketch y  también se ha prototipado la funcionalidad con Flinto. A lo largo de las diferentes entregas que se nos han pedido hemos perfeccionado el diseño para acabar tenindo un diseño como este:
 </p>
 
 -------------
