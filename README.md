@@ -8,7 +8,9 @@ Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacio
 Para el desarrollo de la aplicación se nos ha ofrecido una REST API desarrollada con Spring Boot específicamente para esta asignatura. La implementación del backend es opensource y está disponible en: [arnaugarcia/sallefy](https://github.com/arnaugarcia/sallefy) 
 
 La coordinación del equipo y de las tareas pendientes se han gestionado mediante el tablero Kanban con las issues planteadas a lo largo de las diversas entregas.
-[Ver Kanban](https://github.com/VXGamez/Sallefy/projects/1) 
+
+[Ver Kanban Entrega 2](https://github.com/VXGamez/Sallefy/projects/1) 
+[Ver Kanban Entrega 3](https://github.com/VXGamez/Sallefy/projects/2) 
  
 A continuación se presenta el diseño de la App. El  repositorio Git  contiene el código fuente  con la evolución de todos los commits.  Se ha utilizado la herramienta Sketch y  también se ha prototipado la funcionalidad con Flinto. A lo largo de las diferentes entregas que se nos han pedido, hemos ido perfeccionado y evolucionando el diseño:
 </p>
