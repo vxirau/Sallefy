@@ -22,7 +22,7 @@ A continuación se presenta el diseño de la App. El  repositorio Git  contiene 
 
 -------------
 
-**La lista de funcionalidades implementadas es visible en el mismo pero el resumen es el siguiente:**
+**La aplicación implementa todas estas funcionalidades:**
 * Autentificación de Usuario
 * Creación de Playlists
 * Consultar Playlists
@@ -43,8 +43,6 @@ A continuación se presenta el diseño de la App. El  repositorio Git  contiene 
 * Editar canciones (propias)
 * Ordenación por multiples criterios de playlists, canciones y usuarios
 * Notificación Multimedia
-
-**Este es el resumen de todas las funcionalidades implementadas. Se irán añadiendo mas a medida que el desarrollo avance.**
 
 
 **Podemos ver el resultado de todas estas funcionalidades en la galeria a continuación:**
