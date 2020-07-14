@@ -9,9 +9,7 @@ Para el desarrollo de la aplicación se nos ha ofrecido una REST API desarrollad
 
 La coordinación del equipo y de las tareas pendientes se han gestionado mediante el tablero Kanban con las issues planteadas a lo largo de las diversas entregas.
 
-[Ver Entrega 2](https://github.com/VXGamez/Sallefy/projects/1) 
-
-[Ver Entrega 3](https://github.com/VXGamez/Sallefy/projects/2) 
+[Ver Entrega 2](https://github.com/VXGamez/Sallefy/projects/1)  -- [Ver Entrega 3](https://github.com/VXGamez/Sallefy/projects/2) 
  
 A continuación se presenta el diseño de la App. El  repositorio Git  contiene el código fuente  con la evolución de todos los commits.  Se ha utilizado la herramienta Sketch y  también se ha prototipado la funcionalidad con Flinto. A lo largo de las diferentes entregas que se nos han pedido, hemos ido perfeccionado y evolucionando el diseño:
 </p>
@@ -24,7 +22,7 @@ A continuación se presenta el diseño de la App. El  repositorio Git  contiene 
 
 -------------
 
-**Este diseño es el diseño que por ahora esta presente en la aplicación. La lista de funcionalidades implementadas es visible en el mismo pero el resumen es el siguiente:**
+**La lista de funcionalidades implementadas es visible en el mismo pero el resumen es el siguiente:**
 * Autentificación de Usuario
 * Creación de Playlists
 * Consultar Playlists
