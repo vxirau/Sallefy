@@ -3,7 +3,7 @@
 -------------
 
 <p align="justify">
-Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacion para reproducir musica con funcionalidades parecidas a Spotify y SoundCloud. Este es el diseño de la app que he diseñado junto con el codigo del proyecto de Android Studio. El diseño ha sido realitzado con la herramienta Sketch y he realizado también un prototipado de la funcionalidad con Flinto. Este diseño es el diseño con el que se planteó el proyecto y a partir del que partimos. A lo largo de las diferentes entregas que se nos han pedido hemos perfeccionado el diseño para acabar tenindo un diseño como este:
+Para Proyectos de Porgramación II se nos ha pedido que diseñemos una aplicacion para reproducir musica con funcionalidades parecidas a Spotify y SoundCloud. A continuación se presenta el diseño de la App. El  repositorio Git  contiene el código fuente  con la evolución de todos los commits.  Se ha utilizado la herramienta Sketch y  también se ha prototipado la funcionalidad con Flinto. A lo largo de las diferentes entregas que se nos han pedido hemos perfeccionado el diseño para acabar tenindo un diseño como este:
 </p>
 
 -------------
