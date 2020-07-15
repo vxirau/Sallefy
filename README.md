@@ -3,11 +3,11 @@
 -------------
 
 <p align="justify">
-Para Proyectos de Programación II se nos ha pedido que diseñemos una aplicacion para reproducir musica con funcionalidades parecidas a Spotify y SoundCloud. 
+En la asignatura Proyectos de Programación II nos ha pedido que diseñemos e implementemos una App de música con funcionalidades equivalentes a Spotify y SoundCloud. 
 
-Para el desarrollo de la aplicación se nos ha ofrecido una REST API desarrollada con Spring Boot específicamente para esta asignatura. La implementación del backend es opensource y está disponible en: [arnaugarcia/sallefy](https://github.com/arnaugarcia/sallefy) 
+Para programar la aplicación se nos ha ofrecido una REST API desarrollada con Spring Boot específicamente para esta asignatura. La implementación del backend es opensource y está disponible en: [arnaugarcia/sallefy](https://github.com/arnaugarcia/sallefy) 
 
-La coordinación del equipo y de las tareas pendientes se han gestionado mediante el tablero Kanban con las issues planteadas a lo largo de las diversas entregas.
+La coordinación del equipo y de las tareas se han gestionado mediante el tablero Kanban con las issues planificadas a lo largo de las diversas entregas.
 
 [Ver Entrega 2](https://github.com/VXGamez/Sallefy/projects/1)  -- [Ver Entrega 3](https://github.com/VXGamez/Sallefy/projects/2) 
  
