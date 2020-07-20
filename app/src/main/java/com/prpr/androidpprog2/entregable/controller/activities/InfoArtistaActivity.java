@@ -284,7 +284,8 @@ public class InfoArtistaActivity extends AppCompatActivity implements TrackListC
         name.setText(nom);
 
         login = findViewById(R.id.userLogin);
-        login.setText(artist.getLogin() + " - " + artist.getFollowers() + " Followers");
+        int followers = artist.getFollowers() != null ? artist.getFollowers() : 0 ;
+        login.setText(artist.getLogin() + " - " + followers + " Followers");
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

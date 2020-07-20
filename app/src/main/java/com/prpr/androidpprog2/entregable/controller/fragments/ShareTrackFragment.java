@@ -134,7 +134,7 @@ public class ShareTrackFragment extends BottomSheetDialogFragment {
                 ending = user.getLogin()+"";
                 titol.setText(user.getLogin());
                 artista.setVisibility(View.GONE);
-                if(user.getImageUrl()!=null){
+                if(user.getImageUrl()!=null && !user.getImageUrl().equals("")){
                     if(!UtilFunctions.noInternet(getActivity())){
                         Picasso.get().load(user.getImageUrl()).into(portada);
                     }else{
